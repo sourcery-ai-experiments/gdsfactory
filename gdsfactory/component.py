@@ -25,6 +25,7 @@ from gdsfactory.component_layout import (
     _get_kl_layer,
     _is_iterable,
     _kl_polygon_to_array,
+    _objects_to_kl_region,
     _parse_layer,
     layout,
 )
@@ -165,7 +166,11 @@ class Component(_GeometryHelper):
 
     @property
     def area(self):
-        return self._cell.area
+        kl_region = _objects_to_kl_region([self._cell])
+        area = float(kl_region.area()) * (layout.dbu**2)
+        kl_region.clear()
+        kl_region._destroy()
+        return area
 
     @property
     def name(self):
@@ -767,7 +772,7 @@ class Component(_GeometryHelper):
 
     def remove_layers(
         self,
-        layers: Union[List[Tuple[int, int]], Tuple[int, int]] = (),
+        layers: Union[List[Tuple[int, int]], Tuple[int, int]],
         include_labels: bool = True,
         invert_selection: bool = False,
         recursive: bool = True,
@@ -780,45 +785,28 @@ class Component(_GeometryHelper):
             invert_selection: removes all layers except layers specified.
             recursive: operate on the cells included in this cell.
         """
-        if recursive and self.references:
-            D = self.flatten()
-
-        else:
-            D = self
-
-        polygons = [
-            polygon
-            for polygon in self.polygons
-            if (polygon.layer, polygon.datatype) not in layers
-        ]
-
-        paths = []
-        for path in D.paths:
-            paths.extend(
-                path
-                for layer in zip(path.layers, path.datatypes)
-                if layer not in layers
+        # Convert layers to KLayout Layer indices
+        layers = [_parse_layer(layer) for layer in layers]
+        kl_layer_indices_to_delete = {
+            _get_kl_layer(layer[0], layer[1])[0] for layer in layers
+        }
+        kl_layer_indices_all = set(layout.layer_indices())
+        if invert_selection:
+            kl_layer_indices_to_delete = (
+                kl_layer_indices_all - kl_layer_indices_to_delete
             )
 
-        D.paths.clear()
-        D.paths.extend(paths)
-        D.polygons.clear()
-        D.polygons.extend(polygons)
+        # If recursive, compile a list of cells which are referenced by this one
+        if recursive:
+            _cells = [layout.cell(i) for i in self._cell.called_cells()] + [self._cell]
+        else:
+            _cells = [self._cell]
 
-        if include_labels:
-            new_labels = []
-            for label in D.labels:
-                original_layer = (label.layer, label.texttype)
-                original_layer = _parse_layer(original_layer)
-                if invert_selection:
-                    keep_layer = original_layer in layers
-                else:
-                    keep_layer = original_layer not in layers
-                if keep_layer:
-                    new_labels += [label]
-            D.labels.clear()
-            D.labels.extend(new_labels)
-        return D
+        # For each cell, iterate through each layer and clear the shapes
+        for kl_layer_idx in kl_layer_indices_to_delete:
+            for _cell in _cells:
+                _cell.clear(kl_layer_idx)
+        return self
 
     def extract(
         self,
@@ -1097,7 +1085,15 @@ class Component(_GeometryHelper):
     @property
     def layers(self):
         """Returns a set of the Layers in the Component."""
-        return self.get_layers()
+        layers = []
+        layer_infos = layout.layer_infos()
+        for layer_idx in layout.layer_indices():
+            kl_iterator = self._cell.begin_shapes_rec(layer_idx)
+            if not kl_iterator.at_end():  # Then there are shapes on that layer
+                layers.append(
+                    (layer_infos[layer_idx].layer, layer_infos[layer_idx].datatype)
+                )
+        return layers
 
     def get_layers(self) -> Set[Tuple[int, int]]:
         """Return a set of (layer, datatype).
@@ -1107,8 +1103,7 @@ class Component(_GeometryHelper):
             import gdsfactory as gf
             gf.components.straight().get_layers() == {(1, 0), (111, 0)}
         """
-        polygons = self._cell.get_polygons(depth=None)
-        return {(polygon.layer, polygon.datatype) for polygon in polygons}
+        return self.layers
 
     def _repr_html_(self):
         """Show geometry in klayout and in matplotlib for jupyter notebooks."""
@@ -1906,15 +1901,17 @@ if __name__ == "__main__":
     layer = (1, 0)
     c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
 
-    # layer = (2, 0)
-    # width = 1
-    # c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
-    # c2.show(show_ports=True)
+    layer = (2, 0)
+    width = 1
+    c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
+    c2.show(show_ports=True)
 
     c << c2
     c.show()
 
-    print(c.get_layers())
+    c3 = c.remove_layers([(2, 0)])
+    c3.show()
+    # print(c.get_layers())
 
     # length = 10
     # width = 0.5

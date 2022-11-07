@@ -18,6 +18,48 @@ def _kl_polygon_to_array(kl_polygon):
     return [(pt.x, pt.y) for pt in kl_polygon.each_point()]
 
 
+def _objects_to_kl_region(objects):
+    """Takes a list of KLayout or PHIDL objects (Cell, CellInst, Shape, etc)
+    and inserts all of them into a single KLayout Region for ease of manipulation"""
+    from gdsfactory.component import Component
+    from gdsfactory.component_reference import ComponentReference
+
+    kl_region = kdb.Region()
+    temp_cell = layout.create_cell("phidl_temp_cell")
+    kl_objects = []
+
+    # Convert  objects to KLayout objects
+    for o in objects:
+        if isinstance(o, ComponentReference):
+            kl_objects.append(o.kl_instance)
+        elif isinstance(o, Component):
+            kl_objects.append(o._cell)
+        elif isinstance(o, Polygon):
+            kl_objects.append(o.kl_shape.polygon)
+        elif isinstance(o, (kdb.Shapes, kdb.Cell, kdb.Instance, kdb.Region)):
+            kl_objects.append(o)
+        else:
+            raise ValueError(
+                "_objects_to_kl_region(): Received invalid object"
+                + f'"{str(o)}" of (type "{type(o)}")'
+            )
+
+    # Iterate through the KLayout objects add add each to the region
+    for o in kl_objects:
+        if isinstance(o, (kdb.Shapes, kdb.Polygon, kdb.Region)):
+            kl_region.insert(o)
+        elif isinstance(o, (kdb.Cell)):
+            temp_cell.insert(kdb.DCellInstArray(o.cell_index(), kdb.DTrans()))
+        elif isinstance(o, kdb.Instance):
+            temp_cell.insert(o.dup())
+    for layer_idx in layout.layer_indices():
+        kl_region.insert(temp_cell.begin_shapes_rec(layer_idx))
+
+    temp_cell.delete()
+
+    return kl_region
+
+
 def _get_kl_layer(gds_layer, gds_datatype):
     """Returns the layer index and KLayout Layer object for a given
     gds layer and datatype, creating a new one if it doesn't exist"""
@@ -651,6 +693,7 @@ class Polygon(_GeometryHelper):
         )  # x and y must be floats
         self.kl_layer_idx = layout.layer(gds_layer, gds_datatype)
         self.kl_shape = parent._cell.shapes(self.kl_layer_idx).insert(polygon)
+        self.points = points
 
     def __del__(self):
         """We want to delete the Polygon (kdb.Shape) from the KLayout database
