@@ -71,7 +71,7 @@ bend_circular180 = gf.partial(bend_circular, angle=180)
 if __name__ == "__main__":
     c = bend_circular(
         width=2,
-        layer=(0, 0),
+        layer=(1, 0),
         angle=90,
         cross_section="rib",
         with_bbox=True,
@@ -80,8 +80,8 @@ if __name__ == "__main__":
     # c = bend_circular(cross_section=gf.cross_section.pin, radius=5)
     # c.pprint_ports()
     # print(c.ports["o2"].orientation)
-    c.show(show_ports=True)
-    # c.show(show_ports=False)
+    # c.show(show_ports=True)
+    c.show(show_ports=False)
 
     # c = bend_circular180()
     # c.plot("qt")

@@ -854,7 +854,7 @@ class Component(_GeometryHelper):
         try:
             points[0][0][0]  # Try to access first x point
             return [self.add_polygon(p, layer) for p in points]
-        except:
+        except Exception:
             pass  # Verified points is not a list of polygons, continue on
 
         # If in the form [[1,3,5],[2,4,6]]
@@ -1595,12 +1595,10 @@ class Component(_GeometryHelper):
             if isinstance(item, Port):
                 try:
                     self.ports = {k: v for k, v in self.ports.items() if v != item}
-                except:
+                except Exception as err:
                     raise ValueError(
-                        """Component.remove() cannot find the Port
-                                     it was asked to remove in the Component: "%s"."""
-                        % (item)
-                    )
+                        f"Component.remove() cannot find Port {item!r}"
+                    ) from err
             else:
                 try:
                     if isinstance(item, (Polygon, Label)):
@@ -1614,12 +1612,10 @@ class Component(_GeometryHelper):
                         self.references.remove(item)
                         self._cell.erase(item.kl_instance)
                     self.aliases = {k: v for k, v in self.aliases.items() if v != item}
-                except:
+                except Exception as err:
                     raise ValueError(
-                        """Component.remove() cannot find the item
-                                     it was asked to remove in the Component: "%s"."""
-                        % (item)
-                    )
+                        f"Component.remove() cannot find {item!r}"
+                    ) from err
 
         self._bb_valid = False
         return self
@@ -1728,8 +1724,8 @@ def copy(D: Component) -> Component:
 
     for port in D.ports.values():
         D_copy.add_port(port=port)
-    # for poly in D.polygons:
-    #     D_copy.add_polygon(poly.points)
+    for poly in D.polygons:
+        D_copy.add_polygon(poly.points)
     for path in D.paths:
         D_copy.add(path)
     for label in D.labels:
