@@ -964,10 +964,8 @@ def generate_manhattan_waypoints(
         bend: bend spec.
         cross_section: spec.
         kwargs: cross_section settings.
-
     """
-    if "straight" in kwargs:
-        _ = kwargs.pop("straight")
+    kwargs.pop("straight", "")
 
     bend90 = (
         bend

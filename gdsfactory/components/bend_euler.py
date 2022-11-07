@@ -196,6 +196,7 @@ def _compare_bend_euler90():
 if __name__ == "__main__":
     # c = bend_euler_s()
     c = bend_euler()
+
     # c = bend_euler(bbox_layers=[(2, 0), (3, 0)], bbox_offsets=[3, 3])
     c.show(show_ports=True)
 
