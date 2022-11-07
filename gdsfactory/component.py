@@ -11,7 +11,6 @@ from collections.abc import Iterable
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
-import gdstk
 import numpy as np
 import yaml
 from omegaconf import DictConfig, OmegaConf
@@ -23,7 +22,9 @@ from gdsfactory.component_layout import (
     _align,
     _distribute,
     _GeometryHelper,
+    _is_iterable,
     _parse_layer,
+    layout,
 )
 from gdsfactory.component_reference import ComponentReference, Coordinate, SizeInfo
 from gdsfactory.config import CONF, logger
@@ -133,7 +134,7 @@ class Component(_GeometryHelper):
         if with_uuid or name == "Unnamed":
             name += f"_{self.uid}"
 
-        self._cell = gdstk.Cell(name=name)
+        self._cell = layout.create_cell(name)
         self.name = name
         self.info: Dict[str, Any] = {}
 
@@ -145,6 +146,7 @@ class Component(_GeometryHelper):
 
         self.ports = {}
         self.aliases = {}
+        self.polygons = []
 
         self._references = []
 
@@ -152,13 +154,10 @@ class Component(_GeometryHelper):
     def references(self):
         return self._references
 
-    @property
-    def polygons(self):
-        return self._cell.polygons
-
-    @polygons.setter
-    def polygons(self, value):
-        self._cell.polygons = value
+    def __del__(self):
+        """Delete cell from KLayout database when the Component is deleted/garbage collected from Python."""
+        if not self._cell.destroyed():
+            self._cell.delete()
 
     @property
     def area(self):
@@ -858,67 +857,24 @@ class Component(_GeometryHelper):
 
         layer = get_layer(layer)
 
-        if layer is None:
-            return None
-
         try:
-            if isinstance(layer, set):
-                return [self.add_polygon(points, ly) for ly in layer]
-            elif all([isinstance(ly, (Layer)) for ly in layer]):
-                return [self.add_polygon(points, ly) for ly in layer]
-            elif len(layer) > 2:  # Someone wrote e.g. layer = [1,4,5]
-                raise ValueError(
-                    """ [PHIDL] If specifying multiple layers
-                you must use set notation, e.g. {1,5,8} """
-                )
-        except Exception:
-            pass
+            points[0][0][0]  # Try to access first x point
+            return [self.add_polygon(p, layer) for p in points]
+        except:
+            pass  # Verified points is not a list of polygons, continue on
 
-        if isinstance(points, gdstk.Polygon):
-            # if layer is unspecified or matches original polygon, just add it as-is
-            polygon = points
-            if layer is np.nan or (
-                isinstance(layer, tuple) and (polygon.layer, polygon.datatype) == layer
-            ):
-                polygon = Polygon(
-                    polygon.points, polygon.layer, polygon.datatype, parent=self
-                )
-                self.add(polygon)
-            else:
-                layer, datatype = _parse_layer(layer)
-                polygon = Polygon(polygon.points, layer, datatype, parent=self)
-                self.add(polygon)
-            return polygon
+        # If in the form [[1,3,5],[2,4,6]]
+        if len(points[0]) > 2:
+            # Convert to form [[1,2],[3,4],[5,6]]
+            points = np.column_stack(points)
+        gds_layer, gds_datatype = _parse_layer(layer)
+        points = np.array(points, dtype=np.float64)
 
-        points = np.asarray(points)
-        if points.ndim == 1 and isinstance(points[0], gdstk.Polygon):
-            polygons = [self.add_polygon(poly, layer=layer) for poly in points]
-            return polygons
-
-        if layer is np.nan:
-            layer = 0
-
-        if points.ndim == 2:
-            # add single polygon from points
-            if len(points[0]) > 2:
-                # Convert to form [[1,2],[3,4],[5,6]]
-                points = np.column_stack(points)
-            layer, datatype = _parse_layer(layer)
-            polygon = Polygon(
-                points, gds_layer=layer, gds_datatype=datatype, parent=self
-            )
-            self.add(polygon)
-            return polygon
-        elif points.ndim == 3:
-            layer, datatype = _parse_layer(layer)
-            polygons = [
-                Polygon(ppoints, gds_layer=layer, gds_datatype=datatype, parent=self)
-                for ppoints in points
-            ]
-            self.add(*polygons)
-            return polygons
-        else:
-            raise ValueError(f"Unable to add {points.ndim}-dimensional points object")
+        polygon = Polygon(
+            points=points, parent=self, gds_layer=gds_layer, gds_datatype=gds_datatype
+        )
+        self.polygons.append(polygon)
+        return polygon
 
     def copy(self) -> "Component":
         return copy(self)
@@ -967,7 +923,6 @@ class Component(_GeometryHelper):
         """
         self.is_unlocked()
         if isinstance(element, ComponentReference):
-            self._cell.add(element._reference)
             self._references.append(element)
         else:
             self._cell.add(element)
@@ -1115,7 +1070,7 @@ class Component(_GeometryHelper):
         """Add ComponentReference to the current Component."""
         if not isinstance(component, Component):
             raise TypeError(f"type = {type(Component)} needs to be a Component.")
-        ref = ComponentReference(component)
+        ref = ComponentReference(component=component, parent=self)
         self._add(ref)
         self._register_reference(reference=ref, alias=alias)
         return ref
@@ -1374,9 +1329,7 @@ class Component(_GeometryHelper):
         gdsdir: Optional[PathType] = None,
         unit: float = 1e-6,
         precision: Optional[float] = None,
-        timestamp: Optional[datetime.datetime] = _timestamp2019,
         logging: bool = True,
-        on_duplicate_cell: Optional[str] = "warn",
     ) -> Path:
         """Write component to GDS and returns gdspath.
 
@@ -1385,19 +1338,10 @@ class Component(_GeometryHelper):
             gdsdir: directory for the GDS file. Defaults to /tmp/randomFile/gdsfactory.
             unit: unit size for objects in library. 1um by default.
             precision: for dimensions in the library (m). 1nm by default.
-            timestamp: Defaults to 2019-10-25 for consistent hash.
-                If None uses current time.
-            logging: disable GDS path logging, for example for showing it in klayout.
-            on_duplicate_cell: specify how to resolve duplicate-named cells. Choose one of the following:
-                "warn" (default): overwrite all duplicate cells with one of the duplicates (arbitrarily).
-                "error": throw a ValueError when attempting to write a gds with duplicate cells.
-                "overwrite": overwrite all duplicate cells with one of the duplicates, without warning.
-                None: do not try to resolve (at your own risk!)
         """
         from gdsfactory.pdk import get_grid_size
 
         precision = precision or get_grid_size() * 1e-6
-
         gdsdir = (
             gdsdir or pathlib.Path(tempfile.TemporaryDirectory().name) / "gdsfactory"
         )
@@ -1407,52 +1351,10 @@ class Component(_GeometryHelper):
         gdsdir = gdspath.parent
         gdsdir.mkdir(exist_ok=True, parents=True)
 
-        cells = self.get_dependencies(recursive=True)
-        cell_names = [cell.name for cell in list(cells)]
-        cell_names_unique = set(cell_names)
-
-        if len(cell_names) != len(set(cell_names)):
-            for cell_name in cell_names_unique:
-                cell_names.remove(cell_name)
-
-            if on_duplicate_cell == "error":
-                raise ValueError(
-                    f"Duplicated cell names in {self.name!r}: {cell_names!r}"
-                )
-            elif on_duplicate_cell in {"warn", "overwrite"}:
-                if on_duplicate_cell == "warn":
-                    warnings.warn(
-                        f"Duplicated cell names in {self.name!r}:  {cell_names}",
-                    )
-                cells_dict = {cell.name: cell._cell for cell in cells}
-                cells = cells_dict.values()
-            elif on_duplicate_cell is not None:
-                raise ValueError(
-                    f"on_duplicate_cell: {on_duplicate_cell!r} not in (None, warn, error, overwrite)"
-                )
-
-        all_cells = [self._cell] + sorted(cells, key=lambda cc: cc.name)
-
-        no_name_cells = [
-            cell.name for cell in all_cells if cell.name.startswith("Unnamed")
-        ]
-
-        if no_name_cells:
-            warnings.warn(
-                f"Component {self.name!r} contains {len(no_name_cells)} Unnamed cells"
-            )
-
-        # for cell in all_cells:
-        #     print(cell.name, type(cell))
-
-        lib = gdstk.Library(unit=unit, precision=precision)
-        lib.add(self._cell)
-        lib.add(*self._cell.dependencies(True))
-
-        # self.path = gdspath
-        lib.write_gds(gdspath)
+        self._cell.write(str(gdspath))
         if logging:
             logger.info(f"Write GDS to {str(gdspath)!r}")
+
         return gdspath
 
     def write_gds_with_metadata(self, *args, **kwargs) -> Path:
@@ -1694,27 +1596,37 @@ class Component(_GeometryHelper):
         return self
 
     def remove(self, items):
-        """Removes items from a Component, which can include Ports, PolygonSets \
-        CellReferences, ComponentReferences and Labels.
-
-        Args:
-            items: list of Items to be removed from the Component.
-        """
-        if not hasattr(items, "__iter__"):
+        if not _is_iterable(items):
             items = [items]
         for item in items:
             if isinstance(item, Port):
-                self.ports = {k: v for k, v in self.ports.items() if v != item}
-            elif isinstance(item, gdstk.Polygon):
-                self.polygons.remove(item)
-            elif isinstance(item, gdstk.Reference):
-                self.references.remove(item)
-                item.owner = None
-            elif isinstance(item, gdstk.Label):
-                self.labels.remove(item)
-            elif isinstance(item, ComponentReference):
-                self.references.remove(item)
-                item.owner = None
+                try:
+                    self.ports = {k: v for k, v in self.ports.items() if v != item}
+                except:
+                    raise ValueError(
+                        """Component.remove() cannot find the Port
+                                     it was asked to remove in the Component: "%s"."""
+                        % (item)
+                    )
+            else:
+                try:
+                    if isinstance(item, (Polygon, Label)):
+                        kl_shapes = (
+                            item.kl_shape.shapes()
+                        )  # Get the kdb.Shapes container, then
+                        kl_shapes.erase(
+                            item.kl_shape
+                        )  # delete the Shape (polygon or label)
+                    if isinstance(item, ComponentReference):
+                        self.references.remove(item)
+                        self._cell.erase(item.kl_instance)
+                    self.aliases = {k: v for k, v in self.aliases.items() if v != item}
+                except:
+                    raise ValueError(
+                        """Component.remove() cannot find the item
+                                     it was asked to remove in the Component: "%s"."""
+                        % (item)
+                    )
 
         self._bb_valid = False
         return self
@@ -1997,16 +1909,20 @@ def test_bbox_component() -> None:
 
 if __name__ == "__main__":
 
-    # c = Component("parent")
+    c = Component("parent")
     c2 = Component("child")
     length = 10
     width = 0.5
     layer = (1, 0)
     c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
+
+    layer = (2, 0)
+    width = 1
+    c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
     c2.show()
 
-    # c << c2
-    # c.show()
+    c << c2
+    c.show()
     # length = 10
     # width = 0.5
     # layer = (1, 0)

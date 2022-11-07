@@ -1,9 +1,12 @@
 import numbers
 
-import gdstk
+import klayout.db as kdb
 import numpy as np
 from numpy import cos, pi, sin
 from numpy.linalg import norm
+
+_library = kdb.Library()
+layout = _library.layout()
 
 
 def _parse_layer(layer):
@@ -622,132 +625,148 @@ def _simplify(points, tolerance=0):
     return np.vstack((result1[:-1], result2))
 
 
-class Polygon(gdstk.Polygon, _GeometryHelper):
-    """Polygonal geometric object.
+class Polygon(_GeometryHelper):
+    def __init__(self, points, parent, gds_layer, gds_datatype):
+        # self._cell = parent._cell
+        points = np.array(points, dtype=np.float64)
+        polygon = kdb.DSimplePolygon(
+            [kdb.DPoint(x, y) for x, y in points]
+        )  # x and y must be floats
+        self.kl_layer_idx = layout.layer(gds_layer, gds_datatype)
+        self.kl_shape = parent._cell.shapes(self.kl_layer_idx).insert(polygon)
 
-    Args:
-        points : array-like[N][2]
-            Coordinates of the vertices of the Polygon.
-        gds_layer : int
-            GDSII layer of the Polygon.
-        gds_datatype : int
-            GDSII datatype of the Polygon.
-        parent : cell that polygon belongs to.
+    def __del__(self):
+        """We want to delete the Polygon (kdb.Shape) from the KLayout database
+        it's deleted/garbage collected from Python"""
+        if not self.kl_shape.destroyed():
+            self.kl_shape._destroy()
 
-    """
+    def _to_array(self):
+        [(pt.x, pt.y) for pt in self.kl_shape.each_point()]
 
-    def __init__(self, points, gds_layer, gds_datatype, parent):
-        """Initialize polygon."""
-        self.parent = parent
-        super().__init__(points=points, layer=gds_layer, datatype=gds_datatype)
+    def _kl_transform(self, magnification, rotation, x_reflection, dx, dy):
+        transformation = kdb.DCplxTrans(
+            float(magnification),  # Magnification
+            float(rotation),  # Rotation
+            x_reflection,  # X-axis mirroring
+            float(dx),  # X-displacement
+            float(dy),  # Y-displacement
+        )
+        return transformation
 
     @property
     def bbox(self):
-        """Returns the bounding box of the Polygon."""
-        return self.get_bounding_box()
+        b = self.kl_shape.dbbox()
+        bbox = np.array(((b.left, b.bottom), (b.right, b.top)))
+        return bbox
+
+    # @property
+    # def kl_shape(self):
+    #     # if self._kl_shape.is_valid == False:
+
+    #     bbox = np.array(((b.left, b.bottom),(b.right, b.top)))
+    #     return bbox
+
+    # # We cannot store kl_shape because the pointer may change over time
+    # # So instead we search for it each time we want the polygon
+    # @property
+    # def kl_shape2(self):
+    #     return self._cell.shapes(self.kl_layer).find(self.kl_shape)
 
     def rotate(self, angle=45, center=(0, 0)):
-        """Rotates a Polygon by the specified angle.
-
-        Args:
-            angle : int or float
-                Angle to rotate the Polygon in degrees.
-            center : array-like[2] or None
-                center of the Polygon.
-        """
-        super().rotate(angle=angle * pi / 180, center=center)
-        if self.parent is not None:
-            self.parent._bb_valid = False
+        klt = self._kl_transform(
+            magnification=1, rotation=angle, x_reflection=False, dx=0, dy=0
+        )
+        self.kl_shape.transform(klt)
         return self
 
     def move(self, origin=(0, 0), destination=None, axis=None):
-        """Moves elements of the Component from the origin point to the destination.
+        """Moves elements of the Component from the origin point to the destination.  Both
+        origin and destination can be 1x2 array-like, Port, or a key
+        corresponding to one of the Ports in this Component"""
 
-        Both origin and destination can be 1x2 array-like, Port,
-        or a key corresponding to one of the Ports in this device.
+        from gdsfactory.port import Port
 
-        Args:
-            origin : array-like[2], Port, or key
-                Origin point of the move.
-            destination : array-like[2], Port, or key
-                Destination point of the move.
-            axis : {'x', 'y'}
-                Direction of move.
+        # If only one set of coordinates is defined, make sure it's used to move things
+        if destination is None:
+            destination = origin
+            origin = [0, 0]
 
-        """
-        dx, dy = _parse_move(origin, destination, axis)
+        if isinstance(origin, Port):
+            o = origin.midpoint
+        elif np.array(origin).size == 2:
+            o = origin
+        elif origin in self.ports:
+            o = self.ports[origin].midpoint
+        else:
+            raise ValueError(
+                "[ComponentReference.move()] ``origin`` not array-like, a port, or port name"
+            )
 
-        super().translate(dx, dy)
-        if self.parent is not None:
-            self.parent._bb_valid = False
-        return self
+        if isinstance(destination, Port):
+            d = destination.midpoint
+        elif np.array(destination).size == 2:
+            d = destination
+        elif destination in self.ports:
+            d = self.ports[destination].midpoint
+        else:
+            raise ValueError(
+                "[ComponentReference.move()] ``destination`` not array-like, a port, or port name"
+            )
 
-    def mirror(self, p1=(0, 1), p2=(0, 0)):
-        """Mirrors a Polygon across the line formed between two points.
+        if axis == "x":
+            d = (d[0], o[1])
+        if axis == "y":
+            d = (o[0], d[1])
 
-        ``points`` may be input as either single points
-        [1,2] or array-like[N][2], and will return in kind.
+        dx, dy = np.array(d) - o
 
-        Args:
-            p1 : array-like[N][2]
-                First point of the line.
-            p2 : array-like[N][2]
-                Second point of the line.
-        """
-        for n, points in enumerate(self.polygons):
-            self.polygons[n] = _reflect_points(points, p1, p2)
-        if self.parent is not None:
-            self.parent._bb_valid = False
-        return self
-
-    def simplify(self, tolerance=1e-3):
-        """Removes points from the polygon but does not change the polygon \
-            shape by more than `tolerance` from the original using the \
-            Ramer-Douglas-Peucker algorithm.
-
-        Args:
-            tolerance : float
-                Tolerance value for the simplification algorithm.  All points that
-                can be removed without changing the resulting polygon by more than
-                the value listed here will be removed. Also known as `epsilon` here
-                https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm
-        """
-        for n, points in enumerate(self.polygons):
-            self.polygons[n] = _simplify(points, tolerance=tolerance)
-        if self.parent is not None:
-            self.parent._bb_valid = False
-        return self
-
-
-class Label(gdstk.Label, _GeometryHelper):
-    """Text to label parts or display messages. Does not add geometry.
-
-    TODO: rename position to origin
-    """
-
-    def __init__(
-        self,
-        text: str = "",
-        position=(0, 0),
-        anchor: str = "o",
-        rotation: float = 0,
-        magnification: float = 1,
-        x_reflection: bool = False,
-        layer: int = 0,
-        texttype: int = 0,
-    ):
-        """Initialize label."""
-        super().__init__(
-            text=text,
-            origin=position,
-            anchor=anchor,
-            rotation=rotation,
-            magnification=magnification,
-            x_reflection=x_reflection,
-            layer=layer,
-            texttype=texttype,
+        klt = self._kl_transform(
+            magnification=1, rotation=0, x_reflection=False, dx=dx, dy=dy
         )
-        self.position = np.array(position, dtype="float64")
+        self.kl_shape.transform(klt)
+
+        return self
+
+    def reflect(self, p1=(0, 1), p2=(0, 0)):
+        theta = np.arctan2(p2[1] - p1[1], p2[0] - p1[0]) / np.pi * 180
+        klt = self._kl_transform(
+            magnification=1, rotation=0, x_reflection=False, dx=p1[0], dy=p1[1]
+        )
+        klt *= self._kl_transform(
+            magnification=1, rotation=-theta, x_reflection=False, dx=0, dy=0
+        )
+        klt *= self._kl_transform(
+            magnification=1, rotation=0, x_reflection=True, dx=0, dy=0
+        )
+        klt *= self._kl_transform(
+            magnification=1, rotation=theta, x_reflection=False, dx=0, dy=0
+        )
+        klt *= self._kl_transform(
+            magnification=1, rotation=0, x_reflection=False, dx=-p1[0], dy=-p1[1]
+        )
+        # klt = klt1*klt2*klt3*klt4*klt5
+        # print(self.kl_shape)
+        # print('Failure')
+        # print(type(klt))
+        # print(type(self.kl_shape))
+        self.kl_shape.transform(klt)
+        # print('Failure2')
+
+        return self
+
+
+class Label(_GeometryHelper):
+    """Text to label parts or display messages. Does not add geometry."""
+
+    def __init__(self, text, position, anchor, parent, layer):
+        layer = _parse_layer(layer)
+        position = _parse_coordinate(position)
+        kl_layer = layout.layer(layer[0], layer[1])
+        t = kdb.DText.new(text, position[0], position[1])
+        t = parent._cell.shapes(kl_layer).insert(t)
+        self.kl_shape = t
+        # self.kl_text = t.dtext
 
     @classmethod
     def __get_validators__(cls):
@@ -760,51 +779,51 @@ class Label(gdstk.Label, _GeometryHelper):
         return v
 
     @property
+    def kl_text(self):
+        return self.kl_shape.dtext
+
+    @property
+    def position(self):
+        return (self.kl_text.x, self.kl_text.y)
+
+    @position.setter
+    def position(self, destination):
+        self.move(destination=destination, origin=self.center)
+
+    @property
     def bbox(self):
-        """Returns the bounding box of the Label."""
-        return np.array(
-            [[self.position[0], self.position[1]], [self.position[0], self.position[1]]]
-        )
+        b = self.kl_text.dbbox()
+        bbox = np.array(((b.left, b.bottom), (b.right, b.top)))
+        return bbox
 
     def rotate(self, angle=45, center=(0, 0)):
-        """Rotates Label around the specified centerpoint.
-
-        Args:
-            angle : int or float
-                Angle to rotate the Label in degrees.
-            center : array-like[2] or None
-                center of the Label.
-        """
         self.position = _rotate_points(self.position, angle=angle, center=center)
         return self
 
     def move(self, origin=(0, 0), destination=None, axis=None):
-        """Moves the Label from the origin point to the destination.
+        if destination is None:
+            destination = origin
+            origin = [0, 0]
 
-        Both origin and destination can be 1x2 array-like, Port, or a key
-        corresponding to one of the Ports in this Label.
+        o = _parse_coordinate(origin)
+        d = _parse_coordinate(destination)
 
-        Args:
-            origin : array-like[2], Port, or key
-                Origin point of the move.
-            destination : array-like[2], Port, or key
-                Destination point of the move.
-            axis : {'x', 'y'}
-                Direction of the move.
-        """
-        dx, dy = _parse_move(origin, destination, axis)
-        self.position += np.asarray((dx, dy))
+        if axis == "x":
+            d = (d[0], o[1])
+        if axis == "y":
+            d = (o[0], d[1])
+
+        dx, dy = np.array(d) - o
+        transformation = kdb.DTrans(
+            0,  # Rotation
+            False,  # X-axis mirroring
+            float(dx),  # X-displacement
+            float(dy),  # Y-displacement
+        )
+        self.kl_shape.transform(transformation)
+
         return self
 
-    def mirror(self, p1=(0, 1), p2=(0, 0)):
-        """Mirrors a Label across the line formed between the two specified points.
-
-        ``points`` may be input as either single points
-        [1,2] or array-like[N][2], and will return in kind.
-
-        Args:
-            p1 : array-like[N][2] First point of the line.
-            p2 : array-like[N][2] Second point of the line.
-        """
+    def reflect(self, p1=(0, 1), p2=(0, 0)):
         self.position = _reflect_points(self.position, p1, p2)
         return self
