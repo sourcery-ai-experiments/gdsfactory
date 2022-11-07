@@ -9,6 +9,11 @@ _library = kdb.Library()
 layout = _library.layout()
 
 
+def _rename_cell(_cell, name):
+    if not _cell.destroyed():
+        _cell.name = name
+
+
 def _parse_layer(layer):
     """Check if the variable layer is a Layer object, a 2-element list like \
     [0, 1] representing layer = 0 and datatype = 1, or just a layer number.
@@ -757,9 +762,21 @@ class Polygon(_GeometryHelper):
 
 
 class Label(_GeometryHelper):
-    """Text to label parts or display messages. Does not add geometry."""
+    """Text to label parts or display messages. Does not add geometry.
 
-    def __init__(self, text, position, anchor, parent, layer):
+    TODO: add magnification and rotation
+    """
+
+    def __init__(
+        self,
+        text,
+        position,
+        anchor,
+        parent,
+        layer,
+        magnification: float = 1,
+        rotation: float = 0,
+    ):
         layer = _parse_layer(layer)
         position = _parse_coordinate(position)
         kl_layer = layout.layer(layer[0], layer[1])

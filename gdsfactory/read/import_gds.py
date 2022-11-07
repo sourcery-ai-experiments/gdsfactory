@@ -1,18 +1,15 @@
 from pathlib import Path
-from typing import Optional, Union, cast
+from typing import Optional, Union
 
-import gdstk
-import numpy as np
 from omegaconf import OmegaConf
 
-from gdsfactory.cell import cell
+from gdsfactory.cell import cell as _cell
 from gdsfactory.component import Component
-from gdsfactory.component_reference import ComponentReference
+from gdsfactory.component_layout import _rename_cell, layout
 from gdsfactory.config import CONFIG, logger
-from gdsfactory.name import get_name_short
 
 
-@cell
+@_cell
 def import_gds(
     gdspath: Union[str, Path],
     cellname: Optional[str] = None,
@@ -23,8 +20,6 @@ def import_gds(
 ) -> Component:
     """Returns a Componenent from a GDS file.
 
-    based on phidl/geometry.py
-
     if any cell names are found on the component CACHE we append a $ with a
     number to the name
 
@@ -33,75 +28,77 @@ def import_gds(
         cellname: cell of the name to import (None) imports top cell.
         gdsdir: optional GDS directory.
         read_metadata: loads metadata if it exists.
-        hashed_name: appends a hash to a shortened component name.
         kwargs: extra to add to component.info (polarization, wavelength ...).
 
     """
     gdspath = Path(gdsdir) / Path(gdspath) if gdsdir else Path(gdspath)
+
     if not gdspath.exists():
         raise FileNotFoundError(f"No file {gdspath!r} found")
 
     metadata_filepath = gdspath.with_suffix(".yml")
+    gdspath = str(gdspath)
 
-    gdsii_lib = gdstk.read_gds(str(gdspath))
-    top_level_cells = gdsii_lib.top_level()
-    cellnames = [c.name for c in top_level_cells]
+    # First we set all the cell names in this layout to "" (from zeropdk)
+    # so that imported cells don't have name collisions
+    cell_dict = {cell.name: cell for cell in layout.each_cell()}
+    used_names = set(cell_dict.keys())
 
-    if not cellnames:
-        raise ValueError(f"no cells found in {str(gdspath)!r}")
+    for c in cell_dict.values():
+        _rename_cell(c, "")
 
+    # Then we load the new cells from the file and get their names
+    layout.read(gdspath)
+
+    imported_cell_dict = {
+        cell.name: cell for cell in layout.each_cell() if cell.name != ""
+    }
+
+    # Find the top level cell from the
+    top_level_cells = {
+        cell.name: cell for cell in layout.top_cells() if cell.name != ""
+    }
+
+    # Correct any overlapping names by appending an integer to the end of the name
+    for name, cell in imported_cell_dict.items():
+        new_name = name
+        n = 1
+        while new_name in used_names:
+            new_name = name + ("%0.1i" % n)
+            n += 1
+        _rename_cell(cell, new_name)
+        used_names.add(new_name)
+
+    # Rename all the old cells back to their original names
+    for name, cell in cell_dict.items():
+        _rename_cell(cell, name)
+
+    # Verify that the topcell name specified exists or that there's only
+    # one topcell.  If not, delete the imported cells and raise a ValueError
     if cellname is not None:
-        if cellname not in gdsii_lib.cells:
+        if cellname not in imported_cell_dict:
+            [
+                layout.delete_cell(cell.cell_index())
+                for cell in imported_cell_dict.values()
+            ]
             raise ValueError(
-                f"cell {cellname!r} is not in file {gdspath} with cells {cellnames}"
+                f"import_gds() The requested cell {cellname!r} not in {gdspath!r}"
             )
-        topcell = gdsii_lib.cells[cellname]
-    elif len(top_level_cells) == 1:
-        topcell = top_level_cells[0]
-    elif len(top_level_cells) > 1:
+        top_cell = imported_cell_dict[cellname]
+    elif cellname is None and len(top_level_cells) == 1:
+        top_cell = list(top_level_cells.values())[0]
+    elif cellname is None and len(top_level_cells) > 1:
+        [layout.delete_cell(cell.cell_index()) for cell in imported_cell_dict.values()]
         raise ValueError(
-            f"import_gds() There are multiple top-level cells in {gdspath!r}, "
-            f"you must specify `cellname` to select of one of them among {cellnames}"
+            "import_gds() There are multiple top-level cells,"
+            " you must specify `cellname` to select of one of them"
         )
 
-    D_list = []
-    cell_to_device = {}
-    for c in gdsii_lib.cells:
-        D = Component(name=c.name)
-        D._cell = c
-
-        D.name = c.name
-        for label in c.labels:
-            rotation = label.rotation
-            if rotation is None:
-                rotation = 0
-            label_ref = D.add_label(
-                text=label.text,
-                position=np.asfarray(label.position),
-                magnification=label.magnification,
-                rotation=rotation * 180 / np.pi,
-                layer=(label.layer, label.texttype),
-            )
-            label_ref.anchor = label.anchor
-
-        if hashed_name:
-            D.name = get_name_short(D.name)
-
-        cell_to_device[c] = D
-        D_list += [D]
-
-    for D in D_list:
-        # First convert each reference so it points to the right Component
-        converted_references = []
-        for e in D.references:
-            ref_device = cell_to_device[e.ref_cell]
-            dr = ComponentReference(component=ref_device)
-            dr.owner = D
-            dr._reference = e
-            converted_references.append(dr)
-
-    component = cell_to_device[topcell]
-    cast(Component, component)
+    # Create a new Device, but delete the klayout cell that is created
+    # and replace it with the imported cell
+    component = Component("import_gds")
+    layout.delete_cell(component._cell.cell_index())
+    component._cell = top_cell
 
     if read_metadata and metadata_filepath.exists():
         logger.info(f"Read YAML metadata from {metadata_filepath}")
@@ -135,4 +132,4 @@ if __name__ == "__main__":
     # print(clean_value_name(c))
     c = import_gds(gdspath, flatten=False, polarization="te")
     # c = import_gds("/home/jmatres/gdsfactory/gdsfactory/gdsdiff/gds_diff_git.py")
-    c.show(show_ports=True)
+    c.show()

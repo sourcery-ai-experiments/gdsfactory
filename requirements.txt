@@ -1,8 +1,8 @@
 -e .
 click
 flatdict
-gdstk
 jsondiff
+klayout
 loguru
 lxml
 matplotlib

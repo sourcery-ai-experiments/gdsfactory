@@ -149,6 +149,8 @@ class Component(_GeometryHelper):
         self.polygons = []
 
         self._references = []
+        self.paths = []
+        self.labels = []
 
     @property
     def references(self):
@@ -164,24 +166,8 @@ class Component(_GeometryHelper):
         return self._cell.area
 
     @property
-    def labels(self):
-        return self._cell.labels
-
-    @property
-    def paths(self):
-        return self._cell.paths
-
-    @property
     def name(self):
         return self._cell.name
-
-    @paths.setter
-    def paths(self, value):
-        self._cell.paths = value
-
-    @labels.setter
-    def labels(self, value):
-        self._cell.labels = value
 
     @name.setter
     def name(self, value):
@@ -364,8 +350,6 @@ class Component(_GeometryHelper):
 
         layer = get_layer(layer)
 
-        gds_layer, gds_datatype = layer
-
         if type(text) is not str:
             text = text
         label = Label(
@@ -374,10 +358,10 @@ class Component(_GeometryHelper):
             anchor=anchor,
             magnification=magnification,
             rotation=rotation,
-            layer=gds_layer,
-            texttype=gds_datatype,
+            layer=layer,
+            parent=self,
         )
-        self.add(label)
+        self.labels.append(label)
         return label
 
     @property
@@ -1715,7 +1699,6 @@ def copy(D: Component) -> Component:
     """
     D_copy = Component()
     D_copy.info = D.info
-    D_copy._cell = D._cell.copy(name=D_copy.name)
 
     for ref in D.references:
         new_ref = ComponentReference(
@@ -1919,7 +1902,7 @@ if __name__ == "__main__":
     layer = (2, 0)
     width = 1
     c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
-    c2.show()
+    c2.show(show_ports=True)
 
     c << c2
     c.show()
