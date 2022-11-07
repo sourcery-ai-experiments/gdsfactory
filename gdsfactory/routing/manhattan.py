@@ -2,12 +2,13 @@ import uuid
 import warnings
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
-import gdstk
+import klayout.db as kdb
 import numpy as np
 from numpy import bool_, ndarray
 
 import gdsfactory as gf
 from gdsfactory.component import Component, ComponentReference
+from gdsfactory.component_layout import layout
 from gdsfactory.components.bend_euler import bend_euler
 from gdsfactory.components.straight import straight as straight_function
 from gdsfactory.components.taper import taper as taper_function
@@ -140,11 +141,11 @@ def gen_sref(
     else:
         port_position = structure.ports[port_name].center
 
-    ref = gf.ComponentReference(component=structure, origin=(0, 0))
+    ref = gf.ComponentReference(component=structure, parent=structure)
 
     if x_reflection:  # Vertical mirror: Reflection across x-axis
         y0 = port_position[1]
-        ref.reflect(p1=(0, y0), p2=(1, y0))
+        ref.mirror(p1=(0, y0), p2=(1, y0))
 
     ref.rotate(rotation_angle, center=port_position)
     ref.move(port_position, position)
@@ -548,6 +549,8 @@ def get_route_error(
         with_sbend: if True raises Error so we can use it in try, except
             if False raises Warning.
     """
+    from gdsfactory.pdk import get_layer
+
     layer_path = gf.get_layer(layer_path)
     layer_label = gf.get_layer(layer_label)
     layer_marker = gf.get_layer(layer_marker)
@@ -560,15 +563,20 @@ def get_route_error(
         warnings.warn(f"Route error for points {points}", RouteWarning)
 
     c = Component(f"route_{uuid.uuid4()}"[:16])
-    path = gdstk.FlexPath(
-        points,
-        width=width,
-        simple_path=True,
-        layer=layer_path[0],
-        datatype=layer_path[1],
+
+    layer = get_layer(layer_path)
+    dpoints = [kdb.DPoint(x, y) for x, y in points]
+    path = kdb.Path(
+        dpoints,
+        width,
     )
-    c.add(path)
-    ref = ComponentReference(c)
+    c.paths.append(path)
+    gds_layer, gds_datatype = layer
+    kl_layer_idx = layout.layer(gds_layer, gds_datatype)
+    c._cell.shapes(kl_layer_idx).insert(path)
+
+    ref = ComponentReference(c, parent=c)
+
     port1 = gf.Port(
         name="p1", center=points[0], width=width, layer=layer_path, orientation=0
     )
@@ -581,9 +589,7 @@ def get_route_error(
     )
     point_markers = [point_marker.ref(position=point) for point in points] + [ref]
     labels = [
-        gf.Label(
-            text=str(i), position=point, layer=layer_label[0], texttype=layer_label[1]
-        )
+        gf.Label(text=str(i), position=point, layer=layer_label, parent=c)
         for i, point in enumerate(points)
     ]
 
@@ -1088,4 +1094,4 @@ if __name__ == "__main__":
         bend=gf.components.wire_corner,
     )
     c.add(route.references)
-    c.show(show_ports=True)
+    c.show(show_ports=False)

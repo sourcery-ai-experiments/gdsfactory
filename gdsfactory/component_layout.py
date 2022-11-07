@@ -826,9 +826,9 @@ class Label(_GeometryHelper):
         self,
         text,
         position,
-        anchor,
         parent,
         layer,
+        anchor=None,
         magnification: float = 1,
         rotation: float = 0,
     ):

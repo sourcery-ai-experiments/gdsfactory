@@ -340,6 +340,7 @@ def add_pin_path(
     gds_layer, gds_datatype = layer
     kl_layer_idx = layout.layer(gds_layer, gds_datatype)
     component._cell.shapes(kl_layer_idx).insert(path)
+
     component.add_label(
         text=str(p.name), position=p.center, layer=layer_label, anchor="sw"
     )

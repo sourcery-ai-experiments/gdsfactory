@@ -1,12 +1,12 @@
 import typing
-from typing import List, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
 import klayout.db as kdb
 import numpy as np
 from numpy import cos, float64, int64, mod, ndarray, pi, sin
 
 from gdsfactory.component_layout import _GeometryHelper, _parse_coordinate
-from gdsfactory.port import Port
+from gdsfactory.port import Port, select_ports
 
 if typing.TYPE_CHECKING:
     from gdsfactory.component import Component
@@ -287,7 +287,7 @@ class ComponentReference(_GeometryHelper):
 
         return self
 
-    def reflect(self, p1=(0, 1), p2=(0, 0)):
+    def mirror(self, p1=(0, 1), p2=(0, 0)):
         theta = np.arctan2(p2[1] - p1[1], p2[0] - p1[0]) / np.pi * 180
         # Last transformation applied first
         klt = self._kl_transform(
@@ -440,6 +440,38 @@ class ComponentReference(_GeometryHelper):
                 )
             self._name = value
             self.owner._reference_names_used.add(value)
+
+    @property
+    def size_info(self) -> SizeInfo:
+        return SizeInfo(self.bbox)
+
+    def get_ports_list(self, **kwargs) -> List[Port]:
+        """Return a list of ports.
+
+        Keyword Args:
+            layer: port GDS layer.
+            prefix: port name prefix.
+            orientation: in degrees.
+            width: port width.
+            layers_excluded: List of layers to exclude.
+            port_type: optical, electrical, ...
+            clockwise: if True, sort ports clockwise, False: counter-clockwise.
+        """
+        return list(select_ports(self.ports, **kwargs).values())
+
+    def get_ports_dict(self, **kwargs) -> Dict[str, Port]:
+        """Return a dict of ports.
+
+        Keyword Args:
+            layer: port GDS layer.
+            prefix: port name prefix.
+            orientation: in degrees.
+            width: port width.
+            layers_excluded: List of layers to exclude.
+            port_type: optical, electrical, ...
+            clockwise: if True, sort ports clockwise, False: counter-clockwise.
+        """
+        return select_ports(self.ports, **kwargs)
 
 
 class CellArray(ComponentReference):
@@ -765,10 +797,6 @@ class CellArray(ComponentReference):
     # def metadata_child(self) -> Dict[str, Any]:
     #     return self.parent.metadata_child
 
-    # @property
-    # def size_info(self) -> SizeInfo:
-    #     return SizeInfo(self.bbox)
-
     # def pprint_ports(self) -> None:
     #     """Pretty print component ports."""
     #     ports_list = self.get_ports_list()
@@ -1046,34 +1074,6 @@ class CellArray(ComponentReference):
     #     )
 
     #     return self
-
-    # def get_ports_list(self, **kwargs) -> List[Port]:
-    #     """Return a list of ports.
-
-    #     Keyword Args:
-    #         layer: port GDS layer.
-    #         prefix: port name prefix.
-    #         orientation: in degrees.
-    #         width: port width.
-    #         layers_excluded: List of layers to exclude.
-    #         port_type: optical, electrical, ...
-    #         clockwise: if True, sort ports clockwise, False: counter-clockwise.
-    #     """
-    #     return list(select_ports(self.ports, **kwargs).values())
-
-    # def get_ports_dict(self, **kwargs) -> Dict[str, Port]:
-    #     """Return a dict of ports.
-
-    #     Keyword Args:
-    #         layer: port GDS layer.
-    #         prefix: port name prefix.
-    #         orientation: in degrees.
-    #         width: port width.
-    #         layers_excluded: List of layers to exclude.
-    #         port_type: optical, electrical, ...
-    #         clockwise: if True, sort ports clockwise, False: counter-clockwise.
-    #     """
-    #     return select_ports(self.ports, **kwargs)
 
     # @property
     # def ports_layer(self) -> Dict[str, str]:

@@ -621,7 +621,7 @@ class Component(_GeometryHelper):
                 This is the most common mirror.
             v_mirror: vertical mirror using x axis (1, y) (0, y).
         """
-        _ref = ComponentReference(self)
+        _ref = ComponentReference(self, parent=self)
 
         if port_id and port_id not in self.ports:
             raise ValueError(f"port {port_id} not in {self.ports.keys()}")
@@ -956,6 +956,7 @@ class Component(_GeometryHelper):
             columns=int(round(columns)),
             rows=int(round(rows)),
             spacing=spacing,
+            parent=self,
         )
         ref.name = None
         self._add(ref)
