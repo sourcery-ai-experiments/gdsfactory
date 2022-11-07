@@ -116,6 +116,8 @@ class ComponentReference(_GeometryHelper):
         rows: Number of rows in the array.
         spacing: Distances between adjacent columns and adjacent rows.
 
+    FIXME: fix magnification
+
     """
 
     def __init__(
@@ -125,6 +127,8 @@ class ComponentReference(_GeometryHelper):
         columns: int = 1,
         rows: int = 1,
         spacing: Coordinate = (100, 100),
+        magnification: float = 1,
+        rotation: float = 0,
     ) -> None:
         transformation = kdb.DCplxTrans(
             1,  # Magnification
@@ -150,9 +154,13 @@ class ComponentReference(_GeometryHelper):
         # since two ComponentReferences of the same parent Component can be
         # in different locations and thus do not represent the same port
         self._local_ports = {
-            name: port._copy(new_uid=True) for name, port in component.ports.items()
+            name: port._copy() for name, port in component.ports.items()
         }
         self._name = None
+        self.rows = rows
+        self.columns = columns
+        self.spacing = spacing
+        self.magnification = magnification
 
     @classmethod
     def __get_validators__(cls):
@@ -197,7 +205,9 @@ class ComponentReference(_GeometryHelper):
         self.kl_instance.transform(transformation)
 
     def get_polygons(self, by_spec=True, depth=None):
-        temp_device = Component("phidl_temp_cell")
+        from gdsfactory.component import Component
+
+        temp_device = Component()
         # self.temp_device = temp_device
         transformation = self.kl_instance.dcplx_trans
         temp_device._cell.insert(
@@ -228,8 +238,9 @@ class ComponentReference(_GeometryHelper):
         return self
 
     def move(self, origin=(0, 0), destination=None, axis=None):
-        """Moves elements of the Component from the origin point to the destination.  Both
-        origin and destination can be 1x2 array-like, Port, or a key
+        """Moves elements of the Component from the origin point to the destination.
+
+        Both origin and destination can be 1x2 array-like, Port, or a key
         corresponding to one of the Ports in this component"""
 
         # If only one set of coordinates is defined, make sure it's used to move things
@@ -238,22 +249,22 @@ class ComponentReference(_GeometryHelper):
             origin = [0, 0]
 
         if isinstance(origin, Port):
-            o = origin.midpoint
+            o = origin.center
         elif np.array(origin).size == 2:
             o = origin
         elif origin in self.ports:
-            o = self.ports[origin].midpoint
+            o = self.ports[origin].center
         else:
             raise ValueError(
                 "Component.move() ``origin`` not array-like, a port, or port name"
             )
 
         if isinstance(destination, Port):
-            d = destination.midpoint
+            d = destination.center
         elif np.array(destination).size == 2:
             d = destination
         elif destination in self.ports:
-            d = self.ports[destination].midpoint
+            d = self.ports[destination].center
         else:
             raise ValueError(
                 "Component.move() ``destination`` not array-like, a port, or port name"
@@ -272,7 +283,7 @@ class ComponentReference(_GeometryHelper):
         )
         self._apply_kl_transform(klt)
         for p in self.ports.values():
-            p.midpoint = np.array(p.midpoint) + np.array(d) - np.array(o)
+            p.center = np.array(p.center) + np.array(d) - np.array(o)
 
         return self
 
@@ -323,8 +334,8 @@ class ComponentReference(_GeometryHelper):
         of the ports dict which is correctly rotated and translated"""
         for name, port in self.parent.ports.items():
             port = self.parent.ports[name]
-            new_midpoint, new_orientation = self._transform_port(
-                port.midpoint,
+            new_center, new_orientation = self._transform_port(
+                port.center,
                 port.orientation,
                 self.origin,
                 self.rotation,
@@ -332,7 +343,7 @@ class ComponentReference(_GeometryHelper):
             )
             if name not in self._local_ports:
                 self._local_ports[name] = port._copy(new_uid=True)
-            self._local_ports[name].midpoint = new_midpoint
+            self._local_ports[name].center = new_center
             self._local_ports[name].orientation = mod(new_orientation, 360)
             self._local_ports[name].parent = self
         # Remove any ports that no longer exist in the reference's parent
@@ -402,7 +413,7 @@ class ComponentReference(_GeometryHelper):
                 % (port, tuple(self.ports.keys()))
             )
         self.rotate(
-            angle=180 + destination.orientation - p.orientation, center=p.midpoint
+            angle=180 + destination.orientation - p.orientation, center=p.center
         )
         self.move(origin=p, destination=destination)
         self.move(

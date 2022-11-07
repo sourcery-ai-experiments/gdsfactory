@@ -22,7 +22,9 @@ from gdsfactory.component_layout import (
     _align,
     _distribute,
     _GeometryHelper,
+    _get_kl_layer,
     _is_iterable,
+    _kl_polygon_to_array,
     _parse_layer,
     layout,
 )
@@ -194,25 +196,34 @@ class Component(_GeometryHelper):
                 polygon, or dictionary with with the list of polygons (if
                 `by_spec` is True).
 
-        Note:
-            Instances of `FlexPath` and `RobustPath` are also included in
-            the result by computing their polygonal boundary.
         """
-        if not by_spec:
-            return self._cell.get_polygons(depth=depth)
-        elif by_spec is True:
-            layers = self.get_layers()
-            return {
-                layer: self._cell.get_polygons(
-                    depth=depth, layer=layer[0], datatype=layer[1]
-                )
-                for layer in layers
-            }
-
+        layer_infos = layout.layer_infos()
+        if by_spec:
+            polygons = {}
         else:
-            return self._cell.get_polygons(
-                depth=depth, layer=by_spec[0], datatype=by_spec[1]
-            )
+            polygons = []
+        # Loop through each layer in the layout collecting polygons
+        for n, layer_idx in enumerate(layout.layer_indices()):
+            layer_polygons = []
+            all_polygons_iterator = self._cell.begin_shapes_rec(layer_idx)
+            if depth is not None:
+                all_polygons_iterator.max_depth = int(depth)
+            while not all_polygons_iterator.at_end():
+                kl_shape = all_polygons_iterator.shape()
+                if kl_shape.is_polygon():
+                    # Get the klayout polygon in micrometer units (DSimplePolygon)
+                    kl_polygon = kl_shape.dsimple_polygon
+                    # Apply any transformations if that shape was in a child cell
+                    kl_polygon = kl_polygon.transformed(all_polygons_iterator.dtrans())
+                    # Append the transformed polygons to the big list
+                    layer_polygons.append(_kl_polygon_to_array(kl_polygon))
+                all_polygons_iterator.next()
+            if not by_spec:
+                polygons += layer_polygons
+            elif by_spec and (len(layer_polygons) > 0):
+                layer = layer_infos[n]
+                polygons[(layer.layer, layer.datatype)] = layer_polygons
+        return polygons
 
     def get_dependencies(self, recursive: bool = False) -> List["Component"]:
         """Return a set of the cells included in this cell as references.
@@ -370,10 +381,9 @@ class Component(_GeometryHelper):
 
         it snaps to 3 decimals in um (0.001um = 1nm precision)
         """
-        bbox = self._cell.bounding_box()
-        if bbox is None:
-            bbox = ((0, 0), (0, 0))
-        return np.round(bbox, 3)
+        b = self._cell.dbbox()
+        bbox = np.array(((b.left, b.bottom), (b.right, b.top)))
+        return bbox
 
     @property
     def ports_layer(self) -> Dict[str, str]:
@@ -1570,13 +1580,12 @@ class Component(_GeometryHelper):
             raise ValueError(
                 "The reference you asked to absorb does not exist in this Component."
             )
-        ref_polygons = reference.get_polygons(by_spec=True)
-        for (layer, polys) in ref_polygons.items():
-            [self.add_polygon(points=p, layer=layer) for p in polys]
-
-        self.add(reference.parent.labels)
-        self.add(reference.parent.paths)
-        self.remove(reference)
+        temp__cell = layout.create_cell("temp_cell")
+        temp__cell.insert(reference.kl_instance)
+        temp__cell.flatten(True)
+        self._cell.copy_shapes(temp__cell)
+        self._cell.erase(reference.kl_instance)
+        temp__cell.delete()
         return self
 
     def remove(self, items):
@@ -1660,7 +1669,9 @@ class Component(_GeometryHelper):
         D_list = self.get_dependencies(recursive=True)
         return [D.info.copy() for D in D_list]
 
-    def remap_layers(self, layermap, include_labels: bool = True):
+    def remap_layers(
+        self, layermap, include_labels: bool = True, recursive: bool = True
+    ):
         """Moves all polygons in the Component from one layer to another according to the layermap argument.
 
         Args:
@@ -1669,25 +1680,25 @@ class Component(_GeometryHelper):
         """
         layermap = {_parse_layer(k): _parse_layer(v) for k, v in layermap.items()}
 
-        all_D = list(self.get_dependencies(True))
-        all_D.append(self)
-        for D in all_D:
-            for p in D.polygons:
-                for n, _layer in enumerate(p.layers):
-                    original_layer = (p.layers[n], p.datatypes[n])
-                    original_layer = _parse_layer(original_layer)
-                    if original_layer in layermap:
-                        new_layer = layermap[original_layer]
-                        p.layers[n] = new_layer[0]
-                        p.datatypes[n] = new_layer[1]
-            if include_labels:
-                for label in D.labels:
-                    original_layer = (label.layer, label.texttype)
-                    original_layer = _parse_layer(original_layer)
-                    if original_layer in layermap:
-                        new_layer = layermap[original_layer]
-                        label.layer = new_layer[0]
-                        label.texttype = new_layer[1]
+        layermap_kl_layer_idx = {}
+        # iterator_dict = _kl_shape_iterator(self._cell, shape_type = shape_type, depth = None)
+        for old_layer, new_layer in layermap.items():
+            old_layer = _parse_layer(old_layer)
+            new_layer = _parse_layer(new_layer)
+            old_idx, temp = _get_kl_layer(old_layer[0], old_layer[1])
+            new_idx, temp = _get_kl_layer(new_layer[0], new_layer[1])
+            layermap_kl_layer_idx[old_idx] = new_idx
+
+        # If recursive, compile a list of cells which are referenced by this one
+        if recursive:
+            _cells = [layout.cell(i) for i in self._cell.called_cells()] + [self._cell]
+        else:
+            _cells = [self._cell]
+
+        # For each cell, iterate through each layer and move the shapes to the new layer
+        for old_idx, new_idx in layermap_kl_layer_idx.items():
+            for _cell in _cells:
+                _cell.move(old_idx, new_idx)
         return self
 
 
@@ -1706,10 +1717,10 @@ def copy(D: Component) -> Component:
             columns=ref.columns,
             rows=ref.rows,
             spacing=ref.spacing,
-            origin=ref.origin,
             rotation=ref.rotation,
             magnification=ref.magnification,
-            x_reflection=ref.x_reflection,
+            # x_reflection=ref.x_reflection,
+            parent=D_copy,
         )
         # new_ref.name = ref.name if hasattr(ref, "name") else ref.parent.name
         new_ref.owner = D_copy
@@ -1717,8 +1728,8 @@ def copy(D: Component) -> Component:
 
     for port in D.ports.values():
         D_copy.add_port(port=port)
-    for poly in D.polygons:
-        D_copy.add_polygon(poly)
+    # for poly in D.polygons:
+    #     D_copy.add_polygon(poly.points)
     for path in D.paths:
         D_copy.add(path)
     for label in D.labels:
@@ -1899,19 +1910,23 @@ if __name__ == "__main__":
     layer = (1, 0)
     c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
 
-    layer = (2, 0)
-    width = 1
-    c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
-    c2.show(show_ports=True)
+    # layer = (2, 0)
+    # width = 1
+    # c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
+    # c2.show(show_ports=True)
 
     c << c2
     c.show()
+
+    print(c.get_layers())
+
     # length = 10
     # width = 0.5
     # layer = (1, 0)
     # c.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
 
-    # c = gf.components.mzi()
+    # import gdsfactory as gf
+    # c = gf.components.bend_euler()
     # c2 = c.mirror()
     # print(c2.info)
     # c = gf.c.mzi()

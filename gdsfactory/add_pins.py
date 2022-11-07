@@ -11,11 +11,12 @@ import json
 from functools import partial
 from typing import TYPE_CHECKING, Callable, List, Optional, Tuple, Union
 
-import gdstk
+import klayout.db as kdb
 import numpy as np
 from numpy import ndarray
 from omegaconf import OmegaConf
 
+from gdsfactory.component_layout import layout
 from gdsfactory.snap import snap_to_grid
 
 if TYPE_CHECKING:
@@ -330,15 +331,15 @@ def add_pin_path(
 
     points = [p0, p1]
     layer = get_layer(layer)
-    path = gdstk.FlexPath(
-        points=points,
-        width=p.width,
-        layer=layer[0],
-        datatype=layer[1],
-        simple_path=True,
+    points = [kdb.DPoint(x, y) for x, y in points]
+    path = kdb.Path(
+        points,
+        p.width,
     )
-    component.add(path)
-
+    component.paths.append(path)
+    gds_layer, gds_datatype = layer
+    kl_layer_idx = layout.layer(gds_layer, gds_datatype)
+    component._cell.shapes(kl_layer_idx).insert(path)
     component.add_label(
         text=str(p.name), position=p.center, layer=layer_label, anchor="sw"
     )
@@ -605,7 +606,7 @@ if __name__ == "__main__":
     # p2 = len(c2.get_polygons())
     # assert p2 == p1 + 2
     # c1 = gf.components.straight_heater_metal(length=2)
-    c = gf.components.ring_single()
     # cc.show(show_ports=False)
-    c.show(show_subports=True)
+    c = gf.components.bend_circular()
+    # c.show(show_subports=True)
     c.show(show_ports=True)

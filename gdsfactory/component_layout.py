@@ -14,6 +14,18 @@ def _rename_cell(_cell, name):
         _cell.name = name
 
 
+def _kl_polygon_to_array(kl_polygon):
+    return [(pt.x, pt.y) for pt in kl_polygon.each_point()]
+
+
+def _get_kl_layer(gds_layer, gds_datatype):
+    """Returns the layer index and KLayout Layer object for a given
+    gds layer and datatype, creating a new one if it doesn't exist"""
+    layer_idx = layout.layer(gds_layer, gds_datatype)
+    layer_infos = layout.layer_infos()
+    return layer_idx, layer_infos[layer_idx]
+
+
 def _parse_layer(layer):
     """Check if the variable layer is a Layer object, a 2-element list like \
     [0, 1] representing layer = 0 and datatype = 1, or just a layer number.
