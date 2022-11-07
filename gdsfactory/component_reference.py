@@ -116,8 +116,6 @@ class ComponentReference(_GeometryHelper):
         rows: Number of rows in the array.
         spacing: Distances between adjacent columns and adjacent rows.
 
-    FIXME: fix magnification
-
     """
 
     def __init__(
@@ -126,16 +124,18 @@ class ComponentReference(_GeometryHelper):
         parent,
         columns: int = 1,
         rows: int = 1,
+        origin: Coordinate = (0, 0),
         spacing: Coordinate = (100, 100),
         magnification: float = 1,
         rotation: float = 0,
+        x_reflection: bool = False,
     ) -> None:
         transformation = kdb.DCplxTrans(
-            1,  # Magnification
-            0,  # Rotation
-            False,  # X-axis mirroring
-            0,  # X-displacement
-            0,  # Y-displacement
+            magnification,  # Magnification
+            rotation,  # Rotation
+            x_reflection,  # X-axis mirroring
+            origin[0],  # X-displacement
+            origin[1],  # Y-displacement
         )
         a = kdb.DVector(float(spacing[0]), 0)
         b = kdb.DVector(0, float(spacing[1]))
@@ -150,6 +150,7 @@ class ComponentReference(_GeometryHelper):
         self._kl_instance = parent._cell.insert(kl_instance)
         self.parent = component
         self.owner = parent
+
         # The ports of a ComponentReference have their own unique id (uid),
         # since two ComponentReferences of the same parent Component can be
         # in different locations and thus do not represent the same port
@@ -182,12 +183,9 @@ class ComponentReference(_GeometryHelper):
     def kl_instance(self):
         if not self._kl_instance.is_valid():
             raise ReferenceError(
-                (
-                    'The ComponentReference in Component "%s" (referencing Component "%s")'
-                    + " is no longer valid, it has been removed or its owner cell has"
-                    + " been flattened."
-                )
-                % (self.parent, self.owner)
+                f"The ComponentReference in Component {self.parent!r} (referencing Component {self.owner!r})"
+                " is no longer valid, it has been removed or its owner cell has"
+                " been flattened."
             )
         return self._kl_instance
 

@@ -141,7 +141,7 @@ def gen_sref(
     else:
         port_position = structure.ports[port_name].center
 
-    ref = gf.ComponentReference(component=structure, parent=structure)
+    ref = structure.ref()
 
     if x_reflection:  # Vertical mirror: Reflection across x-axis
         y0 = port_position[1]
@@ -570,12 +570,12 @@ def get_route_error(
         dpoints,
         width,
     )
-    c.paths.append(path)
+    # c.paths.append(path)
     gds_layer, gds_datatype = layer
     kl_layer_idx = layout.layer(gds_layer, gds_datatype)
     c._cell.shapes(kl_layer_idx).insert(path)
 
-    ref = ComponentReference(c, parent=c)
+    ref = c.ref()
 
     port1 = gf.Port(
         name="p1", center=points[0], width=width, layer=layer_path, orientation=0

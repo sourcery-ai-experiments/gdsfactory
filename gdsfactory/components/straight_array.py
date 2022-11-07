@@ -19,7 +19,7 @@ def straight_array(
         n: number of straights.
         spacing: edge to edge straight spacing.
         straight: straight straight Component or library.
-        kwargs: straight settings.
+        kwargs: cross_section settings.
     """
     c = Component()
     wg = gf.get_component(straight, **kwargs)
@@ -36,4 +36,5 @@ def straight_array(
 if __name__ == "__main__":
     c = straight_array()
     # c.pprint_ports()
+    # c.show(show_ports=False)
     c.show(show_ports=True)

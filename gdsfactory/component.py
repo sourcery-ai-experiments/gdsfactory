@@ -1576,12 +1576,12 @@ class Component(_GeometryHelper):
             raise ValueError(
                 "The reference you asked to absorb does not exist in this Component."
             )
-        temp__cell = layout.create_cell("temp_cell")
-        temp__cell.insert(reference.kl_instance)
-        temp__cell.flatten(True)
-        self._cell.copy_shapes(temp__cell)
+        temp_cell = layout.create_cell("temp_cell")
+        temp_cell.insert(reference.kl_instance)
+        temp_cell.flatten(True)
+        self._cell.copy_shapes(temp_cell)
         self._cell.erase(reference.kl_instance)
-        temp__cell.delete()
+        temp_cell.delete()
         return self
 
     def remove(self, items):
@@ -1711,11 +1711,12 @@ def copy(D: Component) -> Component:
             spacing=ref.spacing,
             rotation=ref.rotation,
             magnification=ref.magnification,
-            # x_reflection=ref.x_reflection,
+            x_reflection=ref.x_reflection,
             parent=D_copy,
+            origin=ref.origin,
         )
         # new_ref.name = ref.name if hasattr(ref, "name") else ref.parent.name
-        new_ref.owner = D_copy
+        # new_ref.owner = D_copy
         D_copy.add(new_ref)
 
     for port in D.ports.values():
@@ -1907,11 +1908,12 @@ if __name__ == "__main__":
     c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
     c2.show(show_ports=True)
 
-    c << c2
+    ref = c << c2
+    ref.y = 10
     c.show()
 
-    c3 = c.remove_layers([(2, 0)])
-    c3.show()
+    # c3 = c.remove_layers([(2, 0)])
+    # c3.show()
     # print(c.get_layers())
 
     # length = 10
