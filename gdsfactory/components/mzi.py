@@ -206,6 +206,7 @@ if __name__ == "__main__":
     c1.write_gds("a.gds")
 
     c2 = gf.read.import_gds("a.gds")
+    c2 = c2.flatten()
 
     c3 = gf.grid([c2, c1])
     c3.show(show_ports=False)

@@ -161,9 +161,17 @@ if __name__ == "__main__":
     # c = mmi1x2_nc()
     # c.show(show_ports=True)
 
-    c = mzi_nc()
-    print(c.name)
-    c.show()
+    # c = mzi_nc()
+    # print(c.name)
+    # c.show()
+
+    c1 = mzi_nc()
+    c1.write_gds("a.gds")
+
+    c2 = gf.read.import_gds("a.gds")
+
+    c3 = gf.grid([c2, c1])
+    c3.show(show_ports=False)
 
     # mzi.show()
     # mzi_gc = gf.routing.add_fiber_single(

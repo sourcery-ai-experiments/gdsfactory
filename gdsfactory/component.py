@@ -11,6 +11,7 @@ from collections.abc import Iterable
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
+import klayout.db as kdb
 import numpy as np
 import yaml
 from omegaconf import DictConfig, OmegaConf
@@ -18,7 +19,6 @@ from typing_extensions import Literal
 
 from gdsfactory.component_layout import (
     Label,
-    Polygon,
     _align,
     _distribute,
     _GeometryHelper,
@@ -149,11 +149,14 @@ class Component(_GeometryHelper):
 
         self.ports = {}
         self.aliases = {}
-        self.polygons = []
 
         self._references = []
         self.paths = []
         self.labels = []
+
+    @property
+    def polygons(self):
+        return self.get_polygons(depth=0)
 
     @property
     def references(self):
@@ -180,7 +183,7 @@ class Component(_GeometryHelper):
     def name(self, value):
         self._cell.name = value
 
-    def get_polygons(self, by_spec: bool = False, depth=None):
+    def get_polygons(self, by_spec: bool = True, depth=None):
         """Return a list of polygons in this cell.
 
         Args:
@@ -295,7 +298,7 @@ class Component(_GeometryHelper):
             element: Object that will be accessible by alias name.
 
         """
-        if isinstance(element, (ComponentReference, Polygon)):
+        if isinstance(element, ComponentReference):
             self.named_references[key] = element
         else:
             raise ValueError(
@@ -853,10 +856,12 @@ class Component(_GeometryHelper):
 
         points = np.array(points, dtype=np.float64)
 
-        polygon = Polygon(
-            points=points, parent=self, gds_layer=gds_layer, gds_datatype=gds_datatype
-        )
-        self.polygons.append(polygon)
+        points = np.array(points, dtype=np.float64)
+        polygon = kdb.DSimplePolygon(
+            [kdb.DPoint(x, y) for x, y in points]
+        )  # x and y must be floats
+        self.kl_layer_idx = layout.layer(gds_layer, gds_datatype)
+        self.kl_shape = self._cell.shapes(self.kl_layer_idx).insert(polygon)
         return polygon
 
     def copy(self) -> "Component":
@@ -1025,9 +1030,11 @@ class Component(_GeometryHelper):
         """
         component_flat = Component()
 
-        poly_dict = self.get_polygons(by_spec=True)
-        for layer, polys in poly_dict.items():
-            component_flat.add_polygon(polys, layer=single_layer or layer)
+        # poly_dict = self.get_polygons(by_spec=True)
+        # for layer, polys in poly_dict.items():
+        #     component_flat.add_polygon(polys, layer=single_layer or layer)
+        component_flat._cell = self._cell.copy_instances(component_flat._cell)
+        component_flat._cell.flatten(True)
 
         component_flat.info = self.info.copy()
         return component_flat
@@ -1601,7 +1608,7 @@ class Component(_GeometryHelper):
                     ) from err
             else:
                 try:
-                    if isinstance(item, (Polygon, Label)):
+                    if isinstance(item, Label):
                         kl_shapes = (
                             item.kl_shape.shapes()
                         )  # Get the kdb.Shapes container, then
@@ -1725,8 +1732,8 @@ def copy(D: Component) -> Component:
 
     for port in D.ports.values():
         D_copy.add_port(port=port)
-    for poly in D.polygons:
-        D_copy.add_polygon(poly.points, poly.layer)
+    for layer, points in D.get_polygons().items():
+        D_copy.add_polygon(points=points, layer=layer)
     for path in D.paths:
         D_copy.add(path)
     for label in D.labels:
@@ -1901,10 +1908,10 @@ def test_bbox_component() -> None:
 if __name__ == "__main__":
     import gdsfactory as gf
 
-    c = gf.c.straight()
+    c = gf.c.mzi()
 
-    c2 = c.copy()
-    c.show()
+    c2 = c.flatten()
+    c2.show()
 
     # c.show(show_ports=False)
 

@@ -34,8 +34,6 @@ def _objects_to_kl_region(objects):
             kl_objects.append(o.kl_instance)
         elif isinstance(o, Component):
             kl_objects.append(o._cell)
-        elif isinstance(o, Polygon):
-            kl_objects.append(o.kl_shape.polygon)
         elif isinstance(o, (kdb.Shapes, kdb.Cell, kdb.Instance, kdb.Region)):
             kl_objects.append(o)
         else:
@@ -324,9 +322,7 @@ class Group(_GeometryHelper):
             [self.add(e) for e in element]
         elif element is None:
             return self
-        elif isinstance(
-            element, (Component, ComponentReference, Polygon, Label, Group)
-        ):
+        elif isinstance(element, (Component, ComponentReference, Label, Group)):
             self.elements.append(element)
         else:
             raise ValueError(
@@ -682,139 +678,6 @@ def _simplify(points, tolerance=0):
     result2 = _simplify(M[index:], tolerance)
 
     return np.vstack((result1[:-1], result2))
-
-
-class Polygon(_GeometryHelper):
-    def __init__(self, points, parent, gds_layer, gds_datatype):
-        # self._cell = parent._cell
-        points = np.array(points, dtype=np.float64)
-        polygon = kdb.DSimplePolygon(
-            [kdb.DPoint(x, y) for x, y in points]
-        )  # x and y must be floats
-        self.kl_layer_idx = layout.layer(gds_layer, gds_datatype)
-        self.kl_shape = parent._cell.shapes(self.kl_layer_idx).insert(polygon)
-        self.points = points
-        self.layer = (gds_layer, gds_datatype)
-
-    def __del__(self):
-        """We want to delete the Polygon (kdb.Shape) from the KLayout database
-        it's deleted/garbage collected from Python"""
-        if not self.kl_shape.destroyed():
-            self.kl_shape._destroy()
-
-    def _to_array(self):
-        [(pt.x, pt.y) for pt in self.kl_shape.each_point()]
-
-    def _kl_transform(self, magnification, rotation, x_reflection, dx, dy):
-        transformation = kdb.DCplxTrans(
-            float(magnification),  # Magnification
-            float(rotation),  # Rotation
-            x_reflection,  # X-axis mirroring
-            float(dx),  # X-displacement
-            float(dy),  # Y-displacement
-        )
-        return transformation
-
-    @property
-    def bbox(self):
-        b = self.kl_shape.dbbox()
-        bbox = np.array(((b.left, b.bottom), (b.right, b.top)))
-        return bbox
-
-    # @property
-    # def kl_shape(self):
-    #     # if self._kl_shape.is_valid == False:
-
-    #     bbox = np.array(((b.left, b.bottom),(b.right, b.top)))
-    #     return bbox
-
-    # # We cannot store kl_shape because the pointer may change over time
-    # # So instead we search for it each time we want the polygon
-    # @property
-    # def kl_shape2(self):
-    #     return self._cell.shapes(self.kl_layer).find(self.kl_shape)
-
-    def rotate(self, angle=45, center=(0, 0)):
-        klt = self._kl_transform(
-            magnification=1, rotation=angle, x_reflection=False, dx=0, dy=0
-        )
-        self.kl_shape.transform(klt)
-        return self
-
-    def move(self, origin=(0, 0), destination=None, axis=None):
-        """Moves elements of the Component from the origin point to the destination.  Both
-        origin and destination can be 1x2 array-like, Port, or a key
-        corresponding to one of the Ports in this Component"""
-
-        from gdsfactory.port import Port
-
-        # If only one set of coordinates is defined, make sure it's used to move things
-        if destination is None:
-            destination = origin
-            origin = [0, 0]
-
-        if isinstance(origin, Port):
-            o = origin.midpoint
-        elif np.array(origin).size == 2:
-            o = origin
-        elif origin in self.ports:
-            o = self.ports[origin].midpoint
-        else:
-            raise ValueError(
-                "[ComponentReference.move()] ``origin`` not array-like, a port, or port name"
-            )
-
-        if isinstance(destination, Port):
-            d = destination.midpoint
-        elif np.array(destination).size == 2:
-            d = destination
-        elif destination in self.ports:
-            d = self.ports[destination].midpoint
-        else:
-            raise ValueError(
-                "[ComponentReference.move()] ``destination`` not array-like, a port, or port name"
-            )
-
-        if axis == "x":
-            d = (d[0], o[1])
-        if axis == "y":
-            d = (o[0], d[1])
-
-        dx, dy = np.array(d) - o
-
-        klt = self._kl_transform(
-            magnification=1, rotation=0, x_reflection=False, dx=dx, dy=dy
-        )
-        self.kl_shape.transform(klt)
-
-        return self
-
-    def reflect(self, p1=(0, 1), p2=(0, 0)):
-        theta = np.arctan2(p2[1] - p1[1], p2[0] - p1[0]) / np.pi * 180
-        klt = self._kl_transform(
-            magnification=1, rotation=0, x_reflection=False, dx=p1[0], dy=p1[1]
-        )
-        klt *= self._kl_transform(
-            magnification=1, rotation=-theta, x_reflection=False, dx=0, dy=0
-        )
-        klt *= self._kl_transform(
-            magnification=1, rotation=0, x_reflection=True, dx=0, dy=0
-        )
-        klt *= self._kl_transform(
-            magnification=1, rotation=theta, x_reflection=False, dx=0, dy=0
-        )
-        klt *= self._kl_transform(
-            magnification=1, rotation=0, x_reflection=False, dx=-p1[0], dy=-p1[1]
-        )
-        # klt = klt1*klt2*klt3*klt4*klt5
-        # print(self.kl_shape)
-        # print('Failure')
-        # print(type(klt))
-        # print(type(self.kl_shape))
-        self.kl_shape.transform(klt)
-        # print('Failure2')
-
-        return self
 
 
 class Label(_GeometryHelper):

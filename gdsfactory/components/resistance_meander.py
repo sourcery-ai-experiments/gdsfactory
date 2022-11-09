@@ -5,7 +5,6 @@ import numpy as np
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
 from gdsfactory.components.rectangle import rectangle
-from gdsfactory.geometry.offset import offset
 from gdsfactory.types import LayerSpec
 
 
@@ -84,7 +83,7 @@ def resistance_meander(
     # Creating pads
     P = Component()
     pad1 = rectangle(size=(x, z), layer=pad_layer)
-    gnd1 = gnd2 = offset(pad1, distance=-5, layer=gnd_layer)
+    gnd1 = gnd2 = pad1
     pad1_ref = P.add_ref(pad1)
     pad1_ref.movex(-x - width)
     pad2_ref = P.add_ref(pad1)
