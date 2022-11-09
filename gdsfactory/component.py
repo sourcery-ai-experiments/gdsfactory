@@ -1581,7 +1581,7 @@ class Component(_GeometryHelper):
             )
 
         layer_to_polygons = reference.get_polygons(by_spec=True)
-        self._references.remove(reference)
+        self.remove(reference)
 
         for layer, polygons in layer_to_polygons.items():
             self.add_polygon(polygons, layer)

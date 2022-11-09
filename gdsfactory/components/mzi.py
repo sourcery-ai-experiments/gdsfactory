@@ -202,5 +202,10 @@ mzi_coupler = partial(
 
 
 if __name__ == "__main__":
-    c = gf.components.mzi2x2_2x2(straight_x_top="straight_heater_metal")
-    c.show(show_ports=False)
+    c1 = gf.components.mzi2x2_2x2(straight_x_top="straight_heater_metal")
+    c1.write_gds("a.gds")
+
+    c2 = gf.read.import_gds("a.gds")
+
+    c3 = gf.grid([c2, c1])
+    c3.show(show_ports=False)
