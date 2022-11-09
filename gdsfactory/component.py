@@ -196,7 +196,7 @@ class Component(_GeometryHelper):
                 name of this cell.
 
         Returns
-            out : list of array-like[N][2] or dictionary
+            out: list of array-like[N][2] or dictionary
                 List containing the coordinates of the vertices of each
                 polygon, or dictionary with with the list of polygons (if
                 `by_spec` is True).
@@ -207,6 +207,7 @@ class Component(_GeometryHelper):
             polygons = {}
         else:
             polygons = []
+
         # Loop through each layer in the layout collecting polygons
         for n, layer_idx in enumerate(layout.layer_indices()):
             layer_polygons = []
@@ -828,7 +829,7 @@ class Component(_GeometryHelper):
                 component.add_polygon(polys, layer=layer)
         return component
 
-    def add_polygon(self, points, layer=np.nan):
+    def add_polygon(self, points, layer):
         """Adds a Polygon to the Component.
 
         Args:
@@ -837,7 +838,7 @@ class Component(_GeometryHelper):
         """
         from gdsfactory.pdk import get_layer
 
-        layer = get_layer(layer)
+        gds_layer, gds_datatype = get_layer(layer)
 
         try:
             points[0][0][0]  # Try to access first x point
@@ -849,7 +850,7 @@ class Component(_GeometryHelper):
         if len(points[0]) > 2:
             # Convert to form [[1,2],[3,4],[5,6]]
             points = np.column_stack(points)
-        gds_layer, gds_datatype = _parse_layer(layer)
+
         points = np.array(points, dtype=np.float64)
 
         polygon = Polygon(
@@ -1576,12 +1577,13 @@ class Component(_GeometryHelper):
             raise ValueError(
                 "The reference you asked to absorb does not exist in this Component."
             )
-        temp_cell = layout.create_cell("temp_cell")
-        temp_cell.insert(reference.kl_instance)
-        temp_cell.flatten(True)
-        self._cell.copy_shapes(temp_cell)
-        self._cell.erase(reference.kl_instance)
-        temp_cell.delete()
+
+        layer_to_polygons = reference.get_polygons(by_spec=True)
+        self._references.remove(reference)
+
+        for layer, polygons in layer_to_polygons.items():
+            self.add_polygon(polygons, layer)
+
         return self
 
     def remove(self, items):
@@ -1722,7 +1724,7 @@ def copy(D: Component) -> Component:
     for port in D.ports.values():
         D_copy.add_port(port=port)
     for poly in D.polygons:
-        D_copy.add_polygon(poly.points)
+        D_copy.add_polygon(poly.points, poly.layer)
     for path in D.paths:
         D_copy.add(path)
     for label in D.labels:
@@ -1895,22 +1897,30 @@ def test_bbox_component() -> None:
 
 
 if __name__ == "__main__":
+    import gdsfactory as gf
 
-    c = Component("parent")
-    c2 = Component("child")
-    length = 10
-    width = 0.5
-    layer = (1, 0)
-    c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
+    c = gf.c.straight()
 
-    layer = (2, 0)
-    width = 1
-    c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
-    c2.show(show_ports=True)
-
-    ref = c << c2
-    ref.y = 10
+    c2 = c.copy()
     c.show()
+
+    # c.show(show_ports=False)
+
+    # c = Component("parent")
+    # c2 = Component("child")
+    # length = 10
+    # width = 0.5
+    # layer = (1, 0)
+    # c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
+
+    # layer = (2, 0)
+    # width = 1
+    # c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
+    # c2.show(show_ports=True)
+
+    # ref = c << c2
+    # ref.y = 10
+    # c.show()
 
     # c3 = c.remove_layers([(2, 0)])
     # c3.show()

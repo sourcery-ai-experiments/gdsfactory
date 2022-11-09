@@ -694,6 +694,7 @@ class Polygon(_GeometryHelper):
         self.kl_layer_idx = layout.layer(gds_layer, gds_datatype)
         self.kl_shape = parent._cell.shapes(self.kl_layer_idx).insert(polygon)
         self.points = points
+        self.layer = (gds_layer, gds_datatype)
 
     def __del__(self):
         """We want to delete the Polygon (kdb.Shape) from the KLayout database

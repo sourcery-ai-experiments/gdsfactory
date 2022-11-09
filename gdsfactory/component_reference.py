@@ -183,7 +183,7 @@ class ComponentReference(_GeometryHelper):
     def kl_instance(self):
         if not self._kl_instance.is_valid():
             raise ReferenceError(
-                f"The ComponentReference in Component {self.parent!r} (referencing Component {self.owner!r})"
+                f"The ComponentReference in Component {self.parent.name!r} (referencing Component {self.owner.name!r})"
                 " is no longer valid, it has been removed or its owner cell has"
                 " been flattened."
             )

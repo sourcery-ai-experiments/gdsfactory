@@ -55,7 +55,7 @@ def straight(
 
         for layer, points in zip(x.bbox_layers, padding):
             c.add_polygon(points, layer=layer)
-    # c.absorb(ref)
+    c.absorb(ref)
     return c
 
 
