@@ -92,7 +92,7 @@ def bend_euler(
     if direction == "cw":
         ref.mirror(p1=[0, 0], p2=[1, 0])
 
-    c.absorb(ref)
+    # c.absorb(ref)
     return c
 
 

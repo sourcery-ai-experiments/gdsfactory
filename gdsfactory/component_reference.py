@@ -5,7 +5,7 @@ import klayout.db as kdb
 import numpy as np
 from numpy import cos, float64, int64, mod, ndarray, pi, sin
 
-from gdsfactory.component_layout import _GeometryHelper, _parse_coordinate
+from gdsfactory.component_layout import _GeometryHelper, _parse_coordinate, layout
 from gdsfactory.port import Port, select_ports
 
 if typing.TYPE_CHECKING:
@@ -107,6 +107,9 @@ def _rotate_points(
     return displacement * ca + perpendicular * sa + c0
 
 
+reference_orphanage = layout.create_cell("reference_orphanage")
+
+
 class ComponentReference(_GeometryHelper):
     """Pointer to a Component with x, y, rotation, mirror.
 
@@ -121,7 +124,6 @@ class ComponentReference(_GeometryHelper):
     def __init__(
         self,
         component: "Component",
-        parent,
         columns: int = 1,
         rows: int = 1,
         origin: Coordinate = (0, 0),
@@ -129,6 +131,7 @@ class ComponentReference(_GeometryHelper):
         magnification: float = 1,
         rotation: float = 0,
         x_reflection: bool = False,
+        parent=None,
     ) -> None:
         transformation = kdb.DCplxTrans(
             magnification,  # Magnification
@@ -147,9 +150,18 @@ class ComponentReference(_GeometryHelper):
             round(columns),
             round(rows),
         )
-        self._kl_instance = parent._cell.insert(kl_instance)
         self.parent = component
-        self.owner = parent
+        self.owner = None
+
+        # self._kl_instance = kdb.Instance(layout=layout)
+        # self._kl_instance.layout = layout
+        # self._kl_instance.cell_inst = kl_instance
+        # self._kl_instance = None
+
+        if parent:
+            self._kl_instance = parent._cell.insert(kl_instance)
+        else:
+            self._kl_instance = reference_orphanage.insert(kl_instance)
 
         # The ports of a ComponentReference have their own unique id (uid),
         # since two ComponentReferences of the same parent Component can be
