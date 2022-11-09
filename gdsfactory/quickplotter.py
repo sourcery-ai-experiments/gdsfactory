@@ -9,7 +9,7 @@ from typing import Optional
 import numpy as np
 
 from gdsfactory.component import Component
-from gdsfactory.component_layout import Polygon, _rotate_points
+from gdsfactory.component_layout import _rotate_points
 from gdsfactory.component_reference import ComponentReference
 
 _SUBPORT_RGB = (0, 120, 120)
@@ -282,17 +282,6 @@ def quickplot(items, **kwargs):  # noqa: C901
                         ha="center",
                         fontsize=quickplot_options["fontsize"],
                     )
-        elif isinstance(item, Polygon):
-            polygons = item.polygons
-            layerprop = _get_layerprop(item.layers[0], item.datatypes[0])
-            new_bbox = _draw_polygons(
-                polygons,
-                ax,
-                facecolor=layerprop["color"],
-                edgecolor="k",
-                alpha=layerprop["alpha"],
-            )
-            bbox = _update_bbox(bbox, new_bbox)
         elif isinstance(item, Path):
             points = item.points
             new_bbox = _draw_line(
@@ -994,13 +983,6 @@ def quickplot2(item_list, *args, **kwargs):
             if isinstance(element, ComponentReference):
                 for port in element.ports.values():
                     viewer.add_port(port, is_subport=True)
-        elif isinstance(element, (Polygon)):
-            layerprop = _get_layerprop(
-                layer=element.layers[0], datatype=element.datatypes[0]
-            )
-            viewer.add_polygons(
-                element.polygons, color=layerprop["color"], alpha=layerprop["alpha"]
-            )
     viewer.finalize()
     viewer.reset_view()
     viewer_window.setVisible(True)
