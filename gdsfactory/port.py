@@ -70,9 +70,9 @@ class Port:
 
     Args:
         name: we name ports clock-wise starting from bottom left.
+        orientation: in degrees (0: east, 90: north, 180: west, 270: south).
         center: (x, y) port center coordinate.
         width: of the port in um.
-        orientation: in degrees (0: east, 90: north, 180: west, 270: south).
         parent: parent component (component to which this port belong to).
         layer: layer tuple.
         port_type: str (optical, electrical, vertical_te, vertical_tm).

@@ -354,7 +354,8 @@ class ComponentReference(_GeometryHelper):
             if name not in self._local_ports:
                 self._local_ports[name] = port._copy(new_uid=True)
             self._local_ports[name].center = new_center
-            self._local_ports[name].orientation = mod(new_orientation, 360)
+            if new_orientation is not None:
+                self._local_ports[name].orientation = mod(new_orientation, 360)
             self._local_ports[name].parent = self
         # Remove any ports that no longer exist in the reference's parent
         parent_names = self.parent.ports.keys()
@@ -377,12 +378,12 @@ class ComponentReference(_GeometryHelper):
     @property
     def origin(self):
         kl_transform = self.kl_instance.dcplx_trans
-        return (kl_transform.disp.x, kl_transform.disp.y)
+        return (kl_transform.disp.x, kl_transform.disp.y) or (0, 0)
 
     @property
     def rotation(self):
         kl_transform = self.kl_instance.dcplx_trans
-        return kl_transform.angle
+        return kl_transform.angle or 0
 
     @property
     def x_reflection(self):
@@ -401,12 +402,14 @@ class ComponentReference(_GeometryHelper):
         if x_reflection:
             new_point[1] = -new_point[1]
             new_orientation = -orientation
-        if rotation is not None:
+        if rotation is not None and orientation is not None:
             new_point = _rotate_points(new_point, angle=rotation, center=[0, 0])
             new_orientation += rotation
         if origin is not None:
             new_point = new_point + np.array(origin)
-        new_orientation = mod(new_orientation, 360)
+
+        if new_orientation is not None:
+            new_orientation = mod(new_orientation, 360)
 
         return new_point, new_orientation
 

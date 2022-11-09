@@ -576,7 +576,6 @@ def get_route_error(
     c._cell.shapes(kl_layer_idx).insert(path)
 
     ref = c.ref()
-
     port1 = gf.Port(
         name="p1", center=points[0], width=width, layer=layer_path, orientation=0
     )
