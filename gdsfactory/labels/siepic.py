@@ -8,11 +8,11 @@ import gdsfactory as gf
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
 from gdsfactory.component_layout import Label
-from gdsfactory.components import grating_coupler_te
-from gdsfactory.components.straight import straight
-from gdsfactory.port import Port
+from gdsfactory.pcells import grating_coupler_te
+from gdsfactory.pcells.straight import straight
+from gdsfactory.component import Port
 from gdsfactory.typings import (
-    ComponentReference,
+    Instance,
     ComponentSpec,
     CrossSectionSpec,
     LayerSpec,
@@ -21,7 +21,7 @@ from gdsfactory.typings import (
 
 def get_input_label_text(
     port: Port,
-    gc: ComponentReference,
+    gc: Instance,
     gc_index: Optional[int] = None,
     component_name: Optional[str] = None,
     username: str = "YourUserName",
@@ -51,7 +51,7 @@ def get_input_label_text(
 
 
 def get_input_labels(
-    io_gratings: List[ComponentReference],
+    io_gratings: List[Instance],
     ordered_ports: List[Port],
     component_name: str,
     layer_label: Tuple[int, int] = (10, 0),

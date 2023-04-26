@@ -9,12 +9,12 @@ from gdsfactory.difftest import difftest
 @gf.cell
 def straight_with_loopback():
     c = gf.Component()
-    wg = c << gf.components.straight()
+    wg = c << gf.pcells.straight()
     c.add(
         add_loopback(
             wg.ports["o1"],
             wg.ports["o2"],
-            grating=gf.components.grating_coupler_te,
+            grating=gf.pcells.grating_coupler_te,
             inside=False,
         )
     )

@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 from pytest_regressions.data_regression import DataRegressionFixture
 
-from gdsfactory.components import cells
+from gdsfactory.pcells import cells
 from gdsfactory.config import PATH
 from gdsfactory.difftest import difftest
 

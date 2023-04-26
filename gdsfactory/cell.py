@@ -269,8 +269,8 @@ def cell(func: _F) -> _F:
         @gf.cell
         def mzi_with_bend():
             c = gf.Component()
-            mzi = c << gf.components.mzi()
-            bend = c << gf.components.bend_euler()
+            mzi = c << gf.pcells.mzi()
+            bend = c << gf.pcells.bend_euler()
             return c
 
     it’s equivalent to
@@ -279,8 +279,8 @@ def cell(func: _F) -> _F:
 
         def mzi_with_bend():
             c = gf.Component()
-            mzi = c << gf.components.mzi()
-            bend = c << gf.components.bend_euler(radius=radius)
+            mzi = c << gf.pcells.mzi()
+            bend = c << gf.pcells.bend_euler(radius=radius)
             return c
 
         mzi_with_bend_decorated = gf.cell(mzi_with_bend)
@@ -363,7 +363,7 @@ def straight_with_pins(**kwargs) -> Component:
     import gdsfactory as gf
 
     c = gf.Component()
-    ref = c << gf.components.straight()
+    ref = c << gf.pcells.straight()
     c.add_ports(ref.ports)
     gf.add_pins.add_pins(c)
     return c
@@ -376,8 +376,8 @@ if __name__ == "__main__":
 
     # import gdsfactory as gf
 
-    # c = gf.components.straight()
-    # c = gf.components.straight()
+    # c = gf.pcells.straight()
+    # c = gf.pcells.straight()
     # print(c.name)
 
     # c = wg3()

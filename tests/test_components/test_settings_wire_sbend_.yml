@@ -36,5 +36,5 @@ settings:
   function_name: wire_sbend
   info: {}
   info_version: 2
-  module: gdsfactory.components.wire_sbend
+  module: gdsfactory.pcells.wire_sbend
   name: wire_sbend

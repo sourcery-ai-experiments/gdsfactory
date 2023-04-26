@@ -134,7 +134,7 @@ if __name__ == "__main__":
     from gdsfactory.simulation.sax.parameter import LayerStackThickness, NamedParameter
     from gdsfactory.technology import LayerStack
 
-    c = gf.components.straight(
+    c = gf.pcells.straight(
         cross_section=rib(width=2),
         length=10,
     )
@@ -155,7 +155,7 @@ if __name__ == "__main__":
     )
 
     def trainable_straight_rib(parameters):
-        return gf.components.straight(cross_section=rib(width=parameters["width"]))
+        return gf.pcells.straight(cross_section=rib(width=parameters["width"]))
 
     rib_waveguide_model = FemwellWaveguideModel(
         trainable_component=trainable_straight_rib,

@@ -28,10 +28,10 @@ parts:
         - file: notebooks/02_movement
         - file: notebooks/03_cells_autoname_and_cache
         - file: notebooks/03_waveguides_paths_crossections
-        - file: notebooks/04_components_shapes
-        - file: notebooks/04_components_geometry
-        - file: notebooks/04_components_pack
-        - file: notebooks/04_components_hierarchy
+        - file: notebooks/04_pcells_shapes
+        - file: notebooks/04_pcells_geometry
+        - file: notebooks/04_pcells_pack
+        - file: notebooks/04_pcells_hierarchy
         - file: notebooks/07_mask
         - file: notebooks/04_routing
         - file: notebooks/041_routing_electrical
@@ -86,6 +86,6 @@ parts:
   chapters:
     - file: api
     - file: routing
-    - file: components
+    - file: pcells
     - file: contribution
     - file: CHANGELOG

@@ -46,13 +46,13 @@ def coupler(
 
         import gdsfactory as gf
 
-        c = gf.components.coupler(gap=0.2, length=10)
+        c = gf.pcells.coupler(gap=0.2, length=10)
         c.plot()
 
     .. plot::
         :include-source:
 
-        import gdsfactory.simulation.simphony.components as gc
+        import gdsfactory.simulation.simphony.pcells as gc
         import gdsfactory.simulation.simphony as gs
 
         c = gc.coupler()

@@ -12,7 +12,7 @@ CUSTOM_LABEL = "straight_cband"
 
 
 def test_label_fiber_array_custom(length=LENGTH, cell_name=CELL_NAME) -> Component:
-    c = gf.components.straight(length=LENGTH, cross_section=cross_section)
+    c = gf.pcells.straight(length=LENGTH, cross_section=cross_section)
 
     assert len(c.labels) == 0, len(c.labels)
 
@@ -35,7 +35,7 @@ def test_label_fiber_array_custom(length=LENGTH, cell_name=CELL_NAME) -> Compone
 
 
 def test_label_fiber_single_custom(num_regression, check=True):
-    c = gf.components.straight(length=3, cross_section=cross_section)
+    c = gf.pcells.straight(length=3, cross_section=cross_section)
     assert len(c.labels) == 0, len(c.labels)
 
     cte = gf.routing.add_fiber_single(
@@ -66,7 +66,7 @@ def test_label_fiber_single_custom(num_regression, check=True):
 
 
 if __name__ == "__main__":
-    c = gf.components.straight(length=LENGTH, cross_section=cross_section)
+    c = gf.pcells.straight(length=LENGTH, cross_section=cross_section)
     # c = gf.routing.add_fiber_array(
     #     component=c,
     #     with_loopback=False,
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     c = test_label_fiber_single_custom(None, check=False)
     c.show(show_ports=False)
 
-    # c = gf.components.straight()
+    # c = gf.pcells.straight()
     # assert len(c.labels) == 0
 
     # c = gf.routing.add_fiber_array(component=c, with_loopback=True)

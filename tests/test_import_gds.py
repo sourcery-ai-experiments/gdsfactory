@@ -15,7 +15,7 @@ from gdsfactory.read.import_gds import import_gds
 
 
 def test_import_gds_hierarchy() -> gf.Component:
-    c0 = gf.components.mzi_arms(delta_length=11)
+    c0 = gf.pcells.mzi_arms(delta_length=11)
     gdspath = c0.write_gds()
 
     c = import_gds(gdspath)
@@ -26,7 +26,7 @@ def test_import_gds_hierarchy() -> gf.Component:
 
 # def test_import_gds_add_padding() -> gf.Component:
 #     """Make sure you can import the ports"""
-#     c0 = gf.components.mzi_arms(decorator=gf.add_pins)
+#     c0 = gf.pcells.mzi_arms(decorator=gf.add_pins)
 #     gdspath = c0.write_gds()
 #     gf.clear_cache()
 
@@ -37,9 +37,7 @@ def test_import_gds_hierarchy() -> gf.Component:
 
 def test_import_gds_array() -> gf.Component:
     """Make sure you can import a GDS with arrays."""
-    c0 = gf.components.array(
-        gf.components.rectangle, rows=2, columns=2, spacing=(10, 10)
-    )
+    c0 = gf.pcells.array(gf.pcells.rectangle, rows=2, columns=2, spacing=(10, 10))
     gdspath = c0.write_gds()
 
     gf.clear_cache()
@@ -50,9 +48,7 @@ def test_import_gds_array() -> gf.Component:
 
 def test_import_gds_raw() -> gf.Component:
     """Make sure you can import a GDS with arrays."""
-    c0 = gf.components.array(
-        gf.components.rectangle, rows=2, columns=2, spacing=(10, 10)
-    )
+    c0 = gf.pcells.array(gf.pcells.rectangle, rows=2, columns=2, spacing=(10, 10))
     gdspath = c0.write_gds()
 
     gf.clear_cache()
@@ -71,8 +67,8 @@ if __name__ == "__main__":
     # test_import_gds_snap_to_grid()
 
     # cross_section = gf.cross_section.cross_section
-    # splitter = gf.components.mmi1x2(cross_section=cross_section)
-    # c0 = gf.components.mzi_arms(splitter=splitter, cross_section=cross_section)
+    # splitter = gf.pcells.mmi1x2(cross_section=cross_section)
+    # c0 = gf.pcells.mzi_arms(splitter=splitter, cross_section=cross_section)
     # c0.unlock()
     # c0 = add_pins(c0)
     # c0.lock()

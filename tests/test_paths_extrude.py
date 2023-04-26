@@ -58,7 +58,7 @@ def test_transition_cross_section() -> gf.Component:
     cs2 = gf.get_cross_section("strip", width=w2)
     transition = gf.path.transition(cs1, cs2, port_names=(None, None))
 
-    c = gf.components.straight(length=length, cross_section=transition)
+    c = gf.pcells.straight(length=length, cross_section=transition)
     assert c.ports["o1"].width == w1
     assert c.ports["o2"].width == w2
     return c

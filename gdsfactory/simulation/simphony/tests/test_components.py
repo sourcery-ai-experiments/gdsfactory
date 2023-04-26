@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from gdsfactory.simulation.simphony.components import (
+from gdsfactory.simulation.simphony.pcells import (
     circuit_factory,
     circuit_names,
     component_names,

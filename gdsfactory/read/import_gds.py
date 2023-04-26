@@ -8,7 +8,7 @@ from omegaconf import OmegaConf
 
 from gdsfactory.cell import Settings, cell
 from gdsfactory.component import Component
-from gdsfactory.component import ComponentReference
+from gdsfactory.component import Instance
 from gdsfactory.config import logger
 from gdsfactory.name import get_name_short
 
@@ -84,11 +84,11 @@ def import_gds(
             f"you must specify `cellname` to select of one of them among {cellnames}"
         )
 
-    # create a new ComponentReference for each gdstk CellReference
+    # create a new Instance for each gdstk CellReference
     for c, D in cell_to_component.items():
         for e in c.references:
             ref_device = cell_to_component[e.cell]
-            ref = ComponentReference(
+            ref = Instance(
                 component=ref_device,
                 origin=e.origin,
                 rotation=e.rotation,
@@ -151,7 +151,7 @@ def import_gds_raw(gdspath, top_cellname: Optional[str] = None):
 if __name__ == "__main__":
     import gdsfactory as gf
 
-    c = gf.components.array()
+    c = gf.pcells.array()
     gdspath = c.write_gds()
     # c.show(show_ports=True)
 

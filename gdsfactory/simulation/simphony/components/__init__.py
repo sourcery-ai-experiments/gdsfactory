@@ -1,4 +1,4 @@
-"""components for gdsfactory simphony circuit simulation plugin."""
+"""pcells for gdsfactory simphony circuit simulation plugin."""
 from __future__ import annotations
 
 from .bend_circular import bend_circular

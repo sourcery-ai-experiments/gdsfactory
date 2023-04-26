@@ -137,7 +137,7 @@ repos:
   # - id: nbqa-flake8
   # - id: nbqa-isort
   #   args: ["--float-to-top"]
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.0.242"
-    hooks:
-      - id: ruff
+  # - repo: https://github.com/charliermarsh/ruff-pre-commit
+  #   rev: "v0.0.242"
+  #   hooks:
+  #     - id: ruff

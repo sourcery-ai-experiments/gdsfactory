@@ -30,7 +30,7 @@
 #
 # Gdsfactory has already some pre-defined classes for you.
 #
-# All the other classes (Component, ComponentReference, Port ...) are already available in `gf.typings`
+# All the other classes (Component, Instance, Port ...) are already available in `gf.typings`
 #
 # Classes are good for keeping state, which means that they store some information inside them (polygons, ports, references ...).
 #
@@ -81,7 +81,7 @@ def double(x: float) -> float:
 
 # %% tags=[]
 def bend(radius: float = 5) -> gf.typings.Component:
-    return gf.components.bend_euler(radius=radius)
+    return gf.pcells.bend_euler(radius=radius)
 
 
 component = bend(radius=10)
@@ -199,10 +199,10 @@ print(y)
 
 # %%
 def ring_sc(gap=0.3, **kwargs):
-    return gf.components.ring_single(gap=gap, **kwargs)
+    return gf.pcells.ring_single(gap=gap, **kwargs)
 
 
-ring_sc = gf.partial(gf.components.ring_single, gap=0.3)
+ring_sc = gf.partial(gf.pcells.ring_single, gap=0.3)
 
 # %% [markdown]
 # As you customize more parameters, it's more obvious that the second one is easier to maintain
@@ -210,10 +210,10 @@ ring_sc = gf.partial(gf.components.ring_single, gap=0.3)
 
 # %%
 def ring_sc(gap=0.3, radius=10, **kwargs):
-    return gf.components.ring_single(gap=gap, radius=radius, **kwargs)
+    return gf.pcells.ring_single(gap=gap, radius=radius, **kwargs)
 
 
-ring_sc = gf.partial(gf.components.ring_single, gap=0.3, radius=10)
+ring_sc = gf.partial(gf.pcells.ring_single, gap=0.3, radius=10)
 
 # %% [markdown]
 # ### compose
@@ -221,7 +221,7 @@ ring_sc = gf.partial(gf.components.ring_single, gap=0.3, radius=10)
 # `gf.compose` combines two functions into one.
 
 # %%
-ring_sc = gf.partial(gf.components.ring_single, radius=10)
+ring_sc = gf.partial(gf.pcells.ring_single, radius=10)
 add_gratings = gf.routing.add_fiber_array
 
 ring_sc_gc = gf.compose(add_gratings, ring_sc)
@@ -256,16 +256,16 @@ print(ring_sc_gc5)
 # The most common trick that you will see is that we use `?` to see the documentation of a function or `help(function)`
 
 # %%
-# gf.components.coupler?
+# gf.pcells.coupler?
 
 # %%
-help(gf.components.coupler)
+help(gf.pcells.coupler)
 
 # %% [markdown]
 # To see the source code of a function you can use `??`
 
 # %%
-# gf.components.coupler??
+# gf.pcells.coupler??
 
 # %% [markdown]
 # To see which variables you have defined in the workspace you can type `whos`

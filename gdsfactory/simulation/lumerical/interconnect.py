@@ -108,14 +108,14 @@ def send_to_interconnect(
     exclude_electrical: bool = True,
     **settings,
 ) -> object:
-    """Send netlist components to Interconnect and connect them according to netlist.
+    """Send netlist pcells to Interconnect and connect them according to netlist.
 
     Args:
         component: component from which to extract netlist.
         session: Interconnect session.
-        placements: x,y pairs for where to place the components in the Interconnect GUI.
+        placements: x,y pairs for where to place the pcells in the Interconnect GUI.
         simulation_settings: global settings for Interconnect simulation.
-        drop_port_prefix: if components are written with some prefix, drop up to and including
+        drop_port_prefix: if pcells are written with some prefix, drop up to and including
             the prefix character.  (i.e. "c1_input" -> "input").
         component_distance_scaling: scaling factor for component distances when
             laying out Interconnect schematic.
@@ -442,7 +442,7 @@ def plot_wavelength_sweep(
 
 
 if __name__ == "__main__":
-    import ubcpdk.components as pdk
+    import ubcpdk.pcells as pdk
 
     mzi = pdk.mzi()
 

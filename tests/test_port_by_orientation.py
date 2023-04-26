@@ -4,7 +4,7 @@ import gdsfactory as gf
 
 
 def test_port_by_angle() -> gf.Component:
-    c = gf.components.nxn(west=1, north=2, east=3, south=4)
+    c = gf.pcells.nxn(west=1, north=2, east=3, south=4)
     p = c.port_by_angle_cw(key="W0")
     assert p.name == "o1"
     return c
@@ -12,7 +12,7 @@ def test_port_by_angle() -> gf.Component:
 
 def test_port_by_angle_ref() -> gf.Component:
     c = gf.Component()
-    nxn = gf.components.nxn(west=1, north=2, east=3, south=4)
+    nxn = gf.pcells.nxn(west=1, north=2, east=3, south=4)
     ref = c << nxn
     ref.rotate(+90)
     c.add_ports(ref.ports)
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     # p = ref.port_by_angle_cw(key="W0")
     # c.show(show_ports=True)
 
-    c = gf.components.nxn(west=1, north=2, east=3, south=4)
+    c = gf.pcells.nxn(west=1, north=2, east=3, south=4)
     p = c.port_by_angle_cw(key="W0")
     c.pprint_ports()
     c.show(show_ports=True)

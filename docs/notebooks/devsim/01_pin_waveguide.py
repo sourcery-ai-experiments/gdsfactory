@@ -32,7 +32,7 @@
 #
 # DEVSIM solves equations on unstructured meshes.
 # It has a built-in 1D and 2D meshing interface, you can solve carrier distributions in waveguide cross-sections.
-# It also interfaces with GMSH for arbitrary 2D and 3D meshes, which you can use for running semiconductor simulations with gdsfactory components.
+# It also interfaces with GMSH for arbitrary 2D and 3D meshes, which you can use for running semiconductor simulations with gdsfactory pcells.
 #
 # ![](https://i.imgur.com/hsuzB5K.png)
 #

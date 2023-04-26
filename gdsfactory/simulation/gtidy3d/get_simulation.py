@@ -13,7 +13,7 @@ from tidy3d.plugins.mode import ModeSolver
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.components.extension import move_polar_rad_copy
+from gdsfactory.pcells.extension import move_polar_rad_copy
 from gdsfactory.config import logger
 from gdsfactory.pdk import get_layer_stack, get_material_index
 from gdsfactory.routing.sort_ports import sort_ports_x, sort_ports_y
@@ -175,7 +175,7 @@ def get_simulation(
         import gdsfactory as gf
         import gdsfactory.simulation.tidy3d as gt
 
-        c = gf.components.bend_circular()
+        c = gf.pcells.bend_circular()
         sim = gt.get_simulation(c)
         gt.plot_simulation(sim)
 
@@ -224,7 +224,7 @@ def get_simulation(
         right=xmargin or xmargin_right,
     )
     component_extended = (
-        gf.components.extend_ports(
+        gf.pcells.extend_ports(
             component=component_padding, length=port_extension, centered=True
         )
         if port_extension
@@ -508,12 +508,12 @@ plot_simulation = plot_simulation_yz
 
 if __name__ == "__main__":
     # c = gf.c.taper_sc_nc(length=10)
-    c = gf.components.taper_strip_to_ridge_trenches()
+    c = gf.pcells.taper_strip_to_ridge_trenches()
     s = get_simulation(c, plot_modes=False)
 
-    # c = gf.components.mmi1x2()
-    # c = gf.components.bend_circular(radius=2)
-    # c = gf.components.crossing()
+    # c = gf.pcells.mmi1x2()
+    # c = gf.pcells.bend_circular(radius=2)
+    # c = gf.pcells.crossing()
     # c = gf.c.straight_rib()
 
     # c = gf.c.straight(length=3)

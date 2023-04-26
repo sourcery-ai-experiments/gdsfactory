@@ -31,7 +31,7 @@ PDK = get_generic_pdk()
 PDK.activate()
 # -
 
-c = gf.components.ring_single()
+c = gf.pcells.ring_single()
 c
 
 c.plot_netlist()
@@ -59,8 +59,8 @@ n["instances"][instance_name0]["settings"]
 @gf.cell
 def mzi_with_bend_automatic_naming():
     c = gf.Component()
-    mzi = c.add_ref(gf.components.mzi())
-    bend = c.add_ref(gf.components.bend_euler())
+    mzi = c.add_ref(gf.pcells.mzi())
+    bend = c.add_ref(gf.pcells.bend_euler())
     bend.connect("o1", mzi.ports["o2"])
     return c
 
@@ -73,8 +73,8 @@ c.plot_netlist()
 @gf.cell
 def mzi_with_bend_deterministic_names_using_alias():
     c = gf.Component()
-    mzi = c.add_ref(gf.components.mzi(), alias="my_mzi")
-    bend = c.add_ref(gf.components.bend_euler(), alias="my_bend")
+    mzi = c.add_ref(gf.pcells.mzi(), alias="my_mzi")
+    bend = c.add_ref(gf.pcells.bend_euler(), alias="my_bend")
     bend.connect("o1", mzi.ports["o2"])
     return c
 
@@ -83,10 +83,10 @@ c = mzi_with_bend_deterministic_names_using_alias()
 c.plot_netlist()
 # -
 
-c = gf.components.mzi()
+c = gf.pcells.mzi()
 c
 
-c = gf.components.mzi()
+c = gf.pcells.mzi()
 n = c.get_netlist()
 print(c.get_netlist().keys())
 
@@ -104,8 +104,8 @@ n.keys()
 @gf.cell
 def mmi_with_bend():
     c = gf.Component()
-    mmi = c.add_ref(gf.components.mmi1x2(), alias="mmi")
-    bend = c.add_ref(gf.components.bend_euler(layer=(2, 0)), alias="bend")
+    mmi = c.add_ref(gf.pcells.mmi1x2(), alias="mmi")
+    bend = c.add_ref(gf.pcells.bend_euler(layer=(2, 0)), alias="bend")
     bend.connect("o1", mmi.ports["o2"])
     return c
 
@@ -128,17 +128,17 @@ c.plot_netlist()
 #
 # `get_netlist_recursive()` returns a recursive netlist.
 
-c = gf.components.ring_single()
+c = gf.pcells.ring_single()
 c
 
 c.plot_netlist()
 
-c = gf.components.ring_double()
+c = gf.pcells.ring_double()
 c
 
 c.plot_netlist()
 
-c = gf.components.mzit()
+c = gf.pcells.mzit()
 c
 
 c.plot_netlist()
@@ -148,7 +148,7 @@ coupler_lengths = [10, 20, 30]
 coupler_gaps = [0.1, 0.2, 0.3]
 delta_lengths = [10, 100]
 
-c = gf.components.mzi_lattice(
+c = gf.pcells.mzi_lattice(
     coupler_lengths=coupler_lengths,
     coupler_gaps=coupler_gaps,
     delta_lengths=delta_lengths,
@@ -163,7 +163,7 @@ coupler_lengths = [10, 20, 30, 40]
 coupler_gaps = [0.1, 0.2, 0.4, 0.5]
 delta_lengths = [10, 100, 200]
 
-c = gf.components.mzi_lattice(
+c = gf.pcells.mzi_lattice(
     coupler_lengths=coupler_lengths,
     coupler_gaps=coupler_gaps,
     delta_lengths=delta_lengths,
@@ -205,10 +205,10 @@ c.plot_netlist_flat(with_labels=False)  # labels get cluttered
 
 # +
 vdiv = gf.Component("voltageDivider")
-r1 = vdiv << gf.components.resistance_sheet()
-r2 = vdiv << gf.components.resistance_sheet()
-r3 = vdiv << gf.get_component(gf.components.resistance_sheet).rotate()
-r4 = vdiv << gf.get_component(gf.components.resistance_sheet).rotate()
+r1 = vdiv << gf.pcells.resistance_sheet()
+r2 = vdiv << gf.pcells.resistance_sheet()
+r3 = vdiv << gf.get_component(gf.pcells.resistance_sheet).rotate()
+r4 = vdiv << gf.get_component(gf.pcells.resistance_sheet).rotate()
 
 r1.connect("pad2", r2.ports["pad1"])
 r3.connect("pad1", r2.ports["pad1"], preserve_angle=True)

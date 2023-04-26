@@ -42,7 +42,7 @@ settings:
       polarization: te
       wavelength: 1.53
     info_version: 2
-    module: gdsfactory.components.grating_coupler_elliptical_trenches
+    module: gdsfactory.pcells.grating_coupler_elliptical_trenches
     name: grating_coupler_ellipti_dd7f7af4
   default:
     cross_section: strip
@@ -64,5 +64,5 @@ settings:
     polarization: te
     wavelength: 1.53
   info_version: 2
-  module: gdsfactory.components.grating_coupler_loss_fiber_single
+  module: gdsfactory.pcells.grating_coupler_loss_fiber_single
   name: grating_coupler_ellipti_7645ee14

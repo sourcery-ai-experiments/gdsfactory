@@ -10,7 +10,7 @@ PDK.activate()
 
 
 def test_meow_defaults():
-    c = gf.components.taper_cross_section_linear()
+    c = gf.pcells.taper_cross_section_linear()
     filtered_layerstack = LayerStack(
         layers={
             k: get_layer_stack().layers[k]
@@ -55,11 +55,11 @@ def test_cells():
         }
     )
 
-    c = gf.components.taper(length=10, width2=2)
+    c = gf.pcells.taper(length=10, width2=2)
     m = MEOW(component=c, layerstack=layerstack, wavelength=1.55, cell_length=1)
     assert len(m.cells) == 10
 
-    c = gf.components.taper(length=1, width2=2)
+    c = gf.pcells.taper(length=1, width2=2)
     m = MEOW(component=c, layerstack=layerstack, wavelength=1.55, cell_length=1)
     assert len(m.cells) == 1
 

@@ -1,10 +1,10 @@
-"""You can use component_sequence as a convenient function for cascading components, where you need to keep track of multiple tapers, doped sections, heaters etc...
+"""You can use component_sequence as a convenient function for cascading pcells, where you need to keep track of multiple tapers, doped sections, heaters etc...
 
 The idea is to associate one symbol per type of section.
 A section is uniquely defined by the component, input port name and output port name.
 
-The mapping between symbols and components is supplied by a dictionary.
-The actual chain of components is supplied by a string or a list
+The mapping between symbols and pcells is supplied by a dictionary.
+The actual chain of pcells is supplied by a string or a list
 
 """
 
@@ -12,15 +12,15 @@ from __future__ import annotations
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.components import bend_circular
-from gdsfactory.components.component_sequence import component_sequence
-from gdsfactory.components.straight import straight
-from gdsfactory.components.straight_pin import straight_pn
+from gdsfactory.pcells import bend_circular
+from gdsfactory.pcells.component_sequence import component_sequence
+from gdsfactory.pcells.straight import straight
+from gdsfactory.pcells.straight_pin import straight_pn
 
 
 @gf.cell
 def test_cutback_pn() -> Component:
-    # Define subcomponents
+    # Define subpcells
     bend_radius = 10.0
     bend180 = bend_circular(radius=bend_radius, angle=180)
     wg = straight(length=5.0)

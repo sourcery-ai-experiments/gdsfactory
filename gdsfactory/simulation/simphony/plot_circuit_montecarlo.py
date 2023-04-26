@@ -31,7 +31,7 @@ def plot_circuit_montecarlo(
     .. plot::
         :include-source:
 
-        from gdsfactory.simulation.simphony.components.mzi import mzi
+        from gdsfactory.simulation.simphony.pcells.mzi import mzi
         import gdsfactory.simulation.simphony as gs
 
         c = mzi()
@@ -59,7 +59,7 @@ def plot_circuit_montecarlo(
 
 
 if __name__ == "__main__":
-    from gdsfactory.simulation.simphony.components.mzi import mzi
+    from gdsfactory.simulation.simphony.pcells.mzi import mzi
 
     plot_circuit_montecarlo(mzi)
     plt.show()

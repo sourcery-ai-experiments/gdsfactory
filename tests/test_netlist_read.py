@@ -20,7 +20,7 @@ def test_netlist_read() -> Component:
 
 
 def regenerate_regression_test() -> None:
-    c = gf.components.mzi()
+    c = gf.pcells.mzi()
 
     filepath = PATH.netlists / "mzi.yml"
     c.write_netlist(filepath)

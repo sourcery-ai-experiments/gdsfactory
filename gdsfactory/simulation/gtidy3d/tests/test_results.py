@@ -8,7 +8,7 @@ from gdsfactory.simulation.gtidy3d.get_results import get_results
 # def test_results_run(data_regression) -> None:
 #     """Run simulations and checks local results."""
 
-#     component = gf.components.straight(length=3)
+#     component = gf.pcells.straight(length=3)
 #     sim = gt.get_simulation(component=component, is_3d=False)
 
 #     dirpath = PATH.sparameters
@@ -21,7 +21,7 @@ from gdsfactory.simulation.gtidy3d.get_results import get_results
 if __name__ == "__main__":
     # test_results_run(None)
 
-    component = gf.components.straight(length=3)
+    component = gf.pcells.straight(length=3)
     sim = gt.get_simulation(component=component, is_3d=False)
 
     dirpath = PATH.sparameters

@@ -31,7 +31,7 @@
 # - `layers` that return a GDS Layer (gdslayer, gdspurpose) from a string, an int or a Tuple[int, int].
 #
 #
-# Thanks to activating a PDK you can access components, cross_sections or layers using a string, a function or a dict.
+# Thanks to activating a PDK you can access pcells, cross_sections or layers using a string, a function or a dict.
 #
 # Depending on the active pdk:
 #
@@ -139,7 +139,7 @@ class LayerMap(BaseModel):
 LAYER = LayerMap()
 
 # %% [markdown]
-# There are some default layers in some generic components and cross_sections, that it may be convenient adding.
+# There are some default layers in some generic pcells and cross_sections, that it may be convenient adding.
 #
 # | Layer          | Purpose                                                      |
 # | -------------- | ------------------------------------------------------------ |
@@ -176,7 +176,7 @@ LAYER = LayerMap()
 strip2 = gf.partial(gf.cross_section.strip, layer=(2, 0))
 
 # %% tags=[]
-c = gf.components.straight(cross_section=strip2)
+c = gf.pcells.straight(cross_section=strip2)
 c
 
 # %% tags=[]
@@ -187,7 +187,7 @@ pin = gf.partial(
         gf.Section(width=2, layer=gf.LAYER.P, offset=-1),
     ),
 )
-c = gf.components.straight(cross_section=pin)
+c = gf.pcells.straight(cross_section=pin)
 c
 
 # %% tags=[]
@@ -213,8 +213,8 @@ cross_sections = dict(strip_wide=strip_wide, pin=pin, strip=strip)
 # For example, you can make some wide MMIs for a particular technology. Lets say the best MMI width you found it to be 9um.
 
 # %% tags=[]
-mmi1x2 = gf.partial(gf.components.mmi1x2, width_mmi=9)
-mmi2x2 = gf.partial(gf.components.mmi2x2, width_mmi=9)
+mmi1x2 = gf.partial(gf.pcells.mmi1x2, width_mmi=9)
+mmi2x2 = gf.partial(gf.pcells.mmi2x2, width_mmi=9)
 
 cells = dict(mmi1x2=mmi1x2, mmi2x2=mmi2x2)
 
@@ -260,12 +260,12 @@ pdk1.get_cross_section("pin")
 
 # %% tags=[]
 cross_section_spec_string = "pin"
-gf.components.straight(cross_section=cross_section_spec_string)
+gf.pcells.straight(cross_section=cross_section_spec_string)
 
 # %% tags=[]
 cross_section_spec_dict = dict(cross_section="pin", settings=dict(width=2))
 print(pdk1.get_cross_section(cross_section_spec_dict))
-wg_pin = gf.components.straight(cross_section=cross_section_spec_dict)
+wg_pin = gf.pcells.straight(cross_section=cross_section_spec_dict)
 wg_pin
 
 # %% [markdown]
@@ -282,11 +282,11 @@ pdk1.get_component(dict(component="mmi1x2", settings=dict(length_mmi=10)))
 # %% [markdown]
 # ## Testing PDK cells
 #
-# To make sure all your PDK PCells produce the components that you want, it's important to test your PDK cells.
+# To make sure all your PDK PCells produce the pcells that you want, it's important to test your PDK cells.
 #
 # As you write your own cell functions you want to make sure you do not break or produced unwanted regressions later on. You should write tests for this.
 #
-# Make sure you create a `test_components.py` file for pytest to test your PDK. See for example the tests in the [ubc PDK](https://github.com/gdsfactory/ubc)
+# Make sure you create a `test_pcells.py` file for pytest to test your PDK. See for example the tests in the [ubc PDK](https://github.com/gdsfactory/ubc)
 #
 # Pytest-regressions automatically creates the CSV and YAML files for you, as well `gdsfactory.gdsdiff` will store the reference GDS in ref_layouts and check for geometry differences using XOR.
 #
@@ -356,8 +356,8 @@ from gdsfactory.gdsdiff import gdsdiff
 help(gdsdiff)
 
 # %%
-mmi1 = gf.components.mmi1x2(length_mmi=5)
-mmi2 = gf.components.mmi1x2(length_mmi=6)
+mmi1 = gf.pcells.mmi1x2(length_mmi=5)
+mmi2 = gf.pcells.mmi1x2(length_mmi=6)
 c = gdsdiff(mmi1, mmi2)
 c
 
@@ -415,7 +415,7 @@ pdk = gf.Pdk(
 )
 pdk.activate()
 
-c1 = gf.components.straight(length=5)
+c1 = gf.pcells.straight(length=5)
 print(has_valid_transformations(c1))
 c1.layers
 
@@ -432,7 +432,7 @@ pdk = gf.Pdk(
 )
 pdk.activate()
 
-c1 = gf.components.straight(length=5)
+c1 = gf.pcells.straight(length=5)
 print(has_valid_transformations(c1))
 c1.layers
 c1
@@ -442,7 +442,7 @@ c1
 #
 
 # %% [markdown]
-# ## Version control components
+# ## Version control pcells
 #
 # For version control your component library you can use GIT
 #
@@ -479,7 +479,7 @@ def litho_ruler(
     D = gf.Component()
     for n in range(num_marks):
         h = height * scale[n % len(scale)]
-        D << gf.components.rectangle(size=(width, h), layer=layer)
+        D << gf.pcells.rectangle(size=(width, h), layer=layer)
 
     D.distribute(direction="x", spacing=spacing, separation=False, edge="x")
     D.align(alignment="ymin")
@@ -520,7 +520,7 @@ def litho_ruler(
     D = gf.Component()
     for n in range(num_marks):
         h = height * scale[n % len(scale)]
-        ref = D << gf.components.rectangle(size=(width, h), layer=layer)
+        ref = D << gf.pcells.rectangle(size=(width, h), layer=layer)
         ref.rotate(90)
 
     D.distribute(direction="y", spacing=spacing, separation=False, edge="y")

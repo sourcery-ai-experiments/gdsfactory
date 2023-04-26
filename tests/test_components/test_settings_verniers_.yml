@@ -26,5 +26,5 @@ settings:
   function_name: verniers
   info: {}
   info_version: 2
-  module: gdsfactory.components.verniers
+  module: gdsfactory.pcells.verniers
   name: verniers

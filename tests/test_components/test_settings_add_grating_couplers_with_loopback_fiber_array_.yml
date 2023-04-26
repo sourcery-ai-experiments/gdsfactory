@@ -49,7 +49,7 @@ settings:
     info:
       length: 11584.393
     info_version: 2
-    module: gdsfactory.components.spiral_inner_io
+    module: gdsfactory.pcells.spiral_inner_io
     name: spiral_inner_io
   default:
     bend:
@@ -121,5 +121,5 @@ settings:
     polarization: te
     wavelength: 1.53
   info_version: 2
-  module: gdsfactory.components.add_grating_couplers
+  module: gdsfactory.pcells.add_grating_couplers
   name: spiral_inner_io_add_gra_f2760628

@@ -7,42 +7,42 @@ from simphony.layout import Circuit
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.simulation.simphony.components import model_factory
+from gdsfactory.simulation.simphony.pcells import model_factory
 from gdsfactory.simulation.simphony.types import ModelFactory
 
 
-def connect_pins(connections, model_names, components, circuit: Circuit):
+def connect_pins(connections, model_names, pcells, circuit: Circuit):
     for k, v in connections.items():
         model1_name, port1_name = k.split(",")
         model2_name, port2_name = v.split(",")
 
         if model1_name in model_names and model2_name in model_names:
-            index1 = [i for i, c in enumerate(components) if c.name == model1_name]
+            index1 = [i for i, c in enumerate(pcells) if c.name == model1_name]
             p1_name = [
                 i
-                for c in components
+                for c in pcells
                 if c.name == model1_name
                 for i, p in enumerate(c.pins)
                 if p.name == port1_name
             ]
-            index2 = [i for i, c in enumerate(components) if c.name == model2_name]
+            index2 = [i for i, c in enumerate(pcells) if c.name == model2_name]
             p2_name = [
                 i
-                for c in components
+                for c in pcells
                 if c.name == model2_name
                 for i, p in enumerate(c.pins)
                 if p.name == port2_name
             ]
 
-            circuit._get_components()[index1[0]][p1_name[0]].connect(
-                circuit._get_components()[index2[0]][p2_name[0]]
+            circuit._get_pcells()[index1[0]][p1_name[0]].connect(
+                circuit._get_pcells()[index2[0]][p2_name[0]]
             )
     return circuit
 
 
-def rename_pins(circuit, components):
+def rename_pins(circuit, pcells):
     i = 0
-    for c in components:
+    for c in pcells:
         for p in c.pins:
             c[p.name].rename(f"pin{i}")
             i += 1
@@ -92,9 +92,9 @@ def component_to_circuit(
         else:
             circuit._add(model)
 
-    components = circuit._get_components()
+    pcells = circuit._get_pcells()
 
-    circuit = connect_pins(connections, model_names, components, circuit)
+    circuit = connect_pins(connections, model_names, pcells, circuit)
 
     for i, pin in enumerate(circuit.pins, start=1):
         pin.rename(f"o{i}")
@@ -104,7 +104,7 @@ def component_to_circuit(
 if __name__ == "__main__":
     import gdsfactory.simulation.simphony as gs
 
-    c = gf.components.mzi()
+    c = gf.pcells.mzi()
     n = c.get_netlist()
 
     cm = component_to_circuit(c)

@@ -8,7 +8,7 @@ import numpy as np
 import gdsfactory as gf
 from gdsfactory import Port
 from gdsfactory.component import Component
-from gdsfactory.components.wire import wire_corner
+from gdsfactory.pcells.wire import wire_corner
 from gdsfactory.routing import get_route_from_waypoints
 from gdsfactory.routing.manhattan import route_manhattan
 from gdsfactory.typings import CrossSectionSpec, LayerSpec, Route
@@ -43,7 +43,7 @@ def get_route_astar(
         port2: output.
         resolution: discretization resolution in um.
             Lower resolution can help avoid accidental overlapping between route
-            and components but adds more bends.
+            and pcells but adds more bends.
             The resolution decides how many "leaps/hops" the algorithm has to do.
         avoid_layers: list of layers to avoid.
         distance: distance from obstacles in um.
@@ -295,13 +295,13 @@ if __name__ == "__main__":
     # cross_section = gf.get_cross_section("metal1", width=3)
 
     # c = gf.Component("get_route_astar")
-    # w = gf.components.straight(cross_section=cross_section)
+    # w = gf.pcells.straight(cross_section=cross_section)
 
     # left = c << w
     # right = c << w
     # right.move((100, 80))
 
-    # obstacle = gf.components.rectangle(size=(100, 3), layer="M1")
+    # obstacle = gf.pcells.rectangle(size=(100, 3), layer="M1")
     # obstacle1 = c << obstacle
     # obstacle2 = c << obstacle
     # obstacle1.ymin = 40
@@ -323,13 +323,13 @@ if __name__ == "__main__":
 
     c = gf.Component("get_route_astar_avoid_layers")
     cross_section = gf.get_cross_section("metal1", width=3)
-    w = gf.components.straight(cross_section=cross_section)
+    w = gf.pcells.straight(cross_section=cross_section)
 
     left = c << w
     right = c << w
     right.move((100, 80))
 
-    obstacle = gf.components.rectangle(size=(100, 3), layer="WG")
+    obstacle = gf.pcells.rectangle(size=(100, 3), layer="WG")
     obstacle1 = c << obstacle
     obstacle2 = c << obstacle
     obstacle1.ymin = 40

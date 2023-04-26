@@ -5,7 +5,7 @@ from typing import List, Tuple
 import gdsfactory as gf
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
-from gdsfactory.port import port_array
+from gdsfactory.component import port_array
 from gdsfactory.routing.get_route_sbend import get_route_sbend
 from gdsfactory.routing.sort_ports import sort_ports as sort_ports_function
 from gdsfactory.routing.utils import direction_ports_from_list_ports, flip
@@ -37,7 +37,7 @@ def fanout_component(
         :include-source:
 
         import gdsfactory as gf
-        c = gf.components.mmi2x2()
+        c = gf.pcells.mmi2x2()
 
         cc = gf.routing.fanout_component(
             component=c, port_names=tuple(c.get_ports_dict(angle=0).keys())
@@ -115,7 +115,7 @@ def fanout_ports(
 
 
 def test_fanout_ports() -> Component:
-    c = gf.components.mmi2x2()
+    c = gf.pcells.mmi2x2()
     ports = c.get_ports_dict(angle=0)
     port_names = list(ports.keys())
     c2 = fanout_component(component=c, port_names=port_names)
@@ -129,10 +129,10 @@ if __name__ == "__main__":
     c = test_fanout_ports()
     c.show(show_ports=True)
 
-    # c =gf.components.coupler(gap=1.0)
-    # c = gf.components.nxn(west=4)
-    # c = gf.components.nxn(west=4, layer=gf.LAYER.SLAB90)
-    c = gf.components.mmi2x2()
+    # c =gf.pcells.coupler(gap=1.0)
+    # c = gf.pcells.nxn(west=4)
+    # c = gf.pcells.nxn(west=4, layer=gf.LAYER.SLAB90)
+    c = gf.pcells.mmi2x2()
 
     # cc = fanout_component(
     #     component=c, port_names=tuple(c.get_ports_dict(angle=0).keys())
@@ -140,7 +140,7 @@ if __name__ == "__main__":
     # print(len(cc.ports))
     # cc.show(show_ports=True)
 
-    # c = gf.components.nxn(west=4, layer=gf.LAYER.SLAB90)
+    # c = gf.pcells.nxn(west=4, layer=gf.LAYER.SLAB90)
     # routes = fanout_ports(ports=c.get_ports_list(angle=180))
 
     # for route in routes:

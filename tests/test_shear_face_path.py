@@ -82,7 +82,7 @@ def skinny():
 def test_mate_on_shear_xor_empty(
     regular_waveguide, shear_waveguide_start, shear_waveguide_end
 ) -> None:
-    # two sheared components joined at the sheared port should appear the same as two straight component joined
+    # two sheared pcells joined at the sheared port should appear the same as two straight component joined
     two_straights = gf.Component()
     c1 = two_straights << regular_waveguide
     c2 = two_straights << regular_waveguide
@@ -114,13 +114,13 @@ def test_area_stays_same(
     shear_waveguide_end,
     shear_waveguide_symmetric,
 ) -> None:
-    components = [
+    pcells = [
         regular_waveguide,
         shear_waveguide_start,
         shear_waveguide_end,
         shear_waveguide_symmetric,
     ]
-    areas = [c.area() for c in components]
+    areas = [c.area() for c in pcells]
     np.testing.assert_allclose(areas, desired=areas[0])
 
 
@@ -128,16 +128,16 @@ def test_area_stays_same_skinny(
     skinny,
     more_slanted_than_wide,
 ) -> None:
-    components = [
+    pcells = [
         skinny,
         more_slanted_than_wide,
     ]
-    areas = [c.area() for c in components]
+    areas = [c.area() for c in pcells]
     np.testing.assert_allclose(areas, desired=areas[0])
 
 
 def test_mate_on_shear_xor_empty_transition() -> None:
-    """two sheared components joined at the sheared port should appear the same
+    """two sheared pcells joined at the sheared port should appear the same
     as two straight component joined."""
     P = gf.path.straight(length=10)
 
@@ -207,7 +207,7 @@ def test_mate_on_shear_xor_empty_transition() -> None:
 
 
 def test_mate_on_shear_xor_empty_curve() -> None:
-    """two sheared components joined at the sheared port should appear the same
+    """two sheared pcells joined at the sheared port should appear the same
     as two straight component joined."""
     P = gf.path.euler()
     curve = gf.path.extrude(P, "strip")

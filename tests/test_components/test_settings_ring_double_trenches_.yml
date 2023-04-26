@@ -78,7 +78,7 @@ settings:
     function_name: ring_double
     info: {}
     info_version: 2
-    module: gdsfactory.components.ring_double
+    module: gdsfactory.pcells.ring_double
     name: ring_double
   default:
     bot: true
@@ -99,5 +99,5 @@ settings:
   function_name: add_trenches
   info: {}
   info_version: 2
-  module: gdsfactory.components.add_trenches
+  module: gdsfactory.pcells.add_trenches
   name: ring_double_add_trenche_eecddedf

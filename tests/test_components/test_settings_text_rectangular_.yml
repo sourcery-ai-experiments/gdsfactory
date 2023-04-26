@@ -26,5 +26,5 @@ settings:
   function_name: text_rectangular
   info: {}
   info_version: 2
-  module: gdsfactory.components.text_rectangular
+  module: gdsfactory.pcells.text_rectangular
   name: text_rectangular

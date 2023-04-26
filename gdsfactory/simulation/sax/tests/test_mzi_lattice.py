@@ -13,8 +13,8 @@ import gdsfactory as gf
 @gf.cell
 def mzis():
     c = gf.Component()
-    c1 = c << gf.components.mzi(delta_length=10)
-    c2 = c << gf.components.mzi(delta_length=10)
+    c1 = c << gf.pcells.mzi(delta_length=10)
+    c2 = c << gf.pcells.mzi(delta_length=10)
     c2.connect("o1", c1.ports["o2"])
 
     c.add_port("o1", port=c1.ports["o1"])

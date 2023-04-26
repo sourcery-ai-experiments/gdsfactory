@@ -35,7 +35,7 @@ def coupler_ring(
         :include-source:
 
         import gdsfactory as gf
-        c = gf.components.coupler_ring()
+        c = gf.pcells.coupler_ring()
         c.plot()
 
 
@@ -43,7 +43,7 @@ def coupler_ring(
         :include-source:
 
         import gdsfactory.simulation.simphony as gs
-        import gdsfactory.simulation.simphony.components as gc
+        import gdsfactory.simulation.simphony.pcells as gc
 
         m = gc.coupler_ring()
         gs.plot_model(m)

@@ -32,5 +32,5 @@ settings:
   function_name: wafer
   info: {}
   info_version: 2
-  module: gdsfactory.components.wafer
+  module: gdsfactory.pcells.wafer
   name: wafer

@@ -18,5 +18,5 @@ settings:
   function_name: text_freetype
   info: {}
   info_version: 2
-  module: gdsfactory.components.text_freetype
+  module: gdsfactory.pcells.text_freetype
   name: text_freetype

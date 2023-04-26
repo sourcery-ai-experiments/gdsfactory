@@ -115,7 +115,7 @@ settings:
         width_wide: null
       width: 0.5
     info_version: 2
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_b4efbeb4
   default:
     centered: false
@@ -197,5 +197,5 @@ settings:
       width_wide: null
     width: 0.5
   info_version: 2
-  module: gdsfactory.components.extension
+  module: gdsfactory.pcells.extension
   name: straight_b4efbeb4_exten_40ee8edc

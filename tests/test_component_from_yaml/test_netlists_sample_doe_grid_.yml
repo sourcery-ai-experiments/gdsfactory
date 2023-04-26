@@ -3,7 +3,7 @@ instances:
   mmi1x2_sweep:
     component: grid
     settings:
-      components:
+      pcells:
       - name: mmi1x2_length_mmi2_width_mmi4
         settings:
           changed:
@@ -35,7 +35,7 @@ instances:
           function_name: mmi1x2
           info: {}
           info_version: 2
-          module: gdsfactory.components.mmi1x2
+          module: gdsfactory.pcells.mmi1x2
           name: mmi1x2_length_mmi2_width_mmi4
         version: 0.0.1
       - name: mmi1x2_length_mmi2_width_mmi10
@@ -69,7 +69,7 @@ instances:
           function_name: mmi1x2
           info: {}
           info_version: 2
-          module: gdsfactory.components.mmi1x2
+          module: gdsfactory.pcells.mmi1x2
           name: mmi1x2_length_mmi2_width_mmi10
         version: 0.0.1
       - name: mmi1x2_length_mmi100_width_mmi4
@@ -103,7 +103,7 @@ instances:
           function_name: mmi1x2
           info: {}
           info_version: 2
-          module: gdsfactory.components.mmi1x2
+          module: gdsfactory.pcells.mmi1x2
           name: mmi1x2_length_mmi100_width_mmi4
         version: 0.0.1
       - name: mmi1x2_length_mmi100_width_mmi10
@@ -137,7 +137,7 @@ instances:
           function_name: mmi1x2
           info: {}
           info_version: 2
-          module: gdsfactory.components.mmi1x2
+          module: gdsfactory.pcells.mmi1x2
           name: mmi1x2_length_mmi100_width_mmi10
         version: 0.0.1
       shape:

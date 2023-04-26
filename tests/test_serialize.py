@@ -8,7 +8,7 @@ from gdsfactory.cross_section import strip
 
 @gf.cell
 def demo_cross_section_setting(cross_section=strip) -> gf.Component:
-    return gf.components.straight(cross_section=cross_section)
+    return gf.pcells.straight(cross_section=cross_section)
 
 
 def test_settings(data_regression, check: bool = True) -> None:
@@ -32,12 +32,12 @@ def wrap_polygons(polygons) -> gf.Component:
 def test_serialize_polygons() -> gf.Component:
     c = wrap_polygon(gdstk.rectangle((0, 0), (1, 1)))  # FAILS
 
-    s = gf.components.straight()
+    s = gf.pcells.straight()
     c = wrap_polygons(s.get_polygons(as_array=False))  # FAILS
     c = wrap_polygons(s.get_polygons(by_spec=False, as_array=True))  # WORKS
     c = wrap_polygons(s.get_polygons(by_spec=True, as_array=True))  # WORKS
 
-    s = gf.components.ring_double_heater()
+    s = gf.pcells.ring_double_heater()
     c = wrap_polygons(s.get_polygons(by_spec=False, as_array=True))  # FAILS
     c = wrap_polygons(s.get_polygons(by_spec=(1, 0), as_array=True))  # FAILS
     c = wrap_polygons(s.get_polygons(by_spec=True, as_array=True))  # FAILS

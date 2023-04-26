@@ -1,4 +1,4 @@
-"""pack a list of components into as few components as possible.
+"""pack a list of pcells into as few pcells as possible.
 
 Adapted from PHIDL https://github.com/amccaugh/phidl/ by Adam McCaughan
 """
@@ -34,7 +34,7 @@ def _pack_single_bin(
         rect_dict: dict of rectangles {id: (w, h)} to pack.
         aspect_ratio: x, y.
         max_size: tuple of max X, Y size.
-        sort_by_area: sorts components by area.
+        sort_by_area: sorts pcells by area.
         density: of packing, closer to 1 packs tighter (more compute heavy).
 
     Returns:
@@ -109,7 +109,7 @@ def pack(
     add_ports_prefix: bool = True,
     add_ports_suffix: bool = False,
 ) -> List[Component]:
-    """Pack a list of components into as few Components as possible.
+    """Pack a list of pcells into as few Components as possible.
 
     Args:
         component_list: list or tuple.
@@ -136,12 +136,12 @@ def pack(
 
         import gdsfactory as gf
 
-        components = [gf.components.triangle(x=i) for i in range(1, 10)]
+        pcells = [gf.pcells.triangle(x=i) for i in range(1, 10)]
         c = gf.pack(
-            components,
+            pcells,
             spacing=20.0,
             max_size=(100, 100),
-            text=gf.partial(gf.components.text, justify="center"),
+            text=gf.partial(gf.pcells.text, justify="center"),
             text_prefix="R",
             name_prefix="demo",
             text_anchors=["nc"],
@@ -188,12 +188,12 @@ def pack(
         )
         packed_list.append(packed_rect_dict)
 
-    components_packed_list = []
+    pcells_packed_list = []
     index = 0
     for i, rect_dict in enumerate(packed_list):
         name = get_name_short(f"{name_prefix or 'pack'}_{i}")
         packed = Component(name, with_uuid=True)
-        packed.info["components"] = {}
+        packed.info["pcells"] = {}
         for n, rect in rect_dict.items():
             x, y, w, h = rect
             xcenter = x + w / 2 + spacing / 2
@@ -203,7 +203,7 @@ def pack(
             packed.add(d)
 
             if hasattr(component, "settings"):
-                packed.info["components"][component.name] = dict(component.settings)
+                packed.info["pcells"][component.name] = dict(component.settings)
             d.center = (xcenter * precision, ycenter * precision)
             if add_ports_prefix:
                 packed.add_ports(d.ports, prefix=f"{index}_")
@@ -224,25 +224,25 @@ def pack(
                         np.array(text_offset) + getattr(d.size_info, text_anchor)
                     )
 
-        components_packed_list.append(packed)
+        pcells_packed_list.append(packed)
 
-    if len(components_packed_list) > 1:
-        groups = len(components_packed_list)
-        warnings.warn(f"unable to pack in one component, creating {groups} components")
+    if len(pcells_packed_list) > 1:
+        groups = len(pcells_packed_list)
+        warnings.warn(f"unable to pack in one component, creating {groups} pcells")
 
-    return components_packed_list
+    return pcells_packed_list
 
 
 def test_pack() -> Component:
     """Test packing function."""
     component_list = [
-        gf.components.ellipse(radii=tuple(np.random.rand(2) * n + 2)) for n in range(2)
+        gf.pcells.ellipse(radii=tuple(np.random.rand(2) * n + 2)) for n in range(2)
     ]
     component_list += [
-        gf.components.rectangle(size=tuple(np.random.rand(2) * n + 2)) for n in range(2)
+        gf.pcells.rectangle(size=tuple(np.random.rand(2) * n + 2)) for n in range(2)
     ]
 
-    components_packed_list = pack(
+    pcells_packed_list = pack(
         component_list,  # Must be a list or tuple of Components
         spacing=1.25,  # Minimum distance between adjacent shapes
         aspect_ratio=(2, 1),  # (width, height) ratio of the rectangular bin
@@ -250,7 +250,7 @@ def test_pack() -> Component:
         density=1.05,  # Values closer to 1 pack tighter but require more computation
         sort_by_area=True,  # Pre-sorts the shapes by area
     )
-    c = components_packed_list[0]  # Only one bin was created, so we plot that
+    c = pcells_packed_list[0]  # Only one bin was created, so we plot that
     assert len(c.get_dependencies()) == 4
     return c
 
@@ -258,13 +258,13 @@ def test_pack() -> Component:
 def test_pack_with_settings() -> Component:
     """Test packing function with custom settings."""
     component_list = [
-        gf.components.rectangle(size=(i, i), port_type=None) for i in range(1, 10)
+        gf.pcells.rectangle(size=(i, i), port_type=None) for i in range(1, 10)
     ]
     component_list += [
-        gf.components.rectangle(size=(i, i), port_type=None) for i in range(1, 10)
+        gf.pcells.rectangle(size=(i, i), port_type=None) for i in range(1, 10)
     ]
 
-    components_packed_list = pack(
+    pcells_packed_list = pack(
         component_list,  # Must be a list or tuple of Components
         spacing=1.25,  # Minimum distance between adjacent shapes
         aspect_ratio=(2, 1),  # (width, height) ratio of the rectangular bin
@@ -274,7 +274,7 @@ def test_pack_with_settings() -> Component:
         sort_by_area=True,  # Pre-sorts the shapes by area
         precision=1e-3,
     )
-    return components_packed_list[0]
+    return pcells_packed_list[0]
 
 
 if __name__ == "__main__":
@@ -287,10 +287,10 @@ if __name__ == "__main__":
     # c.write_gds_with_metadata("mask.gds")
 
     p = pack(
-        [gf.components.straight(length=i) for i in [1, 1]],
+        [gf.pcells.straight(length=i) for i in [1, 1]],
         spacing=20.0,
         max_size=(100, 100),
-        text=gf.partial(gf.components.text, justify="center"),
+        text=gf.partial(gf.pcells.text, justify="center"),
         text_prefix="R",
         name_prefix="demo",
         text_anchors=["nc"],

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from gdsfactory.components.bend_s import bend_s
-from gdsfactory.port import Port
+from gdsfactory.pcells.bend_s import bend_s
+from gdsfactory.component import Port
 from gdsfactory.typings import Route
 
 
@@ -24,8 +24,8 @@ def get_route_sbend(port1: Port, port2: Port, **kwargs) -> Route:
         import gdsfactory as gf
 
         c = gf.Component("demo_route_sbend")
-        mmi1 = c << gf.components.mmi1x2()
-        mmi2 = c << gf.components.mmi1x2()
+        mmi1 = c << gf.pcells.mmi1x2()
+        mmi2 = c << gf.pcells.mmi1x2()
         mmi2.movex(50)
         mmi2.movey(5)
         route = gf.routing.get_route_sbend(mmi1.ports['o2'], mmi2.ports['o1'])
@@ -87,8 +87,8 @@ if __name__ == "__main__":
     import gdsfactory as gf
 
     c = gf.Component("demo_route_sbend")
-    mmi1 = c << gf.components.mmi1x2()
-    mmi2 = c << gf.components.mmi1x2()
+    mmi1 = c << gf.pcells.mmi1x2()
+    mmi2 = c << gf.pcells.mmi1x2()
     mmi2.movex(50)
     mmi2.movey(5)
     route = gf.routing.get_route_sbend(mmi1.ports["o2"], mmi2.ports["o1"])

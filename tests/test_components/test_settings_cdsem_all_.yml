@@ -50,5 +50,5 @@ settings:
   function_name: cdsem_all
   info: {}
   info_version: 2
-  module: gdsfactory.components.cdsem_all
+  module: gdsfactory.pcells.cdsem_all
   name: cdsem_all

@@ -134,4 +134,4 @@ def read_sparameters_lumerical(
 
 
 if __name__ == "__main__":
-    r = read_sparameters_lumerical(gf.components.mmi1x2())
+    r = read_sparameters_lumerical(gf.pcells.mmi1x2())

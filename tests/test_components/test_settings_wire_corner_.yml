@@ -36,5 +36,5 @@ settings:
     dy: 10.0
     length: 10.0
   info_version: 2
-  module: gdsfactory.components.wire
+  module: gdsfactory.pcells.wire
   name: wire_corner

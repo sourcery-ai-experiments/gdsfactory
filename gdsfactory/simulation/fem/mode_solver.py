@@ -50,7 +50,7 @@ def compute_cross_section_modes(
     Defines a "straight" component of the cross_section, and calls compute_component_slice_modes.
     """
     # Get meshable component from cross-section
-    c = gf.components.straight(length=10, cross_section=cross_section)
+    c = gf.pcells.straight(length=10, cross_section=cross_section)
     bounds = c.bbox
     dx = np.diff(bounds[:, 0])[0]
 
@@ -121,7 +121,7 @@ def compute_component_slice_modes(
         default_resolution_min (float): gmsh minimal edge length.
         default_resolution_max (float): gmsh maximal edge length.
         background_tag (str): name of the background layer to add (default: no background added).
-        background_padding (Tuple): [xleft, ydown, xright, yup] distances to add to the components and to fill with background_tag.
+        background_padding (Tuple): [xleft, ydown, xright, yup] distances to add to the pcells and to fill with background_tag.
         global_meshsize_array: np array [x,y,z,lc] to parametrize the mesh.
         global_meshsize_interpolant_func: interpolating function for global_meshsize_array.
         extra_shapes_dict: Optional[OrderedDict] of {key: geo} with key a label and geo a shapely (Multi)Polygon or (Multi)LineString of extra shapes to override component.
@@ -261,7 +261,7 @@ if __name__ == "__main__":
         end = time.time()
         print(end - start)
     else:
-        component = gf.components.coupler_full(dw=0)
+        component = gf.pcells.coupler_full(dw=0)
         component.show()
 
         compute_component_slice_modes(

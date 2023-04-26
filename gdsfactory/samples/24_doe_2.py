@@ -10,8 +10,8 @@ from __future__ import annotations
 import gdsfactory as gf
 
 if __name__ == "__main__":
-    c = gf.components.pack_doe(
-        gf.components.straight,
+    c = gf.pcells.pack_doe(
+        gf.pcells.straight,
         settings={"length": [5, 5]},
         function=gf.partial(gf.routing.add_fiber_array, get_input_labels_function=None),
     )

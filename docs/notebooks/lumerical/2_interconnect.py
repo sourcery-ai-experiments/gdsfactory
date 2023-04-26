@@ -14,9 +14,9 @@
 
 # # Lumerical INTERCONNECT
 #
-# The Lumerical INTERCONNECT plugin in gdsfactory can run circuit simulations in INTERCONNECT directly from gdsfactory components.
+# The Lumerical INTERCONNECT plugin in gdsfactory can run circuit simulations in INTERCONNECT directly from gdsfactory pcells.
 #
-# This is a work-in-progress and can't handle hierarchical components yet.
+# This is a work-in-progress and can't handle hierarchical pcells yet.
 #
 #
 # This example also requires you to install the ubcpdk `pip install ubcpdk`
@@ -33,7 +33,7 @@ from gdsfactory.routing import get_route
 import gdsfactory as gf
 from gdsfactory.generic_tech import get_generic_pdk
 
-import ubcpdk.components as pdk
+import ubcpdk.pcells as pdk
 
 gf.config.rich_output()
 

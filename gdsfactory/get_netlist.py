@@ -25,7 +25,7 @@ import numpy as np
 import omegaconf
 
 from gdsfactory import Port
-from gdsfactory.component import Component, ComponentReference
+from gdsfactory.component import Component, Instance
 from gdsfactory.name import clean_name
 from gdsfactory.serialization import clean_dict, clean_value_json
 from gdsfactory.snap import snap_to_grid
@@ -38,7 +38,7 @@ def get_default_connection_validators():
 
 def get_instance_name_from_alias(
     component: Component,
-    reference: ComponentReference,
+    reference: Instance,
 ) -> str:
     """Returns the instance name from the label.
 
@@ -53,7 +53,7 @@ def get_instance_name_from_alias(
 
 def get_instance_name_from_label(
     component: Component,
-    reference: ComponentReference,
+    reference: Instance,
     layer_label: LayerSpec = "LABEL_INSTANCE",
 ) -> str:
     """Returns the instance name from the label.
@@ -180,7 +180,7 @@ def get_netlist(
             reference,
         )
         if (
-            isinstance(reference, ComponentReference)
+            isinstance(reference, Instance)
             and hasattr(reference, "columns")
             and (reference.columns > 1 or reference.rows > 1)
         ):
@@ -517,7 +517,7 @@ def difference_between_angles(angle2: float, angle1: float):
     return diff
 
 
-def _get_references_to_netlist(component: Component) -> List[ComponentReference]:
+def _get_references_to_netlist(component: Component) -> List[Instance]:
     from gdsfactory.cell import CACHE
 
     references = component.references
@@ -526,7 +526,7 @@ def _get_references_to_netlist(component: Component) -> List[ComponentReference]
         ref = component.settings.full["ref"]
         original_cell = CACHE[component.info["transformed_cell"]]
         references = [
-            ComponentReference(
+            Instance(
                 original_cell,
                 origin=ref["origin"],
                 rotation=ref["rotation"],
@@ -543,7 +543,7 @@ def get_netlist_recursive(
     get_instance_name: Callable[..., str] = get_instance_name_from_alias,
     **kwargs,
 ) -> Dict[str, Any]:
-    """Returns recursive netlist for a component and subcomponents.
+    """Returns recursive netlist for a component and subpcells.
 
     Args:
         component: to extract netlist.
@@ -563,7 +563,7 @@ def get_netlist_recursive(
     """
     all_netlists = {}
 
-    # only components with references (subcomponents) warrant a netlist
+    # only pcells with references (subpcells) warrant a netlist
     references = _get_references_to_netlist(component)
 
     if references:
@@ -598,7 +598,7 @@ def get_netlist_recursive(
 def _demo_ring_single_array() -> None:
     import gdsfactory as gf
 
-    c = gf.components.ring_single_array()
+    c = gf.pcells.ring_single_array()
     c.get_netlist()
 
 
@@ -609,7 +609,7 @@ def _demo_mzi_lattice() -> None:
     coupler_gaps = [0.1, 0.2, 0.4, 0.5]
     delta_lengths = [10, 100, 200]
 
-    c = gf.components.mzi_lattice(
+    c = gf.pcells.mzi_lattice(
         coupler_lengths=coupler_lengths,
         coupler_gaps=coupler_gaps,
         delta_lengths=delta_lengths,
@@ -632,8 +632,8 @@ if __name__ == "__main__":
     rotation_value = 35
     cname = "test_get_netlist_transformed"
     c = gf.Component(cname)
-    i1 = c.add_ref(gf.components.straight(), "i1")
-    i2 = c.add_ref(gf.components.straight(), "i2")
+    i1 = c.add_ref(gf.pcells.straight(), "i1")
+    i2 = c.add_ref(gf.pcells.straight(), "i2")
     i1.rotate(rotation_value)
     i2.connect("o2", i1.ports["o1"])
 

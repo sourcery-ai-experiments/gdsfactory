@@ -24,5 +24,5 @@ settings:
   function_name: resistance_meander
   info: {}
   info_version: 2
-  module: gdsfactory.components.resistance_meander
+  module: gdsfactory.pcells.resistance_meander
   name: resistance_meander

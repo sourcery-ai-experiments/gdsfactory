@@ -33,5 +33,5 @@ settings:
   info:
     length: 33.274
   info_version: 2
-  module: gdsfactory.components.bend_euler
+  module: gdsfactory.pcells.bend_euler
   name: bend_euler_s

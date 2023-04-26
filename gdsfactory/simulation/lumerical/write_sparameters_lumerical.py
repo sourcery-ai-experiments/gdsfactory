@@ -100,7 +100,7 @@ def write_sparameters_lumerical(
     In the npz format you can see `S12m` where `m` stands for magnitude
     and `S12a` where `a` stands for angle in radians
 
-    Your components need to have ports, that will extend over the PML.
+    Your pcells need to have ports, that will extend over the PML.
 
     .. image:: https://i.imgur.com/dHAzZRw.png
 
@@ -227,7 +227,7 @@ def write_sparameters_lumerical(
         right=xmargin or xmargin_right,
     )
 
-    component_extended = gf.components.extend_ports(
+    component_extended = gf.pcells.extend_ports(
         component_with_padding, length=ss.distance_monitors_to_pml
     )
 
@@ -235,7 +235,7 @@ def write_sparameters_lumerical(
     if not ports:
         raise ValueError(f"{component.name!r} does not have any optical ports")
 
-    component_extended_beyond_pml = gf.components.extension.extend_ports(
+    component_extended_beyond_pml = gf.pcells.extension.extend_ports(
         component=component_extended, length=ss.port_extension
     )
     component_extended_beyond_pml.name = "top"
@@ -492,7 +492,7 @@ def _sample_write_coupler_ring():
     """Write Sparameters when changing a component setting."""
     return [
         write_sparameters_lumerical(
-            gf.components.coupler_ring(
+            gf.pcells.coupler_ring(
                 width=width, length_x=length_x, radius=radius, gap=gap
             )
         )
@@ -506,7 +506,7 @@ def _sample_write_coupler_ring():
 def _sample_bend_circular():
     """Write Sparameters for a circular bend with different radius."""
     return [
-        write_sparameters_lumerical(gf.components.bend_circular(radius=radius))
+        write_sparameters_lumerical(gf.pcells.bend_circular(radius=radius))
         for radius in [2, 5, 10]
     ]
 
@@ -514,7 +514,7 @@ def _sample_bend_circular():
 def _sample_bend_euler():
     """Write Sparameters for a euler bend with different radius."""
     return [
-        write_sparameters_lumerical(gf.components.bend_euler(radius=radius))
+        write_sparameters_lumerical(gf.pcells.bend_euler(radius=radius))
         for radius in [2, 5, 10]
     ]
 
@@ -522,7 +522,7 @@ def _sample_bend_euler():
 def _sample_convergence_mesh():
     return [
         write_sparameters_lumerical(
-            component=gf.components.straight(length=2),
+            component=gf.pcells.straight(length=2),
             mesh_accuracy=mesh_accuracy,
         )
         for mesh_accuracy in [1, 2, 3]
@@ -532,7 +532,7 @@ def _sample_convergence_mesh():
 def _sample_convergence_wavelength():
     return [
         write_sparameters_lumerical(
-            component=gf.components.straight(length=2),
+            component=gf.pcells.straight(length=2),
             wavelength_start=wavelength_start,
         )
         for wavelength_start in [1.2, 1.4]
@@ -544,8 +544,8 @@ if __name__ == "__main__":
 
     s = lumapi.FDTD()
 
-    # component = gf.components.straight(length=2.5)
-    component = gf.components.mmi1x2()
+    # component = gf.pcells.straight(length=2.5)
+    component = gf.pcells.mmi1x2()
 
     material_name_to_lumerical = dict(si=(3.45, 2))  # or dict(si=3.45+2j)
     r = write_sparameters_lumerical(
@@ -554,8 +554,8 @@ if __name__ == "__main__":
         run=False,
         session=s,
     )
-    # c = gf.components.coupler_ring(length_x=3)
-    # c = gf.components.mmi1x2()
+    # c = gf.pcells.coupler_ring(length_x=3)
+    # c = gf.pcells.mmi1x2()
     # print(r)
     # print(r.keys())
     # print(component.ports.keys())

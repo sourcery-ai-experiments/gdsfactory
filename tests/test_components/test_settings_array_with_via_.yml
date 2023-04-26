@@ -94,5 +94,5 @@ settings:
   function_name: array_with_via
   info: {}
   info_version: 2
-  module: gdsfactory.components.array_with_via
+  module: gdsfactory.pcells.array_with_via
   name: array_with_via

@@ -262,5 +262,5 @@ settings:
   function_name: mzm
   info: {}
   info_version: 2
-  module: gdsfactory.components.mzm
+  module: gdsfactory.pcells.mzm
   name: mzm

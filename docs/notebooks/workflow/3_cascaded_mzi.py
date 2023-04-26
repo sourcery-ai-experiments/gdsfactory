@@ -15,7 +15,7 @@
 # + [markdown] tags=[]
 # # Cascaded MZI Filter
 #
-# This example shows how to assemble components together to form a complex component that can be simulated by integrating `gdsfactory`, `tidy3d`, and `sax`.  The design is based on the first stage of the Coarse Wavelength Division Multiplexer presented in [S. Dwivedi, P. De Heyn, P. Absil, J. Van Campenhout and W. Bogaerts, “Coarse wavelength division multiplexer on silicon-on-insulator for 100 GbE,” _2015 IEEE 12th International Conference on Group IV Photonics (GFP)_, Vancouver, BC, Canada, 2015, pp. 9-10, doi: 10.1109/Group4.2015.7305928.](https://doi.org/10.1109/Group4.2015.7305928)
+# This example shows how to assemble pcells together to form a complex component that can be simulated by integrating `gdsfactory`, `tidy3d`, and `sax`.  The design is based on the first stage of the Coarse Wavelength Division Multiplexer presented in [S. Dwivedi, P. De Heyn, P. Absil, J. Van Campenhout and W. Bogaerts, “Coarse wavelength division multiplexer on silicon-on-insulator for 100 GbE,” _2015 IEEE 12th International Conference on Group IV Photonics (GFP)_, Vancouver, BC, Canada, 2015, pp. 9-10, doi: 10.1109/Group4.2015.7305928.](https://doi.org/10.1109/Group4.2015.7305928)
 #
 # Each filter stage is formed by 4 cascaded Mach-Zenhder Interferometers (MZIs) with predefined delays for the central wavelength.  Symmetrical Direction Couplers (DCs) are used to mix the signals at the ends of the MZI arms.  In order to facilitate fabrication, all DC gaps are kept equal, so the power transfer ratios are defined by the coupling length of the DCs.
 #
@@ -77,7 +77,7 @@ def coupler_straight(
     cs = gf.get_cross_section(cross_section)
     Δy = (cs.width + gap) / 2
 
-    sc = gf.components.straight(length, cross_section=cross_section)
+    sc = gf.pcells.straight(length, cross_section=cross_section)
 
     c = gf.Component()
     arm0 = c.add_ref(sc).movey(Δy)
@@ -112,9 +112,7 @@ def coupler_splitter(
     Δx = (separation / 2 - Δy) * bend_factor
     assert Δy < separation / 2
 
-    sc = gf.components.bend_s(
-        (Δx, separation / 2 - Δy), 199, cross_section=cross_section
-    )
+    sc = gf.pcells.bend_s((Δx, separation / 2 - Δy), 199, cross_section=cross_section)
 
     c = gf.Component()
     arm0 = c.add_ref(sc).movey(Δy)
@@ -427,63 +425,51 @@ def mzi_arms(
     separation: float = 4.0,
     cross_section: gf.typings.CrossSectionSpec = "strip",
 ) -> gf.Component:
-    bend = gf.components.bend_euler(cross_section=cross_section)
+    bend = gf.pcells.bend_euler(cross_section=cross_section)
 
     if mzi_delta > 0:
         arm0 = [
-            gf.ComponentReference(bend),
-            gf.ComponentReference(
-                gf.components.straight(mzi_delta / 2, cross_section=cross_section)
+            gf.Instance(bend),
+            gf.Instance(gf.pcells.straight(mzi_delta / 2, cross_section=cross_section)),
+            gf.Instance(bend).mirror(),
+            gf.Instance(
+                gf.pcells.straight(separation * 2, cross_section=cross_section)
             ),
-            gf.ComponentReference(bend).mirror(),
-            gf.ComponentReference(
-                gf.components.straight(separation * 2, cross_section=cross_section)
-            ),
-            gf.ComponentReference(bend).mirror(),
-            gf.ComponentReference(
-                gf.components.straight(mzi_delta / 2, cross_section=cross_section)
-            ),
-            gf.ComponentReference(bend),
+            gf.Instance(bend).mirror(),
+            gf.Instance(gf.pcells.straight(mzi_delta / 2, cross_section=cross_section)),
+            gf.Instance(bend),
         ]
         arm1 = [
-            gf.ComponentReference(
-                gf.components.straight(separation, cross_section=cross_section)
-            ),
-            gf.ComponentReference(bend),
-            gf.ComponentReference(bend).mirror(),
-            gf.ComponentReference(bend).mirror(),
-            gf.ComponentReference(bend),
-            gf.ComponentReference(
-                gf.components.straight(separation, cross_section=cross_section)
-            ),
+            gf.Instance(gf.pcells.straight(separation, cross_section=cross_section)),
+            gf.Instance(bend),
+            gf.Instance(bend).mirror(),
+            gf.Instance(bend).mirror(),
+            gf.Instance(bend),
+            gf.Instance(gf.pcells.straight(separation, cross_section=cross_section)),
         ]
     else:
         arm0 = [
-            gf.ComponentReference(
-                gf.components.straight(separation, cross_section=cross_section)
-            ),
-            gf.ComponentReference(bend).mirror(),
-            gf.ComponentReference(bend),
-            gf.ComponentReference(bend),
-            gf.ComponentReference(bend).mirror(),
-            gf.ComponentReference(
-                gf.components.straight(separation, cross_section=cross_section)
-            ),
+            gf.Instance(gf.pcells.straight(separation, cross_section=cross_section)),
+            gf.Instance(bend).mirror(),
+            gf.Instance(bend),
+            gf.Instance(bend),
+            gf.Instance(bend).mirror(),
+            gf.Instance(gf.pcells.straight(separation, cross_section=cross_section)),
         ]
         arm1 = [
-            gf.ComponentReference(bend).mirror((0, 0), (1, 0)),
-            gf.ComponentReference(
-                gf.components.straight(-mzi_delta / 2, cross_section=cross_section)
+            gf.Instance(bend).mirror((0, 0), (1, 0)),
+            gf.Instance(
+                gf.pcells.straight(-mzi_delta / 2, cross_section=cross_section)
             ),
-            gf.ComponentReference(bend),
-            gf.ComponentReference(
-                gf.components.straight(separation * 2, cross_section=cross_section)
+            gf.Instance(bend),
+            gf.Instance(
+                gf.pcells.straight(separation * 2, cross_section=cross_section)
             ),
-            gf.ComponentReference(bend),
-            gf.ComponentReference(
-                gf.components.straight(-mzi_delta / 2, cross_section=cross_section)
+            gf.Instance(bend),
+            gf.Instance(
+                gf.pcells.straight(-mzi_delta / 2, cross_section=cross_section)
             ),
-            gf.ComponentReference(bend).mirror(),
+            gf.Instance(bend).mirror(),
         ]
 
     return (arm0, arm1)
@@ -561,7 +547,7 @@ layout = cascaded_mzi(
 layout
 # -
 
-# Finally, we want to build a complete simulation of the filter based on individual models for its components.
+# Finally, we want to build a complete simulation of the filter based on individual models for its pcells.
 #
 # We extract the filter netlist and verify we'll need models for the straight and bend sections, as well as for the DCs.
 
@@ -616,7 +602,7 @@ straight_model()
 # + tags=[]
 def bend_model(cross_section: gf.typings.CrossSectionSpec = "strip"):
     s = gt.write_sparameters(
-        component=gf.components.bend_euler(cross_section=cross_section),
+        component=gf.pcells.bend_euler(cross_section=cross_section),
         num_modes=2,
         port_source_names=["o1"],
         **sim_specs,
@@ -641,7 +627,7 @@ bend_model(cross_section=cross_section)()
 
 # + tags=[]
 c = gf.Component(name="bend")
-ref = c.add_ref(gf.components.bend_euler(cross_section=cross_section))
+ref = c.add_ref(gf.pcells.bend_euler(cross_section=cross_section))
 c.add_ports(ref.ports)
 x, _ = sax.circuit(
     c.get_netlist(), {"bend_euler": bend_model(cross_section=cross_section)}

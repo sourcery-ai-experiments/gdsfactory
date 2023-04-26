@@ -269,9 +269,9 @@ write_sparameters_batch_1x1 = gf.partial(
 if __name__ == "__main__":
     import gdsfactory.simulation as gs
 
-    # c = gf.components.straight(length=2.1)
+    # c = gf.pcells.straight(length=2.1)
     c = gf.c.straight(length=2.123)
-    # c = gf.components.mmi1x2()
+    # c = gf.pcells.mmi1x2()
     sp = write_sparameters(c, is_3d=True, port_source_names=None, overwrite=False)
     gs.plot.plot_sparameters(sp)
 

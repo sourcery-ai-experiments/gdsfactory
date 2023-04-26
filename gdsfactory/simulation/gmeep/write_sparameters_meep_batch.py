@@ -208,7 +208,7 @@ write_sparameters_meep_batch_1x1_bend90 = gf.partial(
 if __name__ == "__main__":
     jobs = [
         {
-            "component": gf.components.straight(length=i),
+            "component": gf.pcells.straight(length=i),
             "run": True,
             "overwrite": True,
             "lazy_parallelism": False,

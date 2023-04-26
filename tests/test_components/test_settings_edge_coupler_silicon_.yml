@@ -40,5 +40,5 @@ settings:
     width1: 0.5
     width2: 0.2
   info_version: 2
-  module: gdsfactory.components.taper
+  module: gdsfactory.pcells.taper
   name: taper_abf5825d

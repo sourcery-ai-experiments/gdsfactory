@@ -3,19 +3,19 @@ from __future__ import annotations
 from typing import Callable, Optional
 
 import gdsfactory as gf
-from gdsfactory.add_labels import get_input_label_text_loopback
+from gdsfactory.pcells.add_labels import get_input_label_text_loopback
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
-from gdsfactory.components.bend_euler import bend_euler
-from gdsfactory.components.grating_coupler_elliptical_trenches import grating_coupler_te
-from gdsfactory.components.straight import straight as straight_function
+from gdsfactory.pcells.bend_euler import bend_euler
+from gdsfactory.pcells.grating_coupler_elliptical_trenches import grating_coupler_te
+from gdsfactory.pcells.straight import straight as straight_function
 from gdsfactory.functions import move_port_to_zero
 from gdsfactory.port import select_ports_optical
 from gdsfactory.routing.get_input_labels import get_input_labels
 from gdsfactory.routing.get_route import get_route_from_waypoints
 from gdsfactory.routing.route_fiber_single import route_fiber_single
 from gdsfactory.typings import ComponentSpec, CrossSectionSpec, LayerSpec
-from gdsfactory.add_labels import (
+from gdsfactory.pcells.add_labels import (
     get_input_label_text_dash,
     get_input_label_text_dash_loopback,
 )
@@ -104,11 +104,11 @@ def add_fiber_single(
 
         import gdsfactory as gf
 
-        c = gf.components.crossing()
+        c = gf.pcells.crossing()
         cc = gf.routing.add_fiber_single(
             component=c,
             optical_routing_type=0,
-            grating_coupler=gf.components.grating_coupler_elliptical_te,
+            grating_coupler=gf.pcells.grating_coupler_elliptical_te,
         )
         cc.plot()
 
@@ -285,9 +285,9 @@ if __name__ == "__main__":
     # from gdsfactory.samples.big_device import big_device
     # w = h = 18 * 50
     # c = big_device(spacing=50.0, size=(w, h))
-    # gc = gf.functions.rotate90(gf.components.grating_coupler_elliptical_arbitrary)
+    # gc = gf.functions.rotate90(gf.pcells.grating_coupler_elliptical_arbitrary)
 
-    gc = gf.components.grating_coupler_elliptical_arbitrary
+    gc = gf.pcells.grating_coupler_elliptical_arbitrary
     c = gf.c.mmi2x2()
     cc = gf.routing.add_fiber_single(
         component=c,

@@ -93,5 +93,5 @@ settings:
       min_bend_radius: 129.147
       start_angle: 0
   info_version: 2
-  module: gdsfactory.components.splitter_tree
+  module: gdsfactory.pcells.splitter_tree
   name: splitter_tree

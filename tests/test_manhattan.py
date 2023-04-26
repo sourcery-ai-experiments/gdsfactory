@@ -5,7 +5,7 @@ import pytest
 
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 from gdsfactory.routing.manhattan import RouteWarning, round_corners, route_manhattan
 
 TOLERANCE = 0.001
@@ -113,14 +113,14 @@ if __name__ == "__main__":
     c = test_manhattan_fail()
     # c = test_manhattan_pass()
     # c = _demo_manhattan_fail()
-    # c = gf.components.straight()
+    # c = gf.pcells.straight()
     # c = gf.routing.add_fiber_array(c)
-    # c = gf.components.delay_snake()
+    # c = gf.pcells.delay_snake()
     c.show(show_ports=True)
 
     # c = gf.Component("pads_route_from_steps")
-    # pt = c << gf.components.pad_array(angle=270, columns=3)
-    # pb = c << gf.components.pad_array(angle=90, columns=3)
+    # pt = c << gf.pcells.pad_array(angle=270, columns=3)
+    # pb = c << gf.pcells.pad_array(angle=90, columns=3)
     # pt.move((100, 200))
     # route = gf.routing.get_route_from_steps(
     #     pt.ports["e11"],
@@ -129,7 +129,7 @@ if __name__ == "__main__":
     #         {"y": 100},
     #     ],
     #     cross_section='metal_routing',
-    #     bend=gf.components.wire_corner,
+    #     bend=gf.pcells.wire_corner,
     # )
     # c.add(route.references)
     # c.show(show_ports=True)

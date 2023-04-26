@@ -104,7 +104,7 @@ settings:
       info:
         length: 9973.393
       info_version: 2
-      module: gdsfactory.components.spiral_inner_io
+      module: gdsfactory.pcells.spiral_inner_io
       name: spiral_inner_io_2a92e51b
     default:
       cross_section: strip
@@ -128,7 +128,7 @@ settings:
     info:
       length: 9973.393
     info_version: 2
-    module: gdsfactory.components.spiral_inner_io
+    module: gdsfactory.pcells.spiral_inner_io
     name: spiral_inner_io_2a92e51_825ccbf1
   default:
     component:
@@ -192,5 +192,5 @@ settings:
     polarization: te
     wavelength: 1.53
   info_version: 2
-  module: gdsfactory.components.add_grating_couplers
+  module: gdsfactory.pcells.add_grating_couplers
   name: spiral_inner_io_2a92e51_16913f51

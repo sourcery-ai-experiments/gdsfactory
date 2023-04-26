@@ -5,12 +5,12 @@ from typing import Callable, List, Optional, Tuple
 import numpy as np
 
 import gdsfactory as gf
-from gdsfactory.component import Component, ComponentReference
-from gdsfactory.components.bend_euler import bend_euler
-from gdsfactory.components.straight import straight as straight_function
-from gdsfactory.components.taper import taper as taper_function
+from gdsfactory.component import Component, Instance
+from gdsfactory.pcells.bend_euler import bend_euler
+from gdsfactory.pcells.straight import straight as straight_function
+from gdsfactory.pcells.taper import taper as taper_function
 from gdsfactory.cross_section import strip
-from gdsfactory.port import Port, select_ports_optical
+from gdsfactory.component import Port, select_ports_optical
 from gdsfactory.routing.get_route import get_route
 from gdsfactory.routing.utils import direction_ports_from_list_ports, flip
 from gdsfactory.typings import ComponentSpec, CrossSectionSpec, Number, Routes, Strs
@@ -21,7 +21,7 @@ def route_south(
     optical_routing_type: int = 1,
     excluded_ports: Optional[Tuple[str, ...]] = None,
     straight_separation: Number = 4.0,
-    io_gratings_lines: Optional[List[List[ComponentReference]]] = None,
+    io_gratings_lines: Optional[List[List[Instance]]] = None,
     gc_port_name: str = "o1",
     bend: ComponentSpec = bend_euler,
     straight: ComponentSpec = straight_function,
@@ -64,9 +64,9 @@ def route_south(
 
         import gdsfactory as gf
 
-        c = gf.components.ring_double()
+        c = gf.pcells.ring_double()
         c = gf.Component()
-        ref = c << gf.components.ring_double()
+        ref = c << gf.pcells.ring_double()
         r = gf.routing.route_south(ref)
         for e in r.references:
             c.add(e)
@@ -274,14 +274,14 @@ def route_south(
 
 
 if __name__ == "__main__":
-    # c = gf.components.mmi2x2()
-    # c = gf.components.ring_single()
+    # c = gf.pcells.mmi2x2()
+    # c = gf.pcells.ring_single()
 
-    c = gf.components.ring_double()
+    c = gf.pcells.ring_double()
     layer = (2, 0)
     c = gf.Component()
-    ref = c << gf.components.ring_double(layer=layer)
-    r = route_south(ref, bend=gf.components.bend_euler, layer=layer)
+    ref = c << gf.pcells.ring_double(layer=layer)
+    r = route_south(ref, bend=gf.pcells.bend_euler, layer=layer)
     for e in r.references:
         c.add(e)
 

@@ -49,5 +49,5 @@ settings:
   info:
     n_bends: 82
   info_version: 2
-  module: gdsfactory.components.cutback_bend
+  module: gdsfactory.pcells.cutback_bend
   name: cutback_bend180

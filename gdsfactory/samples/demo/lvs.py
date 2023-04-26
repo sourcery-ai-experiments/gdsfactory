@@ -9,7 +9,7 @@ import gdsfactory as gf
 def pads_with_routes(radius: float = 10):
     """Returns MZI interferometer with bend."""
     c = gf.Component()
-    pad = gf.components.pad()
+    pad = gf.pcells.pad()
 
     tl = c << pad
     bl = c << pad

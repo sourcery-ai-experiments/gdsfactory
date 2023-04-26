@@ -23,7 +23,7 @@ def test_read_gds_hash() -> gf.Component:
 
 def test_read_gds_equivalent() -> None:
     """Ensures Component from GDS + YAML loads same component settings."""
-    c1 = gf.components.straight(length=1.234)
+    c1 = gf.pcells.straight(length=1.234)
     gdspath = gf.PATH.gdsdir / "straight.gds"
 
     c2 = gf.import_gds(gdspath, read_metadata=True)
@@ -45,13 +45,13 @@ def test_mix_cells_from_gds_and_from_function() -> None:
     """
     gdspath = gf.PATH.gdsdir / "straight.gds"
     c = gf.Component("test_mix_cells_from_gds_and_from_function")
-    c << gf.components.straight(length=1.234)
+    c << gf.pcells.straight(length=1.234)
     c << gf.import_gds(gdspath)
     c.write_gds()
 
 
 def _write() -> None:
-    c1 = gf.components.straight(length=1.234)
+    c1 = gf.pcells.straight(length=1.234)
     gdspath = gf.PATH.gdsdir / "straight.gds"
     c1.write_gds_with_metadata(gdspath=gdspath)
     c1.show()
@@ -65,14 +65,14 @@ if __name__ == "__main__":
     # test_read_gds_equivalent()
     test_read_gds_hash()
 
-    # c1 = gf.components.straight(length=1.234)
+    # c1 = gf.pcells.straight(length=1.234)
     # gdspath = gf.PATH.gdsdir / "straight.gds"
 
     # c2 = gf.import_gds(gdspath, name="c2")
     # d = c2.to_dict()["cells"]
     # print(d)
 
-    # c1 = gf.components.straight(length=1.234)
+    # c1 = gf.pcells.straight(length=1.234)
     # gdspath = gf.PATH.gdsdir / "straight.gds"
     # c2 = gf.import_gds(gdspath)
     # d1 = c1.to_dict()

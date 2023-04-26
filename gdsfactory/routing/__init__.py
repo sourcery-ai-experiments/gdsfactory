@@ -1,4 +1,4 @@
-"""Functions to create routes between components."""
+"""Functions to create routes between pcells."""
 
 from __future__ import annotations
 

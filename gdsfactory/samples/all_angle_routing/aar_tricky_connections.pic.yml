@@ -152,7 +152,7 @@ routes:
 #    links:
 #      wg_c1,o2: wg_c2,o2
 
-  touching:  # this one is ok... will just have the components touching, nothing between
+  touching:  # this one is ok... will just have the pcells touching, nothing between
     routing_strategy: get_bundle_all_angle
     links:
       wg_d1,o2: wg_d2,o1

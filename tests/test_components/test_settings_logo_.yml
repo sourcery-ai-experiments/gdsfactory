@@ -10,5 +10,5 @@ settings:
   function_name: logo
   info: {}
   info_version: 2
-  module: gdsfactory.components.logo
+  module: gdsfactory.pcells.logo
   name: logo

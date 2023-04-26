@@ -182,5 +182,5 @@ settings:
   function_name: ge_detector_straight_si_contacts
   info: {}
   info_version: 2
-  module: gdsfactory.components.ge_detector_straight_si_contacts
+  module: gdsfactory.pcells.ge_detector_straight_si_contacts
   name: ge_detector_straight_si_contacts

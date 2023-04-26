@@ -6,7 +6,7 @@ import gdsfactory as gf
 @gf.cell
 def straight_with_pins(**kwargs):
     c = gf.Component()
-    ref = c << gf.components.straight()
+    ref = c << gf.pcells.straight()
     c.add_ports(ref.ports)
     return c
 

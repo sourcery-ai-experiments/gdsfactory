@@ -5,8 +5,8 @@ from typing import Callable
 import gdsfactory as gf
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
-from gdsfactory.components.straight_heater_metal import straight_heater_metal
-from gdsfactory.port import select_ports_electrical
+from gdsfactory.pcells.straight_heater_metal import straight_heater_metal
+from gdsfactory.component import select_ports_electrical
 from gdsfactory.routing.get_bundle import get_bundle_electrical
 from gdsfactory.routing.sort_ports import sort_ports_x
 from gdsfactory.typings import ComponentSpec, Float2, Optional, Strs
@@ -37,7 +37,7 @@ def add_electrical_pads_top_dc(
         :include-source:
 
         import gdsfactory as gf
-        c = gf.components.straight_heater_metal(length=100)
+        c = gf.pcells.straight_heater_metal(length=100)
         c = gf.routing.add_electrical_pads_top_dc(c, width=10)
         c.plot()
 
@@ -86,7 +86,7 @@ def add_electrical_pads_top_dc(
 
 
 if __name__ == "__main__":
-    c = gf.components.straight_heater_metal(length=100.0)
-    # c = gf.components.straight(length=100.0)
+    c = gf.pcells.straight_heater_metal(length=100.0)
+    # c = gf.pcells.straight(length=100.0)
     cc = add_electrical_pads_top_dc(component=c, width=10)
     cc.show(show_ports=True)

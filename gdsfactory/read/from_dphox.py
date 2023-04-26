@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from gdsfactory.component import Component, ComponentReference
+from gdsfactory.component import Component, Instance
 
 
 def from_dphox(device, foundry) -> Component:
@@ -25,7 +25,7 @@ def from_dphox(device, foundry) -> Component:
     for ref in device.child_to_device:
         child = from_dphox(device.child_to_device[ref], foundry)
         for gds_transform in device.child_to_transform[ref][-1]:
-            new_ref = ComponentReference(
+            new_ref = Instance(
                 component=child,
                 origin=(gds_transform.x, gds_transform.y),
                 rotation=gds_transform.angle,

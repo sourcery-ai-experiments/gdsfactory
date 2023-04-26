@@ -5,7 +5,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import numpy as np
 
 import gdsfactory as gf
-from gdsfactory.component import Component, ComponentReference
+from gdsfactory.component import Component, Instance
 from gdsfactory.port import Port, flipped
 from gdsfactory.routing.get_route import get_route
 from gdsfactory.typings import Route, RouteFactory
@@ -28,7 +28,7 @@ def sort_key_north_to_south(port: Port) -> float:
 
 
 def route_ports_to_side(
-    ports: Union[Dict[str, Port], List[Port], Component, ComponentReference],
+    ports: Union[Dict[str, Port], List[Port], Component, Instance],
     side: str = "north",
     x: Optional[float] = None,
     y: Optional[float] = None,
@@ -38,7 +38,7 @@ def route_ports_to_side(
     """Routes ports to a given side.
 
     Args:
-        ports: list/dict/Component/ComponentReference to route to a side.
+        ports: list/dict/Component/Instance to route to a side.
         side: 'north', 'south', 'east' or 'west'.
         x: position to route ports for east/west. None, uses most east/west value.
         y: position to route ports for south/north. None, uses most north/south value.
@@ -60,7 +60,7 @@ def route_ports_to_side(
         import gdsfactory as gf
 
         c = gf.Component('sample_route_sides')
-        dummy = gf.components.nxn(north=2, south=2, west=2, east=2)
+        dummy = gf.pcells.nxn(north=2, south=2, west=2, east=2)
         sides = ["north", "south", "east", "west"]
         d = 100
         positions = [(0, 0), (d, 0), (d, d), (0, d)]
@@ -84,7 +84,7 @@ def route_ports_to_side(
     if isinstance(ports, dict):
         ports = list(ports.values())
 
-    elif isinstance(ports, (Component, ComponentReference)):
+    elif isinstance(ports, (Component, Instance)):
         ports = list(ports.ports.values())
 
     # Choose which
@@ -542,7 +542,7 @@ def _sample_route_sides() -> Component:
 
 if __name__ == "__main__":
     c = Component("sample_route_sides")
-    dummy = gf.components.nxn(north=2, south=2, west=2, east=2, cross_section="nitride")
+    dummy = gf.pcells.nxn(north=2, south=2, west=2, east=2, cross_section="nitride")
     sides = ["north", "south", "east", "west"]
     d = 100
     positions = [(0, 0), (d, 0), (d, d), (0, d)]

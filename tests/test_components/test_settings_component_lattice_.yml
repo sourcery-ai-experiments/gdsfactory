@@ -110,5 +110,5 @@ settings:
   function_name: component_lattice
   info: {}
   info_version: 2
-  module: gdsfactory.components.component_lattice
+  module: gdsfactory.pcells.component_lattice
   name: component_lattice

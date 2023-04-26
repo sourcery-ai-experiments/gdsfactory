@@ -20,7 +20,7 @@ Make sure you also run `gf install klayout-integration` from the terminal to ins
 
 ## 2. File-watcher flow
 
-For building large components can use a file-watcher and see your updates in KLayout.
+For building large pcells can use a file-watcher and see your updates in KLayout.
 
 1. You execute the file watcher `gf watch FolderName` or in the current working directory `gf watch`
 2. The file-watcher re-runs any python file `.py` or YAML `.pic.yaml`.

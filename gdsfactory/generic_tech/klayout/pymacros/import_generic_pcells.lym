@@ -54,7 +54,7 @@ sys.path.append(str(pathlib.Path(f'{env_dir}/site-packages/')))
 try:
     import flayout as fl
     from flayout.pcell import _klayout_type, _validate_parameter, copy_tree
-    import gdsfactory.components as gfc
+    import gdsfactory.pcells as gfc
     import gdsfactory as gf
     from gdsfactory.routing.manhattan import route_manhattan
     from gdsfactory.routing.get_bundle import get_bundle
@@ -145,10 +145,10 @@ class PCellFactory(pya.PCellDeclarationHelper):
         return sig_new
 
     def gdsfactory_to_klayout(self, **kwargs):
-        gf.clear_cache()  # Clear cache to be able to reload components without changing the name
+        gf.clear_cache()  # Clear cache to be able to reload pcells without changing the name
 
         # Add routes
-        def _route_components(routes: str, router, c) -> None:
+        def _route_pcells(routes: str, router, c) -> None:
             port1, component2_port2 = routes[0].split('->')
             component2, port2 = component2_port2.split('@')
             component2_pcell = pcells_in_layout[component2]
@@ -227,7 +227,7 @@ class PCellFactory(pya.PCellDeclarationHelper):
 
         # Keep track of PCell instances
         # NOTE: This is a hack to be able to get the component from the PCell
-        #      instance. This is needed to be able to route the components.
+        #      instance. This is needed to be able to route the pcells.
         # KLayout creates PCells in a "hidden" layout, so we need to get the "real"
         # PCell instance from the layout.
         # TODO: Find a better way to do this.
@@ -243,7 +243,7 @@ class PCellFactory(pya.PCellDeclarationHelper):
             if isinstance(route_, str):
                 route_ = [route_]
             if route_ not in ([''], []) and 'None' not in route_[0] and route_[0] not in current_routes:
-                _route_components(route_, router, c)
+                _route_pcells(route_, router, c)
 
         # Keep track of routes
         pcells_in_layout[top.name].setdefault('routes', current_routes)
@@ -258,7 +258,7 @@ generic_lib = fl.library(
     cells=[],
     description="GDSFactory Generic PCell Library",
 )
-pb = pya.AbsoluteProgress("Importing GDSFactory components", len(gfc.cells.keys()))
+pb = pya.AbsoluteProgress("Importing GDSFactory pcells", len(gfc.cells.keys()))
 for i, cell in enumerate(gfc.cells.items()):
 
     pb.set(i / len(gfc.cells.items()) * 100, True)
@@ -270,7 +270,7 @@ for i, cell in enumerate(gfc.cells.items()):
         generic_lib.layout().register_pcell(cell[0], func) # Register the PCell
 
     except Exception as e:
-        pass # Ignore components that cannot be converted to PCells
+        pass # Ignore pcells that cannot be converted to PCells
 pb.set(100, True)
 </text>
 </klayout-macro>

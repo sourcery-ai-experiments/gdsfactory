@@ -16,7 +16,7 @@
 #
 # ![](https://i.imgur.com/3pczkyM.png)
 #
-# You can define components Parametric cells (waveguides, bends, couplers) with basic input parameters (width, length, radius ...) and reuse the PCells in more complex PCells.
+# You can define pcells Parametric cells (waveguides, bends, couplers) with basic input parameters (width, length, radius ...) and reuse the PCells in more complex PCells.
 
 # + tags=[]
 from functools import partial
@@ -35,8 +35,8 @@ PDK.activate()
 # + tags=[]
 @gf.cell
 def bend_with_straight(
-    bend: ComponentSpec = gf.components.bend_euler,
-    straight: ComponentSpec = gf.components.straight,
+    bend: ComponentSpec = gf.pcells.bend_euler,
+    straight: ComponentSpec = gf.pcells.straight,
 ) -> gf.Component:
     c = gf.Component()
     b = gf.get_component(bend)
@@ -84,11 +84,11 @@ c
 # Partial lets you define different default parameters for a function, so you can modify the settings for the child cells.
 
 # + tags=[]
-c = bend_with_straight(bend=gf.partial(gf.components.bend_circular, radius=30))
+c = bend_with_straight(bend=gf.partial(gf.pcells.bend_circular, radius=30))
 c
 
 # + tags=[]
-bend20 = partial(gf.components.bend_circular, radius=20)
+bend20 = partial(gf.pcells.bend_circular, radius=20)
 b = bend20()
 b
 
@@ -121,7 +121,7 @@ b3
 # You can also access `functools.partial` from `gf.partial`
 
 # + tags=[]
-pad = gf.partial(gf.components.pad, layer=(41, 0))
+pad = gf.partial(gf.pcells.pad, layer=(41, 0))
 
 # + tags=[]
 c = pad()
@@ -135,16 +135,16 @@ c
 # Lets say that we want to add tapers and grating couplers to a wide waveguide.
 
 # + tags=[]
-c1 = gf.components.straight()
+c1 = gf.pcells.straight()
 c1
 
 # + tags=[]
-straight_wide = gf.partial(gf.components.straight, width=3)
+straight_wide = gf.partial(gf.pcells.straight, width=3)
 c3 = straight_wide()
 c3
 
 # + tags=[]
-c1 = gf.components.straight(width=3)
+c1 = gf.pcells.straight(width=3)
 c1
 
 # + tags=[]

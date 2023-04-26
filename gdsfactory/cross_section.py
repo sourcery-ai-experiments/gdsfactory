@@ -230,7 +230,7 @@ class CrossSection(BaseModel):
             right: right padding.
             left: left padding.
         """
-        from gdsfactory.add_padding import get_padding_points
+        from gdsfactory.pcells.add_padding import get_padding_points
 
         c = component
         x = self
@@ -2329,8 +2329,8 @@ if __name__ == "__main__":
     # c = p.extrude(cross_section=xs)
 
     # xs = rib_with_trenches() # FIXME
-    # c = gf.components.straight(cross_section=xs)
-    c = gf.components.straight(cross_section="strip")
+    # c = gf.pcells.straight(cross_section=xs)
+    c = gf.pcells.straight(cross_section="strip")
 
     # xs = l_wg()
     # p = gf.path.straight()

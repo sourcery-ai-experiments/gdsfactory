@@ -22,7 +22,7 @@ import numpy as np
 from gdsfactory import LAYER
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 
 import gdsfactory as gf
 from gdsfactory.generic_tech import get_generic_pdk
@@ -33,8 +33,8 @@ PDK.activate()
 # -
 
 c = gf.Component("sample_no_routes")
-mmi1 = c << gf.components.mmi1x2()
-mmi2 = c << gf.components.mmi1x2()
+mmi1 = c << gf.pcells.mmi1x2()
+mmi2 = c << gf.pcells.mmi1x2()
 mmi2.move((100, 50))
 c
 
@@ -47,8 +47,8 @@ c
 # -
 
 c = gf.Component("sample_connect")
-mmi1 = c << gf.components.mmi1x2()
-mmi2 = c << gf.components.mmi1x2()
+mmi1 = c << gf.pcells.mmi1x2()
+mmi2 = c << gf.pcells.mmi1x2()
 mmi2.move((100, 50))
 route = gf.routing.get_route(mmi1.ports["o2"], mmi2.ports["o1"])
 c.add(route.references)
@@ -61,10 +61,10 @@ route
 # sometimes there are obstacles that connect strip does not see!
 
 c = gf.Component("sample_problem")
-mmi1 = c << gf.components.mmi1x2()
-mmi2 = c << gf.components.mmi1x2()
+mmi1 = c << gf.pcells.mmi1x2()
+mmi2 = c << gf.pcells.mmi1x2()
 mmi2.move((110, 50))
-x = c << gf.components.cross(length=20)
+x = c << gf.pcells.cross(length=20)
 x.move((135, 20))
 route = gf.routing.get_route(mmi1.ports["o2"], mmi2.ports["o2"])
 c.add(route.references)
@@ -77,10 +77,10 @@ c
 
 # +
 c = gf.Component("sample_avoid_obstacle")
-mmi1 = c << gf.components.mmi1x2()
-mmi2 = c << gf.components.mmi1x2()
+mmi1 = c << gf.pcells.mmi1x2()
+mmi2 = c << gf.pcells.mmi1x2()
 mmi2.move((110, 50))
-x = c << gf.components.cross(length=20)
+x = c << gf.pcells.cross(length=20)
 x.move((135, 20))
 
 x0 = mmi1.ports["o3"].x
@@ -106,8 +106,8 @@ route.references
 # Lets say that we want to extrude the waveguide using a different waveguide crosssection, for example using a different layer
 
 c = gf.Component("sample_connect_metal")
-mmi1 = c << gf.components.mmi1x2()
-mmi2 = c << gf.components.mmi1x2()
+mmi1 = c << gf.pcells.mmi1x2()
+mmi2 = c << gf.pcells.mmi1x2()
 mmi2.move((100, 50))
 route = gf.routing.get_route(
     mmi1.ports["o3"], mmi2.ports["o1"], cross_section=gf.cross_section.metal1, radius=10
@@ -121,8 +121,8 @@ c
 
 # +
 c = gf.Component("sample_connect_auto_widen")
-mmi1 = c << gf.components.mmi1x2()
-mmi2 = c << gf.components.mmi1x2()
+mmi1 = c << gf.pcells.mmi1x2()
+mmi2 = c << gf.pcells.mmi1x2()
 mmi2.move((200, 50))
 
 route = gf.routing.get_route(
@@ -144,12 +144,12 @@ c
 # +
 c = gf.Component("waypoints_sample")
 
-w = gf.components.straight()
+w = gf.pcells.straight()
 left = c << w
 right = c << w
 right.move((100, 80))
 
-obstacle = gf.components.rectangle(size=(100, 10))
+obstacle = gf.pcells.rectangle(size=(100, 10))
 obstacle1 = c << obstacle
 obstacle2 = c << obstacle
 obstacle1.ymin = 40
@@ -186,12 +186,12 @@ c
 
 # +
 c = gf.Component("get_route_from_steps")
-w = gf.components.straight()
+w = gf.pcells.straight()
 left = c << w
 right = c << w
 right.move((100, 80))
 
-obstacle = gf.components.rectangle(size=(100, 10))
+obstacle = gf.pcells.rectangle(size=(100, 10))
 obstacle1 = c << obstacle
 obstacle2 = c << obstacle
 obstacle1.ymin = 40
@@ -215,12 +215,12 @@ c
 
 # +
 c = gf.Component("get_route_from_steps_shorter_syntax")
-w = gf.components.straight()
+w = gf.pcells.straight()
 left = c << w
 right = c << w
 right.move((100, 80))
 
-obstacle = gf.components.rectangle(size=(100, 10))
+obstacle = gf.pcells.rectangle(size=(100, 10))
 obstacle1 = c << obstacle
 obstacle2 = c << obstacle
 obstacle1.ymin = 40
@@ -250,13 +250,13 @@ c
 # +
 c = gf.Component("get_route_astar")
 cross_section = gf.get_cross_section("metal1", width=3)
-w = gf.components.straight(cross_section=cross_section)
+w = gf.pcells.straight(cross_section=cross_section)
 
 left = c << w
 right = c << w
 right.move((100, 80))
 
-obstacle = gf.components.rectangle(size=(100, 3), layer="M1")
+obstacle = gf.pcells.rectangle(size=(100, 3), layer="M1")
 obstacle1 = c << obstacle
 obstacle2 = c << obstacle
 obstacle1.ymin = 40
@@ -283,13 +283,13 @@ c
 # +
 c = gf.Component("get_route_astar_avoid_layers")
 cross_section = gf.get_cross_section("metal1", width=3)
-w = gf.components.straight(cross_section=cross_section)
+w = gf.pcells.straight(cross_section=cross_section)
 
 left = c << w
 right = c << w
 right.move((100, 80))
 
-obstacle = gf.components.rectangle(size=(100, 3), layer="WG")
+obstacle = gf.pcells.rectangle(size=(100, 3), layer="WG")
 obstacle1 = c << obstacle
 obstacle2 = c << obstacle
 obstacle1.ymin = 40
@@ -313,9 +313,9 @@ c
 
 # +
 c = gf.Component("get_route_astar_strip")
-rect1 = c << gf.components.rectangle()
-rect2 = c << gf.components.rectangle()
-rect3 = c << gf.components.rectangle((2, 2), layer=(1, 0))
+rect1 = c << gf.pcells.rectangle()
+rect2 = c << gf.pcells.rectangle()
+rect3 = c << gf.pcells.rectangle((2, 2), layer=(1, 0))
 rect2.move(destination=(8, 4))
 rect3.move(destination=(5.5, 1.5))
 
@@ -333,9 +333,9 @@ c
 
 # +
 c = gf.Component("get_route_astar_strip_avoid_layers")
-rect1 = c << gf.components.rectangle()
-rect2 = c << gf.components.rectangle()
-rect3 = c << gf.components.rectangle((2, 2), layer=(2, 0))
+rect1 = c << gf.pcells.rectangle()
+rect2 = c << gf.pcells.rectangle()
+rect3 = c << gf.pcells.rectangle((2, 2), layer=(2, 0))
 rect2.move(destination=(8, 4))
 rect3.move(destination=(5.5, 1.5))
 
@@ -357,12 +357,12 @@ c
 
 # +
 c = gf.Component("get_route_astar_resolution")
-w = gf.components.straight()
+w = gf.pcells.straight()
 left = c << w
 right = c << w
 right.move((100, 80))
 
-obstacle = gf.components.rectangle(size=(100, 10))
+obstacle = gf.pcells.rectangle(size=(100, 10))
 obstacle1 = c << obstacle
 obstacle2 = c << obstacle
 obstacle1.ymin = 40
@@ -834,7 +834,7 @@ def test_connect_bundle_u_indirect(dy=-200, angle=180, layer=(1, 0)):
     routes = gf.routing.get_bundle(
         ports1,
         ports2,
-        bend=gf.components.bend_euler,
+        bend=gf.pcells.bend_euler,
         radius=5,
     )
     for route in routes:
@@ -915,8 +915,8 @@ c
 
 # +
 c = gf.Component("route_bend_5um")
-c1 = c << gf.components.mmi2x2()
-c2 = c << gf.components.mmi2x2()
+c1 = c << gf.pcells.mmi2x2()
+c2 = c << gf.pcells.mmi2x2()
 
 c2.move((100, 50))
 routes = gf.routing.get_bundle(
@@ -928,8 +928,8 @@ c
 # -
 
 c = gf.Component("electrical")
-c1 = c << gf.components.pad()
-c2 = c << gf.components.pad()
+c1 = c << gf.pcells.pad()
+c2 = c << gf.pcells.pad()
 c2.move((200, 100))
 routes = gf.routing.get_bundle(
     [c1.ports["e3"]], [c2.ports["e1"]], cross_section=gf.cross_section.metal1
@@ -940,7 +940,7 @@ c
 
 # +
 c = gf.Component("get_bundle_with_ubends_bend_from_top")
-pad_array = gf.components.pad_array()
+pad_array = gf.pcells.pad_array()
 
 c1 = c << pad_array
 c2 = c << pad_array
@@ -966,7 +966,7 @@ c
 
 # +
 c = gf.Component("get_bundle_with_ubends_bend_from_bottom")
-pad_array = gf.components.pad_array()
+pad_array = gf.pcells.pad_array()
 
 c1 = c << pad_array
 c2 = c << pad_array
@@ -996,14 +996,14 @@ c
 # Sometimes 90 degrees routes do not have enough space for a Manhattan route
 
 c = gf.Component("route_fail_1")
-c1 = c << gf.components.nxn(east=3, ysize=20)
-c2 = c << gf.components.nxn(west=3)
+c1 = c << gf.pcells.nxn(east=3, ysize=20)
+c2 = c << gf.pcells.nxn(west=3)
 c2.move((80, 0))
 c
 
 c = gf.Component("route_fail_v2")
-c1 = c << gf.components.nxn(east=3, ysize=20)
-c2 = c << gf.components.nxn(west=3)
+c1 = c << gf.pcells.nxn(east=3, ysize=20)
+c2 = c << gf.pcells.nxn(west=3)
 c2.move((80, 0))
 routes = gf.routing.get_bundle(
     c1.get_ports_list(angle=0),
@@ -1043,8 +1043,8 @@ c
 # Add Sbend routes using `get_bundle_sbend`
 
 c = gf.Component("route_solution_1_get_bundle_sbend")
-c1 = c << gf.components.nxn(east=3, ysize=20)
-c2 = c << gf.components.nxn(west=3)
+c1 = c << gf.pcells.nxn(east=3, ysize=20)
+c2 = c << gf.pcells.nxn(west=3)
 c2.move((80, 0))
 routes = gf.routing.get_bundle_sbend(
     c1.get_ports_list(angle=0), c2.get_ports_list(angle=180)
@@ -1056,8 +1056,8 @@ c
 # You can also `get_bundle` adding `with_sbend=True`
 
 c = gf.Component("route_solution_2_get_bundle")
-c1 = c << gf.components.nxn(east=3, ysize=20)
-c2 = c << gf.components.nxn(west=3)
+c1 = c << gf.pcells.nxn(east=3, ysize=20)
+c2 = c << gf.pcells.nxn(west=3)
 c2.move((80, 0))
 routes = gf.routing.get_bundle(
     c1.get_ports_list(angle=0),
@@ -1125,15 +1125,15 @@ cell
 
 # +
 c = gf.Component("demo_get_bundle")
-r = c << gf.components.array(
-    component=gf.components.straight, rows=2, columns=1, spacing=(0, 20)
+r = c << gf.pcells.array(
+    component=gf.pcells.straight, rows=2, columns=1, spacing=(0, 20)
 )
 
 r.movex(60)
 r.movey(40)
 
-lt = c << gf.components.straight(length=15)
-lb = c << gf.components.straight(length=5)
+lt = c << gf.pcells.straight(length=15)
+lb = c << gf.pcells.straight(length=5)
 lt.movey(5)
 
 ports1 = lt.get_ports_list(angle=0) + lb.get_ports_list(angle=0)
@@ -1155,8 +1155,8 @@ c
 
 # +
 c = gf.Component("get_route_from_steps_sample")
-w = gf.components.array(
-    gf.partial(gf.components.straight, layer=(2, 0)),
+w = gf.pcells.array(
+    gf.partial(gf.pcells.straight, layer=(2, 0)),
     rows=3,
     columns=1,
     spacing=(0, 50),
@@ -1285,8 +1285,8 @@ c
 
 # +
 c = gf.Component("demo_problem_path_length_match")
-c1 = c << gf.components.straight_array(spacing=90)
-c2 = c << gf.components.straight_array(spacing=5)
+c1 = c << gf.pcells.straight_array(spacing=90)
+c2 = c << gf.pcells.straight_array(spacing=5)
 c2.movex(200)
 c1.y = 0
 c2.y = 0
@@ -1306,8 +1306,8 @@ c
 
 # +
 c = gf.Component("demo_solution_path_lenght_match")
-c1 = c << gf.components.straight_array(spacing=90)
-c2 = c << gf.components.straight_array(spacing=5)
+c1 = c << gf.pcells.straight_array(spacing=90)
+c2 = c << gf.pcells.straight_array(spacing=5)
 c2.movex(200)
 c1.y = 0
 c2.y = 0
@@ -1331,20 +1331,20 @@ c
 #
 # ### Route to electrical pads
 
-mzi = gf.components.straight_heater_metal(length=30)
+mzi = gf.pcells.straight_heater_metal(length=30)
 mzi
 
-mzi = gf.components.mzi_phase_shifter(
-    length_x=30, straight_x_top=gf.components.straight_heater_metal_90_90
+mzi = gf.pcells.mzi_phase_shifter(
+    length_x=30, straight_x_top=gf.pcells.straight_heater_metal_90_90
 )
 mzi_te = gf.routing.add_electrical_pads_top(component=mzi, layer=(41, 0))
 mzi_te
 
-hr = gf.components.straight_heater_metal()
+hr = gf.pcells.straight_heater_metal()
 cc = gf.routing.add_electrical_pads_shortest(component=hr, layer=(41, 0))
 cc
 
-c = gf.components.mzi_phase_shifter_top_heater_metal(length_x=70)
+c = gf.pcells.mzi_phase_shifter_top_heater_metal(length_x=70)
 cc = gf.routing.add_electrical_pads_shortest(component=c, layer=(41, 0))
 cc
 
@@ -1352,8 +1352,8 @@ cc
 # Solution: you can use define the pads separate and route metal lines to them
 
 c = gf.Component("mzi_with_pads")
-c1 = c << gf.components.mzi_phase_shifter_top_heater_metal(length_x=70)
-c2 = c << gf.components.pad_array(columns=2)
+c1 = c << gf.pcells.mzi_phase_shifter_top_heater_metal(length_x=70)
+c2 = c << gf.pcells.pad_array(columns=2)
 
 c2.ymin = c1.ymax + 20
 c2.x = 0
@@ -1362,10 +1362,10 @@ c
 
 # +
 c = gf.Component("mzi_with_pads_top")
-c1 = c << gf.components.mzi_phase_shifter(
-    straight_x_top=gf.components.straight_heater_metal_90_90, length_x=70  # 150
+c1 = c << gf.pcells.mzi_phase_shifter(
+    straight_x_top=gf.pcells.straight_heater_metal_90_90, length_x=70  # 150
 )
-c2 = c << gf.components.pad_array(columns=2, angle=270)
+c2 = c << gf.pcells.pad_array(columns=2, angle=270)
 
 c2.ymin = c1.ymax + 30
 c2.x = 0
@@ -1379,7 +1379,7 @@ routes = gf.routing.get_bundle(
     ports2=ports2,
     cross_section=gf.cross_section.metal1,
     width=10,
-    bend=gf.components.wire_corner,
+    bend=gf.pcells.wire_corner,
 )
 for route in routes:
     c.add(route.references)
@@ -1453,7 +1453,7 @@ c = gf.routing.add_fiber_array(component=component, radius=10.0, fanout_length=6
 c
 # -
 
-c = gf.components.ring_double(width=0.8)
+c = gf.pcells.ring_double(width=0.8)
 cc = gf.routing.add_fiber_array(component=c, taper_length=150)
 cc
 
@@ -1462,8 +1462,8 @@ cc
 # +
 import gdsfactory as gf
 
-c = gf.components.mzi_phase_shifter()
-gcte = gf.components.grating_coupler_te
+c = gf.pcells.mzi_phase_shifter()
+gcte = gf.pcells.grating_coupler_te
 
 cc = gf.routing.add_fiber_array(
     component=c,
@@ -1476,34 +1476,34 @@ cc
 
 # ### Route to fiber single
 
-c = gf.components.ring_single()
+c = gf.pcells.ring_single()
 cc = gf.routing.add_fiber_single(component=c)
 cc
 
-c = gf.components.ring_single()
+c = gf.pcells.ring_single()
 cc = gf.routing.add_fiber_single(component=c, with_loopback=False)
 cc
 
-c = gf.components.mmi2x2()
+c = gf.pcells.mmi2x2()
 cc = gf.routing.add_fiber_single(component=c, with_loopback=False)
 cc
 
-c = gf.components.mmi1x2()
+c = gf.pcells.mmi1x2()
 cc = gf.routing.add_fiber_single(component=c, with_loopback=False, fiber_spacing=150)
 cc
 
-c = gf.components.mmi1x2()
+c = gf.pcells.mmi1x2()
 cc = gf.routing.add_fiber_single(component=c, with_loopback=False, fiber_spacing=50)
 cc
 
-c = gf.components.crossing()
+c = gf.pcells.crossing()
 cc = gf.routing.add_fiber_single(component=c, with_loopback=False)
 cc
 
-c = gf.components.cross(length=200, width=2, port_type="optical")
+c = gf.pcells.cross(length=200, width=2, port_type="optical")
 cc = gf.routing.add_fiber_single(component=c, with_loopback=False)
 cc
 
-c = gf.components.spiral_double()
+c = gf.pcells.spiral_double()
 cc = gf.routing.add_fiber_single(component=c, with_loopback=False)
 cc

@@ -66,5 +66,5 @@ settings:
     polarization: tm
     wavelength: 1.53
   info_version: 2
-  module: gdsfactory.components.grating_coupler_elliptical_trenches
+  module: gdsfactory.pcells.grating_coupler_elliptical_trenches
   name: grating_coupler_ellipti_e07aa712

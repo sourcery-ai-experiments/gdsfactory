@@ -376,9 +376,9 @@ if __name__ == "__main__":
     import gdsfactory as gf
 
     # c = gf.component.Component()
-    # waveguide = c << gf.get_component(gf.components.straight_pin(length=10, taper=None))
+    # waveguide = c << gf.get_component(gf.pcells.straight_pin(length=10, taper=None))
     # undercut = c << gf.get_component(
-    #     gf.components.rectangle(
+    #     gf.pcells.rectangle(
     #         size=(5.0, 5.0),
     #         layer="UNDERCUT",
     #         centered=True,
@@ -387,13 +387,13 @@ if __name__ == "__main__":
     # c.show()
 
     c = gf.component.Component()
-    # waveguide = c << gf.get_component(gf.components.straight_pin(length=5, taper=None))
-    ring = c << gf.get_component(gf.components.ring_crow)
-    # bend = c << gf.get_component(gf.components.spiral_double(cross_section="rib"))
-    # c = gf.components.spiral_racetrack(cross_section='rib')
+    # waveguide = c << gf.get_component(gf.pcells.straight_pin(length=5, taper=None))
+    ring = c << gf.get_component(gf.pcells.ring_crow)
+    # bend = c << gf.get_component(gf.pcells.spiral_double(cross_section="rib"))
+    # c = gf.pcells.spiral_racetrack(cross_section='rib')
     c.plot()
     # undercut = c << gf.get_component(
-    #     gf.components.rectangle(
+    #     gf.pcells.rectangle(
     #         size=(5.0, 5.0),
     #         layer="UNDERCUT",
     #         centered=True,

@@ -4,9 +4,9 @@ from typing import Callable, Optional, Tuple
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.components.grating_coupler_elliptical_trenches import grating_coupler_te
-from gdsfactory.components.straight import straight as straight_function
-from gdsfactory.port import select_ports_optical
+from gdsfactory.pcells.grating_coupler_elliptical_trenches import grating_coupler_te
+from gdsfactory.pcells.straight import straight as straight_function
+from gdsfactory.component import select_ports_optical
 from gdsfactory.routing.route_fiber_array import route_fiber_array
 from gdsfactory.routing.sort_ports import sort_ports_x
 from gdsfactory.typings import (
@@ -73,11 +73,11 @@ def add_fiber_array(
 
         import gdsfactory as gf
 
-        c = gf.components.crossing()
+        c = gf.pcells.crossing()
         cc = gf.routing.add_fiber_array(
             component=c,
             optical_routing_type=2,
-            grating_coupler=gf.components.grating_coupler_elliptical_te,
+            grating_coupler=gf.pcells.grating_coupler_elliptical_te,
             with_loopback=False
         )
         cc.plot()
@@ -188,12 +188,12 @@ def add_fiber_array(
 
 def demo_te_and_tm():
     c = gf.Component()
-    w = gf.components.straight()
+    w = gf.pcells.straight()
     wte = add_fiber_array(
-        component=w, grating_coupler=gf.components.grating_coupler_elliptical_te
+        component=w, grating_coupler=gf.pcells.grating_coupler_elliptical_te
     )
     wtm = add_fiber_array(
-        component=w, grating_coupler=gf.components.grating_coupler_elliptical_tm
+        component=w, grating_coupler=gf.pcells.grating_coupler_elliptical_tm
     )
     c.add_ref(wte)
     wtm_ref = c.add_ref(wtm)
@@ -205,8 +205,8 @@ if __name__ == "__main__":
     from gdsfactory.routing.get_input_labels import get_input_labels_dash
 
     # test_type0()
-    gcte = gf.components.grating_coupler_te
-    gctm = gf.components.grating_coupler_tm
+    gcte = gf.pcells.grating_coupler_te
+    gctm = gf.pcells.grating_coupler_tm
     strip = gf.partial(
         gf.cross_section.cross_section,
         width=1,
@@ -224,14 +224,14 @@ if __name__ == "__main__":
     # cc = demo_tapers()
     # cc = test_type1()
     # pprint(cc.get_json())
-    # c = gf.components.coupler(gap=0.2, length=5.6)
-    # c = gf.components.straight()
-    c = gf.components.mmi2x2()
-    # c = gf.components.ring_single()
-    # c = gf.components.straight_heater_metal()
-    # c = gf.components.spiral(direction="NORTH")
+    # c = gf.pcells.coupler(gap=0.2, length=5.6)
+    # c = gf.pcells.straight()
+    c = gf.pcells.mmi2x2()
+    # c = gf.pcells.ring_single()
+    # c = gf.pcells.straight_heater_metal()
+    # c = gf.pcells.spiral(direction="NORTH")
 
-    # c = gf.components.bend_euler(info=dict(doe="bends"))
+    # c = gf.pcells.bend_euler(info=dict(doe="bends"))
     cc = add_fiber_array(c, layer_label="TEXT", layer_label_loopback="TEXT")
 
     # cc = add_fiber_array(

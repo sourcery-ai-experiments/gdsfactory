@@ -114,7 +114,7 @@ def grating_coupler(
     """Grating_coupler model.
 
     equation adapted from photontorch grating coupler
-    https://github.com/flaport/photontorch/blob/master/photontorch/components/gratingcouplers.py
+    https://github.com/flaport/photontorch/blob/master/photontorch/pcells/gratingcouplers.py
 
     Args:
         wl0: center wavelength.
@@ -162,7 +162,7 @@ def coupler(
     r"""Dispersive coupler model.
 
     equations adapted from photontorch.
-    https://github.com/flaport/photontorch/blob/master/photontorch/components/directionalcouplers.py
+    https://github.com/flaport/photontorch/blob/master/photontorch/pcells/directionalcouplers.py
 
     kappa = coupling0 + coupling
 

@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.components.pad import pad_array as pad_array_function
-from gdsfactory.components.straight import straight
-from gdsfactory.port import select_ports_electrical
+from gdsfactory.pcells.pad import pad_array as pad_array_function
+from gdsfactory.pcells.straight import straight
+from gdsfactory.component import select_ports_electrical
 from gdsfactory.routing.route_quad import route_quad
 from gdsfactory.typings import ComponentSpec, Float2, Optional, Strs, Callable
 
@@ -35,7 +35,7 @@ def add_electrical_pads_top(
 
         import gdsfactory as gf
 
-        c = gf.components.straight_heater_metal()
+        c = gf.pcells.straight_heater_metal()
         cc = gf.routing.add_electrical_pads_top(component=c, spacing=(-150, 30))
         cc.plot()
 
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     # c.show(show_ports=True)
     import gdsfactory as gf
 
-    c = gf.components.straight_heater_metal()
-    # c = gf.components.mzi_phase_shifter_top_heater_metal()
+    c = gf.pcells.straight_heater_metal()
+    # c = gf.pcells.mzi_phase_shifter_top_heater_metal()
     cc = gf.routing.add_electrical_pads_top(component=c, spacing=(-150, 30))
     cc.show(show_ports=True)

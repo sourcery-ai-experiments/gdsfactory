@@ -90,6 +90,6 @@ def to_stl(
 if __name__ == "__main__":
     import gdsfactory as gf
 
-    c = gf.components.taper_strip_to_ridge()
+    c = gf.pcells.taper_strip_to_ridge()
     c.show()
     to_stl(c, filepath="a.stl")

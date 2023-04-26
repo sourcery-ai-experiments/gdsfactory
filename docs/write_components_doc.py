@@ -5,7 +5,7 @@ import gdsfactory as gf
 from gdsfactory.serialization import clean_value_json
 
 
-filepath = pathlib.Path(__file__).parent.absolute() / "components.rst"
+filepath = pathlib.Path(__file__).parent.absolute() / "pcells.rst"
 
 skip = {}
 
@@ -33,11 +33,11 @@ Parametric cells
 """
     )
 
-    for name in sorted(gf.components.cells.keys()):
+    for name in sorted(gf.pcells.cells.keys()):
         if name in skip or name.startswith("_"):
             continue
         print(name)
-        sig = inspect.signature(gf.components.cells[name])
+        sig = inspect.signature(gf.pcells.cells[name])
         kwargs = ", ".join(
             [
                 f"{p}={repr(clean_value_json(sig.parameters[p].default))}"
@@ -53,7 +53,7 @@ Parametric cells
 {name}
 ----------------------------------------------------
 
-.. autofunction:: gdsfactory.components.{name}
+.. autofunction:: gdsfactory.pcells.{name}
 
 """
             )
@@ -64,14 +64,14 @@ Parametric cells
 {name}
 ----------------------------------------------------
 
-.. autofunction:: gdsfactory.components.{name}
+.. autofunction:: gdsfactory.pcells.{name}
 
 .. plot::
   :include-source:
 
   import gdsfactory as gf
 
-  c = gf.components.{name}({kwargs})
+  c = gf.pcells.{name}({kwargs})
   c.plot_matplotlib()
 
 """

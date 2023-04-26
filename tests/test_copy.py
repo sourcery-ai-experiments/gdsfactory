@@ -5,7 +5,7 @@ import gdsfactory as gf
 
 def test_two_copies_in_one():
     c = gf.Component()
-    c1 = gf.components.straight()
+    c1 = gf.pcells.straight()
     c2 = c1.copy()
     c3 = c1.copy()
     c3.add_label("I'm different")
@@ -20,7 +20,7 @@ def test_two_copies_in_one():
 
 
 def test_copied_cell_keeps_info():
-    c1 = gf.components.straight()
+    c1 = gf.pcells.straight()
     c2 = c1.copy()
     assert (
         len(c1.info) > 0
@@ -30,7 +30,7 @@ def test_copied_cell_keeps_info():
 
 if __name__ == "__main__":
     c = gf.Component()
-    c1 = gf.components.straight()
+    c1 = gf.pcells.straight()
     c2 = c1.copy()
 
     c << c1

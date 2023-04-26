@@ -32,11 +32,11 @@
 # import gdsfactory as gf
 #
 # c1 = gf.Component("wg")
-# c1 << gf.components.straight(length=5)
+# c1 << gf.pcells.straight(length=5)
 #
 #
 # c2 = gf.Component("wg")
-# c2 << gf.components.straight(length=50)
+# c2 << gf.pcells.straight(length=50)
 #
 #
 # c3 = gf.Component("waveguides")
@@ -46,7 +46,7 @@
 # c3
 # ```
 #
-# **Solution**: Use the `gf.cell` decorator for automatic naming your components.
+# **Solution**: Use the `gf.cell` decorator for automatic naming your pcells.
 
 # + tags=[]
 import gdsfactory as gf
@@ -58,14 +58,14 @@ PDK.activate()
 
 @gf.cell
 def wg(length: float = 3):
-    return gf.components.straight(length=length)
+    return gf.pcells.straight(length=length)
 
 
 print(wg(length=5))
 print(wg(length=50))
 # -
 
-# ### 1.2 Not naming components with a unique and deterministic name
+# ### 1.2 Not naming pcells with a unique and deterministic name
 #
 # In the case of not wrapping the function with `cell` you will get unique names thanks to the unique identifier `uuid`.
 #
@@ -96,8 +96,8 @@ c1.write_gds()
 def die_bad():
     """c1 is an intermediate Unnamed cell"""
     c1 = gf.Component()
-    c1 << gf.components.straight(length=10)
-    return gf.components.die_bbox(c1, street_width=10)
+    c1 << gf.pcells.straight(length=10)
+    return gf.pcells.die_bbox(c1, street_width=10)
 
 
 c = die_bad(cache=False)
@@ -114,8 +114,8 @@ c
 @gf.cell
 def die_good():
     c = gf.Component()
-    c << gf.components.straight(length=10)
-    c << gf.components.die_bbox_frame(c.bbox, street_width=10)
+    c << gf.pcells.straight(length=10)
+    c << gf.pcells.die_bbox_frame(c.bbox, street_width=10)
     return c
 
 
@@ -134,8 +134,8 @@ c
 def die_flat():
     """c will be an intermediate unnamed cell"""
     c = gf.Component()
-    c << gf.components.straight(length=10)
-    c2 = gf.components.die_bbox(c, street_width=10)
+    c << gf.pcells.straight(length=10)
+    c2 = gf.pcells.die_bbox(c, street_width=10)
     c2 = c2.flatten()
     return c2
 
@@ -156,7 +156,7 @@ def dangerous_intermediate_cells(width=0.5):
     c2 = gf.Component(
         "dangerous"
     )  # This should be forbidden as it will create duplicated cells
-    c2 << gf.components.hline(width=width)
+    c2 << gf.pcells.hline(width=width)
     c << c2
 
     return c

@@ -51,5 +51,5 @@ settings:
   info:
     num_squares: 7.986
   info_version: 2
-  module: gdsfactory.components.optimal_step
+  module: gdsfactory.pcells.optimal_step
   name: optimal_step

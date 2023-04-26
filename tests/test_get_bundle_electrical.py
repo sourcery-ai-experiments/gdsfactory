@@ -13,14 +13,14 @@ def test_get_bundle_electrical(
     lengths = {}
 
     c = gf.Component("test_get_bundle")
-    c1 = c << gf.components.pad()
-    c2 = c << gf.components.pad()
+    c1 = c << gf.pcells.pad()
+    c2 = c << gf.pcells.pad()
     c2.move((200, 100))
 
     routes = gf.routing.get_bundle(
         [c1.ports["e3"]],
         [c2.ports["e1"]],
-        bend=gf.components.wire_corner,
+        bend=gf.pcells.wire_corner,
         width=10,
         # auto_widen=False,
         auto_widen=True,
@@ -33,7 +33,7 @@ def test_get_bundle_electrical(
         [c1.ports["e4"]],
         [c2.ports["e3"]],
         start_straight_length=20.0,
-        bend=gf.components.wire_corner,
+        bend=gf.pcells.wire_corner,
         width=10,
     )
     for i, route in enumerate(routes):
@@ -51,13 +51,13 @@ def test_get_bundle_electrical2(
     lengths = {}
 
     c = gf.Component("pads_bundle_steps")
-    pt = c << gf.components.pad_array(
-        gf.partial(gf.components.pad, size=(30, 30)),
+    pt = c << gf.pcells.pad_array(
+        gf.partial(gf.pcells.pad, size=(30, 30)),
         angle=270,
         columns=3,
         spacing=(50, 0),
     )
-    pb = c << gf.components.pad_array(angle=0, columns=1, rows=3)
+    pb = c << gf.pcells.pad_array(angle=0, columns=1, rows=3)
     pt.move((500, 500))
 
     routes = gf.routing.get_bundle_from_steps_electrical(

@@ -6,7 +6,7 @@ from typing import Optional
 import numpy as np
 
 import gdsfactory as gf
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 from gdsfactory.geometry.manhattanize import manhattanize_polygon
 import gdstk
 
@@ -44,8 +44,8 @@ def route_quad(
         import gdsfactory as gf
 
         c = gf.Component()
-        pad1 = c << gf.components.pad(size=(50, 50))
-        pad2 = c << gf.components.pad(size=(10, 10))
+        pad1 = c << gf.pcells.pad(size=(50, 50))
+        pad2 = c << gf.pcells.pad(size=(10, 10))
         pad2.movex(100)
         pad2.movey(50)
         route_gnd = c << gf.routing.route_quad(
@@ -104,8 +104,8 @@ def route_quad(
 
 def test_manhattan_route_quad():
     c = gf.Component("route")
-    pad1 = c << gf.components.pad(size=(50, 50))
-    pad2 = c << gf.components.pad(size=(10, 10))
+    pad1 = c << gf.pcells.pad(size=(50, 50))
+    pad2 = c << gf.pcells.pad(size=(10, 10))
     pad2.movex(100)
     pad2.movey(50)
     route_gnd = c << route_quad(
@@ -121,8 +121,8 @@ def test_manhattan_route_quad():
 
 if __name__ == "__main__":
     # c = gf.Component()
-    # mzi = c << gf.components.mzi_phase_shifter()
-    # pads = c << gf.components.array(component=gf.components.pad, columns=3)
+    # mzi = c << gf.pcells.mzi_phase_shifter()
+    # pads = c << gf.pcells.array(component=gf.pcells.pad, columns=3)
     # pads.ymin = mzi.ymax + 30
 
     # pads.movex(-pads.size_info.sc[0])
@@ -138,8 +138,8 @@ if __name__ == "__main__":
     # c.show(show_ports=True)
 
     # c = gf.Component("route")
-    # pad1 = c << gf.components.pad(size=(50, 50))
-    # pad2 = c << gf.components.pad(size=(10, 10))
+    # pad1 = c << gf.pcells.pad(size=(50, 50))
+    # pad2 = c << gf.pcells.pad(size=(10, 10))
     # pad2.movex(100)
     # pad2.movey(50)
     # route_gnd = c << route_quad(

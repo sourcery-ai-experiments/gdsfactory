@@ -16,7 +16,7 @@ instances:
   rings:
     component: pack_doe
     info:
-      components:
+      pcells:
         ring_single_length_x1_r_71050ad9:
           changed:
             component:
@@ -53,7 +53,7 @@ instances:
             function_name: ring_single
             info: {}
             info_version: 2
-            module: gdsfactory.components.ring_single
+            module: gdsfactory.pcells.ring_single
             name: ring_single_length_x1_radius20
           default:
             component:
@@ -148,7 +148,7 @@ instances:
             function_name: ring_single
             info: {}
             info_version: 2
-            module: gdsfactory.components.ring_single
+            module: gdsfactory.pcells.ring_single
             name: ring_single_length_x1_radius50
           default:
             component:
@@ -243,7 +243,7 @@ instances:
             function_name: ring_single
             info: {}
             info_version: 2
-            module: gdsfactory.components.ring_single
+            module: gdsfactory.pcells.ring_single
             name: ring_single_length_x1_radius30
           default:
             component:
@@ -338,7 +338,7 @@ instances:
             function_name: ring_single
             info: {}
             info_version: 2
-            module: gdsfactory.components.ring_single
+            module: gdsfactory.pcells.ring_single
             name: ring_single_length_x1_radius40
           default:
             component:
@@ -433,7 +433,7 @@ instances:
             function_name: ring_single
             info: {}
             info_version: 2
-            module: gdsfactory.components.ring_single
+            module: gdsfactory.pcells.ring_single
             name: ring_single_length_x2_radius50
           default:
             component:
@@ -528,7 +528,7 @@ instances:
             function_name: ring_single
             info: {}
             info_version: 2
-            module: gdsfactory.components.ring_single
+            module: gdsfactory.pcells.ring_single
             name: ring_single_length_x2_radius20
           default:
             component:
@@ -623,7 +623,7 @@ instances:
             function_name: ring_single
             info: {}
             info_version: 2
-            module: gdsfactory.components.ring_single
+            module: gdsfactory.pcells.ring_single
             name: ring_single_length_x2_radius30
           default:
             component:
@@ -718,7 +718,7 @@ instances:
             function_name: ring_single
             info: {}
             info_version: 2
-            module: gdsfactory.components.ring_single
+            module: gdsfactory.pcells.ring_single
             name: ring_single_length_x2_radius40
           default:
             component:
@@ -813,7 +813,7 @@ instances:
             function_name: ring_single
             info: {}
             info_version: 2
-            module: gdsfactory.components.ring_single
+            module: gdsfactory.pcells.ring_single
             name: ring_single_length_x3_radius40
           default:
             component:
@@ -908,7 +908,7 @@ instances:
             function_name: ring_single
             info: {}
             info_version: 2
-            module: gdsfactory.components.ring_single
+            module: gdsfactory.pcells.ring_single
             name: ring_single_length_x3_radius20
           default:
             component:
@@ -1003,7 +1003,7 @@ instances:
             function_name: ring_single
             info: {}
             info_version: 2
-            module: gdsfactory.components.ring_single
+            module: gdsfactory.pcells.ring_single
             name: ring_single_length_x3_radius30
           default:
             component:
@@ -1098,7 +1098,7 @@ instances:
             function_name: ring_single
             info: {}
             info_version: 2
-            module: gdsfactory.components.ring_single
+            module: gdsfactory.pcells.ring_single
             name: ring_single_length_x3_radius50
           default:
             component:

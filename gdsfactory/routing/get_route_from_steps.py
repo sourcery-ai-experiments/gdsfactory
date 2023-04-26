@@ -5,8 +5,8 @@ from typing import List, Optional, Union
 import numpy as np
 
 import gdsfactory as gf
-from gdsfactory.components.via_corner import via_corner
-from gdsfactory.port import Port
+from gdsfactory.pcells.via_corner import via_corner
+from gdsfactory.component import Port
 from gdsfactory.routing.manhattan import round_corners
 from gdsfactory.typings import (
     ComponentSpec,
@@ -50,12 +50,12 @@ def get_route_from_steps(
         import gdsfactory as gf
 
         c = gf.Component("get_route_from_steps_sample")
-        w = gf.components.straight()
+        w = gf.pcells.straight()
         left = c << w
         right = c << w
         right.move((100, 80))
 
-        obstacle = gf.components.rectangle(size=(100, 10), port_type=None)
+        obstacle = gf.pcells.rectangle(size=(100, 10), port_type=None)
         obstacle1 = c << obstacle
         obstacle2 = c << obstacle
         obstacle1.ymin = 40
@@ -146,12 +146,12 @@ get_route_from_steps_electrical_multilayer = gf.partial(
 @gf.cell
 def test_route_from_steps() -> gf.Component:
     c = gf.Component("get_route_from_steps_sample")
-    w = gf.components.straight()
+    w = gf.pcells.straight()
     left = c << w
     right = c << w
     right.move((100, 80))
 
-    obstacle = gf.components.rectangle(size=(100, 10))
+    obstacle = gf.pcells.rectangle(size=(100, 10))
     obstacle1 = c << obstacle
     obstacle2 = c << obstacle
     obstacle1.ymin = 40
@@ -194,7 +194,7 @@ if __name__ == "__main__":
     # c = test_route_from_steps()
 
     # c = gf.Component("get_route_from_steps_sample")
-    # w = gf.components.straight()
+    # w = gf.pcells.straight()
     # left = c << w
     # right = c << w
     # right.move((100, 80))
@@ -217,8 +217,8 @@ if __name__ == "__main__":
     # c.show(show_ports=True)
 
     c = gf.Component("pads_route_from_steps")
-    pt = c << gf.components.pad_array(angle=270, columns=3)
-    pb = c << gf.components.pad_array(angle=90, columns=3)
+    pt = c << gf.pcells.pad_array(angle=270, columns=3)
+    pb = c << gf.pcells.pad_array(angle=90, columns=3)
     pt.move((100, 200))
     route = gf.routing.get_route_from_steps_electrical(
         pb.ports["e11"],
@@ -228,7 +228,7 @@ if __name__ == "__main__":
             # {"z": 200},
         ],
         # cross_section='metal_routing',
-        # bend=gf.components.wire_corner,
+        # bend=gf.pcells.wire_corner,
     )
     c.add(route.references)
     c.show(show_ports=True)

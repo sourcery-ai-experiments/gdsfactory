@@ -16,7 +16,7 @@
 # %% [markdown]
 # # Component
 #
-# A `Component` is like an empty canvas, where you can add polygons, references to other Components and ports (to connect to other components)
+# A `Component` is like an empty canvas, where you can add polygons, references to other Components and ports (to connect to other pcells)
 #
 # ![](https://i.imgur.com/oeuKGsc.png)
 #
@@ -54,8 +54,8 @@ c
 # %% tags=[]
 c = gf.Component("myComponent2")
 # Create some new geometry from the functions available in the geometry library
-t = gf.components.text("Hello!")
-r = gf.components.rectangle(size=[5, 10], layer=(2, 0))
+t = gf.pcells.text("Hello!")
+r = gf.pcells.rectangle(size=[5, 10], layer=(2, 0))
 
 # Add references to the new geometry to c, our blank component
 text1 = c.add_ref(t)  # Add the text we created as a reference
@@ -76,7 +76,7 @@ c
 # %% [markdown]
 # ## Connect **ports**
 #
-# Components can have a "Port" that allows you to connect ComponentReferences together like legos.
+# Components can have a "Port" that allows you to connect Instances together like legos.
 #
 # You can write a simple function to make a rectangular straight, assign ports to the ends, and then connect those rectangles together.
 
@@ -163,12 +163,12 @@ c
 # %% [markdown]
 # ## Ports
 #
-# Your straights wg1/wg2/wg3 are references to other waveguide components.
+# Your straights wg1/wg2/wg3 are references to other waveguide pcells.
 #
 # If you want to add ports to the new Component `c` you can use `add_port`, where you can create a new port or use an reference an existing port from the underlying reference.
 
 # %% [markdown]
-# You can access the ports of a Component or ComponentReference
+# You can access the ports of a Component or Instance
 
 # %%
 wg2.ports
@@ -198,7 +198,7 @@ c2
 # You can add abstract GDS labels (annotate) to your Components, in order to record information
 # directly into the final GDS file without putting any extra geometry onto any layer
 # This label will display in a GDS viewer, but will not be rendered or printed
-# like the polygons created by gf.components.text().
+# like the polygons created by gf.pcells.text().
 
 # %%
 c2.add_label(text="First label", position=mwg1_ref.center)
@@ -228,9 +228,9 @@ c2
 
 # %%
 c = gf.Component()
-e1 = c.add_ref(gf.components.ellipse(layer=(2, 0)))
-e2 = c.add_ref(gf.components.ellipse(radii=(10, 6), layer=(2, 0))).movex(2)
-e3 = c.add_ref(gf.components.ellipse(radii=(10, 4), layer=(2, 0))).movex(5)
+e1 = c.add_ref(gf.pcells.ellipse(layer=(2, 0)))
+e2 = c.add_ref(gf.pcells.ellipse(radii=(10, 6), layer=(2, 0))).movex(2)
+e3 = c.add_ref(gf.pcells.ellipse(radii=(10, 4), layer=(2, 0))).movex(5)
 c
 
 # %%
@@ -239,7 +239,7 @@ c2
 
 # %%
 c = gf.Component("rectangle_with_label")
-r = c << gf.components.rectangle(size=(1, 1))
+r = c << gf.pcells.rectangle(size=(1, 1))
 r.x = 0
 r.y = 0
 c.add_label(
@@ -254,8 +254,8 @@ c
 
 # %%
 c = gf.Component("ref_port_sample")
-mmi = c.add_ref(gf.components.mmi1x2())
-bend = c.add_ref(gf.components.bend_circular(layer=(2, 0)))
+mmi = c.add_ref(gf.pcells.mmi1x2())
+bend = c.add_ref(gf.pcells.bend_circular(layer=(2, 0)))
 c
 
 # %%
@@ -269,8 +269,8 @@ c
 
 # %%
 c = gf.Component("ref_mirror")
-mmi = c.add_ref(gf.components.mmi1x2())
-bend = c.add_ref(gf.components.bend_circular(layer=(2, 0)))
+mmi = c.add_ref(gf.pcells.mmi1x2())
+bend = c.add_ref(gf.pcells.bend_circular(layer=(2, 0)))
 c
 
 # %%
@@ -289,7 +289,7 @@ c
 # %%
 import gdsfactory as gf
 
-c = gf.components.cross()
+c = gf.pcells.cross()
 c.write_gds("demo.gds")
 c
 

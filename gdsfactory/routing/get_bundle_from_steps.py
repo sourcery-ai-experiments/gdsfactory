@@ -5,12 +5,12 @@ from typing import List, Optional, Union
 import numpy as np
 
 import gdsfactory as gf
-from gdsfactory.components.bend_euler import bend_euler
-from gdsfactory.components.straight import straight as straight_function
-from gdsfactory.components.taper import taper as taper_function
-from gdsfactory.components.via_corner import via_corner
-from gdsfactory.components.wire import wire_corner
-from gdsfactory.port import Port
+from gdsfactory.pcells.bend_euler import bend_euler
+from gdsfactory.pcells.straight import straight as straight_function
+from gdsfactory.pcells.taper import taper as taper_function
+from gdsfactory.pcells.via_corner import via_corner
+from gdsfactory.pcells.wire import wire_corner
+from gdsfactory.component import Port
 from gdsfactory.routing.get_bundle_from_waypoints import get_bundle_from_waypoints
 from gdsfactory.routing.manhattan import _is_horizontal, _is_vertical
 from gdsfactory.routing.sort_ports import sort_ports as sort_ports_function
@@ -64,8 +64,8 @@ def get_bundle_from_steps(
         import gdsfactory as gf
 
         c = gf.Component("get_route_from_steps_sample")
-        w = gf.components.array(
-            gf.partial(gf.components.straight, layer=(2, 0)),
+        w = gf.pcells.array(
+            gf.partial(gf.pcells.straight, layer=(2, 0)),
             rows=3,
             columns=1,
             spacing=(0, 50),
@@ -189,8 +189,8 @@ get_bundle_from_steps_electrical_multilayer = gf.partial(
 def _demo() -> None:
     c = gf.Component("get_route_from_steps_sample")
 
-    w = gf.components.array(
-        gf.partial(gf.components.straight, layer=(2, 0)),
+    w = gf.pcells.array(
+        gf.partial(gf.pcells.straight, layer=(2, 0)),
         rows=3,
         columns=1,
         spacing=(0, 50),
@@ -218,13 +218,13 @@ if __name__ == "__main__":
     import gdsfactory as gf
 
     c = gf.Component("pads_bundle_steps")
-    pt = c << gf.components.pad_array(
-        gf.partial(gf.components.pad, size=(30, 30)),
+    pt = c << gf.pcells.pad_array(
+        gf.partial(gf.pcells.pad, size=(30, 30)),
         angle=270,
         columns=3,
         spacing=(50, 0),
     )
-    pb = c << gf.components.pad_array(angle=90, columns=3)
+    pb = c << gf.pcells.pad_array(angle=90, columns=3)
     pt.move((300, 500))
 
     routes = get_bundle_from_steps_electrical(

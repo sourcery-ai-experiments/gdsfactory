@@ -7,7 +7,7 @@ from gdsfactory.component import Component
 @gf.cell
 def component_with_label_float() -> Component:
     c = gf.Component("component_with_label_float")
-    c << gf.components.rectangle()
+    c << gf.pcells.rectangle()
     c.add_label(text="demo", position=(0.0, 0.0), layer=gf.LAYER.TEXT)
     return c
 
@@ -15,7 +15,7 @@ def component_with_label_float() -> Component:
 @gf.cell
 def component_with_label_int() -> Component:
     c = gf.Component("component_with_label_int")
-    c << gf.components.rectangle()
+    c << gf.pcells.rectangle()
     c.add_label(text="demo", position=(0, 0), layer=gf.LAYER.TEXT)
     return c
 

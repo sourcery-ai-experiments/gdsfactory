@@ -8,7 +8,7 @@ from gdsfactory.component import MutabilityError
 
 def test_mutability() -> gf.Component:
     """Adding padding to a cached component should raise MutabilityError."""
-    c = gf.components.straight()
+    c = gf.pcells.straight()
 
     with pytest.raises(MutabilityError):
         c.add_padding(default=3)  # add padding to original cell

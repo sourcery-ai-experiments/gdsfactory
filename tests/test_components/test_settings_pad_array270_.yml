@@ -97,5 +97,5 @@ settings:
     - 100.0
     - 100.0
   info_version: 2
-  module: gdsfactory.components.pad
+  module: gdsfactory.pcells.pad
   name: pad_array

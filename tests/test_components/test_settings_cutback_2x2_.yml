@@ -82,7 +82,7 @@ settings:
     function_name: mmi2x2
     info: {}
     info_version: 2
-    module: gdsfactory.components.mmi2x2
+    module: gdsfactory.pcells.mmi2x2
     name: mmi2x2
   default:
     bend180:
@@ -118,7 +118,7 @@ settings:
     straight_length: null
   function_name: cutback_2x2
   info:
-    components: 80
+    pcells: 80
   info_version: 2
-  module: gdsfactory.components.cutback_2x2
+  module: gdsfactory.pcells.cutback_2x2
   name: mmi2x2_cutback_2x2

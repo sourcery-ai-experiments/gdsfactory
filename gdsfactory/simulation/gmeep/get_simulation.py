@@ -10,7 +10,7 @@ import numpy as np
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.components.extension import move_polar_rad_copy
+from gdsfactory.pcells.extension import move_polar_rad_copy
 from gdsfactory.pdk import get_layer_stack
 from gdsfactory.simulation.gmeep.get_material import get_material
 from gdsfactory.simulation.gmeep.get_meep_geometry import (
@@ -126,7 +126,7 @@ def get_simulation(
         import gdsfactory as gf
         import gdsfactory.simulation.meep as gm
 
-        c = gf.components.bend_circular()
+        c = gf.pcells.bend_circular()
         gm.write_sparameters_meep(c, run=False)
 
     """
@@ -157,7 +157,7 @@ def get_simulation(
     ), f"component needs to be a gf.Component, got Type {type(component)}"
 
     component_extended = (
-        gf.components.extension.extend_ports(
+        gf.pcells.extension.extend_ports(
             component=component, length=extend_ports_length, centered=True
         )
         if extend_ports_length
@@ -305,7 +305,7 @@ settings_get_simulation = set(sig.parameters.keys()).union(settings_meep)
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
 
-    c = gf.components.bend_circular()
+    c = gf.pcells.bend_circular()
 
     sim_dict = get_simulation(
         c,

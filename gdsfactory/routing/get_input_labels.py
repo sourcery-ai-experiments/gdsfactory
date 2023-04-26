@@ -3,18 +3,18 @@ from __future__ import annotations
 from typing import List
 
 from functools import partial
-from gdsfactory.add_labels import (
+from gdsfactory.pcells.add_labels import (
     get_input_label,
     get_input_label_text,
     get_input_label_text_dash,
 )
-from gdsfactory.component import ComponentReference
-from gdsfactory.port import Port
+from gdsfactory.component import Instance
+from gdsfactory.component import Port
 from gdsfactory.typings import Label, LayerSpec
 
 
 def get_input_labels(
-    io_gratings: List[ComponentReference],
+    io_gratings: List[Instance],
     ordered_ports: List[Port],
     component_name: str,
     layer_label: LayerSpec,

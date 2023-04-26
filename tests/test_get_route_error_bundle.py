@@ -10,8 +10,8 @@ def test_route_error_bundle():
     """Ensures that an impossible route raises a RouteWarning."""
     c = gf.Component("get_route_from_steps_sample")
 
-    w = gf.components.array(
-        gf.partial(gf.components.straight, layer=(2, 0)),
+    w = gf.pcells.array(
+        gf.partial(gf.pcells.straight, layer=(2, 0)),
         rows=3,
         columns=1,
         spacing=(0, 50),

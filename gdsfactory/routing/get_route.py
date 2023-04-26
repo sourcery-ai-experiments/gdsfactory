@@ -42,13 +42,13 @@ import numpy as np
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.components.bend_euler import bend_euler
-from gdsfactory.components.straight import straight as straight_function
-from gdsfactory.components.taper import taper as taper_function
-from gdsfactory.components.via_corner import via_corner
-from gdsfactory.components.wire import wire_corner
+from gdsfactory.pcells.bend_euler import bend_euler
+from gdsfactory.pcells.straight import straight as straight_function
+from gdsfactory.pcells.taper import taper as taper_function
+from gdsfactory.pcells.via_corner import via_corner
+from gdsfactory.pcells.wire import wire_corner
 from gdsfactory.cross_section import metal2, metal3
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 from gdsfactory.routing.manhattan import round_corners, route_manhattan
 from gdsfactory.typings import (
     ComponentSpec,
@@ -98,8 +98,8 @@ def get_route(
         import gdsfactory as gf
 
         c = gf.Component('sample_connect')
-        mmi1 = c << gf.components.mmi1x2()
-        mmi2 = c << gf.components.mmi1x2()
+        mmi1 = c << gf.pcells.mmi1x2()
+        mmi2 = c << gf.pcells.mmi1x2()
         mmi2.move((40, 20))
         route = gf.routing.get_route(mmi1.ports["o2"], mmi2.ports["o1"], radius=5)
         c.add(route.references)
@@ -197,12 +197,12 @@ def get_route_from_waypoints(
 
         c = gf.Component("waypoints_sample")
 
-        w = gf.components.straight()
+        w = gf.pcells.straight()
         left = c << w
         right = c << w
         right.move((100, 80))
 
-        obstacle = gf.components.rectangle(size=(100, 10))
+        obstacle = gf.pcells.rectangle(size=(100, 10))
         obstacle1 = c << obstacle
         obstacle2 = c << obstacle
         obstacle1.ymin = 40
@@ -280,7 +280,7 @@ get_route_from_waypoints_electrical_multilayer = gf.partial(
 
 
 if __name__ == "__main__":
-    # w = gf.components.mmi1x2()
+    # w = gf.pcells.mmi1x2()
     # c = gf.Component()
     # c << w
     # route = get_route(w.ports["o2"], w.ports["o1"], layer=(2, 0), width=2)
@@ -288,8 +288,8 @@ if __name__ == "__main__":
     # cc.show(show_ports=True)
 
     # c = gf.Component("multi-layer")
-    # ptop = c << gf.components.pad_array()
-    # pbot = c << gf.components.pad_array(angle=90)
+    # ptop = c << gf.pcells.pad_array()
+    # pbot = c << gf.pcells.pad_array(angle=90)
 
     # ptop.movex(300)
     # ptop.movey(300)
@@ -304,8 +304,8 @@ if __name__ == "__main__":
     import gdsfactory as gf
 
     c = gf.Component("sample_connect")
-    mmi1 = c << gf.components.mmi1x2()
-    mmi2 = c << gf.components.mmi1x2()
+    mmi1 = c << gf.pcells.mmi1x2()
+    mmi2 = c << gf.pcells.mmi1x2()
     mmi2.move((200, 50))
 
     route = gf.routing.get_route(

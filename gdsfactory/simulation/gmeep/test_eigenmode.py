@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import griddata
 
-from gdsfactory.components import straight
+from gdsfactory.pcells import straight
 from gdsfactory.config import PATH
 from gdsfactory.simulation.gmeep import get_simulation
 from gdsfactory.simulation.gmeep.get_port_eigenmode import get_port_2Dx_eigenmode

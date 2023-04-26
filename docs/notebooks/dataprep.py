@@ -41,7 +41,7 @@ from functools import partial
 import gdsfactory as gf
 from gdsfactory.geometry.maskprep import get_polygons_over_under, over_under
 
-c = gf.components.coupler_ring(
+c = gf.pcells.coupler_ring(
     cladding_layers=((2, 0)),
     cladding_offsets=(0.2,),
 )
@@ -56,7 +56,7 @@ c
 # %%
 over_under_slab = partial(over_under, layers=((2, 0)), distances=(0.5,))
 
-c = gf.components.coupler_ring(
+c = gf.pcells.coupler_ring(
     cladding_layers=((2, 0)),
     cladding_offsets=(0.2,),
     decorator=over_under_slab,
@@ -74,7 +74,7 @@ get_polygons_over_under_slab = partial(
 )
 
 c = gf.Component("compnent_clean")
-ref = c << gf.components.coupler_ring(
+ref = c << gf.pcells.coupler_ring(
     cladding_layers=((2, 0)),
     cladding_offsets=(0.2,),  # decorator=over_under_slab_decorator
 )
@@ -90,22 +90,22 @@ c
 # We have some useful functions to invert the tone.
 
 # %%
-c = gf.components.add_trenches(component=gf.components.coupler)
+c = gf.pcells.add_trenches(component=gf.pcells.coupler)
 c
 
 # %%
-c = gf.components.add_trenches(component=gf.components.ring_single)
+c = gf.pcells.add_trenches(component=gf.pcells.ring_single)
 c
 
 # %%
-c = gf.components.add_trenches(
-    component=gf.components.grating_coupler_elliptical_lumerical(layer_slab=None)
+c = gf.pcells.add_trenches(
+    component=gf.pcells.grating_coupler_elliptical_lumerical(layer_slab=None)
 )
 c
 
 
 # %%
-c = gf.components.add_trenches90(component=gf.components.bend_euler(radius=20))
+c = gf.pcells.add_trenches90(component=gf.pcells.bend_euler(radius=20))
 c
 
 # %% [markdown]
@@ -124,8 +124,8 @@ c
 # %%
 c = gf.Component()
 
-device = c << gf.components.coupler_ring()
-floorplan = c << gf.components.bbox(device.bbox, layer=l.FLOORPLAN)
+device = c << gf.pcells.coupler_ring()
+floorplan = c << gf.pcells.bbox(device.bbox, layer=l.FLOORPLAN)
 c.write_gds("src.gds")
 c
 

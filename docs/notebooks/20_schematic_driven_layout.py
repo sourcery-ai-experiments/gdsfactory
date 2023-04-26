@@ -59,16 +59,16 @@ se.instances.keys()
 # You can also **add your instances through code**, and since it is just a dictionary update, *the integrity of your schematic will be maintained, even after re-running the notebook* as-is.
 # You can here specify a component either by name or as an actual component, using auto-completion to specify your settings as well.
 
-se.add_instance("s1", gf.components.straight(length=20))
-se.add_instance("s2", gf.components.straight(length=40))
+se.add_instance("s1", gf.pcells.straight(length=20))
+se.add_instance("s2", gf.pcells.straight(length=40))
 
-# But you can even query the parameters of default components, set only by name through the widget grid, like so:
+# But you can even query the parameters of default pcells, set only by name through the widget grid, like so:
 
 se.instances["mmi1"].settings.full
 
 # It is also possible to *instantiate through the widget, then set the settings of our component later, through code.*
 #
-# By doing this through code, we have the full power of python at our disposal to easily use shared variables between components, or set complex Class or dictionary-based settings, without fumbling through a UI.
+# By doing this through code, we have the full power of python at our disposal to easily use shared variables between pcells, or set complex Class or dictionary-based settings, without fumbling through a UI.
 
 # +
 se.update_settings("mmi1", gap_mmi=1.0)
@@ -110,10 +110,10 @@ se.port_widget
 # You can visualize your schematic down below. After you've initialized the plot below, you should see it live-update after every change we make above.
 #
 # Currently the size of component symbols and port locations are **layout-realistic**.
-# This may be a nice default if you don't care to bother making symbols for your components.
-# But it would be a nice improvement for the future to allow associating symbols with components, to make the schematic easier to read.
+# This may be a nice default if you don't care to bother making symbols for your pcells.
+# But it would be a nice improvement for the future to allow associating symbols with pcells, to make the schematic easier to read.
 #
-# If you activate the `Point Draw Tool` in the plot, you should see that you are able to arrange components freely on the schematic, and changes are saved back to the `*.schem.yml` file in realtime.
+# If you activate the `Point Draw Tool` in the plot, you should see that you are able to arrange pcells freely on the schematic, and changes are saved back to the `*.schem.yml` file in realtime.
 #
 # ![pointdraw](https://i.imgur.com/mlfsd13.png)
 

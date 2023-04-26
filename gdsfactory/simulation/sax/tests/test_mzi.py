@@ -43,7 +43,7 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     import numpy as np
 
-    c = gf.components.mzi()
+    c = gf.pcells.mzi()
     c.show(show_ports=True)
     netlist = c.get_netlist()
     circuit, _ = sax.circuit(netlist=netlist, models=models)

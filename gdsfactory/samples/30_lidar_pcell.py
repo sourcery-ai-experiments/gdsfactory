@@ -16,12 +16,12 @@ def lidar(noutputs=2**2, antenna_pitch=2.0, splitter_tree_spacing=(50.0, 70.0)):
     c = gf.Component("lidar")
 
     # power Splitter
-    splitter_tree = c << gf.components.splitter_tree(
+    splitter_tree = c << gf.pcells.splitter_tree(
         noutputs=noutputs, spacing=splitter_tree_spacing
     )
 
     # phase Shifters
-    phase_shifter = gf.components.straight_heater_meander()
+    phase_shifter = gf.pcells.straight_heater_meander()
     phase_shifter_optical_ports = []
 
     for i, port in enumerate(
@@ -33,8 +33,8 @@ def lidar(noutputs=2**2, antenna_pitch=2.0, splitter_tree_spacing=(50.0, 70.0)):
         phase_shifter_optical_ports.append(ref.ports["o2"])
 
     # antennas
-    antennas = c << gf.components.array(
-        gf.components.dbr(n=200), rows=noutputs, columns=1, spacing=(0, antenna_pitch)
+    antennas = c << gf.pcells.array(
+        gf.pcells.dbr(n=200), rows=noutputs, columns=1, spacing=(0, antenna_pitch)
     )
     antennas.xmin = ref.xmax + 50
     antennas.y = 0

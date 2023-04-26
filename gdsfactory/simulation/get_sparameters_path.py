@@ -82,7 +82,7 @@ def test_get_sparameters_path(test: bool = True) -> None:
     layer_stack2 = deepcopy(LAYER_STACK)
     layer_stack2.layers["core"].thickness = 230 * nm
 
-    c = gf.components.straight()
+    c = gf.pcells.straight()
 
     p1 = get_sparameters_path_lumerical(component=c)
     p2 = get_sparameters_path_lumerical(component=c, layer_stack=layer_stack2)
@@ -103,7 +103,7 @@ def test_get_sparameters_path(test: bool = True) -> None:
 
 
 if __name__ == "__main__":
-    c = gf.components.mmi1x2()
+    c = gf.pcells.mmi1x2()
     p = get_sparameters_path_lumerical(c)
 
     sp = np.load(p)

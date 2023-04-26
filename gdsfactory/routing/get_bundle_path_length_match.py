@@ -3,11 +3,11 @@ from __future__ import annotations
 
 from typing import Callable, List, Optional, Union
 
-from gdsfactory.components.bend_euler import bend_euler
-from gdsfactory.components.straight import straight as _straight
-from gdsfactory.components.taper import taper as taper_function
+from gdsfactory.pcells.bend_euler import bend_euler
+from gdsfactory.pcells.straight import straight as _straight
+from gdsfactory.pcells.taper import taper as taper_function
 from gdsfactory.cross_section import strip
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 from gdsfactory.routing.get_bundle import (
     _get_bundle_waypoints,
     compute_ports_max_displacement,
@@ -147,8 +147,8 @@ if __name__ == "__main__":
     import gdsfactory as gf
 
     c = gf.Component()
-    c1 = c << gf.components.straight_array(spacing=50)
-    c2 = c << gf.components.straight_array(spacing=5)
+    c1 = c << gf.pcells.straight_array(spacing=50)
+    c2 = c << gf.pcells.straight_array(spacing=5)
     c2.movex(200)
     c1.y = 0
     c2.y = 0

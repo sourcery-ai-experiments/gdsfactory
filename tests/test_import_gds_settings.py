@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Union
 
-from gdsfactory.components import cells
+from gdsfactory.pcells import cells
 
 skip_test = {
     "version_stamp",
@@ -17,7 +17,7 @@ skip_test = {
     "mzi_phase_shifter_top_heater_metal",
 }
 
-components_to_test = set(cells.keys()) - skip_test
+pcells_to_test = set(cells.keys()) - skip_test
 
 
 def tuplify(iterable: Union[List, Dict]) -> Any:
@@ -33,8 +33,8 @@ def sort_dict(d: Dict[str, Any]) -> Dict[str, Any]:
     return {k: d[k] for k in sorted(d)}
 
 
-# @pytest.mark.parametrize("component_type", components_to_test)
-# def test_properties_components(component_type: str) -> Component:
+# @pytest.mark.parametrize("component_type", pcells_to_test)
+# def test_properties_pcells(component_type: str) -> Component:
 #     """Write component to GDS with settings written on a label.
 #     Then import the GDS and check that the settings imported match the original settings.
 #     """
@@ -65,15 +65,15 @@ def sort_dict(d: Dict[str, Any]) -> Dict[str, Any]:
 
 
 pass
-# c = test_properties_components(component_type=list(component_names)[0])
-# c = test_properties_components(component_type="ring_single")
-# c = test_properties_components(component_type="mzit")
-# c = test_properties_components(component_type="bezier")
-# c = test_properties_components(component_type="wire_straight")
-# c = test_properties_components(component_type="straight")
-# c = test_properties_components(component_type="grating_coupler_tree")
-# c = test_properties_components(component_type="wire")
-# c = test_properties_components(component_type="bend_circular")
-# c = test_properties_components(component_type="mzi_arm")
-# c = test_properties_components(component_type="straight_pin")
+# c = test_properties_pcells(component_type=list(component_names)[0])
+# c = test_properties_pcells(component_type="ring_single")
+# c = test_properties_pcells(component_type="mzit")
+# c = test_properties_pcells(component_type="bezier")
+# c = test_properties_pcells(component_type="wire_straight")
+# c = test_properties_pcells(component_type="straight")
+# c = test_properties_pcells(component_type="grating_coupler_tree")
+# c = test_properties_pcells(component_type="wire")
+# c = test_properties_pcells(component_type="bend_circular")
+# c = test_properties_pcells(component_type="mzi_arm")
+# c = test_properties_pcells(component_type="straight_pin")
 # c.show(show_ports=True)

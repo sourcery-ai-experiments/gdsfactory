@@ -328,7 +328,7 @@ def test_get_bundle_udirect(
 
     c = gf.Component(name="test_get_bundle_udirect")
     routes = get_bundle(
-        ports1, ports2, bend=gf.components.bend_circular, end_straight_length=30
+        ports1, ports2, bend=gf.pcells.bend_circular, end_straight_length=30
     )
     lengths = {}
     for i, route in enumerate(routes):
@@ -395,7 +395,7 @@ def test_get_bundle_u_indirect(
     routes = get_bundle(
         ports1,
         ports2,
-        bend=gf.components.bend_circular,
+        bend=gf.pcells.bend_circular,
         end_straight_length=15,
         start_straight_length=5,
         radius=5,

@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.components.straight import straight
-from gdsfactory.port import select_ports_electrical
+from gdsfactory.pcells.straight import straight
+from gdsfactory.component import select_ports_electrical
 from gdsfactory.routing.route_quad import route_quad
-from gdsfactory.typings import ComponentSpec, Optional, Strs, Callable
+from gdsfactory.typings import ComponentSpec, Optional, Strs, Callable, LayerSpec
 
 
 @gf.cell
@@ -16,7 +16,7 @@ def add_electrical_pads_shortest(
     select_ports: Callable = select_ports_electrical,
     port_names: Optional[Strs] = None,
     port_angle: float = 90,
-    layer: gf.typings.LayerSpec = "M3",
+    layer: LayerSpec = "M3",
 ) -> Component:
     """Returns new Component with a pad by each electrical port.
 
@@ -33,7 +33,7 @@ def add_electrical_pads_shortest(
         :include-source:
 
         import gdsfactory as gf
-        c = gf.components.straight_heater_metal(length=100)
+        c = gf.pcells.straight_heater_metal(length=100)
         c = gf.routing.add_electrical_pads_shortest(c, port_angle=270)
         c.plot()
 
@@ -84,8 +84,8 @@ def add_electrical_pads_shortest(
 
 
 if __name__ == "__main__":
-    # c = gf.components.cross(length=100, layer=gf.LAYER.M3)
-    # c = gf.components.mzi_phase_shifter()
-    c = gf.components.straight_heater_metal(length=100)
+    # c = gf.pcells.cross(length=100, layer=gf.LAYER.M3)
+    # c = gf.pcells.mzi_phase_shifter()
+    c = gf.pcells.straight_heater_metal(length=100)
     c = add_electrical_pads_shortest(component=c, port_angle=270)
     c.show(show_ports=True)

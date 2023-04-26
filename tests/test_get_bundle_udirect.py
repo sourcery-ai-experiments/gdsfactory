@@ -11,8 +11,8 @@ def test_get_bundle_udirect(
 ) -> Component:
     c = gf.Component("test_get_bundle_udirect")
 
-    pad = gf.partial(gf.components.pad, size=(10, 10))
-    pad_south = gf.components.pad_array(angle=270, spacing=(15.0, 0), pad=pad)
+    pad = gf.partial(gf.pcells.pad, size=(10, 10))
+    pad_south = gf.pcells.pad_array(angle=270, spacing=(15.0, 0), pad=pad)
     pt = c << pad_south
     pb = c << pad_south
     pb.rotate(90)

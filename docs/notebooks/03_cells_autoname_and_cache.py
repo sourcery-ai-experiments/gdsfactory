@@ -23,12 +23,12 @@
 # Why do we need cells?
 #
 # - In GDS each component must have a unique name. Ideally the name is also consistent from run to run, in case you want to merge GDS files that were created at different times or computers.
-# - Two components stored in the GDS file cannot have the same name. They need to be references (instances) of the same component. See `References tutorial`. That way we only have to store the component in memory once and all the references are just pointers to that component.
+# - Two pcells stored in the GDS file cannot have the same name. They need to be references (instances) of the same component. See `References tutorial`. That way we only have to store the component in memory once and all the references are just pointers to that component.
 #
 # What does the `@cell` decorator does?
 #
 # 1. Gives the component a unique name depending on the parameters that you pass to it.
-# 2. Creates a cache of components where we use the name as the key. The first time the function runs, the cache stores the component, so the second time, you get the component directly from the cache, so you don't create the same component twice.
+# 2. Creates a cache of pcells where we use the name as the key. The first time the function runs, the cache stores the component, so the second time, you get the component directly from the cache, so you don't create the same component twice.
 #
 #
 # A decorator is a function that runs over a function, so when you do.
@@ -37,8 +37,8 @@
 # @gf.cell
 # def mzi_with_bend():
 #     c = gf.Component()
-#     mzi = c << gf.components.mzi()
-#     bend = c << gf.components.bend_euler()
+#     mzi = c << gf.pcells.mzi()
+#     bend = c << gf.pcells.bend_euler()
 #     return c
 #
 # ```
@@ -47,8 +47,8 @@
 # ```python
 # def mzi_with_bend():
 #     c = gf.Component()
-#     mzi = c << gf.components.mzi()
-#     bend = c << gf.components.bend_euler(radius=radius)
+#     mzi = c << gf.pcells.mzi()
+#     bend = c << gf.pcells.bend_euler(radius=radius)
 #     return c
 #
 # mzi_with_bend_decorated = gf.cell(mzi_with_bend)
@@ -68,8 +68,8 @@ PDK.activate()
 
 def mzi_with_bend(radius: float = 10.0) -> gf.Component:
     c = gf.Component("Unnamed_cells_can_cause_issues")
-    mzi = c << gf.components.mzi()
-    bend = c << gf.components.bend_euler(radius=radius)
+    mzi = c << gf.pcells.mzi()
+    bend = c << gf.pcells.bend_euler(radius=radius)
     bend.connect("o1", mzi.ports["o2"])
     return c
 
@@ -89,8 +89,8 @@ c
 @gf.cell
 def mzi_with_bend(radius: float = 10.0) -> gf.Component:
     c = gf.Component()
-    mzi = c << gf.components.mzi()
-    bend = c << gf.components.bend_euler(radius=radius)
+    mzi = c << gf.pcells.mzi()
+    bend = c << gf.pcells.bend_euler(radius=radius)
     bend.connect("o1", mzi.ports["o2"])
     return c
 
@@ -251,7 +251,7 @@ print_cache()  # cache is now empty
 #
 # @gf.cell
 # def straigth_waveguide(length: float):
-#     return gf.components.straight(length=length)
+#     return gf.pcells.straight(length=length)
 #
 #
 # component = straigth_waveguide(length=3)
@@ -278,7 +278,7 @@ print_cache()  # cache is now empty
 @gf.cell
 def straigth_waveguide(length: float):
     print(type(length))
-    return gf.components.straight(length=length)
+    return gf.pcells.straight(length=length)
 
 
 # It will also convert an `int` to a `float`

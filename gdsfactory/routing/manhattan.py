@@ -8,13 +8,13 @@ import numpy as np
 from numpy import bool_, ndarray
 
 import gdsfactory as gf
-from gdsfactory.component import Component, ComponentReference
-from gdsfactory.components.bend_euler import bend_euler
-from gdsfactory.components.straight import straight as straight_function
-from gdsfactory.components.taper import taper as taper_function
+from gdsfactory.component import Component, Instance
+from gdsfactory.pcells.bend_euler import bend_euler
+from gdsfactory.pcells.straight import straight as straight_function
+from gdsfactory.pcells.taper import taper as taper_function
 from gdsfactory.cross_section import strip
 from gdsfactory.geometry.functions import angles_deg
-from gdsfactory.port import Port, select_ports_list
+from gdsfactory.component import Port, select_ports_list
 from gdsfactory.routing.get_route_sbend import get_route_sbend
 from gdsfactory.snap import snap_to_grid
 from gdsfactory.typings import (
@@ -122,7 +122,7 @@ def gen_sref(
     x_reflection: bool,
     port_name: str,
     position: Coordinate,
-) -> ComponentReference:
+) -> Instance:
     """Place reference of `port_name` of `structure` at `position`.
 
     Keep this convention, otherwise phidl port transform won't work
@@ -532,7 +532,7 @@ def get_route_error(
     layer_path: LayerSpec = (208, 0),
     layer_label: LayerSpec = (66, 0),
     layer_marker: LayerSpec = (207, 0),
-    references: Optional[List[ComponentReference]] = None,
+    references: Optional[List[Instance]] = None,
     with_sbend: bool = False,
 ) -> Route:
     """Returns route with error markers.
@@ -559,11 +559,11 @@ def get_route_error(
 
     c = Component(f"route_{uuid.uuid4()}"[:16])
 
-    ref = ComponentReference(c)
+    ref = Instance(c)
     port1 = gf.Port(name="p1", center=points[0], width=width, layer=layer_path, angle=0)
     port2 = gf.Port(name="p2", center=points[1], width=width, layer=layer_path, angle=0)
 
-    point_marker = gf.components.rectangle(
+    point_marker = gf.pcells.rectangle(
         size=(width * 2, width * 2), centered=True, layer=layer_marker
     )
     point_markers = [point_marker.ref(position=point) for point in points] + [ref]
@@ -1064,8 +1064,8 @@ def route_manhattan(
 
 if __name__ == "__main__":
     c = gf.Component("pads_route_from_steps")
-    pt = c << gf.components.pad_array(angle=270, columns=3)
-    pb = c << gf.components.pad_array(angle=90, columns=3)
+    pt = c << gf.pcells.pad_array(angle=270, columns=3)
+    pb = c << gf.pcells.pad_array(angle=90, columns=3)
     pt.move((100, 200))
     route = gf.routing.get_route_from_steps(
         pt.ports["e11"],
@@ -1074,7 +1074,7 @@ if __name__ == "__main__":
             {"y": 100},
         ],
         cross_section="metal_routing",
-        bend=gf.components.wire_corner,
+        bend=gf.pcells.wire_corner,
     )
     c.add(route.references)
     c.show(show_ports=True)

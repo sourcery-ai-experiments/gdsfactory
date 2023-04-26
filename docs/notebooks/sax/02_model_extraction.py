@@ -46,7 +46,7 @@ gf.config.rich_output()
 PDK = get_generic_pdk()
 PDK.activate()
 
-c = gf.components.straight(
+c = gf.pcells.straight(
     cross_section=rib(width=2),
     length=10,
 )
@@ -74,7 +74,7 @@ filtered_layerstack = LayerStack(
 
 
 def trainable_straight_rib(parameters):
-    return gf.components.straight(cross_section=rib(width=parameters["width"]))
+    return gf.pcells.straight(cross_section=rib(width=parameters["width"]))
 
 
 # ## Instantiating Models

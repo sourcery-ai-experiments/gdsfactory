@@ -39,7 +39,7 @@ LAYER_TRANSITIONS = {
 
 
 def get_generic_pdk() -> Pdk:
-    from gdsfactory.components import cells
+    from gdsfactory.pcells.all import cells
     from gdsfactory.config import sparameters_path, PATH
     from gdsfactory.cross_section import cross_sections
     from gdsfactory.pdk import Pdk, constants

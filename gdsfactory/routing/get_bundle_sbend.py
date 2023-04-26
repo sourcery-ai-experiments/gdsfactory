@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import List
 
-from gdsfactory.components.bend_s import bend_s
-from gdsfactory.port import Port
+from gdsfactory.pcells.bend_s import bend_s
+from gdsfactory.component import Port
 from gdsfactory.routing.sort_ports import sort_ports as sort_ports_function
 from gdsfactory.typings import Route
 

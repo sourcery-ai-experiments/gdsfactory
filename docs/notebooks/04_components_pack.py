@@ -17,19 +17,19 @@
 # ## Grid
 #
 #
-# The ``gf.components.grid()`` function can take a list (or 2D array) of objects and arrange them along a grid. This is often useful for making parameter sweeps.   If the `separation` argument is true, grid is arranged such that the elements are guaranteed not to touch, with a `spacing` distance between them.  If `separation` is false, elements are spaced evenly along a grid. The `align_x`/`align_y` arguments specify intra-row/intra-column alignment.  The `edge_x`/`edge_y` arguments specify inter-row/inter-column alignment (unused if `separation = True`).
+# The ``gf.pcells.grid()`` function can take a list (or 2D array) of objects and arrange them along a grid. This is often useful for making parameter sweeps.   If the `separation` argument is true, grid is arranged such that the elements are guaranteed not to touch, with a `spacing` distance between them.  If `separation` is false, elements are spaced evenly along a grid. The `align_x`/`align_y` arguments specify intra-row/intra-column alignment.  The `edge_x`/`edge_y` arguments specify inter-row/inter-column alignment (unused if `separation = True`).
 
 # +
 import gdsfactory as gf
 
-components_list = []
+pcells_list = []
 for width1 in [1, 6, 9]:
     for width2 in [1, 2, 4, 8]:
-        D = gf.components.taper(length=10, width1=width1, width2=width2, layer=(1, 0))
-        components_list.append(D)
+        D = gf.pcells.taper(length=10, width1=width1, width2=width2, layer=(1, 0))
+        pcells_list.append(D)
 
 c = gf.grid(
-    components_list,
+    pcells_list,
     spacing=(5, 1),
     separation=True,
     shape=(3, 4),
@@ -53,7 +53,7 @@ import numpy as np
 import gdsfactory as gf
 
 np.random.seed(5)
-D_list = [gf.components.rectangle(size=(i, i)) for i in range(1, 10)]
+D_list = [gf.pcells.rectangle(size=(i, i)) for i in range(1, 10)]
 
 D_packed_list = gf.pack(
     D_list,  # Must be a list or tuple of Components
@@ -71,9 +71,7 @@ D
 
 # +
 np.random.seed(1)
-D_list = [
-    gf.components.ellipse(radii=tuple(np.random.rand(2) * n + 2)) for n in range(120)
-]
+D_list = [gf.pcells.ellipse(radii=tuple(np.random.rand(2) * n + 2)) for n in range(120)]
 D_packed_list = gf.pack(
     D_list,  # Must be a list or tuple of Components
     spacing=4,  # Minimum distance between adjacent shapes
@@ -90,7 +88,7 @@ F.distribute(elements="all", direction="x", spacing=100, separation=True)
 F
 # -
 
-# Note that the packing problem is an NP-complete problem, so ``gf.components.packer()`` may be slow if there are more than a few hundred Components to pack (in that case, try pre-packing a few dozen at a time then packing the resulting bins). Requires the ``rectpack`` python package.
+# Note that the packing problem is an NP-complete problem, so ``gf.pcells.packer()`` may be slow if there are more than a few hundred Components to pack (in that case, try pre-packing a few dozen at a time then packing the resulting bins). Requires the ``rectpack`` python package.
 
 # ## Distribute
 #
@@ -105,9 +103,9 @@ F
 c = gf.Component("rectangles")
 # Create different-sized rectangles and add them to D
 [
-    c.add_ref(
-        gf.components.rectangle(size=[n * 15 + 20, n * 15 + 20], layer=(2, 0))
-    ).move([n, n * 4])
+    c.add_ref(gf.pcells.rectangle(size=[n * 15 + 20, n * 15 + 20], layer=(2, 0))).move(
+        [n, n * 4]
+    )
     for n in [0, 2, 3, 1, 2]
 ]
 c
@@ -117,7 +115,7 @@ c
 D = gf.Component("rectangles_separated")
 # Create different-sized rectangles and add them to D
 [
-    D.add_ref(gf.components.rectangle(size=[n * 15 + 20, n * 15 + 20])).move((n, n * 4))
+    D.add_ref(gf.pcells.rectangle(size=[n * 15 + 20, n * 15 + 20])).move((n, n * 4))
     for n in [0, 2, 3, 1, 2]
 ]
 # Distribute all the rectangles in D along the x-direction with a separation of 5
@@ -133,7 +131,7 @@ D
 
 D = gf.Component("spacing100")
 [
-    D.add_ref(gf.components.rectangle(size=[n * 15 + 20, n * 15 + 20])).move((n, n * 4))
+    D.add_ref(gf.pcells.rectangle(size=[n * 15 + 20, n * 15 + 20])).move((n, n * 4))
     for n in [0, 2, 3, 1, 2]
 ]
 D.distribute(
@@ -145,7 +143,7 @@ D
 
 D = gf.Component("alignment")
 [
-    D.add_ref(gf.components.rectangle(size=[n * 15 + 20, n * 15 + 20])).move(
+    D.add_ref(gf.pcells.rectangle(size=[n * 15 + 20, n * 15 + 20])).move(
         (n - 10, n * 4)
     )
     for n in [0, 2, 3, 1, 2]
@@ -167,7 +165,7 @@ D
 D = gf.Component("distribute")
 # Create different-sized rectangles and add them to D then distribute them
 [
-    D.add_ref(gf.components.rectangle(size=[n * 15 + 20, n * 15 + 20])).move((n, n * 4))
+    D.add_ref(gf.pcells.rectangle(size=[n * 15 + 20, n * 15 + 20])).move((n, n * 4))
     for n in [0, 2, 3, 1, 2]
 ]
 D.distribute(elements="all", direction="x", spacing=5, separation=True)
@@ -179,7 +177,7 @@ D
 D = gf.Component("align")
 # Create different-sized rectangles and add them to D then distribute them
 [
-    D.add_ref(gf.components.rectangle(size=[n * 15 + 20, n * 15 + 20])).move((n, n * 4))
+    D.add_ref(gf.pcells.rectangle(size=[n * 15 + 20, n * 15 + 20])).move((n, n * 4))
     for n in [0, 2, 3, 1, 2]
 ]
 D.distribute(elements="all", direction="x", spacing=5, separation=True)
@@ -195,7 +193,7 @@ D
 D = gf.Component("distribute_align_y")
 # Create different-sized rectangles and add them to D then distribute them
 [
-    D.add_ref(gf.components.rectangle(size=[n * 15 + 20, n * 15 + 20])).move((n, n * 4))
+    D.add_ref(gf.pcells.rectangle(size=[n * 15 + 20, n * 15 + 20])).move((n, n * 4))
     for n in [0, 2, 3, 1, 2]
 ]
 D.distribute(elements="all", direction="x", spacing=5, separation=True)

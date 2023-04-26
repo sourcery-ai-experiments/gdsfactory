@@ -151,7 +151,7 @@ b
 # %% pycharm={"name": "#%%\n"} tags=[]
 P = gf.Path()
 
-# Create the basic Path components
+# Create the basic Path pcells
 left_turn = gf.path.euler(radius=4, angle=90)
 right_turn = gf.path.euler(radius=4, angle=-90)
 straight = gf.path.straight(length=10)
@@ -518,7 +518,7 @@ wg1
 wg2
 
 # %% [markdown] pycharm={"name": "#%% md\n"}
-# Now that we have all of our components, let's `connect()` everything and see
+# Now that we have all of our pcells, let's `connect()` everything and see
 # what it looks like
 
 # %% pycharm={"name": "#%%\n"} tags=[]
@@ -825,18 +825,18 @@ pin = gf.partial(
 )
 
 # %% pycharm={"name": "#%%\n"} tags=[]
-c = gf.components.straight(cross_section=pin)
+c = gf.pcells.straight(cross_section=pin)
 c
 
 # %% pycharm={"name": "#%%\n"} tags=[]
-pin5 = gf.components.straight(cross_section=pin, length=5)
+pin5 = gf.pcells.straight(cross_section=pin, length=5)
 pin5
 
 # %% [markdown] pycharm={"name": "#%% md\n"}
-# finally, you can also pass most components Dict that define the cross-section
+# finally, you can also pass most pcells Dict that define the cross-section
 
 # %% pycharm={"name": "#%%\n"} tags=[]
-gf.components.straight(
+gf.pcells.straight(
     layer=(1, 0),
     width=0.5,
     sections=(
@@ -1008,12 +1008,12 @@ c
 
 # %% tags=[]
 xs_bbox = gf.cross_section.cross_section(bbox_layers=[(3, 0)], bbox_offsets=[3])
-w1 = gf.components.bend_euler(cross_section=xs_bbox, with_bbox=True)
+w1 = gf.pcells.bend_euler(cross_section=xs_bbox, with_bbox=True)
 w1
 
 # %%
 xs_clad = gf.cross_section.cross_section(cladding_layers=[(3, 0)], cladding_offsets=[3])
-w2 = gf.components.bend_euler(cross_section=xs_clad)
+w2 = gf.pcells.bend_euler(cross_section=xs_clad)
 w2
 
 # %% [markdown]
@@ -1041,7 +1041,7 @@ def xs_waveguide_heater():
     )
 
 
-c = gf.components.straight(cross_section=xs_waveguide_heater)
+c = gf.pcells.straight(cross_section=xs_waveguide_heater)
 c
 
 
@@ -1064,7 +1064,7 @@ def xs_waveguide_heater_with_ports():
     )
 
 
-c = gf.components.straight(cross_section=xs_waveguide_heater_with_ports)
+c = gf.pcells.straight(cross_section=xs_waveguide_heater_with_ports)
 c
 
 # %%

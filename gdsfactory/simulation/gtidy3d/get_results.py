@@ -93,7 +93,7 @@ def get_results(
     .. code::
         import gdsfactory.simulation.tidy3d as gt
 
-        component = gf.components.straight(length=3)
+        component = gf.pcells.straight(length=3)
         sim = gt.get_simulation(component=component)
         sim_data = gt.get_results(sim) # threaded
         sim_data = sim_data.result() # waits for results
@@ -118,7 +118,7 @@ def get_results_batch(
     .. code::
         import gdsfactory.simulation.tidy3d as gt
 
-        component = gf.components.straight(length=3)
+        component = gf.pcells.straight(length=3)
         sim = gt.get_simulation(component=component)
         sim_data = gt.get_results(sim) # threaded
         sim_data = sim_data.result() # waits for results
@@ -132,6 +132,6 @@ def get_results_batch(
 if __name__ == "__main__":
     import gdsfactory.simulation.gtidy3d as gt
 
-    component = gf.components.straight(length=3)
+    component = gf.pcells.straight(length=3)
     sim = gt.get_simulation(component=component)
     r = sim_data = get_results(sim=sim).result()

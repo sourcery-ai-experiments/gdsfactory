@@ -26,7 +26,7 @@ settings:
       - 100.0
       - 100.0
     info_version: 2
-    module: gdsfactory.components.pad
+    module: gdsfactory.pcells.pad
     name: pad_array
   default:
     component:
@@ -52,5 +52,5 @@ settings:
     - 100.0
     - 100.0
   info_version: 2
-  module: gdsfactory.components.add_fiducials
+  module: gdsfactory.pcells.add_fiducials
   name: pad_array_add_fiducials_offsets

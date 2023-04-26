@@ -114,7 +114,7 @@ if __name__ == "__main__":
 #
 # gdsfactory easily enables you to layout Component with as many levels of hierarchy as you need.
 #
-# A `Component` is a canvas where we can add polygons, references to other components or ports.
+# A `Component` is a canvas where we can add polygons, references to other pcells or ports.
 #
 # Lets add two references in a component.
 
@@ -125,28 +125,28 @@ import toolz
 from omegaconf import OmegaConf
 
 from gdsfactory.component import Component
-from gdsfactory.components.bend_euler import bend_euler
-from gdsfactory.components.coupler90 import coupler90 as coupler90function
-from gdsfactory.components.coupler_straight import (
+from gdsfactory.pcells.bend_euler import bend_euler
+from gdsfactory.pcells.coupler90 import coupler90 as coupler90function
+from gdsfactory.pcells.coupler_straight import (
     coupler_straight as coupler_straight_function,
 )
-from gdsfactory.components.straight import straight
+from gdsfactory.pcells.straight import straight
 from gdsfactory.cross_section import strip
 from gdsfactory.snap import assert_on_2nm_grid
 from gdsfactory.typings import ComponentSpec, CrossSectionSpec
 
 import gdsfactory as gf
 
-c = gf.components.ring_single_heater(gap=0.2, radius=10, length_x=4)
+c = gf.pcells.ring_single_heater(gap=0.2, radius=10, length_x=4)
 c
 # -
 
 scene = c.to_3d()
 scene.show()
 
-# Lets define a ring function that also accepts other component specs for the subcomponents (straight, coupler, bend)
+# Lets define a ring function that also accepts other component specs for the subpcells (straight, coupler, bend)
 
-ring = gf.components.ring_single_heater(gap=0.2, radius=10, length_x=4)
+ring = gf.pcells.ring_single_heater(gap=0.2, radius=10, length_x=4)
 ring_with_grating_couplers = gf.routing.add_fiber_array(ring)
 ring_with_grating_couplers
 
@@ -156,7 +156,7 @@ gf.routing.add_electrical_pads_top(ring_with_grating_couplers)
 
 # ## Top reticle assembly
 #
-# Once you have your components and circuits defined, you can add them into a top reticle Component for fabrication.
+# Once you have your pcells and circuits defined, you can add them into a top reticle Component for fabrication.
 #
 # You need to consider:
 #
@@ -167,12 +167,12 @@ gf.routing.add_electrical_pads_top(ring_with_grating_couplers)
 
 # +
 nm = 1e-3
-ring_te = toolz.compose(gf.routing.add_fiber_array, gf.components.ring_single)
+ring_te = toolz.compose(gf.routing.add_fiber_array, gf.pcells.ring_single)
 
 gaps = [210 * nm, 220 * nm, 230 * nm]
 rings = gf.grid([ring_te(gap=gap) for gap in gaps])
 rings_heater = [
-    gf.components.ring_single_heater(gap=0.2, radius=10, length_x=4) for gap in gaps
+    gf.pcells.ring_single_heater(gap=0.2, radius=10, length_x=4) for gap in gaps
 ]
 rings_heater_with_grating_couplers = [
     gf.routing.add_fiber_array(ring) for ring in rings_heater
@@ -190,7 +190,7 @@ def reticle(size=(1000, 1000)):
     m = c << gf.pack(rings_with_pads)[0]
     m.xmin = r.xmax + 10
     m.ymin = r.ymin
-    c << gf.components.seal_ring(c.bbox)
+    c << gf.pcells.seal_ring(c.bbox)
     return c
 
 
@@ -199,12 +199,12 @@ m
 
 # +
 nm = 1e-3
-ring_te = toolz.compose(gf.routing.add_fiber_array, gf.components.ring_single)
+ring_te = toolz.compose(gf.routing.add_fiber_array, gf.pcells.ring_single)
 rings = gf.grid([ring_te(radius=r) for r in [10, 20, 50]])
 
 gaps = [210 * nm, 220 * nm, 230 * nm]
 rings_heater = [
-    gf.components.ring_single_heater(gap=0.2, radius=10, length_x=4) for gap in gaps
+    gf.pcells.ring_single_heater(gap=0.2, radius=10, length_x=4) for gap in gaps
 ]
 rings_heater_with_grating_couplers = [
     gf.routing.add_fiber_array(ring) for ring in rings_heater
@@ -219,14 +219,14 @@ rings_with_pads = [
 def reticle(size=(1000, 1000)):
     c = gf.Component()
     r = c << rings
-    m = c << gf.components.pack_doe(
-        gf.components.mzi,
+    m = c << gf.pcells.pack_doe(
+        gf.pcells.mzi,
         settings=dict(delta_length=[100, 200]),
         function=gf.routing.add_fiber_single,
     )
     m.xmin = r.xmax + 10
     m.ymin = r.ymin
-    c << gf.components.seal_ring(c.bbox)
+    c << gf.pcells.seal_ring(c.bbox)
     return c
 
 

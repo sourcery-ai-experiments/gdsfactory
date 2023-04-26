@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import gdsfactory as gf
-from gdsfactory.add_labels import (
+from gdsfactory.pcells.add_labels import (
     get_input_label,
     get_input_label_electrical,
     get_labels,
@@ -9,7 +9,7 @@ from gdsfactory.add_labels import (
 from gdsfactory.component import Component
 
 straight = gf.partial(
-    gf.components.straight,
+    gf.pcells.straight,
     with_bbox=True,
     cladding_layers=None,
     add_pins=None,
@@ -22,7 +22,7 @@ def test_add_labels_optical() -> Component:
     c = Component()
     wg = c << straight(length=1.467)
 
-    gc = gf.components.grating_coupler_elliptical_te()
+    gc = gf.pcells.grating_coupler_elliptical_te()
     label1 = get_input_label(
         port=wg.ports["o1"], gc=gc, gc_index=0, layer_label=gf.LAYER.LABEL
     )
@@ -47,7 +47,7 @@ def test_add_labels_optical() -> Component:
 @gf.cell
 def test_add_labels_electrical() -> Component:
     c = Component()
-    _wg = gf.components.wire_straight(length=5.987)
+    _wg = gf.pcells.wire_straight(length=5.987)
     wg = c << _wg
     label1 = get_input_label_electrical(
         port=wg.ports["e1"], layer_label=gf.LAYER.LABEL, gc_index=0
@@ -71,6 +71,6 @@ if __name__ == "__main__":
     c = test_add_labels_electrical()
     # c = test_add_labels_optical()
     c.show(show_ports=True)
-    # c = gf.components.mzi()
+    # c = gf.pcells.mzi()
     # c2 = c.copy()
     # print(c2.name)

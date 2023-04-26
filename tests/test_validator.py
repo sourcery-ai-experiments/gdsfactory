@@ -10,12 +10,12 @@ import gdsfactory as gf
 def component_with_straight(component: gf.Component) -> gf.Component:
     c = gf.Component()
     c.add_ref(component)
-    c.add_ref(gf.components.straight())
+    c.add_ref(gf.pcells.straight())
     return c
 
 
 def test_validator_pass() -> None:
-    component = gf.components.straight(length=10)
+    component = gf.pcells.straight(length=10)
     component_with_straight(component=component)
 
 

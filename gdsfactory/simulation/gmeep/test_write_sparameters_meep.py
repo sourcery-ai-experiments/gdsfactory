@@ -18,7 +18,7 @@ simulation_settings = dict(resolution=20, is_3d=False)
 
 def test_sparameters_straight() -> None:
     """Checks Sparameters for a straight waveguide."""
-    c = gf.components.straight(length=2)
+    c = gf.pcells.straight(length=2)
     p = 3
     c = gf.add_padding_container(c, default=0, top=p, bottom=p)
     sp = gm.write_sparameters_meep(c, ymargin=0, overwrite=True, **simulation_settings)
@@ -32,7 +32,7 @@ def test_sparameters_straight() -> None:
 
 def test_sparameters_straight_symmetric() -> None:
     """Checks Sparameters for a straight waveguide."""
-    c = gf.components.straight(length=2)
+    c = gf.pcells.straight(length=2)
     p = 3
     c = gf.add_padding_container(c, default=0, top=p, bottom=p)
     # port_symmetries for straight
@@ -53,7 +53,7 @@ def test_sparameters_straight_symmetric() -> None:
 
 def test_sparameters_crossing_symmetric() -> None:
     """Checks Sparameters for a waveguide crossing exploiting symmetries."""
-    c = gf.components.crossing()
+    c = gf.pcells.crossing()
     sp = gm.write_sparameters_meep(
         c,
         overwrite=True,
@@ -66,7 +66,7 @@ def test_sparameters_crossing_symmetric() -> None:
 
 def test_sparameters_straight_mpi() -> None:
     """Checks Sparameters for a straight waveguide using MPI."""
-    c = gf.components.straight(length=2)
+    c = gf.pcells.straight(length=2)
     p = 3
     c = gf.add_padding_container(c, default=0, top=p, bottom=p)
     filepath = gm.write_sparameters_meep_mpi(
@@ -95,18 +95,15 @@ def test_sparameters_straight_mpi() -> None:
 def test_sparameters_straight_batch() -> None:
     """Checks Sparameters for a straight waveguide using an MPI pool."""
 
-    components = []
+    pcells = []
     p = 3
     for length in [2]:
-        c = gf.components.straight(length=length)
+        c = gf.pcells.straight(length=length)
         c = gf.add_padding_container(c, default=0, top=p, bottom=p)
-        components.append(c)
+        pcells.append(c)
 
     filepaths = gm.write_sparameters_meep_batch(
-        [
-            {"component": c, "overwrite": True, **simulation_settings}
-            for c in components
-        ],
+        [{"component": c, "overwrite": True, **simulation_settings} for c in pcells],
     )
 
     filepath = filepaths[0]
@@ -135,7 +132,7 @@ def test_sparameters_straight_batch() -> None:
 
 def test_sparameters_lazy_parallelism() -> None:
     """Checks that the Sparameters computed using MPI and lazy_parallelism flag give the same results as the serial calculation."""
-    c = gf.components.straight(length=2)
+    c = gf.pcells.straight(length=2)
     p = 3
     c = gf.add_padding_container(c, default=0, top=p, bottom=p)
 
@@ -165,7 +162,7 @@ if __name__ == "__main__":
     # test_sparameters_straight_batch()
     # test_sparameters_crossing_symmetric()
 
-    # c = gf.components.straight(length=2)
+    # c = gf.pcells.straight(length=2)
     # p = 3
     # c = gf.add_padding_container(c, default=0, top=p, bottom=p)
     # filepath = gm.write_sparameters_meep_mpi(

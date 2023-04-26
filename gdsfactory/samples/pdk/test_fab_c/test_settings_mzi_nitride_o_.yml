@@ -173,6 +173,6 @@ settings:
   function_name: mzi
   info: {}
   info_version: 2
-  module: gdsfactory.components.mzi
+  module: gdsfactory.pcells.mzi
   name: mzi_d502274f
 version: 0.0.1

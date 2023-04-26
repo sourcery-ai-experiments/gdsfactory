@@ -11,7 +11,7 @@ def gc1550te(filepath=sparameters_path / "gc2dte" / "gc1550.dat", numports=2):
         :include-source:
 
         import gdsfactory.simulation.simphony as gs
-        import gdsfactory.simulation.simphony.components as gc
+        import gdsfactory.simulation.simphony.pcells as gc
 
         c = gc.gc1550te()
         gs.plot_model(c)

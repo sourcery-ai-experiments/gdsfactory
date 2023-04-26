@@ -52,7 +52,7 @@ def xy_xsection_mesh(
         default_resolution_min (float): gmsh minimal edge length
         default_resolution_max (float): gmsh maximal edge length
         background_tag (str): name of the background layer to add (default: no background added)
-        background_padding (Tuple): [xleft, ydown, xright, yup] distances to add to the components and to fill with background_tag
+        background_padding (Tuple): [xleft, ydown, xright, yup] distances to add to the pcells and to fill with background_tag
         filename (str, path): where to save the .msh file
         global_meshsize_array: np array [x,y,z,lc] to parametrize the mesh
         global_meshsize_interpolant_func: interpolating function for global_meshsize_array
@@ -123,9 +123,9 @@ if __name__ == "__main__":
     import gdsfactory as gf
 
     c = gf.component.Component()
-    waveguide = c << gf.get_component(gf.components.straight_pin(length=10, taper=None))
+    waveguide = c << gf.get_component(gf.pcells.straight_pin(length=10, taper=None))
     undercut = c << gf.get_component(
-        gf.components.rectangle(
+        gf.pcells.rectangle(
             size=(5.0, 5.0),
             layer="UNDERCUT",
             centered=True,

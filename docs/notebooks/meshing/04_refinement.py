@@ -39,7 +39,7 @@ PDK = get_generic_pdk()
 PDK.activate()
 gf.config.rich_output()
 
-waveguide = gf.components.straight_pin(length=10, taper=None)
+waveguide = gf.pcells.straight_pin(length=10, taper=None)
 waveguide_trimmed = gf.Component()
 waveguide_trimmed.add_ref(
     gf.geometry.trim(

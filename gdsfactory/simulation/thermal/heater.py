@@ -222,10 +222,8 @@ if __name__ == "__main__":
     print(gf.generic_tech.LAYER_STACK.layers.keys())
     # gf.generic_tech.LAYER_STACK.layers["core"].thickness = 2
 
-    heater1 = gf.components.straight_heater_metal(length=50, heater_width=2)
-    heater2 = gf.components.straight_heater_metal(length=50, heater_width=2).move(
-        [0, -10]
-    )
+    heater1 = gf.pcells.straight_heater_metal(length=50, heater_width=2)
+    heater2 = gf.pcells.straight_heater_metal(length=50, heater_width=2).move([0, -10])
 
     heaters = gf.Component("heaters")
     heaters << heater1

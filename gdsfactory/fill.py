@@ -15,7 +15,7 @@ import gdsfactory as gf
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
 from gdsfactory.component_layout import _parse_layer
-from gdsfactory.components.rectangle import rectangle
+from gdsfactory.pcells.rectangle import rectangle
 from gdsfactory.typings import Float2, Floats, LayerSpecs, ComponentSpec
 
 
@@ -317,7 +317,7 @@ def test_fill():
     from gdsfactory.difftest import difftest
 
     c = gf.Component("test_fill")
-    wg = c << gf.components.straight()
+    wg = c << gf.pcells.straight()
     c << gf.add_padding_container(wg.parent, default=15)
     fill = fill_rectangle(
         c,
@@ -335,7 +335,7 @@ def test_fill():
 if __name__ == "__main__":
     c = test_fill()
 
-    mzi = gf.components.mzi()
+    mzi = gf.pcells.mzi()
     c = gf.Component("component_with_fill")
     layers = [(1, 0)]
 
@@ -353,7 +353,7 @@ if __name__ == "__main__":
 
     c << fill_rectangle_custom(
         mzi,
-        gf.components.rectangle(),
+        gf.pcells.rectangle(),
         avoid_layers=layers,
         margin=5,
         spacing=(10, 10),

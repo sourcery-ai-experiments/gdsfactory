@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Tuple
 
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 
 
 def get_port_x(port: Port) -> float:

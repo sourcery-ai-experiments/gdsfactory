@@ -26,7 +26,7 @@ ports:
 cells:
   mzi_6f76ede3:
     name: mzi_6f76ede3
-    module: gdsfactory.components.mzi
+    module: gdsfactory.pcells.mzi
     function_name: mzi
     info: {}
     info_version: 2
@@ -94,7 +94,7 @@ cells:
     child: null
   mmi1x2_be5e636a:
     name: mmi1x2_be5e636a
-    module: gdsfactory.components.mmi1x2
+    module: gdsfactory.pcells.mmi1x2
     function_name: mmi1x2
     info: {}
     info_version: 2
@@ -127,7 +127,7 @@ cells:
     child: null
   bend_euler_be5e636a:
     name: bend_euler_be5e636a
-    module: gdsfactory.components.bend_euler
+    module: gdsfactory.pcells.bend_euler
     function_name: bend_euler
     info:
       length: 16.637
@@ -191,7 +191,7 @@ cells:
     child: null
   straight_5d53fdc2:
     name: straight_5d53fdc2
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     function_name: straight
     info:
       length: 7.0
@@ -249,7 +249,7 @@ cells:
     child: null
   straight_dcfdf04b:
     name: straight_dcfdf04b
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     function_name: straight
     info:
       length: 0.1
@@ -307,7 +307,7 @@ cells:
     child: null
   straight_ebcc6dc8:
     name: straight_ebcc6dc8
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     function_name: straight
     info:
       length: 2.0
@@ -365,7 +365,7 @@ cells:
     child: null
   straight_a1265669:
     name: straight_a1265669
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     function_name: straight
     info:
       length: 0.01
@@ -597,7 +597,7 @@ cells:
     child: null
   straight_3f432f71:
     name: straight_3f432f71
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     function_name: straight
     info:
       length: 2.0
@@ -829,7 +829,7 @@ cells:
     child: null
   straight_27abf243:
     name: straight_27abf243
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     function_name: straight
     info:
       length: 7.0
@@ -1062,7 +1062,7 @@ cells:
 name: mzi_6f76ede3
 settings:
   name: mzi_6f76ede3
-  module: gdsfactory.components.mzi
+  module: gdsfactory.pcells.mzi
   function_name: mzi
   info: {}
   info_version: 2

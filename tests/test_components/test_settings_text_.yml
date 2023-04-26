@@ -22,5 +22,5 @@ settings:
   function_name: text
   info: {}
   info_version: 2
-  module: gdsfactory.components.text
+  module: gdsfactory.pcells.text
   name: text

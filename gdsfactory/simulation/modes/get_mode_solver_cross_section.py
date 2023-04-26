@@ -120,7 +120,7 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
 
     cross_section = "pn"
-    s = gf.components.straight(cross_section=cross_section)
+    s = gf.pcells.straight(cross_section=cross_section)
 
     s.show()
 

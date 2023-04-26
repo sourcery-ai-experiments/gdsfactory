@@ -66,7 +66,7 @@ settings:
     function_name: mmi1x2
     info: {}
     info_version: 2
-    module: gdsfactory.components.mmi1x2
+    module: gdsfactory.pcells.mmi1x2
     name: mmi1x2
   default:
     centered: false
@@ -95,5 +95,5 @@ settings:
   function_name: extend_ports
   info: {}
   info_version: 2
-  module: gdsfactory.components.extension
+  module: gdsfactory.pcells.extension
   name: mmi1x2_extend_ports

@@ -104,5 +104,5 @@ settings:
   function_name: mmi_90degree_hybrid
   info: {}
   info_version: 2
-  module: gdsfactory.components.mmi_90degree_hybrid
+  module: gdsfactory.pcells.mmi_90degree_hybrid
   name: mmi_90degree_hybrid

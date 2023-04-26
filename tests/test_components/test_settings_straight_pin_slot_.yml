@@ -200,5 +200,5 @@ settings:
   function_name: straight_pin_slot
   info: {}
   info_version: 2
-  module: gdsfactory.components.straight_pin_slot
+  module: gdsfactory.pcells.straight_pin_slot
   name: straight_pin_slot

@@ -135,5 +135,5 @@ settings:
       - 0.3999999999999999
       - 0.3999999999999999
   info_version: 2
-  module: gdsfactory.components.via_stack
+  module: gdsfactory.pcells.via_stack
   name: via_stack_from_rules

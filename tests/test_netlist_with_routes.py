@@ -8,8 +8,8 @@ from gdsfactory.component import Component
 def test_netlist_with_routes() -> Component:
     """"""
     c = gf.Component()
-    w = c << gf.components.straight(length=3)
-    b = c << gf.components.bend_circular()
+    w = c << gf.pcells.straight(length=3)
+    b = c << gf.pcells.bend_circular()
     w.xmax = 0
     b.xmin = 10
 
@@ -25,7 +25,7 @@ def test_netlist_with_routes() -> Component:
     # print(len(c.get_netlist().connections))
 
     assert len(c.get_dependencies()) == 3
-    assert len(connections) == 2  # 2 components + 1 flat netlist
+    assert len(connections) == 2  # 2 pcells + 1 flat netlist
     return c
 
 

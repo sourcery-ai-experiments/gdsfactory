@@ -88,5 +88,5 @@ settings:
   function_name: straight_heater_meander
   info: {}
   info_version: 2
-  module: gdsfactory.components.straight_heater_meander
+  module: gdsfactory.pcells.straight_heater_meander
   name: straight_heater_meander

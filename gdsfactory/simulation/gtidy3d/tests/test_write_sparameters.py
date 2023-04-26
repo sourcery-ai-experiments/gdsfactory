@@ -8,7 +8,7 @@ import gdsfactory.simulation.gtidy3d as gt
 
 def test_sparameters_straight(overwrite=True) -> None:
     """Checks Sparameters for a straight waveguide in 2D."""
-    c = gf.components.straight(length=2)
+    c = gf.pcells.straight(length=2)
     sp = gt.write_sparameters_1x1(c, overwrite=overwrite, is_3d=False)
 
     # Check reasonable reflection/transmission
@@ -27,7 +27,7 @@ if __name__ == "__main__":
     # test_sparameters_straight()
 
     overwrite = True
-    c = gf.components.straight(length=3)
+    c = gf.pcells.straight(length=3)
     sp = gt.write_sparameters_1x1(c, overwrite=overwrite, is_3d=False)
 
     # Check reasonable reflection/transmission

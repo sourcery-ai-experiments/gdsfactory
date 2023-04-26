@@ -42,5 +42,5 @@ settings:
   function_name: interdigital_capacitor
   info: {}
   info_version: 2
-  module: gdsfactory.components.interdigital_capacitor
+  module: gdsfactory.pcells.interdigital_capacitor
   name: interdigital_capacitor

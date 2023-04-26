@@ -27,7 +27,7 @@
 # Tidy3d provides you with a material database of dispersive materials.
 
 # %% tags=[]
-from gdsfactory.components.taper import taper_sc_nc
+from gdsfactory.pcells.taper import taper_sc_nc
 import gdsfactory.simulation as sim
 import gdsfactory.simulation.gtidy3d as gt
 import gdsfactory as gf
@@ -80,7 +80,7 @@ plt.ylabel("n")
 # 2D planar simulations run faster than 3D. When running in 2D we don't consider the component thickness in the z dimension
 
 # %%
-c = gf.components.mmi1x2()
+c = gf.pcells.mmi1x2()
 s = gt.get_simulation(c, is_3d=False)
 fig = gt.plot_simulation(s)
 
@@ -94,22 +94,22 @@ fig = gt.plot_simulation(s)
 help(gt.get_simulation)
 
 # %%
-c = gf.components.mmi1x2()
+c = gf.pcells.mmi1x2()
 s = gt.get_simulation(c)
 fig = gt.plot_simulation(s)
 
 # %%
-c = gf.components.coupler_ring()
+c = gf.pcells.coupler_ring()
 s = gt.get_simulation(c)
 fig = gt.plot_simulation(s)
 
 # %%
-c = gf.components.bend_circular(radius=2)
+c = gf.pcells.bend_circular(radius=2)
 s = gt.get_simulation(c)
 fig = gt.plot_simulation(s)
 
 # %%
-c = gf.components.straight()
+c = gf.pcells.straight()
 s = gt.get_simulation(c)
 fig = gt.plot_simulation(s)
 
@@ -119,7 +119,7 @@ fig = gt.plot_simulation(s)
 # You can define the sidewall angle in degrees with respect to normal. Lets exaggerate the sidewall angle so we can clearly see it.
 
 # %%
-c = gf.components.straight()
+c = gf.pcells.straight()
 s = gt.get_simulation(c, sidewall_angle_deg=45, plot_modes=True)
 fig = gt.plot_simulation(s)
 
@@ -127,12 +127,12 @@ fig = gt.plot_simulation(s)
 # ## Erosion / dilation
 
 # %%
-c = gf.components.straight()
+c = gf.pcells.straight()
 s = gt.get_simulation(c, is_3d=False, dilation=0)
 fig = gt.plot_simulation(s)
 
 # %%
-c = gf.components.straight()
+c = gf.pcells.straight()
 s = gt.get_simulation(c, is_3d=False, dilation=0.5)
 fig = gt.plot_simulation(s)
 
@@ -152,7 +152,7 @@ fig = gt.plot_simulation(s)
 0.2 * 0.5
 
 # %%
-c = gf.components.straight()
+c = gf.pcells.straight()
 s = gt.get_simulation(c, is_3d=False, dilation=-0.2)
 fig = gt.plot_simulation(s)
 
@@ -160,12 +160,12 @@ fig = gt.plot_simulation(s)
 # ## Plot source and monitor modes
 
 # %%
-c = gf.components.straight(length=3)
+c = gf.pcells.straight(length=3)
 s = gt.get_simulation(c, plot_modes=True, port_margin=1, ymargin=1)
 fig = gt.plot_simulation_xz(s)
 
 # %%
-c = gf.components.straight_rib(length=3)
+c = gf.pcells.straight_rib(length=3)
 s = gt.get_simulation(c, plot_modes=True)
 fig = gt.plot_simulation_xz(s)
 
@@ -183,7 +183,7 @@ s = gt.get_simulation(c, port_source_name="o2", plot_modes=True)
 fig = gt.plot_simulation_xz(s)
 
 # %%
-components = [
+pcells = [
     "bend_euler",
     "bend_s",
     "coupler",
@@ -195,10 +195,10 @@ components = [
     "straight",
 ]
 
-for component_name in components:
+for component_name in pcells:
     print(component_name)
     plt.figure()
-    c = gf.components.cells[component_name]()
+    c = gf.pcells.cells[component_name]()
     s = gt.get_simulation(c)
     fig = gt.plot_simulation(s)
 
@@ -208,7 +208,7 @@ for component_name in components:
 # You can write Sparameters from a simulation as well as a group of simulations in parallel.
 
 # %%
-c = gf.components.bend_circular(radius=2)
+c = gf.pcells.bend_circular(radius=2)
 s = gt.get_simulation(c)
 fig = gt.plot_simulation(s)
 
@@ -227,7 +227,7 @@ sim.plot.plot_sparameters(df)
 sim.plot.plot_sparameters(df, keys=("o2@0,o1@0",))
 
 # %%
-c = gf.components.mmi1x2()
+c = gf.pcells.mmi1x2()
 s = gt.get_simulation(c, plot_modes=True, port_margin=0.2, port_source_name="o2")
 fig = gt.plot_simulation(s, y=0)  # see input
 
@@ -253,7 +253,7 @@ sim.plot.plot_loss1x2(sp)
 sim.plot.plot_imbalance1x2(sp)
 
 # %%
-c = gf.components.mmi2x2_with_sbend(with_sbend=False)
+c = gf.pcells.mmi2x2_with_sbend(with_sbend=False)
 c
 
 # %%
@@ -291,9 +291,7 @@ sim.plot.plot_sparameters(sp)
 help(gt.get_simulation_grating_coupler)
 
 # %%
-c = (
-    gf.components.grating_coupler_elliptical_lumerical()
-)  # inverse design grating apodized
+c = gf.pcells.grating_coupler_elliptical_lumerical()  # inverse design grating apodized
 fiber_angle_deg = 5
 s = gt.get_simulation_grating_coupler(
     c, is_3d=False, fiber_angle_deg=fiber_angle_deg, fiber_xoffset=0
@@ -393,7 +391,7 @@ plt.title("transmission vs fiber angle (degrees)")
 plt.legend()
 
 # %%
-c = gf.components.grating_coupler_elliptical_arbitrary(
+c = gf.pcells.grating_coupler_elliptical_arbitrary(
     widths=[0.343] * 25, gaps=[0.345] * 25
 )
 f = c.plot()
@@ -446,7 +444,7 @@ plt.legend()
 # Only when you `sp.result()` you will wait for the simulations to finish.
 
 # %%
-c = gf.components.grating_coupler_elliptical_lumerical()
+c = gf.pcells.grating_coupler_elliptical_lumerical()
 fiber_angles = [3, 5, 7]
 jobs = [
     dict(component=c, is_3d=False, fiber_angle_deg=fiber_angle_deg)
@@ -471,7 +469,7 @@ plt.legend()
 # %%
 bend_radius = [1, 2]
 jobs = [
-    dict(component=gf.components.bend_circular(radius=radius)) for radius in bend_radius
+    dict(component=gf.pcells.bend_circular(radius=radius)) for radius in bend_radius
 ]
 sps = gt.write_sparameters_batch(jobs)
 

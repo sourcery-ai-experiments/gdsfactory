@@ -166,7 +166,7 @@ if __name__ == "__main__":
     import gdsfactory as gf
 
     cross_section = "strip"
-    s = gf.components.straight(cross_section=cross_section)
+    s = gf.pcells.straight(cross_section=cross_section)
 
     s.show()
 

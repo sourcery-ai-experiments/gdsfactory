@@ -10,7 +10,7 @@ def alphabet(dx=10):
     c = gf.Component()
     x = 0
     for s in characters:
-        ci = gf.components.text(text=s)
+        ci = gf.pcells.text(text=s)
         ci.name = s
         char = c << ci.flatten()
         char.x = x

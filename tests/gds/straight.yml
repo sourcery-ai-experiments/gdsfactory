@@ -26,7 +26,7 @@ ports:
 cells:
   straight_length1p234:
     name: straight_length1p234
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     function_name: straight
     info:
       length: 1.234
@@ -82,7 +82,7 @@ cells:
 name: straight_length1p234
 settings:
   name: straight_length1p234
-  module: gdsfactory.components.straight
+  module: gdsfactory.pcells.straight
   function_name: straight
   info:
     length: 1.234

@@ -26,7 +26,7 @@ import numpy as np
 
 import gdsfactory as gf
 import gdsfactory.simulation.gtidy3d as gt
-from gdsfactory.components.taper import taper_sc_nc
+from gdsfactory.pcells.taper import taper_sc_nc
 from gdsfactory.pdk import Pdk
 
 gf.config.rich_output()

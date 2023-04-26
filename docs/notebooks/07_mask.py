@@ -56,7 +56,7 @@ PDK = get_generic_pdk()
 PDK.activate()
 
 # %% tags=[]
-mmi = gf.components.mmi2x2()
+mmi = gf.pcells.mmi2x2()
 mmi_te_siepic = gf.labels.add_fiber_array_siepic(component=mmi)
 mmi_te_siepic.plot_klayout(show_ports=False)
 mmi_te_siepic.show()
@@ -89,7 +89,7 @@ for label in labels:
     print(label.text)
 
 # %% [markdown]
-# One advantage of the EHVA formats is that you can track any changes on the components directly from the GDS label, as the label already stores any changes of the child device, as well as any settings that you specify.
+# One advantage of the EHVA formats is that you can track any changes on the pcells directly from the GDS label, as the label already stores any changes of the child device, as well as any settings that you specify.
 #
 # Settings can have many levels of hierarchy, but you can still access any children setting with `:` notation.
 #
@@ -108,7 +108,7 @@ add_label_ehva_demo = gf.partial(
     die="demo_die",
     metadata_include_parent=["grating_coupler:settings:polarization"],
 )
-mmi = gf.components.mmi2x2(length_mmi=10)
+mmi = gf.pcells.mmi2x2(length_mmi=10)
 mmi_te_ehva = gf.routing.add_fiber_array(
     mmi, get_input_labels_function=None, decorator=add_label_ehva_demo
 )
@@ -129,7 +129,7 @@ for label in labels:
 # %%
 from gdsfactory.routing.get_input_labels import get_input_labels_dash
 
-c1 = gf.components.mmi1x2()
+c1 = gf.pcells.mmi1x2()
 c2 = gf.routing.add_fiber_array(c1, get_input_labels_function=get_input_labels_dash)
 c2.plot_klayout(show_ports=False)
 c2.show()
@@ -140,7 +140,7 @@ c2.show()
 # Lets start with a resistance sweep, where you change the resistance width to measure sheet resistance.
 
 # %% tags=[]
-sweep = [gf.components.resistance_sheet(width=width) for width in [1, 10, 100]]
+sweep = [gf.pcells.resistance_sheet(width=width) for width in [1, 10, 100]]
 m = gf.pack(sweep)
 c = m[0]
 c
@@ -149,12 +149,12 @@ c
 # Then we add spirals with different lengths to measure waveguide propagation loss.
 
 # %% tags=[]
-spiral = gf.components.spiral_inner_io_fiber_single()
+spiral = gf.pcells.spiral_inner_io_fiber_single()
 spiral
 
 # %% tags=[]
 spiral_te = gf.routing.add_fiber_single(
-    gf.functions.rotate(gf.components.spiral_inner_io_fiber_single, 90)
+    gf.functions.rotate(gf.pcells.spiral_inner_io_fiber_single, 90)
 )
 spiral_te
 
@@ -163,7 +163,7 @@ spiral_te
 spiral_te = gf.compose(
     gf.routing.add_fiber_single,
     gf.functions.rotate90,
-    gf.components.spiral_inner_io_fiber_single,
+    gf.pcells.spiral_inner_io_fiber_single,
 )
 c = spiral_te(length=10e3)
 c
@@ -179,7 +179,7 @@ add_fiber_single_no_labels = gf.partial(
 spiral_te = gf.compose(
     add_fiber_single_no_labels,
     gf.functions.rotate90,
-    gf.components.spiral_inner_io_fiber_single,
+    gf.pcells.spiral_inner_io_fiber_single,
 )
 sweep = [spiral_te(length=length) for length in [10e3, 20e3, 30e3]]
 m = gf.pack(sweep)
@@ -192,16 +192,14 @@ c
 # For example you can add prefix `S` at the `north-center` of each spiral using `text_rectangular` which is DRC clean and anchored on `nc` (north-center)
 
 # %% tags=[]
-text_metal3 = gf.partial(
-    gf.components.text_rectangular_multi_layer, layers=(gf.LAYER.M3,)
-)
+text_metal3 = gf.partial(gf.pcells.text_rectangular_multi_layer, layers=(gf.LAYER.M3,))
 
 m = gf.pack(sweep, text=text_metal3, text_anchors=("nc",), text_prefix="s")
 c = m[0]
 c
 
 # %% tags=[]
-text_metal2 = gf.partial(gf.components.text, layer=gf.LAYER.M2)
+text_metal2 = gf.partial(gf.pcells.text, layer=gf.LAYER.M2)
 
 m = gf.pack(sweep, text=text_metal2, text_anchors=("nc",), text_prefix="s")
 c = m[0]
@@ -210,7 +208,7 @@ c
 # %% [markdown]
 # ## Grid
 #
-# You can also pack components with a constant spacing.
+# You can also pack pcells with a constant spacing.
 
 # %% tags=[]
 g = gf.grid(sweep)
@@ -254,14 +252,12 @@ gh_ymin_m2
 # You can define a Component top cell reticle or die using `grid` and `pack` python functions.
 
 # %% tags=[] vscode={"languageId": "markdown"}
-text_metal3 = gf.partial(
-    gf.components.text_rectangular_multi_layer, layers=(gf.LAYER.M3,)
-)
+text_metal3 = gf.partial(gf.pcells.text_rectangular_multi_layer, layers=(gf.LAYER.M3,))
 grid = gf.partial(gf.grid_with_text, text=text_metal3)
 pack = gf.partial(gf.pack, text=text_metal3)
 
 gratings_sweep = [
-    gf.components.grating_coupler_elliptical(taper_angle=taper_angle)
+    gf.pcells.grating_coupler_elliptical(taper_angle=taper_angle)
     for taper_angle in [20, 30, 40]
 ]
 gratings = grid(gratings_sweep, text=None)
@@ -269,11 +265,11 @@ gratings
 
 # %% tags=[]
 gratings_sweep = [
-    gf.components.grating_coupler_elliptical(taper_angle=taper_angle)
+    gf.pcells.grating_coupler_elliptical(taper_angle=taper_angle)
     for taper_angle in [20, 30, 40]
 ]
 gratings_loss_sweep = [
-    gf.components.grating_coupler_loss_fiber_single(grating_coupler=grating)
+    gf.pcells.grating_coupler_loss_fiber_single(grating_coupler=grating)
     for grating in gratings_sweep
 ]
 gratings = grid(
@@ -282,9 +278,7 @@ gratings = grid(
 gratings
 
 # %% tags=[]
-sweep_resistance = [
-    gf.components.resistance_sheet(width=width) for width in [1, 10, 100]
-]
+sweep_resistance = [gf.pcells.resistance_sheet(width=width) for width in [1, 10, 100]]
 resistance = gf.pack(sweep_resistance)[0]
 resistance
 
@@ -292,7 +286,7 @@ resistance
 spiral_te = gf.compose(
     gf.routing.add_fiber_single,
     gf.functions.rotate90,
-    gf.components.spiral_inner_io_fiber_single,
+    gf.pcells.spiral_inner_io_fiber_single,
 )
 sweep_spirals = [spiral_te(length=length) for length in [10e3, 20e3, 30e3]]
 spirals = gf.pack(sweep_spirals)[0]
@@ -313,7 +307,7 @@ mask
 def mask():
     c = gf.Component()
     c << gf.pack([spirals, resistance, gratings])[0]
-    c << gf.components.seal_ring(c.bbox)
+    c << gf.pcells.seal_ring(c.bbox)
     return c
 
 
@@ -339,7 +333,7 @@ c
 # %% [markdown]
 # ### 2.1 pack_doe
 #
-# `pack_doe` places components as compact as possible
+# `pack_doe` places pcells as compact as possible
 
 # %% [markdown]
 # When running this tutorial make sure you UNCOMMENT this line `%matplotlib widget` so you can live update your changes in the YAML file
@@ -519,7 +513,7 @@ df
 # %% tags=[]
 mzis = [mzi_te()] * 2
 spirals = [
-    gf.routing.add_fiber_array(gf.components.spiral_external_io(length=length))
+    gf.routing.add_fiber_array(gf.pcells.spiral_external_io(length=length))
     for length in [10e3, 20e3, 30e3]
 ]
 

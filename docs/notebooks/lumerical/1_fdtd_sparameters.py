@@ -20,7 +20,7 @@
 #
 # In the CSV format each Sparameter will have 2 columns, `o1@0,o2@0` where `m` stands for magnitude and `s12a` where `a` stands for angle in radians.
 #
-# For the simulation to wor well, your components need to have ports, that will be extended automatically to go over the PML.
+# For the simulation to wor well, your pcells need to have ports, that will be extended automatically to go over the PML.
 #
 # ![lum GUI](https://i.imgur.com/dHAzZRw.png)
 #
@@ -70,10 +70,10 @@ import lumapi
 s = lumapi.FDTD()
 # -
 
-gf.components.cells.keys()
+gf.pcells.cells.keys()
 
 # +
-components = [
+pcells = [
     "bend_euler",
     "bend_s",
     "coupler",
@@ -86,8 +86,8 @@ components = [
 ]
 need_review = []
 
-for component_name in components:
-    component = gf.components.cells[component_name]()
+for component_name in pcells:
+    component = gf.pcells.cells[component_name]()
     sim.write_sparameters_lumerical(component, run=False, session=s)
     response = input(f"does the simulation for {component_name} look good? (y/n)")
     if response.upper()[0] == "N":
@@ -113,7 +113,7 @@ layer_stack2["core"].thickness = 230 * nm
 layer_stack2["core"].thickness
 
 sim.write_sparameters_lumerical(
-    gf.components.mmi1x2(), layer_stack=layer_stack2, run=False, session=s
+    gf.pcells.mmi1x2(), layer_stack=layer_stack2, run=False, session=s
 )
 
 # You will be able to see the layer thickness increase in the lumerical GUI
@@ -138,7 +138,7 @@ LAYER_STACK
 material_name_to_lumerical = dict(si=3.6)
 
 sim.write_sparameters_lumerical(
-    gf.components.mmi1x2(),
+    gf.pcells.mmi1x2(),
     layer_stack=layer_stack2,
     run=False,
     session=s,
@@ -149,7 +149,7 @@ sim.write_sparameters_lumerical(
 # ![stack](https://i.imgur.com/ywfnH6h.png)
 
 # +
-component = gf.components.mmi1x2()
+component = gf.pcells.mmi1x2()
 material_name_to_lumerical = dict(si=(3.45, 2))  # or dict(si=3.45+2j)
 
 r = sim.write_sparameters_lumerical(
@@ -166,7 +166,7 @@ r = sim.write_sparameters_lumerical(
 material_name_to_lumerical = dict(si="InP - Palik")
 
 sim.write_sparameters_lumerical(
-    gf.components.mmi1x2(),
+    gf.pcells.mmi1x2(),
     layer_stack=layer_stack2,
     run=False,
     session=s,
@@ -178,20 +178,20 @@ sim.write_sparameters_lumerical(
 
 # gdsfactory can also compute the Sparameters of a component that have not been simulated before.
 
-sim.write_sparameters_lumerical(gf.components.mmi1x2())
+sim.write_sparameters_lumerical(gf.pcells.mmi1x2())
 
-sim.plot.plot_sparameters(gf.components.mmi1x2(), keys=["S23m", "S13m"], logscale=True)
+sim.plot.plot_sparameters(gf.pcells.mmi1x2(), keys=["S23m", "S13m"], logscale=True)
 
-# As well as a group of components
+# As well as a group of pcells
 
 # +
-components = [
-    gf.components.coupler_ring(gap=gap, radius=radius)
+pcells = [
+    gf.pcells.coupler_ring(gap=gap, radius=radius)
     for gap in [0.15, 0.2, 0.3]
     for radius in [5, 10]
 ]
 
-for c in components:
+for c in pcells:
     c.show(show_ports=True)
     print(c)
     sim.write_sparameters_lumerical(c)
@@ -200,7 +200,7 @@ for c in components:
 # To debug a simulation you can create a Lumerical session outside the simulator, pass it to the simulator, and use `run=False` flag
 
 s = lumapi.FDTD()
-c = gf.components.straight()
+c = gf.pcells.straight()
 sim.write_sparameters_lumerical(c, run=False, session=s)
 
 
@@ -221,5 +221,5 @@ layer_stack = get_layer_stack()
 # +
 # NBVAL_SKIP
 
-c = gf.components.straight()
+c = gf.pcells.straight()
 s = sim.write_sparameters_lumerical(c, layer_stack=layer_stack, run=False, session=s)

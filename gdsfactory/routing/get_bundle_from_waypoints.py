@@ -6,13 +6,13 @@ import numpy as np
 from numpy import float64, ndarray
 
 import gdsfactory as gf
-from gdsfactory.components.bend_euler import bend_euler
-from gdsfactory.components.straight import straight as straight_function
-from gdsfactory.components.taper import taper as taper_function
-from gdsfactory.components.via_corner import via_corner
-from gdsfactory.components.wire import wire_corner
+from gdsfactory.pcells.bend_euler import bend_euler
+from gdsfactory.pcells.straight import straight as straight_function
+from gdsfactory.pcells.taper import taper as taper_function
+from gdsfactory.pcells.via_corner import via_corner
+from gdsfactory.pcells.wire import wire_corner
 from gdsfactory.cross_section import strip
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 from gdsfactory.routing.manhattan import (
     RouteError,
     get_route_error,

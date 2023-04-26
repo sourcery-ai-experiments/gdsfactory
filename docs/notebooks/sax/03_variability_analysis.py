@@ -168,7 +168,7 @@ filtered_layerstack = LayerStack(
 
 # trainable component function, choosing which parameters to fix and which to consider for the model
 def trainable_coupler(parameters):
-    return gf.components.coupler_full(
+    return gf.pcells.coupler_full(
         coupling_length=10,
         gap=0.3,
         dw=0.0,

@@ -14,7 +14,7 @@
 
 # # Non manhattan routing
 #
-# gdsfactory provides functions to connect and route components ports that are off-grid or have non manhattan angles (0, 90, 180, 270 degrees)
+# gdsfactory provides functions to connect and route pcells ports that are off-grid or have non manhattan angles (0, 90, 180, 270 degrees)
 #
 # ## Fix Non manhattan connections
 
@@ -33,8 +33,8 @@ PDK.activate()
 @gf.cell
 def demo_non_manhattan():
     c = gf.Component("bend")
-    b = c << gf.components.bend_circular(angle=30)
-    s = c << gf.components.straight(length=5)
+    b = c << gf.pcells.bend_circular(angle=30)
+    s = c << gf.pcells.straight(length=5)
     s.connect("o1", b.ports["o2"])
     return c
 
@@ -82,7 +82,7 @@ pdk.gds_write_settings.flatten_invalid_refs = True
 # The non-manhattan (all-angle) router allows you to route between ports and in directions which are not aligned with the x and y axes, which is the constraint of most other gdsfactory routers. Unlike phidl's `smooth()` however, the all-angle router
 #
 # - has a `steps` based syntax, fully compatible with the yaml-based circuit flow
-# - builds paths from available PDK components, such that routes can be simulated naturally by S-matrix-based circuit modeling tools, like SAX
+# - builds paths from available PDK pcells, such that routes can be simulated naturally by S-matrix-based circuit modeling tools, like SAX
 # - allows for advanced logic in selecting appropriate bends, cross-sections, and automatic tapers, based on context
 # - includes advanced cross-section-aware bundling logic
 #
@@ -143,7 +143,7 @@ def wonky_connector(port1, port2, cross_section):
     # we'll let cross_section define the cross-section at the *center* of the connector here
     connector_length = np.linalg.norm(port2.center - port1.center)
     t1 = (
-        gf.components.taper_cross_section_sine(
+        gf.pcells.taper_cross_section_sine(
             length=0.5 * connector_length,
             cross_section1=port1.cross_section,
             cross_section2=cross_section,
@@ -153,7 +153,7 @@ def wonky_connector(port1, port2, cross_section):
     )
     t1.info["length"] = connector_length * 0.5
     t2 = (
-        gf.components.taper_cross_section_sine(
+        gf.pcells.taper_cross_section_sine(
             length=0.5 * connector_length,
             cross_section1=port2.cross_section,
             cross_section2=cross_section,
@@ -164,7 +164,7 @@ def wonky_connector(port1, port2, cross_section):
     t2.info["length"] = connector_length * 0.5
     center_port = t1.ports["o2"]
     # just for fun-- we can add a non-functional reference also
-    label = gf.components.text(
+    label = gf.pcells.text(
         f"W = {center_port.width}, L = {connector_length:.3f}",
         size=center_port.width * 0.5,
         justify="center",
@@ -287,7 +287,7 @@ import gdsfactory as gf
 
 c = gf.Component("demo")
 
-mmi = gf.components.mmi2x2(width_mmi=10, gap_mmi=3)
+mmi = gf.pcells.mmi2x2(width_mmi=10, gap_mmi=3)
 mmi1 = c << mmi
 mmi2 = c << mmi
 
@@ -306,7 +306,7 @@ c
 # +
 c = gf.Component("demo")
 
-mmi = gf.components.mmi2x2(width_mmi=10, gap_mmi=3)
+mmi = gf.pcells.mmi2x2(width_mmi=10, gap_mmi=3)
 mmi1 = c << mmi
 mmi2 = c << mmi
 
@@ -332,7 +332,7 @@ NUM_WIRES = 10
 @gf.cell
 def inner_array():
     c = gf.Component()
-    base = gf.components.straight(cross_section=gf.cross_section.strip).rotate(45)
+    base = gf.pcells.straight(cross_section=gf.cross_section.strip).rotate(45)
     for x in range(10):
         for y in range(6):
             base_ref = c.add_ref(base).move((x * 20 - 90, y * 20 - 50))
@@ -343,7 +343,7 @@ def inner_array():
 @gf.cell
 def outer_array():
     c = gf.Component()
-    base = gf.components.straight(cross_section=gf.cross_section.strip)
+    base = gf.pcells.straight(cross_section=gf.cross_section.strip)
     for idx, theta in enumerate(range(0, 360, 6)):
         base_ref = c.add_ref(base).move((300, 0)).rotate(theta)
         c.add_port(f"outer_{idx}", port=base_ref.ports["o1"])
@@ -362,7 +362,7 @@ def chip():
             ports1=[inner_ports[n_route]],
             ports2=[outer_ports[n_route]],
             cross_section=gf.cross_section.strip,
-            bend=gf.components.bend_euler,
+            bend=gf.pcells.bend_euler,
             start_angle=-40,
             steps=[
                 {"ds": (NUM_WIRES - n_route) * 20},

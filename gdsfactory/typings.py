@@ -6,7 +6,7 @@ Some of these inputs parameters are also functions.
 
 - Component: Object with.
     - name.
-    - references: to other components (x, y, rotation).
+    - references: to other pcells (x, y, rotation).
     - polygons in different layers.
     - ports dict.
 - Route: dataclass with 3 attributes.
@@ -34,16 +34,15 @@ import pathlib
 import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
-import gdstk
 import numpy as np
 from omegaconf import OmegaConf
 from pydantic import BaseModel, Extra
 from typing_extensions import Literal
 
-from gdsfactory.component import Component, ComponentReference
-from gdsfactory.component_layout import Label
+from kfactory import kdb
+
+from gdsfactory.component import Component, Instance, Port
 from gdsfactory.cross_section import CrossSection, Section, Transition
-from gdsfactory.port import Port
 from gdsfactory.technology import LayerLevel, LayerStack
 
 
@@ -159,7 +158,7 @@ PathTypes = Tuple[PathType, ...]
 MaterialSpec = Union[str, float, Tuple[float, float], Callable]
 
 ComponentOrPath = Union[PathType, Component]
-ComponentOrReference = Union[Component, ComponentReference]
+ComponentOrReference = Union[Component, Instance]
 NameToFunctionDict = Dict[str, ComponentFactory]
 Number = Union[float, int]
 Coordinate = Tuple[float, float]
@@ -196,12 +195,21 @@ CrossSectionSpecs = Tuple[CrossSectionSpec, ...]
 
 MultiCrossSectionAngleSpec = List[Tuple[CrossSectionSpec, Tuple[int, ...]]]
 
-LabelListFactory = Callable[..., List[Label]]
+
+class Label(kdb.DText):
+    @classmethod
+    def __get_validators__(cls):
+        """Get validators for the port object."""
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        """Pydantic assumes port is valid."""
+        return v
 
 
 class Route(BaseModel):
-    references: List[ComponentReference]
-    labels: Optional[List[gdstk.Label]] = None
+    references: List[Instance]
     ports: Tuple[Port, Port]
     length: float
 
@@ -213,7 +221,7 @@ class Route(BaseModel):
 
 
 class Routes(BaseModel):
-    references: List[ComponentReference]
+    references: List[Instance]
     lengths: List[float]
     ports: Optional[List[Port]] = None
     bend_radius: Optional[List[float]] = None
@@ -332,7 +340,6 @@ __all__ = (
     "Int3",
     "Ints",
     "Layer",
-    "Label",
     "Layers",
     "LayerLevel",
     "LayerStack",
@@ -428,7 +435,7 @@ ports:
     yaml_dict = yaml.safe_load(yaml_text)
     jsonschema.validate(yaml_dict, schema_dict)
 
-    # from gdsfactory.components import factory
+    # from gdsfactory.pcells import factory
     # c = NetlistModel(factory=factory)
     # c.add_instance("mmi1", "mmi1x2", length=13.3)
 

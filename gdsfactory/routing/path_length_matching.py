@@ -6,7 +6,7 @@ import numpy as np
 from numpy import ndarray
 
 import gdsfactory as gf
-from gdsfactory.components.bend_euler import bend_euler
+from gdsfactory.pcells.bend_euler import bend_euler
 from gdsfactory.geometry.functions import path_length
 from gdsfactory.routing.manhattan import (
     _is_horizontal,
@@ -287,8 +287,8 @@ def path_length_matched_points_add_waypoints(
 
 if __name__ == "__main__":
     c = gf.Component()
-    c1 = c << gf.components.straight_array(n=4, spacing=50)
-    c2 = c << gf.components.straight_array(n=4, spacing=20)
+    c1 = c << gf.pcells.straight_array(n=4, spacing=50)
+    c2 = c << gf.pcells.straight_array(n=4, spacing=20)
     c1.y = 0
     c2.y = 0
     c2.x = 300

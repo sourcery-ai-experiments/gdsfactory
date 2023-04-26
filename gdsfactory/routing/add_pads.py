@@ -5,7 +5,7 @@ from typing import Callable
 import gdsfactory as gf
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
-from gdsfactory.port import select_ports_electrical
+from gdsfactory.component import select_ports_electrical
 from gdsfactory.routing.route_fiber_array import route_fiber_array
 from gdsfactory.routing.sort_ports import sort_ports_x
 from gdsfactory.typings import (
@@ -18,8 +18,8 @@ from gdsfactory.typings import (
     Union,
 )
 
-from gdsfactory.components.straight_heater_metal import straight_heater_metal
-from gdsfactory.components.pad import pad_rectangular
+from gdsfactory.pcells.straight_heater_metal import straight_heater_metal
+from gdsfactory.pcells.pad import pad_rectangular
 
 
 @cell
@@ -80,7 +80,7 @@ def add_pads_bot(
         :include-source:
 
         import gdsfactory as gf
-        c = gf.components.pad()
+        c = gf.pcells.pad()
         cc = gf.routing.add_pads_bot(component=c, port_names=("e1", "e4"), fanout_length=50)
         cc.plot()
 
@@ -225,7 +225,7 @@ def add_pads_top(
         :include-source:
 
         import gdsfactory as gf
-        c = gf.components.pad()
+        c = gf.pcells.pad()
         cc = gf.routing.add_pads_top(component=c, port_names=("e1", "e4"), fanout_length=50)
         cc.plot()
 
@@ -240,9 +240,9 @@ def add_pads_top(
 
 
 if __name__ == "__main__":
-    # c = gf.components.pad()
-    c = gf.components.straight_heater_metal(length=100.0)
-    # c = gf.components.straight(length=100.0)
+    # c = gf.pcells.pad()
+    c = gf.pcells.straight_heater_metal(length=100.0)
+    # c = gf.pcells.straight(length=100.0)
 
     # cc = add_pads_top(component=c, port_names=("e1",))
     cc = add_pads_top(component=c, port_names=("e1", "e2"), fanout_length=50)

@@ -38,7 +38,7 @@ settings:
     function_name: text_rectangular
     info: {}
     info_version: 2
-    module: gdsfactory.components.text_rectangular
+    module: gdsfactory.pcells.text_rectangular
     name: text_rectangular_layerM3
   default:
     factory:
@@ -61,5 +61,5 @@ settings:
   function_name: copy_layers
   info: {}
   info_version: 2
-  module: gdsfactory.components.copy_layers
+  module: gdsfactory.pcells.copy_layers
   name: text_rectangular_layerM_02fd6d01

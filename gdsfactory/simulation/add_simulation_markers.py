@@ -8,7 +8,7 @@ import numpy as np
 import gdsfactory as gf
 from gdsfactory.add_pins import add_pin_rectangle
 from gdsfactory.component import Component
-from gdsfactory.components.bend_circular import bend_circular
+from gdsfactory.pcells.bend_circular import bend_circular
 from gdsfactory.pdk import get_layer_stack
 from gdsfactory.technology import LayerLevel
 from gdsfactory.typings import ComponentSpec, Layer, LayerSpec
@@ -77,7 +77,7 @@ def add_simulation_markers(
         import gdsfactory as gf
         from gdsfactory.simulation.add_simulation_markers import add_simulation_markers
 
-        c = gf.components.bend_circular()
+        c = gf.pcells.bend_circular()
         c = add_simulation_markers(c)
         c.plot()
     """
@@ -124,8 +124,8 @@ def add_simulation_markers(
 
 
 if __name__ == "__main__":
-    # c = gf.components.coupler_ring()
-    c = gf.components.mmi1x2()
+    # c = gf.pcells.coupler_ring()
+    c = gf.pcells.mmi1x2()
     c = add_simulation_markers(c)
     c.show()
     scene = c.to_3d()

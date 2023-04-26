@@ -30,5 +30,5 @@ settings:
   function_name: coh_rx_dual_pol
   info: {}
   info_version: 2
-  module: gdsfactory.components.coh_rx_dual_pol
+  module: gdsfactory.pcells.coh_rx_dual_pol
   name: coh_rx_dual_pol

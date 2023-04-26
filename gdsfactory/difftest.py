@@ -208,6 +208,6 @@ def difftest(
 if __name__ == "__main__":
     import gdsfactory as gf
 
-    c = gf.components.straight()
+    c = gf.pcells.straight()
     difftest(c)
     # test_component(c, None, None)

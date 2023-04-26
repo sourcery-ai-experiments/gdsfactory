@@ -16,7 +16,7 @@ Classes and functions for construction and manipulation of geometric objects.
    :toctree: _autosummary/
 
    Component
-   ComponentReference
+   Instance
    read.import_gds
    read.from_yaml
    read.from_np

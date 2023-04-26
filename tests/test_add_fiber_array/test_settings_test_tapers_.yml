@@ -121,7 +121,7 @@ settings:
           width_wide: null
         width: 2.0
       info_version: 2
-      module: gdsfactory.components.straight
+      module: gdsfactory.pcells.straight
       name: straight_length20_width2
     default:
       select_ports:

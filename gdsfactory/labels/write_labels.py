@@ -150,7 +150,7 @@ def write_labels_gdstk(
 def test_find_labels() -> None:
     import gdsfactory as gf
 
-    c = gf.components.straight(length=124)
+    c = gf.pcells.straight(length=124)
     cc = add_fiber_single(component=c, decorator=gf.add_labels.add_labels_to_ports)
     gdspath = cc.write_gds()
     assert len(list(find_labels(gdspath))) == 4
@@ -160,7 +160,7 @@ if __name__ == "__main__":
     test_find_labels()
 
     # import gdsfactory as gf
-    # c = gf.components.straight()
+    # c = gf.pcells.straight()
     # cc = add_fiber_single(component=c)
     # gdspath = cc.write_gds()
     # print(len(list(find_labels(gdspath))))

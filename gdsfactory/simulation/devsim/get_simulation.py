@@ -242,7 +242,7 @@ if __name__ == "__main__":
     waveguide = gf.Component()
     waveguide.add_ref(
         gf.geometry.trim(
-            component=gf.components.straight_pn(length=10, taper=None),
+            component=gf.pcells.straight_pn(length=10, taper=None),
             domain=[[3, -4], [3, 4], [5, 4], [5, -4]],
         )
     )

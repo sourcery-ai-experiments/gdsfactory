@@ -4,7 +4,7 @@ from typing import Dict, List, Union
 
 from numpy import float64
 
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 
 
 def flip(port: Port) -> Port:
@@ -73,6 +73,6 @@ def get_list_ports_angle(list_ports: List[Port]) -> Union[float64, int]:
 if __name__ == "__main__":
     import gdsfactory as gf
 
-    c = gf.components.mmi1x2()
+    c = gf.pcells.mmi1x2()
     d = direction_ports_from_list_ports(c.get_ports_list())
     c.show(show_ports=True)

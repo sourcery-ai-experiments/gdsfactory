@@ -104,5 +104,5 @@ settings:
   function_name: spiral_racetrack_heater_doped
   info: {}
   info_version: 2
-  module: gdsfactory.components.spiral_heater
+  module: gdsfactory.pcells.spiral_heater
   name: spiral_racetrack_heater_doped

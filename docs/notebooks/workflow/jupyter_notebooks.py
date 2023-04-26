@@ -32,17 +32,17 @@ gf.config.set_log_level("DEBUG")
 kj.start()
 
 # %% tags=[]
-c = gf.components.mzi()
+c = gf.pcells.mzi()
 
 # %% tags=[]
 c.plot_jupyter()
 
 # %%
-c = gf.components.bend_circular()
+c = gf.pcells.bend_circular()
 c.plot_jupyter()
 
 # %%
-c = gf.components.straight_heater_meander()
+c = gf.pcells.straight_heater_meander()
 c.plot_jupyter()
 
 # %%

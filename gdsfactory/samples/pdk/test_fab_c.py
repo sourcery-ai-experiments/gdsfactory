@@ -1,4 +1,4 @@
-"""Test all the components in fab_c.
+"""Test all the pcells in fab_c.
 
 In gdsfactory we use gdslib as a place to store the GDS files.
 

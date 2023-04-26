@@ -1,4 +1,4 @@
-"""pack a list of components into a grid.
+"""pack a list of pcells into a grid.
 
 Adapted from PHIDL https://github.com/amccaugh/phidl/ by Adam McCaughan
 """
@@ -11,14 +11,14 @@ import numpy as np
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
 from gdsfactory.component_layout import Group
-from gdsfactory.components.text_rectangular import text_rectangular
-from gdsfactory.components.triangles import triangle
+from gdsfactory.pcells.text_rectangular import text_rectangular
+from gdsfactory.pcells.triangles import triangle
 from gdsfactory.typings import Anchor, ComponentSpec, Float2
 
 
 @cell
 def grid(
-    components: Optional[Tuple[ComponentSpec, ...]] = None,
+    pcells: Optional[Tuple[ComponentSpec, ...]] = None,
     spacing: Tuple[float, float] = (5.0, 5.0),
     separation: bool = True,
     shape: Optional[Tuple[int, int]] = None,
@@ -32,10 +32,10 @@ def grid(
     add_ports_prefix: bool = True,
     add_ports_suffix: bool = False,
 ) -> Component:
-    """Returns Component with a 1D or 2D grid of components.
+    """Returns Component with a 1D or 2D grid of pcells.
 
     Args:
-        components: Iterable to be placed onto a grid. (can be 1D or 2D).
+        pcells: Iterable to be placed onto a grid. (can be 1D or 2D).
         spacing: between adjacent elements on the grid, can be a tuple for
             different distances in height and width.
         separation: If True, guarantees elements are separated with fixed spacing
@@ -53,17 +53,17 @@ def grid(
         add_ports_suffix: adds port names with suffix.
 
     Returns:
-        Component containing components grid.
+        Component containing pcells grid.
 
     .. plot::
         :include-source:
 
         import gdsfactory as gf
 
-        components = [gf.components.triangle(x=i) for i in range(1, 10)]
+        pcells = [gf.pcells.triangle(x=i) for i in range(1, 10)]
         c = gf.grid(
-            components,
-            shape=(1, len(components)),
+            pcells,
+            shape=(1, len(pcells)),
             rotation=0,
             h_mirror=False,
             v_mirror=True,
@@ -72,12 +72,12 @@ def grid(
         c.plot()
 
     """
-    components = components or [triangle(x=i) for i in range(1, 10)]
-    device_array = np.asarray(components)
+    pcells = pcells or [triangle(x=i) for i in range(1, 10)]
+    device_array = np.asarray(pcells)
 
     # Check arguments
     if device_array.ndim not in (1, 2):
-        raise ValueError("grid() The components needs to be 1D or 2D.")
+        raise ValueError("grid() The pcells needs to be 1D or 2D.")
     if shape is not None and len(shape) != 2:
         raise ValueError(
             "grid() shape argument must be None or"
@@ -91,7 +91,7 @@ def grid(
         shape = (device_array.size, -1)
     elif 0 < shape[0] * shape[1] < device_array.size:
         raise ValueError(
-            f"Shape {shape} is too small for all {device_array.size} components"
+            f"Shape {shape} is too small for all {device_array.size} pcells"
         )
     else:
         if np.min(shape) == -1:
@@ -160,7 +160,7 @@ def grid(
 
 @cell
 def grid_with_text(
-    components: Optional[Tuple[ComponentSpec, ...]] = None,
+    pcells: Optional[Tuple[ComponentSpec, ...]] = None,
     text_prefix: str = "",
     text_offsets: Tuple[Float2, ...] = ((0, 0),),
     text_anchors: Tuple[Anchor, ...] = ("cc",),
@@ -168,10 +168,10 @@ def grid_with_text(
     labels: Optional[Tuple[str, ...]] = None,
     **kwargs,
 ) -> Component:
-    """Returns Component with 1D or 2D grid of components with text labels.
+    """Returns Component with 1D or 2D grid of pcells with text labels.
 
     Args:
-        components: Iterable to be placed onto a grid. (can be 1D or 2D).
+        pcells: Iterable to be placed onto a grid. (can be 1D or 2D).
         text_prefix: for labels. For example. 'A' will produce 'A1', 'A2', ...
         text_offsets: relative to component anchor. Defaults to center.
         text_anchors: relative to component (ce cw nc ne nw sc se sw center cc).
@@ -199,10 +199,10 @@ def grid_with_text(
 
         import gdsfactory as gf
 
-        components = [gf.components.triangle(x=i) for i in range(1, 10)]
+        pcells = [gf.pcells.triangle(x=i) for i in range(1, 10)]
         c = gf.grid_with_text(
-            components,
-            shape=(1, len(components)),
+            pcells,
+            shape=(1, len(pcells)),
             rotation=0,
             h_mirror=False,
             v_mirror=True,
@@ -214,7 +214,7 @@ def grid_with_text(
 
     """
     c = Component()
-    g = grid(components=components, **kwargs)
+    g = grid(pcells=pcells, **kwargs)
     c << g
     if text:
         for i, ref in enumerate(g.named_references.values()):
@@ -222,7 +222,7 @@ def grid_with_text(
                 if labels:
                     if len(labels) > i:
                         label = labels[i]
-                    # skip labels for dummy components
+                    # skip labels for dummy pcells
                     else:
                         continue
                 else:
@@ -235,7 +235,7 @@ def grid_with_text(
 def test_grid() -> Component:
     import gdsfactory as gf
 
-    c = [gf.components.straight(length=i) for i in [1, 1, 2]]
+    c = [gf.pcells.straight(length=i) for i in [1, 1, 2]]
     c = grid(
         c,
         shape=(2, 2),
@@ -252,12 +252,12 @@ if __name__ == "__main__":
     c = test_grid()
     # import gdsfactory as gf
 
-    # components = [gf.components.rectangle(size=(i, i)) for i in range(40, 66, 5)]
-    # components = [gf.components.rectangle(size=(i, i)) for i in range(40, 66, 5)]
-    # c = [gf.components.triangle(x=i) for i in range(1, 10)]
+    # pcells = [gf.pcells.rectangle(size=(i, i)) for i in range(40, 66, 5)]
+    # pcells = [gf.pcells.rectangle(size=(i, i)) for i in range(40, 66, 5)]
+    # c = [gf.pcells.triangle(x=i) for i in range(1, 10)]
     # print(len(c))
 
-    # c = [gf.components.straight(length=i) for i in range(1, 5)]
+    # c = [gf.pcells.straight(length=i) for i in range(1, 5)]
     # c = grid(
     #     c,
     #     shape=(2, 2),

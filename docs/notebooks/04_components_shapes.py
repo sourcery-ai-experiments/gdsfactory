@@ -14,7 +14,7 @@
 
 # # Shapes and generic cells
 #
-# gdsfactory provides some generic parametric cells in `gf.components` that you can customize for your application.
+# gdsfactory provides some generic parametric cells in `gf.pcells` that you can customize for your application.
 
 # ## Basic shapes
 
@@ -22,7 +22,7 @@
 #
 # To create a simple rectangle, there are two functions:
 #
-# ``gf.components.rectangle()`` can create a basic rectangle:
+# ``gf.pcells.rectangle()`` can create a basic rectangle:
 
 # +
 import gdsfactory as gf
@@ -32,105 +32,105 @@ gf.config.rich_output()
 PDK = gf.get_generic_pdk()
 PDK.activate()
 
-r1 = gf.components.rectangle(size=(4.5, 2), layer=(1, 0))
+r1 = gf.pcells.rectangle(size=(4.5, 2), layer=(1, 0))
 r1
 # -
 
-# ``gf.components.bbox()`` can also create a rectangle based on a bounding box.
+# ``gf.pcells.bbox()`` can also create a rectangle based on a bounding box.
 # This is useful if you want to create a rectangle which exactly surrounds a piece of existing geometry.
-# For example, if we have an arc geometry and we want to define a box around it, we can use ``gf.components.bbox()``:
+# For example, if we have an arc geometry and we want to define a box around it, we can use ``gf.pcells.bbox()``:
 
 c = gf.Component()
-arc = c << gf.components.bend_circular(radius=10, width=0.5, angle=90, layer=(1, 0))
+arc = c << gf.pcells.bend_circular(radius=10, width=0.5, angle=90, layer=(1, 0))
 arc.rotate(90)
 # Draw a rectangle around the arc we created by using the arc's bounding box
-rect = c << gf.components.bbox(bbox=arc.bbox, layer=(0, 0))
+rect = c << gf.pcells.bbox(bbox=arc.bbox, layer=(0, 0))
 c
 
 # ### Cross
 #
-# The ``gf.components.cross()`` function creates a cross structure:
+# The ``gf.pcells.cross()`` function creates a cross structure:
 
-gf.components.cross(length=10, width=0.5, layer=(1, 0))
+gf.pcells.cross(length=10, width=0.5, layer=(1, 0))
 
 # ### Ellipse
 #
-# The ``gf.components.ellipse()`` function creates an ellipse by defining the major and minor radii:
+# The ``gf.pcells.ellipse()`` function creates an ellipse by defining the major and minor radii:
 
-gf.components.ellipse(radii=(10, 5), angle_resolution=2.5, layer=(1, 0))
+gf.pcells.ellipse(radii=(10, 5), angle_resolution=2.5, layer=(1, 0))
 
 # ### Circle
 #
-# The ``gf.components.circle()`` function creates a circle:
+# The ``gf.pcells.circle()`` function creates a circle:
 
-gf.components.circle(radius=10, angle_resolution=2.5, layer=(1, 0))
+gf.pcells.circle(radius=10, angle_resolution=2.5, layer=(1, 0))
 
 # ### Ring
 #
-# The ``gf.components.ring()`` function creates a ring.  The radius refers to the center radius of the ring structure (halfway between the inner and outer radius).
+# The ``gf.pcells.ring()`` function creates a ring.  The radius refers to the center radius of the ring structure (halfway between the inner and outer radius).
 
-gf.components.ring(radius=5, width=0.5, angle_resolution=2.5, layer=(1, 0))
+gf.pcells.ring(radius=5, width=0.5, angle_resolution=2.5, layer=(1, 0))
 
-gf.components.ring_single(
+gf.pcells.ring_single(
     width=0.5, gap=0.2, radius=10, length_x=4, length_y=2, layer=(1, 0)
 )
 
 # +
 import gdsfactory as gf
 
-gf.components.ring_double(
+gf.pcells.ring_double(
     width=0.5, gap=0.2, radius=10, length_x=4, length_y=2, layer=(1, 0)
 )
 # -
 
-gf.components.ring_double(
+gf.pcells.ring_double(
     width=0.5,
     gap=0.2,
     radius=10,
     length_x=4,
     length_y=2,
     layer=(1, 0),
-    bend=gf.components.bend_circular,
+    bend=gf.pcells.bend_circular,
 )
 
 # ### Bend circular
 #
-# The ``gf.components.bend_circular()`` function creates an arc.  The radius refers to the center radius of the arc (halfway between the inner and outer radius).
+# The ``gf.pcells.bend_circular()`` function creates an arc.  The radius refers to the center radius of the arc (halfway between the inner and outer radius).
 
-gf.components.bend_circular(radius=2.0, width=0.5, angle=90, npoints=720, layer=(1, 0))
+gf.pcells.bend_circular(radius=2.0, width=0.5, angle=90, npoints=720, layer=(1, 0))
 
 # ### Bend euler
 #
-# The ``gf.components.bend_euler()`` function creates an adiabatic bend in which the bend radius changes gradually. Euler bends have lower loss than circular bends.
+# The ``gf.pcells.bend_euler()`` function creates an adiabatic bend in which the bend radius changes gradually. Euler bends have lower loss than circular bends.
 #
 
-gf.components.bend_euler(radius=2.0, width=0.5, angle=90, npoints=720, layer=(1, 0))
+gf.pcells.bend_euler(radius=2.0, width=0.5, angle=90, npoints=720, layer=(1, 0))
 
 # ### Tapers
 #
-# `gf.components.taper()`is defined by setting its length and its start and end length.  It has two ports, ``1`` and ``2``, on either end, allowing you to easily connect it to other structures.
+# `gf.pcells.taper()`is defined by setting its length and its start and end length.  It has two ports, ``1`` and ``2``, on either end, allowing you to easily connect it to other structures.
 
-gf.components.taper(length=10, width1=6, width2=4, port=None, layer=(1, 0))
+gf.pcells.taper(length=10, width1=6, width2=4, port=None, layer=(1, 0))
 
-# `gf.components.ramp()` is a structure is similar to `taper()` except it is asymmetric.  It also has two ports, ``1`` and ``2``, on either end.
+# `gf.pcells.ramp()` is a structure is similar to `taper()` except it is asymmetric.  It also has two ports, ``1`` and ``2``, on either end.
 
-gf.components.ramp(length=10, width1=4, width2=8, layer=(1, 0))
+gf.pcells.ramp(length=10, width1=4, width2=8, layer=(1, 0))
 
 # ### Common compound shapes
 
-# The `gf.components.L()` function creates a "L" shape with ports on either end named ``1`` and ``2``.
+# The `gf.pcells.L()` function creates a "L" shape with ports on either end named ``1`` and ``2``.
 
-gf.components.L(width=7, size=(10, 20), layer=(1, 0))
+gf.pcells.L(width=7, size=(10, 20), layer=(1, 0))
 
-# The `gf.components.C()` function creates a "C" shape with ports on either end named ``1`` and ``2``.
+# The `gf.pcells.C()` function creates a "C" shape with ports on either end named ``1`` and ``2``.
 
-gf.components.C(width=7, size=(10, 20), layer=(1, 0))
+gf.pcells.C(width=7, size=(10, 20), layer=(1, 0))
 
 # ## Text
 #
 # Gdsfactory has an implementation of the DEPLOF font with the majority of english ASCII characters represented (thanks to phidl)
 
-gf.components.text(
+gf.pcells.text(
     text="Hello world!\nMultiline text\nLeft-justified",
     size=10,
     justify="left",
@@ -142,18 +142,18 @@ gf.components.text(
 #
 # ### Step-resolution
 #
-# The `gf.components.litho_steps()` function creates lithographic test structure that is useful for measuring resolution of photoresist or electron-beam resists.  It provides both positive-tone and negative-tone resolution tests.
+# The `gf.pcells.litho_steps()` function creates lithographic test structure that is useful for measuring resolution of photoresist or electron-beam resists.  It provides both positive-tone and negative-tone resolution tests.
 
-D = gf.components.litho_steps(
+D = gf.pcells.litho_steps(
     line_widths=[1, 2, 4, 8, 16], line_spacing=10, height=100, layer=(1, 0)
 )
 D
 
 # ### Calipers (inter-layer alignment)
 
-# The `gf.components.litho_calipers()` function is used to detect offsets in multilayer fabrication.  It creates a two sets of notches on different layers.  When an fabrication error/offset occurs, it is easy to detect how much the offset is because both center-notches are no longer aligned.
+# The `gf.pcells.litho_calipers()` function is used to detect offsets in multilayer fabrication.  It creates a two sets of notches on different layers.  When an fabrication error/offset occurs, it is easy to detect how much the offset is because both center-notches are no longer aligned.
 
-D = gf.components.litho_calipers(
+D = gf.pcells.litho_calipers(
     notch_size=[1, 5],
     notch_spacing=2,
     num_notches=7,
@@ -208,29 +208,29 @@ f = P.plot()
 
 # ### Delay spiral
 
-c = gf.components.spiral_double()
+c = gf.pcells.spiral_double()
 c
 
-c = gf.components.spiral_inner_io()
+c = gf.pcells.spiral_inner_io()
 c
 
-c = gf.components.spiral_external_io()
+c = gf.pcells.spiral_external_io()
 c
 
 # ## Useful contact pads / connectors
 #
 # These functions are common shapes with ports, often used to make contact pads
 
-c = gf.components.compass(size=(4, 2), layer=(1, 0))
+c = gf.pcells.compass(size=(4, 2), layer=(1, 0))
 c
 
-c = gf.components.nxn(north=3, south=4, east=0, west=0)
+c = gf.pcells.nxn(north=3, south=4, east=0, west=0)
 c
 
-c = gf.components.pad()
+c = gf.pcells.pad()
 c
 
-c = gf.components.pad_array90(columns=3)
+c = gf.pcells.pad_array90(columns=3)
 c
 
 # ## Chip / die template
@@ -238,7 +238,7 @@ c
 # +
 import gdsfactory as gf
 
-D = gf.components.die(
+D = gf.pcells.die(
     size=(10000, 5000),  # Size of die
     street_width=100,  # Width of corner marks for die-sawing
     street_length=1000,  # Length of corner marks for die-sawing
@@ -259,7 +259,7 @@ D
 # +
 import gdsfactory as gf
 
-c = gf.components.optimal_hairpin(
+c = gf.pcells.optimal_hairpin(
     width=0.2, pitch=0.6, length=10, turn_ratio=4, num_pts=50, layer=(2, 0)
 )
 c

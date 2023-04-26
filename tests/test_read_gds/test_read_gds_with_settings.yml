@@ -17,7 +17,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 1.234
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_0a6c91fb
     width: 0.5
 info:
@@ -38,7 +38,7 @@ info:
   function_name: straight
   info_version: 1
   length: 1.234
-  module: gdsfactory.components.straight
+  module: gdsfactory.pcells.straight
   name: straight_0a6c91fb
   width: 0.5
 ports:

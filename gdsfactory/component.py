@@ -4,10 +4,8 @@ Adapted from PHIDL https://github.com/amccaugh/phidl/ by Adam McCaughan
 """
 from __future__ import annotations
 
-import datetime
 import hashlib
 import itertools
-import math
 import pathlib
 import tempfile
 import warnings
@@ -15,141 +13,34 @@ from collections.abc import Iterable
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
-import gdstk
 import kfactory as kf
 import numpy as np
 import yaml
 from kfactory import kdb
 from omegaconf import DictConfig, OmegaConf
-from typing_extensions import Literal
 
-from gdsfactory.component_layout import (
-    Label,
-    Polygon,
-    _align,
-    _distribute,
-    _parse_layer,
-)
 from gdsfactory.config import CONF, logger
 from gdsfactory.cross_section import CrossSection
-from gdsfactory.port import (
-    Port,
-    port_to_kport,
-    auto_rename_ports,
-    auto_rename_ports_counter_clockwise,
-    auto_rename_ports_layer_angle,
-    auto_rename_ports_angle,
-    map_ports_layer_to_angle,
-    map_ports_to_angle_ccw,
-    map_ports_to_angle_cw,
-    select_ports,
-)
 from gdsfactory.serialization import clean_dict
 from gdsfactory.snap import snap_to_grid
 from gdsfactory.technology import LayerView, LayerViews
 from gdsfactory.generic_tech import LAYER
 
-Plotter = Literal["holoviews", "matplotlib", "qt", "klayout"]
-Axis = Literal["x", "y"]
 
-Number = Union[float, int]
-Coordinate = Union[Tuple[Number, Number], np.ndarray, List[Number]]
+def select_ports_electrical(x):
+    return x
 
 
-class SizeInfo:
-    def __init__(self, bbox: np.ndarray) -> None:
-        """Initialize this object."""
-        self.west = bbox[0, 0]
-        self.east = bbox[1, 0]
-        self.south = bbox[0, 1]
-        self.north = bbox[1, 1]
+class Port(kf.Port):
+    @classmethod
+    def __get_validators__(cls):
+        """Get validators for the port object."""
+        yield cls.validate
 
-        self.width = self.east - self.west
-        self.height = self.north - self.south
-
-        xc = 0.5 * (self.east + self.west)
-        yc = 0.5 * (self.north + self.south)
-
-        self.sw = np.array([self.west, self.south])
-        self.se = np.array([self.east, self.south])
-        self.nw = np.array([self.west, self.north])
-        self.ne = np.array([self.east, self.north])
-
-        self.cw = np.array([self.west, yc])
-        self.ce = np.array([self.east, yc])
-        self.nc = np.array([xc, self.north])
-        self.sc = np.array([xc, self.south])
-        self.cc = self.center = np.array([xc, yc])
-
-    def get_rect(
-        self, padding=0, padding_w=None, padding_e=None, padding_n=None, padding_s=None
-    ) -> Tuple[Coordinate, Coordinate, Coordinate, Coordinate]:
-        w, e, s, n = self.west, self.east, self.south, self.north
-
-        padding_n = padding if padding_n is None else padding_n
-        padding_e = padding if padding_e is None else padding_e
-        padding_w = padding if padding_w is None else padding_w
-        padding_s = padding if padding_s is None else padding_s
-
-        w = w - padding_w
-        e = e + padding_e
-        s = s - padding_s
-        n = n + padding_n
-
-        return ((w, s), (e, s), (e, n), (w, n))
-
-    @property
-    def rect(self) -> Tuple[Coordinate, Coordinate]:
-        return self.get_rect()
-
-    def __str__(self) -> str:
-        """Return a string representation of the object."""
-        return f"w: {self.west}\ne: {self.east}\ns: {self.south}\nn: {self.north}\n"
-
-
-class MutabilityError(ValueError):
-    pass
-
-
-def _get_dependencies(component, references_set):
-    for ref in component.references:
-        references_set.add(ref.ref_cell)
-        _get_dependencies(ref.ref_cell, references_set)
-
-
-mutability_error_message = """
-You cannot modify a Component after creation as it will affect all of its instances.
-
-Create a new Component and add a reference to it.
-
-For example:
-
-# BAD
-c = gf.components.bend_euler()
-c.add_ref(gf.components.mzi())
-
-# GOOD
-c = gf.Component()
-c.add_ref(gf.components.bend_euler())
-c.add_ref(gf.components.mzi())
-"""
-
-PathType = Union[str, Path]
-Float2 = Tuple[float, float]
-Layer = Tuple[int, int]
-Layers = Tuple[Layer, ...]
-LayerSpec = Union[str, int, Layer, None]
-
-tmp = pathlib.Path(tempfile.TemporaryDirectory().name) / "gdsfactory"
-tmp.mkdir(exist_ok=True, parents=True)
-_timestamp2019 = datetime.datetime.fromtimestamp(1572014192.8273)
-MAX_NAME_LENGTH = 32
-
-
-def _rnd(arr, precision=1e-4):
-    arr = np.ascontiguousarray(arr)
-    ndigits = round(-math.log10(precision))
-    return np.ascontiguousarray(arr.round(ndigits) / precision, dtype=np.int64)
+    @classmethod
+    def validate(cls, v):
+        """Pydantic assumes port is valid."""
+        return v
 
 
 class Instance(kf.Instance):
@@ -162,7 +53,7 @@ class Instance(kf.Instance):
     def connect(
         self,
         port: str,
-        destination: ComponentReference | Port,
+        destination: Instance | Port,
         destination_name: Optional[str] = None,
         *,
         mirror: bool = False,
@@ -184,7 +75,7 @@ class Instance(kf.Instance):
         other = destination
         other_port_name = destination_name
 
-        if isinstance(other, ComponentReference):
+        if isinstance(other, Instance):
             if other_port_name is None:
                 raise ValueError(
                     "portname cannot be None if an Instance Object is given"
@@ -231,8 +122,8 @@ class Instance(kf.Instance):
         origin: Union[Port, Coordinate, str] = (0, 0),
         destination: Optional[Union[Port, Coordinate, str]] = None,
         axis: Optional[str] = None,
-    ) -> ComponentReference:
-        """Move the ComponentReference from origin point to destination.
+    ) -> Instance:
+        """Move the Instance from origin point to destination.
 
         Both origin and destination can be 1x2 array-like, Port, or a key
         corresponding to one of the Ports in this device_ref.
@@ -243,7 +134,7 @@ class Instance(kf.Instance):
             axis: for the movement.
 
         Returns:
-            ComponentReference.
+            Instance.
         """
         # If only one set of coordinates is defined, make sure it's used to move things
         if destination is None:
@@ -309,21 +200,16 @@ class Instance(kf.Instance):
     def validate(cls, v):
         """Pydantic assumes component is valid if the following are true."""
         MAX_NAME_LENGTH = 100
-        assert isinstance(
-            v, ComponentReference
-        ), f"TypeError, Got {type(v)}, expecting Instance"
+        assert isinstance(v, Instance), f"TypeError, Got {type(v)}, expecting Instance"
         assert (
             len(v.name) <= MAX_NAME_LENGTH
         ), f"name `{v.name}` {len(v.name)} > {MAX_NAME_LENGTH} "
         return v
 
 
-ComponentReference = Instance
-
-
 class Component(kf.KCell):
     """A Component is an empty canvas where you add polygons, references and ports \
-            (to connect to other components).
+            (to connect to other pcells).
 
     - stores settings that you use to build the component
     - stores info that you want to use
@@ -351,26 +237,6 @@ class Component(kf.KCell):
             default: default component settings.
             child: dict info from the children, if any.
     """
-
-    # def __init__(
-    #     self,
-    #     name: str = "Unnamed",
-    #     with_uuid: bool = False,
-    # ) -> None:
-    #     """Initialize the Component object."""
-    #     self.uid = str(uuid.uuid4())[:8]
-    #     if with_uuid or name == "Unnamed":
-    #         name += f"_{self.uid}"
-    #     self.name = name
-    #     self.info: Dict[str, Any] = {} # user added
-    #     self.settings: Dict[str, Any] = {} # cell decorator adds this
-    #     self._locked = False
-    #     self.get_child_name = False
-    #     self._reference_names_counter = Counter()
-    #     self._reference_names_used = set()
-    #     self._references = []
-    #     self.ports = {}
-    #     self._named_references = {}
 
     def copy(self) -> "Component":
         """Copy the full component.
@@ -547,7 +413,7 @@ class Component(kf.KCell):
         self._locked = False
 
     def lock(self) -> None:
-        """Makes sure components can't add new elements or move existing ones.
+        """Makes sure pcells can't add new elements or move existing ones.
 
         Components lock automatically when going into the CACHE to
         ensure one component does not change others
@@ -564,12 +430,12 @@ class Component(kf.KCell):
             element: Object that will be accessible by alias name.
 
         """
-        if isinstance(element, (ComponentReference, Polygon)):
+        if isinstance(element, (Instance, Polygon)):
             self.named_references[key] = element
         else:
             raise ValueError(
                 f"Tried to assign alias {key!r} in Component {self.name!r},"
-                "but failed because the item was not a ComponentReference"
+                "but failed because the item was not a Instance"
             )
 
     @classmethod
@@ -636,7 +502,7 @@ class Component(kf.KCell):
 
     @property
     def bbox(self):
-        """Returns the bounding box of the ComponentReference.
+        """Returns the bounding box of the Instance.
 
         it snaps to 3 decimals in um (0.001um = 1nm precision)
         """
@@ -818,7 +684,7 @@ class Component(kf.KCell):
         return get_netlist(component=self, **kwargs)
 
     def get_netlist_recursive(self, **kwargs) -> Dict[str, DictConfig]:
-        """Returns recursive netlist for a component and subcomponents.
+        """Returns recursive netlist for a component and subpcells.
 
         Keyword Args:
             component: to extract netlist.
@@ -936,7 +802,7 @@ class Component(kf.KCell):
         rotation: float = 0,
         h_mirror: bool = False,
         v_mirror: bool = False,
-    ) -> ComponentReference:
+    ) -> Instance:
         """Returns Component reference.
 
         Args:
@@ -947,7 +813,7 @@ class Component(kf.KCell):
                 This is the most common mirror.
             v_mirror: vertical mirror using x axis (1, y) (0, y).
         """
-        _ref = ComponentReference(self)
+        _ref = Instance(self)
 
         if port_id and port_id not in self.ports:
             raise ValueError(f"port {port_id} not in {self.ports.keys()}")
@@ -971,7 +837,7 @@ class Component(kf.KCell):
         yc = si.south + si.height / 2
         xc = si.west + si.width / 2
         center = (xc, yc)
-        _ref = ComponentReference(self)
+        _ref = Instance(self)
         _ref.move(center, position)
         return _ref
 
@@ -1215,12 +1081,10 @@ class Component(kf.KCell):
     def copy_child_info(self, component: Component) -> None:
         """Copy and settings info from child component into parent.
 
-        Parent components can access child cells settings.
+        Parent pcells can access child cells settings.
         """
-        if not isinstance(component, (Component, ComponentReference)):
-            raise ValueError(
-                f"{type(component)}" "is not a Component or ComponentReference"
-            )
+        if not isinstance(component, (Component, Instance)):
+            raise ValueError(f"{type(component)}" "is not a Component or Instance")
 
         self.get_child_name = True
         self.child = component
@@ -1251,14 +1115,14 @@ class Component(kf.KCell):
         """Add a new element or list of elements to this Component.
 
         Args:
-            element: Polygon, ComponentReference or iterable
+            element: Polygon, Instance or iterable
                 The element or iterable of elements to be inserted in this cell.
 
         Raises:
             MutabilityError: if component is locked.
         """
         self.is_unlocked()
-        if isinstance(element, ComponentReference):
+        if isinstance(element, Instance):
             self._cell.add(element._reference)
             self._references.append(element)
         else:
@@ -1268,13 +1132,13 @@ class Component(kf.KCell):
         """Add a new element or list of elements to this Component.
 
         Args:
-            element: Polygon, ComponentReference or iterable
+            element: Polygon, Instance or iterable
                 The element or iterable of elements to be inserted in this cell.
 
         Raises:
             MutabilityError: if component is locked.
         """
-        if isinstance(element, ComponentReference):
+        if isinstance(element, Instance):
             self._register_reference(element)
             self._add(element)
         elif isinstance(element, Iterable):
@@ -1290,8 +1154,8 @@ class Component(kf.KCell):
         rows: int = 2,
         spacing: Tuple[float, float] = (100, 100),
         alias: Optional[str] = None,
-    ) -> ComponentReference:
-        """Creates a ComponentReference reference to a Component.
+    ) -> Instance:
+        """Creates a Instance reference to a Component.
 
         Args:
             component: The referenced component.
@@ -1302,7 +1166,7 @@ class Component(kf.KCell):
             alias: str or None. Alias of the referenced Component.
 
         Returns
-            a: ComponentReference containing references to the Component.
+            a: Instance containing references to the Component.
         """
         if not isinstance(component, Component):
             raise TypeError("add_array() needs a Component object.")
@@ -1396,7 +1260,7 @@ class Component(kf.KCell):
         component_flat.add_ports(self.ports)
         return component_flat
 
-    def flatten_reference(self, ref: ComponentReference):
+    def flatten_reference(self, ref: Instance):
         """From existing cell replaces reference with a flatten reference \
         which has the transformations already applied.
 
@@ -1414,8 +1278,8 @@ class Component(kf.KCell):
 
     def add_ref(
         self, component: Component, alias: Optional[str] = None, **kwargs
-    ) -> ComponentReference:
-        """Add ComponentReference to the current Component.
+    ) -> Instance:
+        """Add Instance to the current Component.
 
         Args:
             component: Component.
@@ -1456,7 +1320,7 @@ class Component(kf.KCell):
         .. code ::
 
             import gdsfactory as gf
-            gf.components.straight().get_layers() == {(1, 0), (111, 0)}
+            gf.pcells.straight().get_layers() == {(1, 0), (111, 0)}
         """
         return {(info.layer, info.datatype) for info in self.klib.layer_infos()}
 
@@ -1836,7 +1700,7 @@ class Component(kf.KCell):
 
     def to_dict(
         self,
-        ignore_components_prefix: Optional[List[str]] = None,
+        ignore_pcells_prefix: Optional[List[str]] = None,
         ignore_functions_prefix: Optional[List[str]] = None,
         with_cells: bool = False,
         with_ports: bool = False,
@@ -1844,7 +1708,7 @@ class Component(kf.KCell):
         """Returns Dict representation of a component.
 
         Args:
-            ignore_components_prefix: for components to ignore when exporting.
+            ignore_pcells_prefix: for pcells to ignore when exporting.
             ignore_functions_prefix: for functions to ignore when exporting.
             with_cells: write cells recursively.
             with_ports: write port information dict.
@@ -1858,7 +1722,7 @@ class Component(kf.KCell):
             cells = recurse_structures(
                 self,
                 ignore_functions_prefix=ignore_functions_prefix,
-                ignore_components_prefix=ignore_components_prefix,
+                ignore_pcells_prefix=ignore_pcells_prefix,
             )
             d["cells"] = clean_dict(cells)
 
@@ -1870,7 +1734,7 @@ class Component(kf.KCell):
         """Write Dict representation of a component in YAML format.
 
         Args:
-            ignore_components_prefix: for components to ignore when exporting.
+            ignore_pcells_prefix: for pcells to ignore when exporting.
             ignore_functions_prefix: for functions to ignore when exporting.
             with_cells: write cells recursively.
             with_ports: write port information.
@@ -2007,17 +1871,17 @@ class Component(kf.KCell):
             right: east padding.
             left: west padding.
         """
-        from gdsfactory.add_padding import add_padding
+        from gdsfactory.pcells.add_padding import add_padding
 
         return add_padding(component=self, **kwargs)
 
     def absorb(self, reference) -> Component:
-        """Absorbs polygons from ComponentReference into Component.
+        """Absorbs polygons from Instance into Component.
 
         Destroys the reference in the process but keeping the polygon geometry.
 
         Args:
-            reference: ComponentReference to be absorbed into the Component.
+            reference: Instance to be absorbed into the Component.
         """
         if reference not in self.references:
             raise ValueError(
@@ -2028,7 +1892,7 @@ class Component(kf.KCell):
 
     def remove(self, items):
         """Removes items from a Component, which can include Ports, PolygonSets \
-        CellReferences, ComponentReferences and Labels.
+        CellReferences, Instances and Labels.
 
         Args:
             items: list of Items to be removed from the Component.
@@ -2041,7 +1905,7 @@ class Component(kf.KCell):
             elif isinstance(item, gdstk.Reference):
                 self._cell.remove(item)
                 item.owner = None
-            elif isinstance(item, ComponentReference):
+            elif isinstance(item, Instance):
                 self.references.remove(item)
                 self._cell.remove(item._reference)
                 item.owner = None
@@ -2291,376 +2155,6 @@ class Component(kf.KCell):
         component = gf.Component()
         component.add_polygon(p, layer=layer)
         return component
-
-
-def copy(
-    D: Component,
-    references=None,
-    ports=None,
-    polygons=None,
-    paths=None,
-    name=None,
-    labels=None,
-) -> Component:
-    """Returns a Component copy.
-
-    Args:
-        D: component to copy.
-    """
-    D_copy = Component()
-    D_copy.info = D.info
-    # D_copy._cell = D._cell.copy(name=D_copy.name)
-
-    for ref in references if references is not None else D.references:
-        D_copy.add(copy_reference(ref))
-    for port in (ports if ports is not None else D.ports).values():
-        D_copy.add_port(port=port)
-    for poly in polygons if polygons is not None else D.polygons:
-        D_copy.add_polygon(poly)
-    for path in paths if paths is not None else D.paths:
-        D_copy.add(path)
-    for label in labels if labels is not None else D.labels:
-        D_copy.add_label(
-            text=label.text,
-            position=label.origin,
-            layer=(label.layer, label.texttype),
-        )
-
-    if name is not None:
-        D_copy.name = name
-
-    return D_copy
-
-
-def copy_reference(
-    ref,
-    parent=None,
-    columns=None,
-    rows=None,
-    spacing=None,
-    origin=None,
-    rotation=None,
-    magnification=None,
-    x_reflection=None,
-    name=None,
-    v1=None,
-    v2=None,
-) -> ComponentReference:
-    return ComponentReference(
-        component=parent or ref.parent,
-        columns=columns or ref.columns,
-        rows=rows or ref.rows,
-        spacing=spacing or ref.spacing,
-        origin=origin or ref.origin,
-        rotation=rotation or ref.rotation,
-        magnification=magnification or ref.magnification,
-        x_reflection=x_reflection or ref.x_reflection,
-        name=name or ref.name,
-        v1=v1 or ref.v1,
-        v2=v2 or ref.v2,
-    )
-
-
-def test_get_layers() -> Component:
-    import gdsfactory as gf
-
-    c1 = gf.components.straight(
-        length=10,
-        width=0.5,
-        layer=(2, 0),
-        bbox_layers=[(111, 0)],
-        bbox_offsets=[3],
-        with_bbox=True,
-        cladding_layers=None,
-        add_pins=None,
-        add_bbox=None,
-    )
-    assert c1.get_layers() == {(2, 0), (111, 0)}, c1.get_layers()
-    # return c1
-    c2 = c1.remove_layers([(111, 0)])
-    assert c2.get_layers() == {(2, 0)}, c2.get_layers()
-    return c2
-
-
-def _filter_polys(polygons, layers_excl):
-    return [
-        polygon
-        for polygon, layer, datatype in zip(
-            polygons.polygons, polygons.layers, polygons.datatypes
-        )
-        if (layer, datatype) not in layers_excl
-    ]
-
-
-def recurse_structures(
-    component: Component,
-    ignore_components_prefix: Optional[List[str]] = None,
-    ignore_functions_prefix: Optional[List[str]] = None,
-) -> Dict[str, Any]:
-    """Recurse component and components references recursively.
-
-    Args:
-        component: component to recurse.
-        ignore_components_prefix: list of prefix to ignore.
-        ignore_functions_prefix: list of prefix to ignore.
-    """
-    ignore_functions_prefix = ignore_functions_prefix or []
-    ignore_components_prefix = ignore_components_prefix or []
-
-    if (
-        hasattr(component, "function_name")
-        and component.function_name in ignore_functions_prefix
-    ):
-        return {}
-
-    if hasattr(component, "name") and any(
-        component.name.startswith(i) for i in ignore_components_prefix
-    ):
-        return {}
-
-    output = {component.name: dict(component.settings)}
-    for reference in component.references:
-        if (
-            isinstance(reference, ComponentReference)
-            and reference.ref_cell.name not in output
-        ):
-            output.update(recurse_structures(reference.ref_cell))
-
-    return output
-
-
-def flatten_invalid_refs_recursive(
-    component: Component, grid_size: Optional[float] = None
-) -> Component:
-    """Returns new Component with flattened references.
-
-    Args:
-        component: to flatten invalid references.
-        grid_size: optional grid size in um.
-    """
-    from gdsfactory.decorators import is_invalid_ref
-    from gdsfactory.functions import transformed
-    import networkx as nx
-
-    def _create_dag(component):
-        """DAG where components point to references which then point to components again."""
-        nodes = {}
-        edges = {}
-
-        def _add_nodes_recursive(g, component):
-            g.add_node(component.name)
-            nodes[component.name] = component
-            for ref in component.references:
-                edge_name = f"{component.name}:{ref.name}"
-                g.add_edge(component.name, edge_name)
-                g.add_edge(edge_name, ref.parent.name)
-                edges[edge_name] = ref
-                _add_nodes_recursive(g, ref.parent)
-
-        g = nx.DiGraph()
-        _add_nodes_recursive(g, component)
-
-        return g, nodes, edges
-
-    def _find_leaves(g):
-        leaves = [n for n, d in g.out_degree() if d == 0]
-        return leaves
-
-    def _prune_leaves(g):
-        """Prune components AND references pointing to them at the bottom of the DAG.
-        Helper function
-        """
-        comps = _find_leaves(g)
-        for component in comps:
-            g.remove_node(component)
-        refs = _find_leaves(g)
-        for r in refs:
-            g.remove_node(r)
-        return g, comps, refs
-
-    finished_comps = {}
-    g, comps, refs = _create_dag(component)
-    while True:
-        g, comp_leaves, ref_leaves = _prune_leaves(g)
-        if not comp_leaves:
-            break
-        new_comps = {}
-        for ref_name in ref_leaves:
-            r = refs[ref_name]
-            comp_name, _ = ref_name.split(":")
-            if comp_name in finished_comps:
-                continue
-            new_comps[comp_name] = comps[comp_name] = new_comps.get(
-                comp_name
-            ) or Component(name=comp_name)
-            if is_invalid_ref(r, grid_size):
-                comp = transformed(r, cache=False, decorator=None)  # type: ignore
-                comps[comp.name] = comp
-                r = refs[ref_name] = ComponentReference(comp)
-            comps[comp_name].add(
-                copy_reference(refs[ref_name], parent=comps[r.parent.name])
-            )
-        finished_comps.update(new_comps)
-    return finished_comps[component.name]
-
-
-def test_same_uid() -> None:
-    import gdsfactory as gf
-
-    c = Component()
-    c << gf.components.rectangle()
-    c << gf.components.rectangle()
-
-    r1 = c.references[0].parent
-    r2 = c.references[1].parent
-
-    assert r1.uid == r2.uid, f"{r1.uid} must equal {r2.uid}"
-
-
-def test_netlist_simple() -> None:
-    import gdsfactory as gf
-
-    c = gf.Component()
-    c1 = c << gf.components.straight(length=1, width=2)
-    c2 = c << gf.components.straight(length=2, width=2)
-    c2.connect(port="o1", destination=c1.ports["o2"])
-    c.add_port("o1", port=c1.ports["o1"])
-    c.add_port("o2", port=c2.ports["o2"])
-    netlist = c.get_netlist()
-    # print(netlist.pretty())
-    assert len(netlist["instances"]) == 2
-
-
-def test_netlist_simple_width_mismatch_throws_error() -> None:
-    import pytest
-
-    import gdsfactory as gf
-
-    c = gf.Component()
-    c1 = c << gf.components.straight(length=1, width=1)
-    c2 = c << gf.components.straight(length=2, width=2)
-    c2.connect(port="o1", destination=c1.ports["o2"])
-    c.add_port("o1", port=c1.ports["o1"])
-    c.add_port("o2", port=c2.ports["o2"])
-    with pytest.raises(ValueError):
-        c.get_netlist()
-
-
-def test_netlist_complex() -> None:
-    import gdsfactory as gf
-
-    c = gf.components.mzi_arms()
-    netlist = c.get_netlist()
-    # print(netlist.pretty())
-    assert len(netlist["instances"]) == 4, len(netlist["instances"])
-
-
-def test_extract() -> Component:
-    import gdsfactory as gf
-
-    c = gf.components.straight(
-        length=10,
-        width=0.5,
-        bbox_layers=[gf.LAYER.WGCLAD],
-        bbox_offsets=[3],
-        with_bbox=True,
-        cladding_layers=None,
-        add_pins=None,
-        add_bbox=None,
-    )
-    c2 = c.extract(layers=[gf.LAYER.WGCLAD])
-
-    assert len(c.polygons) == 2, len(c.polygons)
-    assert len(c2.polygons) == 1, len(c2.polygons)
-    assert gf.LAYER.WGCLAD in c2.layers
-    return c2
-
-
-def hash_file(filepath):
-    md5 = hashlib.md5()
-    md5.update(filepath.read_bytes())
-    return md5.hexdigest()
-
-
-def test_bbox_reference() -> Component:
-    import gdsfactory as gf
-
-    c = gf.Component("component_with_offgrid_polygons")
-    c1 = c << gf.components.rectangle(size=(1.5e-3, 1.5e-3), port_type=None)
-    c2 = c << gf.components.rectangle(size=(1.5e-3, 1.5e-3), port_type=None)
-    c2.xmin = c1.xmax
-
-    assert c2.xsize == 2e-3
-    return c2
-
-
-def test_bbox_component() -> None:
-    import gdsfactory as gf
-
-    c = gf.components.rectangle(size=(1.5e-3, 1.5e-3), port_type=None)
-    assert c.xsize == 2e-3
-
-
-def test_remap_layers() -> None:
-    import gdsfactory as gf
-
-    c = gf.components.straight(layer=(2, 0))
-    remap = c.remap_layers(layermap={(2, 0): gf.LAYER.WGN})
-    hash_geometry = "83fbc6a8289505eaed3a2e3ab279cc03f5e4d00c"
-
-    assert (
-        remap.hash_geometry() == hash_geometry
-    ), f"hash_geometry = {remap.hash_geometry()!r}"
-
-
-def test_remove_labels() -> None:
-    import gdsfactory as gf
-
-    c = gf.c.straight()
-    c.remove_labels()
-
-    assert len(c.labels) == 0
-
-
-def test_import_gds_settings():
-    import gdsfactory as gf
-
-    c = gf.components.mzi()
-    gdspath = c.write_gds_with_metadata()
-    c2 = gf.import_gds(gdspath, name="mzi_sample", read_metadata=True)
-    c3 = gf.routing.add_fiber_single(c2)
-    assert c3
-
-
-def test_flatten_invalid_refs_recursive():
-    import gdsfactory as gf
-
-    @gf.cell
-    def flat():
-        c = gf.Component()
-        mmi1 = (c << gf.components.mmi1x2()).move((0, 1e-4))
-        mmi2 = (c << gf.components.mmi1x2()).rotate(90)
-        mmi2.move((40, 20))
-        route = gf.routing.get_route(mmi1.ports["o2"], mmi2.ports["o1"], radius=5)
-        c.add(route.references)
-        return c
-
-    @gf.cell
-    def hierarchy():
-        c = gf.Component()
-        (c << flat()).rotate(33)
-        (c << flat()).move((100, 0))
-        return c
-
-    c_orig = hierarchy()
-    c_new = flatten_invalid_refs_recursive(c_orig)
-    assert c_new is not c_orig
-    assert c_new != c_orig
-    assert c_orig.references[0].parent.name != c_new.references[0].parent.name
-    assert (
-        c_orig.references[1].parent.references[0].parent.name
-        != c_new.references[1].parent.references[0].parent.name
-    )
 
 
 if __name__ == "__main__":

@@ -40,5 +40,5 @@ settings:
   function_name: litho_ruler
   info: {}
   info_version: 2
-  module: gdsfactory.components.litho_ruler
+  module: gdsfactory.pcells.litho_ruler
   name: litho_ruler

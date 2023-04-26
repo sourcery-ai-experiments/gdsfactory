@@ -27,7 +27,7 @@ def join_first_letters(name: str) -> str:
     return "".join([x[0] for x in name.split("_") if x])
 
 
-# replace function_name prefix for some components
+# replace function_name prefix for some pcells
 component_type_to_name = {"phidl": "phidl"}
 
 
@@ -158,12 +158,12 @@ if __name__ == "__main__":
     # testclean_value_json()
     # import gdsfactory as gf
 
-    # print(clean_value(gf.components.straight))
-    # c = gf.components.straight(polarization="TMeraer")
+    # print(clean_value(gf.pcells.straight))
+    # c = gf.pcells.straight(polarization="TMeraer")
     # print(c.settings["polarization"])
     # print(clean_value(11.001))
-    # c = gf.components.straight(length=10)
-    # c = gf.components.straight(length=10)
+    # c = gf.pcells.straight(length=10)
+    # c = gf.pcells.straight(length=10)
 
     # print(c.name)
     # print(c)
@@ -179,9 +179,9 @@ if __name__ == "__main__":
     import gdsfactory as gf
 
     d = {
-        "X": gf.components.crossing45(port_spacing=40.0),
-        "-": gf.components.compensation_path(
-            crossing45=gf.components.crossing45(port_spacing=40.0)
+        "X": gf.pcells.crossing45(port_spacing=40.0),
+        "-": gf.pcells.compensation_path(
+            crossing45=gf.pcells.crossing45(port_spacing=40.0)
         ),
     }
     d2 = clean_value(d)

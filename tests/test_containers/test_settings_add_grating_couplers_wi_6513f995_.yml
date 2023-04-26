@@ -25,7 +25,7 @@ cells:
     function_name: bend_euler
     info_version: 1
     length: 16.637
-    module: gdsfactory.components.bend_euler
+    module: gdsfactory.pcells.bend_euler
     name: bend_euler_1da190e0
     radius: 10
     radius_min: 7.061
@@ -49,7 +49,7 @@ cells:
       radius: 5.5
     function_name: circle
     info_version: 1
-    module: gdsfactory.components.circle
+    module: gdsfactory.pcells.circle
     name: circle_602e85fd
   compass_164fc476:
     changed:
@@ -79,7 +79,7 @@ cells:
       - 11
     function_name: compass
     info_version: 1
-    module: gdsfactory.components.compass
+    module: gdsfactory.pcells.compass
     name: compass_164fc476
   compass_280a2d8b:
     changed:
@@ -109,7 +109,7 @@ cells:
       - 11
     function_name: compass
     info_version: 1
-    module: gdsfactory.components.compass
+    module: gdsfactory.pcells.compass
     name: compass_280a2d8b
   compass_8e661824:
     changed:
@@ -139,7 +139,7 @@ cells:
       - 11
     function_name: compass
     info_version: 1
-    module: gdsfactory.components.compass
+    module: gdsfactory.pcells.compass
     name: compass_8e661824
   component_sequence_e4dca69b:
     changed:
@@ -183,7 +183,7 @@ cells:
         - o2
     function_name: component_sequence
     info_version: 1
-    module: gdsfactory.components.component_sequence
+    module: gdsfactory.pcells.component_sequence
     name: component_sequence_e4dca69b
   contact_46068602:
     changed:
@@ -253,7 +253,7 @@ cells:
     layer:
     - 49
     - 0
-    module: gdsfactory.components.contact
+    module: gdsfactory.pcells.contact
     name: contact_46068602
     size:
     - 11
@@ -312,7 +312,7 @@ cells:
       wg_width: 0.5
     function_name: grating_coupler_elliptical_trenches
     info_version: 1
-    module: gdsfactory.components.grating_coupler_elliptical_trenches
+    module: gdsfactory.pcells.grating_coupler_elliptical_trenches
     name: grating_coupler_ellipti_b632d295
     period: 0.6759999999999999
     polarization: te
@@ -343,7 +343,7 @@ cells:
       width_taper: 1
     function_name: mmi2x2
     info_version: 1
-    module: gdsfactory.components.mmi2x2
+    module: gdsfactory.pcells.mmi2x2
     name: mmi2x2
   mzi_d275fe52:
     changed:
@@ -401,7 +401,7 @@ cells:
       with_splitter: true
     function_name: mzi
     info_version: 1
-    module: gdsfactory.components.mzi
+    module: gdsfactory.pcells.mzi
     name: mzi_d275fe52
   mzi_d275fe52_add_gratin_45b84cde:
     changed:
@@ -462,7 +462,7 @@ cells:
         with_splitter: true
       function_name: mzi
       info_version: 1
-      module: gdsfactory.components.mzi
+      module: gdsfactory.pcells.mzi
       name: mzi_d275fe52
     default:
       component_name: null
@@ -539,7 +539,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 2
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_15a9c8d1
     width: 0.5
   straight_18ee7f79:
@@ -562,7 +562,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 375.42
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_18ee7f79
     width: 0.5
   straight_1da190e0:
@@ -584,7 +584,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 10
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_1da190e0
     width: 0.5
   straight_26b9e310:
@@ -607,7 +607,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 27.01
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_26b9e310
     width: 0.5
   straight_32174f25:
@@ -632,7 +632,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 30
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_32174f25
     width: 0.5
   straight_5743d35a:
@@ -655,7 +655,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 0.01
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_5743d35a
     width: 0.5
   straight_a19e1464:
@@ -678,7 +678,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 0
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_a19e1464
     width: 0.5
   straight_b0b74a72:
@@ -703,7 +703,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 16
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_b0b74a72
     width: 0.5
   straight_bd3b506b:
@@ -726,7 +726,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 45.62
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_bd3b506b
     width: 0.5
   straight_cd61840b:
@@ -749,7 +749,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 7
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_cd61840b
     width: 0.5
   straight_e3f148d8:
@@ -774,7 +774,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 6
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_e3f148d8
     width: 0.5
   straight_fe273143:
@@ -797,7 +797,7 @@ cells:
     function_name: straight
     info_version: 1
     length: 22.01
-    module: gdsfactory.components.straight
+    module: gdsfactory.pcells.straight
     name: straight_fe273143
     width: 0.5
   straight_heater_metal_u_6e8de97e:
@@ -873,7 +873,7 @@ cells:
       with_undercut: false
     function_name: straight_heater_metal_undercut
     info_version: 1
-    module: gdsfactory.components.straight_heater_metal
+    module: gdsfactory.pcells.straight_heater_metal
     name: straight_heater_metal_u_6e8de97e
     resistance: null
   taper_ea91ec9c:
@@ -906,7 +906,7 @@ cells:
     function_name: taper
     info_version: 1
     length: 5
-    module: gdsfactory.components.taper
+    module: gdsfactory.pcells.taper
     name: taper_ea91ec9c
     width1: 11
     width2: 2.5
@@ -969,7 +969,7 @@ info:
       with_splitter: true
     function_name: mzi
     info_version: 1
-    module: gdsfactory.components.mzi
+    module: gdsfactory.pcells.mzi
     name: mzi_d275fe52
   default:
     component_name: null

@@ -16,7 +16,7 @@
 #
 # gdsfactory defines your component once in memory and can add multiple References (Instances) to the same component.
 
-# As you build components you can include references to other components. Adding a reference is like having a pointer to a component.
+# As you build pcells you can include references to other pcells. Adding a reference is like having a pointer to a component.
 #
 # The GDSII specification allows the use of references, and similarly gdsfactory uses them (with the `add_ref()` function).
 # what is a reference? Simply put:  **A reference does not contain any geometry. It only *points* to an existing geometry**.
@@ -125,7 +125,7 @@ c2
 # 1. create the reference and add it to the component
 
 c = gf.Component("reference_sample")
-w = gf.components.straight(width=0.6)
+w = gf.pcells.straight(width=0.6)
 wr = w.ref()
 c.add(wr)
 c
@@ -133,14 +133,14 @@ c
 # 2. or do it in a single line
 
 c = gf.Component("reference_sample_shorter_syntax")
-wr = c << gf.components.straight(width=0.6)
+wr = c << gf.pcells.straight(width=0.6)
 c
 
 # in both cases you can move the reference `wr` after created
 
 c = gf.Component("two_references")
-wr1 = c << gf.components.straight(width=0.6)
-wr2 = c << gf.components.straight(width=0.6)
+wr1 = c << gf.pcells.straight(width=0.6)
+wr2 = c << gf.pcells.straight(width=0.6)
 wr2.movey(10)
 c.add_ports(wr1.get_ports_list(), prefix="top_")
 c.add_ports(wr2.get_ports_list(), prefix="bot_")
@@ -157,12 +157,12 @@ c
 
 # ## Arrays of references
 #
-# In GDS, there's a type of structure called a "ComponentReference" which takes a cell and repeats it NxM times on a fixed grid spacing. For convenience, `Component` includes this functionality with the add_array() function.
+# In GDS, there's a type of structure called a "Instance" which takes a cell and repeats it NxM times on a fixed grid spacing. For convenience, `Component` includes this functionality with the add_array() function.
 # Note that CellArrays are not compatible with ports (since there is no way to access/modify individual elements in a GDS cellarray)
 #
 # gdsfactory also provides with more flexible arrangement options if desired, see for example `grid()` and `packer()`.
 #
-# As well as `gf.components.array`
+# As well as `gf.pcells.array`
 #
 # Let's make a new Component and put a big array of our Component `c` in it:
 
@@ -174,25 +174,25 @@ c3
 
 # CellArrays don't have ports and there is no way to access/modify individual elements in a GDS cellarray.
 #
-# gdsfactory provides you with similar functions in `gf.components.array` and `gf.components.array_2d`
+# gdsfactory provides you with similar functions in `gf.pcells.array` and `gf.pcells.array_2d`
 
 # + tags=[]
 c4 = gf.Component("demo_array")  # Create a new blank Component
-aref = c4 << gf.components.array(component=c, columns=3, rows=2)
+aref = c4 << gf.pcells.array(component=c, columns=3, rows=2)
 c4.add_ports(aref.get_ports_list())
 c4
 
 
 # +
-# gf.components.array?
+# gf.pcells.array?
 # -
 
-# You can also create an array of references for periodic structures. Let's create a [Distributed Bragg Reflector](https://picwriter.readthedocs.io/en/latest/components/dbr.html)
+# You can also create an array of references for periodic structures. Let's create a [Distributed Bragg Reflector](https://picwriter.readthedocs.io/en/latest/pcells/dbr.html)
 
 
 # +
 @gf.cell
-def dbr_period(w1=0.5, w2=0.6, l1=0.2, l2=0.4, straight=gf.components.straight):
+def dbr_period(w1=0.5, w2=0.6, l1=0.2, l2=0.4, straight=gf.pcells.straight):
     """Return one DBR period."""
     c = gf.Component()
     r1 = c << straight(length=l1, width=w1)
@@ -228,14 +228,14 @@ dbr
 #
 # We have seen that once you create a reference you can manipulate the reference to move it to a location. Here we are going to connect that reference to a port. Remember that we follow that a certain reference `source` connects to a `destination` port
 
-bend = gf.components.bend_circular()
+bend = gf.pcells.bend_circular()
 bend
 
 # +
 c = gf.Component("sample_reference_connect")
 
-mmi = c << gf.components.mmi1x2()
-b = c << gf.components.bend_circular()
+mmi = c << gf.pcells.mmi1x2()
+b = c << gf.pcells.bend_circular()
 b.connect("o1", destination=mmi.ports["o2"])
 
 c.add_port("o1", port=mmi.ports["o1"])
@@ -249,8 +249,8 @@ c
 # +
 c = gf.Component("sample_reference_connect_simpler")
 
-mmi = c << gf.components.mmi1x2()
-b = c << gf.components.bend_circular()
+mmi = c << gf.pcells.mmi1x2()
+b = c << gf.pcells.bend_circular()
 b.connect("o1", destination=mmi["o2"])
 
 c.add_port("o1", port=mmi["o1"])
@@ -276,11 +276,11 @@ c
 
 # + tags=[]
 size = 4
-c = gf.components.nxn(west=2, south=2, north=2, east=2, xsize=size, ysize=size)
+c = gf.pcells.nxn(west=2, south=2, north=2, east=2, xsize=size, ysize=size)
 c
 
 # + tags=[]
-c = gf.components.straight_heater_metal(length=30)
+c = gf.pcells.straight_heater_metal(length=30)
 c
 
 # + tags=[]
@@ -299,7 +299,7 @@ c.get_ports_dict(layer=(1, 0))
 c.get_ports_dict(width=0.5)
 
 # + tags=[]
-c0 = gf.components.straight_heater_metal()
+c0 = gf.pcells.straight_heater_metal()
 c0.ports
 
 # + tags=[]
@@ -336,7 +336,7 @@ c2.ports
 
 # + tags=[]
 c = gf.Component("demo_ports")
-nxn = gf.components.nxn(west=2, north=2, east=2, south=2, xsize=4, ysize=4)
+nxn = gf.pcells.nxn(west=2, north=2, east=2, south=2, xsize=4, ysize=4)
 ref = c.add_ref(nxn)
 c.add_ports(ref.ports)
 c
@@ -384,10 +384,10 @@ c.port_by_angle_ccw("W1")
 # + tags=[]
 cross_section = gf.cross_section.strip()
 
-nxn = gf.components.nxn(
+nxn = gf.pcells.nxn(
     west=2, north=2, east=2, south=2, xsize=4, ysize=4, cross_section=cross_section
 )
-c = gf.components.extension.extend_ports(component=nxn, angle=0)
+c = gf.pcells.extension.extend_ports(component=nxn, angle=0)
 c
 
 # + tags=[]
@@ -413,18 +413,18 @@ df[df.port_type == "optical"]
 #
 # by default Component.show() will add triangular pins, so you can see the direction of the port in Klayout.
 
-gf.components.mmi1x2(decorator=gf.add_pins.add_pins)
+gf.pcells.mmi1x2(decorator=gf.add_pins.add_pins)
 
-gf.components.mmi1x2(decorator=gf.add_pins.add_pins_triangle)
+gf.pcells.mmi1x2(decorator=gf.add_pins.add_pins_triangle)
 
 # ## Component_sequence
 #
 # When you have repetitive connections you can describe the connectivity as an ASCII map
 
 # +
-bend180 = gf.components.bend_circular180()
-wg_pin = gf.components.straight_pin(length=40)
-wg = gf.components.straight()
+bend180 = gf.pcells.bend_circular180()
+wg_pin = gf.pcells.straight_pin(length=40)
+wg = gf.pcells.straight()
 
 # Define a map between symbols and (component, input port, output port)
 symbol_to_component = {
@@ -439,7 +439,7 @@ symbol_to_component = {
 # with a given input and and a given output
 
 sequence = "DC-P-P-P-P-CD"
-component = gf.components.component_sequence(
+component = gf.pcells.component_sequence(
     sequence=sequence, symbol_to_component=symbol_to_component
 )
 component.name = "component_sequence"

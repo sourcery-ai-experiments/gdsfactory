@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from gdsfactory.port import csv2port
+from gdsfactory.component import csv2port
 
 
 def test_csv2port(data_regression) -> None:

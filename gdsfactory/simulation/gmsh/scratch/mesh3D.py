@@ -93,7 +93,7 @@ def mesh3D(
     - sub-object labels for introduction in physical solvers (e.g. edges)
 
     Args:
-        component: Component or ComponentReference.
+        component: Component or Instance.
         base_resolution: background mesh resolution (um).
         refine_resolution: feature mesh resolution (um); layer dependent via a dict (default to base_resolution).
         padding: amount (west, east, south, north, down, up) to enlarge simulation region beyond features (um).
@@ -266,8 +266,8 @@ if __name__ == "__main__":
     import gdsfactory as gf
 
     heaters = gf.Component("heaters")
-    heater1 = gf.components.straight(length=2)
-    heater2 = gf.components.straight(length=2).move([0, 1])
+    heater1 = gf.pcells.straight(length=2)
+    heater2 = gf.pcells.straight(length=2).move([0, 1])
 
     heaters = gf.Component()
     heaters << heater1

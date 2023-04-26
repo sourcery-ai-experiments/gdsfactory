@@ -4,7 +4,7 @@ import gdsfactory as gf
 
 
 def test_flatten() -> None:
-    c1 = gf.components.mzi()
+    c1 = gf.pcells.mzi()
     c2 = c1.flatten()
 
     assert len(c1.references) > 0, f"{len(c1.references)}"
@@ -14,7 +14,7 @@ def test_flatten() -> None:
 
 def test_two_flats_in_one():
     c = gf.Component()
-    c1 = gf.components.straight()
+    c1 = gf.pcells.straight()
     c2 = c1.flatten()
     c3 = c1.flatten()
     c3.add_label("I'm different")
@@ -28,7 +28,7 @@ def test_two_flats_in_one():
 
 
 def test_flattened_cell_keeps_info():
-    c1 = gf.components.straight()
+    c1 = gf.pcells.straight()
     c2 = c1.flatten()
     assert (
         len(c1.info) > 0
@@ -37,7 +37,7 @@ def test_flattened_cell_keeps_info():
 
 
 def test_flattened_cell_keeps_ports():
-    c1 = gf.components.straight()
+    c1 = gf.pcells.straight()
     c2 = c1.flatten()
     assert len(c2.ports) == 2, len(c2.ports)
 
@@ -51,7 +51,7 @@ def test_flattened_cell_keeps_labels():
 
 def test_flatten_single_layer():
     target_layer = (999, 51)
-    c1 = gf.components.straight()
+    c1 = gf.pcells.straight()
     c2 = c1.flatten(single_layer=target_layer)
     c1_polygons = c1.get_polygons(as_array=False)
     c2_polygons = c2.get_polygons(as_array=False)
@@ -62,7 +62,7 @@ def test_flatten_single_layer():
 
 if __name__ == "__main__":
     test_flattened_cell_keeps_ports()
-    # c1 = gf.components.mzi()
+    # c1 = gf.pcells.mzi()
     # c2 = c1.flatten(single_layer=(2, 0))
 
     # assert len(c1.references) > 0, f"{len(c1.references)}"

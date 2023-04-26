@@ -17,10 +17,10 @@ if __name__ == "__main__":
     antenna_pitch = 2.0
     splitter_tree_spacing = (50.0, 70.0)
 
-    splitter_tree = c << gf.components.splitter_tree(
+    splitter_tree = c << gf.pcells.splitter_tree(
         noutputs=elements, spacing=splitter_tree_spacing
     )
-    phase_shifter = gf.components.straight_heater_meander()
+    phase_shifter = gf.pcells.straight_heater_meander()
 
     phase_shifter_optical_ports = []
     phase_shifter_electrical_ports_west = []
@@ -36,8 +36,8 @@ if __name__ == "__main__":
         phase_shifter_electrical_ports_west.append(ref.ports["e1"])
         phase_shifter_electrical_ports_east.append(ref.ports["e2"])
 
-    antennas = c << gf.components.array(
-        gf.components.dbr(n=200), rows=elements, columns=1, spacing=(0, antenna_pitch)
+    antennas = c << gf.pcells.array(
+        gf.pcells.dbr(n=200), rows=elements, columns=1, spacing=(0, antenna_pitch)
     )
     antennas.xmin = ref.xmax + 50
     antennas.y = 0
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     for route in routes:
         c.add(route.references)
 
-    pads1 = c << gf.components.array(gf.components.pad, rows=elements, columns=1)
+    pads1 = c << gf.pcells.array(gf.pcells.pad, rows=elements, columns=1)
     pads1.xmax = splitter_tree.xmin - 10
     pads1.y = 0
     ports1 = pads1.get_ports_list(angle=0)

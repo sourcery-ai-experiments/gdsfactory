@@ -25,7 +25,7 @@ if __name__ == "__main__":
     coupler_gaps = [0.2] * n
     delta_lengths = [10] * (n - 1)
 
-    mzi = gf.components.mzi_lattice(
+    mzi = gf.pcells.mzi_lattice(
         coupler_lengths=coupler_lengths,
         coupler_gaps=coupler_gaps,
         delta_lengths=delta_lengths,

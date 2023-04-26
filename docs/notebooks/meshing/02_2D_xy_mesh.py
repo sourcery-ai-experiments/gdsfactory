@@ -29,7 +29,7 @@ gf.config.rich_output()
 PDK = get_generic_pdk()
 PDK.activate()
 
-waveguide = gf.components.straight_pin(length=10, taper=None)
+waveguide = gf.pcells.straight_pin(length=10, taper=None)
 waveguide
 
 # + tags=[]
@@ -91,7 +91,7 @@ mesh.draw().plot()
 
 # ## Controlling meshing domain
 #
-# You can use functions that return other components to modify the simulation domain, for instance `gdsfactory.geometry.trim`:
+# You can use functions that return other pcells to modify the simulation domain, for instance `gdsfactory.geometry.trim`:
 
 # + tags=[]
 waveguide_trimmed = gf.Component()

@@ -18,8 +18,8 @@ def exclusion(
     layer2: Tuple[int, int] = (2, 0),
 ) -> Component:
     c = gf.Component()
-    r1 = c << gf.components.rectangle(size=(width, width), layer=layer1)
-    r2 = c << gf.components.rectangle(size=(width, width), layer=layer2)
+    r1 = c << gf.pcells.rectangle(size=(width, width), layer=layer1)
+    r2 = c << gf.pcells.rectangle(size=(width, width), layer=layer2)
     r1.xmax = 0
     r2.xmin = space
     return c

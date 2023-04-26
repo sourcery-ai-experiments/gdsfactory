@@ -27,8 +27,8 @@ def test_read_gds_with_settings2(data_regression: DataRegressionFixture) -> None
 def test_read_gds_equivalent2() -> None:
     """Ensures we can load it from GDS + YAML and get the same component
     settings."""
-    splitter = gf.components.mmi1x2(cross_section=cross_section)
-    c1 = gf.components.mzi(splitter=splitter, cross_section=cross_section)
+    splitter = gf.pcells.mmi1x2(cross_section=cross_section)
+    c1 = gf.pcells.mzi(splitter=splitter, cross_section=cross_section)
     c2 = gf.import_gds(gdspath, read_metadata=True)
 
     d1 = c1.to_dict()
@@ -59,14 +59,14 @@ def test_mix_cells_from_gds_and_from_function2() -> None:
 
     """
     c = gf.Component("test_mix_cells_from_gds_and_from_function")
-    c << gf.components.mzi()
+    c << gf.pcells.mzi()
     c << gf.import_gds(gdspath)
     c.write_gds()
 
 
 def _write() -> None:
-    splitter = gf.components.mmi1x2(cross_section=cross_section)
-    c1 = gf.components.mzi(splitter=splitter, cross_section=cross_section)
+    splitter = gf.pcells.mmi1x2(cross_section=cross_section)
+    c1 = gf.pcells.mzi(splitter=splitter, cross_section=cross_section)
     c1.write_gds_with_metadata(gdspath=gdspath)
     c1.show()
 
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     # test_mix_cells_from_gds_and_from_function2()
 
     # test_read_gds_with_settings2()
-    c1 = gf.components.mzi()
+    c1 = gf.pcells.mzi()
     c2 = gf.import_gds(gdspath)
     d1 = c1.to_dict()
     d2 = c2.to_dict()

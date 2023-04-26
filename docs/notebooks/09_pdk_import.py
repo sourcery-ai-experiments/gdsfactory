@@ -51,7 +51,7 @@ gf.config.rich_output()
 PDK = get_generic_pdk()
 PDK.activate()
 
-c = gf.components.mzi()
+c = gf.pcells.mzi()
 c
 
 # %% [markdown]
@@ -110,7 +110,7 @@ gf.labels.write_labels.write_labels_klayout(gdspath, layer_label=gf.LAYER.LABEL)
 #
 # gdsfactory provides you with functions that will add ports to the component by looking for pins shapes on a specific layers (port_markers or pins)
 #
-# There are different pin standards supported to automatically add ports to components:
+# There are different pin standards supported to automatically add ports to pcells:
 #
 # - PINs towards the inside of the port (port at the outer part of the PIN)
 # - PINs with half of the pin inside and half outside (port at the center of the PIN)
@@ -120,9 +120,7 @@ gf.labels.write_labels.write_labels_klayout(gdspath, layer_label=gf.LAYER.LABEL)
 # Lets add pins, save a GDS and then import it back.
 
 # %% vscode={"languageId": "python"}
-c = gf.components.straight(
-    decorator=gf.add_pins.add_pins
-)  # add pins inside the component
+c = gf.pcells.straight(decorator=gf.add_pins.add_pins)  # add pins inside the component
 c
 
 # %% vscode={"languageId": "python"}
@@ -157,7 +155,7 @@ c3.ports
 # Thanks to having a gdsfactory PDK as a python package you can:
 #
 # - version control your PDK using GIT to keep track of changes and work on a team
-#     - write tests of your pdk components to avoid unwanted changes from one component to another.
+#     - write tests of your pdk pcells to avoid unwanted changes from one component to another.
 #     - ensure you maintain the quality of the PDK with continuous integration checks
 #     - pin the version of gdsfactory, so new updates of gdsfactory won't affect your code
 # - name your PDK version using [semantic versioning](https://semver.org/). For example patches increase the last number (0.0.1 -> 0.0.2)
@@ -188,9 +186,9 @@ print(lyp_to_dataclass(PATH.klayout_lyp))
 
 sample_pdk_cells = gf.grid(
     [
-        gf.components.straight,
-        gf.components.bend_euler,
-        gf.components.grating_coupler_elliptical,
+        gf.pcells.straight,
+        gf.pcells.bend_euler,
+        gf.pcells.grating_coupler_elliptical,
     ]
 )
 sample_pdk_cells.write_gds("extra/pdk.gds")
@@ -213,7 +211,7 @@ print(gf.write_cells.get_import_gds_script("extra/gds"))
 # You can also include the code to plot each fix cell in the docstring.
 
 # %% vscode={"languageId": "python"}
-print(gf.write_cells.get_import_gds_script("extra/gds", module="samplepdk.components"))
+print(gf.write_cells.get_import_gds_script("extra/gds", module="samplepdk.pcells"))
 
 # %% [markdown]
 # ## Import PDK from other python packages

@@ -14,7 +14,7 @@
 
 # # KLayout integration
 #
-# In gdsfactory code driven flow you define your components, circuits and reticles in python or YAML code.
+# In gdsfactory code driven flow you define your pcells, circuits and reticles in python or YAML code.
 #
 # For rapid iteration, gdsfactory comes with a Klayout macro `klive` that runs inside klayout, so that when you run `component.show()` in python, it displays your GDS in Klayout.
 #
@@ -80,6 +80,6 @@ drc_rule_deck = write_drc_deck_macro(
 #
 # Thanks to [SiEPIC-Tools](https://github.com/SiEPIC/SiEPIC-Tools) klayout macro gdsfactory supports component overlap and connectivity checks.
 #
-# This is enabled by default for any components in the [ubcpdk](https://gdsfactory.github.io/ubc/README.html) cross_section, thanks to having `add_pins=add_pins_siepic` and `add_bbox=add_bbox_siepic` by default.
+# This is enabled by default for any pcells in the [ubcpdk](https://gdsfactory.github.io/ubc/README.html) cross_section, thanks to having `add_pins=add_pins_siepic` and `add_bbox=add_bbox_siepic` by default.
 #
 # ![Siepic](https://i.imgur.com/wHnWxMb.png)

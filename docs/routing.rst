@@ -89,7 +89,7 @@ fanout
 add_fiber_array / add_fiber_single
 ---------------------------------------------------------------------------------------------------
 
-In cases where individual components have to be tested, you can generate the array of optical I/O and connect them to the component.
+In cases where individual pcells have to be tested, you can generate the array of optical I/O and connect them to the component.
 
 You can connect the waveguides to a 127um pitch fiber array or to individual fibers for input and output.
 

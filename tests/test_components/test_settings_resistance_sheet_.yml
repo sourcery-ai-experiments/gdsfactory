@@ -87,5 +87,5 @@ settings:
   info:
     resistance: null
   info_version: 2
-  module: gdsfactory.components.resistance_sheet
+  module: gdsfactory.pcells.resistance_sheet
   name: resistance_sheet

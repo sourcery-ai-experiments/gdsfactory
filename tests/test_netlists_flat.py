@@ -9,7 +9,7 @@ def test_flat_netlist_photonic():
     coupler_gaps = [0.1, 0.2, 0.4, 0.5]
     delta_lengths = [10, 100, 200]
 
-    c = gf.components.mzi_lattice(
+    c = gf.pcells.mzi_lattice(
         coupler_lengths=coupler_lengths,
         coupler_gaps=coupler_gaps,
         delta_lengths=delta_lengths,
@@ -24,10 +24,10 @@ def test_flatten_netlist_identical_references():
     # Define compound component
     series_resistors = gf.Component("seriesResistors")
     rseries1 = series_resistors << gf.get_component(
-        gf.components.resistance_sheet, width=20, ohms_per_square=20
+        gf.pcells.resistance_sheet, width=20, ohms_per_square=20
     )
     rseries2 = series_resistors << gf.get_component(
-        gf.components.resistance_sheet, width=20, ohms_per_square=20
+        gf.pcells.resistance_sheet, width=20, ohms_per_square=20
     )
     rseries1.connect("pad2", rseries2.ports["pad1"])
     series_resistors.add_port("pad1", port=rseries1.ports["pad1"])
@@ -48,11 +48,11 @@ def test_flatten_netlist_identical_references():
     r3 = (
         vdiv
         << gf.get_component(
-            gf.components.resistance_sheet, width=20, ohms_per_square=20
+            gf.pcells.resistance_sheet, width=20, ohms_per_square=20
         ).rotate()
     )
     r4 = vdiv << gf.get_component(
-        gf.components.resistance_sheet, width=20, ohms_per_square=20
+        gf.pcells.resistance_sheet, width=20, ohms_per_square=20
     )
 
     r1.connect("pad2", r2.ports["pad1"])

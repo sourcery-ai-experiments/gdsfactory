@@ -77,5 +77,5 @@ settings:
       width_wide: null
     width: 10.0
   info_version: 2
-  module: gdsfactory.components.straight
+  module: gdsfactory.pcells.straight
   name: straight_cross_sectionm_56ce1600

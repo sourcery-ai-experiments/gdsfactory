@@ -48,5 +48,5 @@ settings:
   function_name: bend_straight_bend
   info: {}
   info_version: 2
-  module: gdsfactory.components.bend_euler
+  module: gdsfactory.pcells.bend_euler
   name: bend_straight_bend

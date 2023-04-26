@@ -243,7 +243,7 @@ if __name__ == "__main__":
     #
     # install_klayout_technology(tech_dir=tech_dir, tech_name="PCB")
 
-    c = gf.components.text(layer=LAYER.F_Cu)
+    c = gf.pcells.text(layer=LAYER.F_Cu)
     c = LAYER_VIEWS.preview_layerset()
 
     gerber_path = PATH.repo / "extra" / "gerber"

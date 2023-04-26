@@ -115,7 +115,7 @@ coupler_dict
 
 # ## Parametrized Models
 #
-# Constructing such an `SDict` is easy, however, usually we're more interested in having parametrized models for our components. To parametrize the coupler `SDict`, just wrap it in a function to obtain a SAX `Model`, which is a keyword-only function mapping to an `SDict`:
+# Constructing such an `SDict` is easy, however, usually we're more interested in having parametrized models for our pcells. To parametrize the coupler `SDict`, just wrap it in a function to obtain a SAX `Model`, which is a keyword-only function mapping to an `SDict`:
 
 
 # +
@@ -190,7 +190,7 @@ gs.plot_model(straight_sc, phase=True)
 
 # ### Coupler model
 
-c = gf.components.coupler(length=10, gap=0.2)
+c = gf.pcells.coupler(length=10, gap=0.2)
 c
 
 nm = 1e-3
@@ -477,9 +477,9 @@ plt.show()
 # ## SAX gdsfactory Compatibility
 # > From Layout to Circuit Model
 #
-# If you define your SAX S parameter models for your components, you can directly simulate your circuits from gdsfactory
+# If you define your SAX S parameter models for your pcells, you can directly simulate your circuits from gdsfactory
 
-mzi = gf.components.mzi(delta_length=10)
+mzi = gf.pcells.mzi(delta_length=10)
 mzi
 
 mzi.plot_netlist()
@@ -488,13 +488,13 @@ netlist = mzi.get_netlist()
 pprint(netlist["connections"])
 
 
-# The netlist has three different components:
+# The netlist has three different pcells:
 #
 # 1. straight
 # 2. mmi1x2
 # 3. bend_euler
 #
-# You need models for each subcomponents to simulate the Component.
+# You need models for each subpcells to simulate the Component.
 
 
 # +
@@ -540,7 +540,7 @@ plt.grid(True)
 plt.show()
 # -
 
-mzi = gf.components.mzi(delta_length=20)  # Double the length, reduces FSR by 1/2
+mzi = gf.pcells.mzi(delta_length=20)  # Double the length, reduces FSR by 1/2
 mzi
 
 # +
@@ -776,10 +776,10 @@ def simple_mzi():
     c = gf.Component()
 
     # instances
-    mmi_in = gf.components.mmi1x2()
-    mmi_out = gf.components.mmi2x2()
-    bend = gf.components.bend_euler()
-    half_delay_straight = gf.components.straight(length=10.0)
+    mmi_in = gf.pcells.mmi1x2()
+    mmi_out = gf.pcells.mmi2x2()
+    bend = gf.pcells.bend_euler()
+    half_delay_straight = gf.pcells.straight(length=10.0)
 
     # references (sax convention: vars ending in underscore are references)
     mmi_in_ = c << mmi_in
@@ -867,12 +867,12 @@ def compact_mzi():
     c = gf.Component()
 
     # instances
-    mmi_in = gf.components.mmi1x2()
-    mmi_out = gf.components.mmi2x2()
-    bend = gf.components.bend_euler()
-    half_delay_straight = gf.components.straight()
-    middle_straight = gf.components.straight(length=6.0)
-    half_middle_straight = gf.components.straight(3.0)
+    mmi_in = gf.pcells.mmi1x2()
+    mmi_out = gf.pcells.mmi2x2()
+    bend = gf.pcells.bend_euler()
+    half_delay_straight = gf.pcells.straight()
+    middle_straight = gf.pcells.straight(length=6.0)
+    half_middle_straight = gf.pcells.straight(3.0)
 
     # references (sax convention: vars ending in underscore are references)
     mmi_in_ = c << mmi_in
@@ -962,9 +962,7 @@ plt.show()
 # For that you need first to figure out what's the phase shift for different voltages.
 
 delta_length = 10
-mzi_component = gf.components.mzi_phase_shifter_top_heater_metal(
-    delta_length=delta_length
-)
+mzi_component = gf.pcells.mzi_phase_shifter_top_heater_metal(delta_length=delta_length)
 mzi_component
 
 
@@ -1017,9 +1015,7 @@ models = {
 }
 # -
 
-mzi_component = gf.components.mzi_phase_shifter_top_heater_metal(
-    delta_length=delta_length
-)
+mzi_component = gf.pcells.mzi_phase_shifter_top_heater_metal(delta_length=delta_length)
 netlist = mzi_component.get_netlist()
 mzi_circuit, _ = sax.circuit(netlist=netlist, models=models)
 S = mzi_circuit(wl=1.55)
@@ -1112,7 +1108,7 @@ models = {
 # -
 
 delta_length = 30
-mzi_component = gf.components.mzi(delta_length=delta_length)
+mzi_component = gf.pcells.mzi(delta_length=delta_length)
 mzi_circuit, _ = sax.circuit(netlist=mzi_component.get_netlist(), models=models)
 S = mzi_circuit(wl=1.55)
 S
@@ -1140,7 +1136,7 @@ c
 # From this we see that we will need to change `syl` and `straight_9`.
 
 # +
-mzi_component = gf.components.mzi(
+mzi_component = gf.pcells.mzi(
     delta_length=delta_length,
 )
 mzi_circuit, _ = sax.circuit(
@@ -1232,8 +1228,8 @@ plt.show()
 @gf.cell
 def mzis(delta_length=10):
     c = gf.Component()
-    c1 = c << gf.components.mzi(delta_length=delta_length)
-    c2 = c << gf.components.mzi(delta_length=delta_length)
+    c1 = c << gf.pcells.mzi(delta_length=delta_length)
+    c2 = c << gf.pcells.mzi(delta_length=delta_length)
     c2.connect("o1", c1.ports["o2"])
 
     c.add_port("o1", port=c1.ports["o1"])
@@ -1274,7 +1270,7 @@ c2
 
 c2.plot_netlist_flat()
 
-c1 = gf.components.mzi(delta_length=10)
+c1 = gf.pcells.mzi(delta_length=10)
 c1
 
 c1.plot_netlist()

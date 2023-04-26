@@ -192,7 +192,7 @@ def write_sparameters_grating_coupler_batch(
 
 
 if __name__ == "__main__":
-    c = gf.components.grating_coupler_elliptical_lumerical()  # inverse design grating
+    c = gf.pcells.grating_coupler_elliptical_lumerical()  # inverse design grating
     offsets = [0, 5]
     fiber_angle_deg = 8
 
@@ -219,7 +219,7 @@ if __name__ == "__main__":
 
     # sim.plot.plot_sparameters(sp)
 
-    # c = gf.components.grating_coupler_elliptical_arbitrary(
+    # c = gf.pcells.grating_coupler_elliptical_arbitrary(
     #     widths=[0.343] * 25,
     #     gaps=[0.345] * 25,
     # )

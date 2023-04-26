@@ -4,8 +4,6 @@ import pathlib
 import tempfile
 from functools import lru_cache
 
-import gdstk
-
 from gdsfactory.component import Component, Port
 from gdsfactory.read.import_gds import import_gds
 from gdsfactory.typings import Layer

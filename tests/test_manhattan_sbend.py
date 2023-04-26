@@ -19,8 +19,8 @@ O2D = {0: "East", 180: "West", 90: "North", 270: "South"}
 def test_manhattan_sbend_pass() -> Component:
     c = gf.Component("demo_sbend")
     length = 10
-    c1 = c << gf.components.straight(length=length)
-    c2 = c << gf.components.straight(length=length)
+    c1 = c << gf.pcells.straight(length=length)
+    c2 = c << gf.pcells.straight(length=length)
 
     dy = 4.0
     c2.y = dy
@@ -44,8 +44,8 @@ def test_manhattan_sbend_fail() -> Component:
     with pytest.warns(RouteWarning):
         c = gf.Component("demo_sbend")
         length = 10
-        c1 = c << gf.components.straight(length=length)
-        c2 = c << gf.components.straight(length=length)
+        c1 = c << gf.pcells.straight(length=length)
+        c2 = c << gf.pcells.straight(length=length)
 
         dy = 4.0
         c2.y = dy
@@ -71,8 +71,8 @@ if __name__ == "__main__":
 
     # c = gf.Component("demo_sbend")
     # length = 10
-    # c1 = c << gf.components.straight(length=length)
-    # c2 = c << gf.components.straight(length=length)
+    # c1 = c << gf.pcells.straight(length=length)
+    # c2 = c << gf.pcells.straight(length=length)
 
     # dy = 20.0
     # dy = 4.0

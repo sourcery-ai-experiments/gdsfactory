@@ -7,7 +7,7 @@ import gdsfactory as gf
 from gdsfactory.containers import containers
 from gdsfactory.difftest import difftest
 
-component = gf.components.mzi2x2_2x2(straight_x_top="straight_heater_metal")
+component = gf.pcells.mzi2x2_2x2(straight_x_top="straight_heater_metal")
 
 skip_test = {
     "pack_doe",
@@ -30,17 +30,15 @@ def test_gds(container_type: str) -> None:
     difftest(c)
 
 
-# Special test cases for exotic components
+# Special test cases for exotic pcells
 # def test_add_gratings_and_loopback(data_regression: DataRegressionFixture) -> None:
 #     """This container requires all ports to face the same direction."""
 #     c = add_gratings_and_loopback(component=spiral_inner_io())
 #     data_regression.check(c.settings)
 
 
-add_gratings_with_loopback = (
-    gf.components.add_grating_couplers_with_loopback_fiber_array
-)
-add_gratings = gf.components.add_grating_couplers
+add_gratings_with_loopback = gf.pcells.add_grating_couplers_with_loopback_fiber_array
+add_gratings = gf.pcells.add_grating_couplers
 
 spiral = gf.partial(
     gf.c.spiral_inner_io,

@@ -3,13 +3,13 @@ from __future__ import annotations
 from typing import Callable, List, Optional, Tuple, Union
 
 import gdsfactory as gf
-from gdsfactory.component import Component, ComponentReference
-from gdsfactory.components.bend_euler import bend_euler
-from gdsfactory.components.grating_coupler_elliptical_trenches import grating_coupler_te
-from gdsfactory.components.straight import straight as straight_function
-from gdsfactory.components.taper import taper as taper_function
+from gdsfactory.component import Component, Instance
+from gdsfactory.pcells.bend_euler import bend_euler
+from gdsfactory.pcells.grating_coupler_elliptical_trenches import grating_coupler_te
+from gdsfactory.pcells.straight import straight as straight_function
+from gdsfactory.pcells.taper import taper as taper_function
 from gdsfactory.cross_section import strip
-from gdsfactory.port import Port, select_ports_optical
+from gdsfactory.component import Port, select_ports_optical
 from gdsfactory.routing.get_bundle import get_bundle, get_min_spacing
 from gdsfactory.routing.get_route import get_route_from_waypoints
 from gdsfactory.routing.manhattan import generate_manhattan_waypoints, round_corners
@@ -23,7 +23,7 @@ from gdsfactory.typings import (
     LayerSpec,
     Strs,
 )
-from gdsfactory.add_labels import (
+from gdsfactory.pcells.add_labels import (
     get_input_label_text_dash,
     get_input_label_text_dash_loopback,
 )
@@ -63,13 +63,8 @@ def route_fiber_array(
     select_ports: Callable = select_ports_optical,
     cross_section: CrossSectionSpec = strip,
     **kwargs,
-) -> Tuple[
-    List[Union[ComponentReference, Label]],
-    List[List[ComponentReference]],
-    List[Port],
-    List[Port],
-]:
-    """Returns component I/O elements for adding grating couplers with a fiber array Many components are fine with the defaults.
+) -> Tuple[List[Union[Instance, Label]], List[List[Instance]], List[Port], List[Port],]:
+    """Returns component I/O elements for adding grating couplers with a fiber array Many pcells are fine with the defaults.
 
     Args:
         component: component spec to connect to.
@@ -88,7 +83,7 @@ def route_fiber_array(
         optical_routing_type: There are three options for optical routing.
            * ``0`` is very basic but can be more compact.
             Can also be used in combination with ``connected_port_names``.
-            or to route some components which otherwise fail with type ``1``.
+            or to route some pcells which otherwise fail with type ``1``.
            * ``1`` is the standard routing.
            * ``2`` uses the optical ports as a guideline for the component's physical size
             (instead of using the actual component size).
@@ -101,7 +96,7 @@ def route_fiber_array(
         nb_optical_ports_lines: number of lines with I/O grating couplers. One line by default.
             WARNING: Only works properly if:
             - nb_optical_ports_lines divides the total number of ports.
-            - the components have an equal number of inputs and outputs.
+            - the pcells have an equal number of inputs and outputs.
         force_manhattan: sometimes port linker defaults to an S-bend due to lack of space to do manhattan.
             Force manhattan offsets all the ports to replace the s-bend by a straight link.
             This fails if multiple ports have the same issue.
@@ -156,7 +151,7 @@ def route_fiber_array(
     elements = []
 
     # grating_coupler can either be a component/function
-    # or a list of components/functions
+    # or a list of pcells/functions
 
     if isinstance(grating_coupler, list):
         grating_couplers = [gf.call_if_func(g) for g in grating_coupler]
@@ -298,7 +293,7 @@ def route_fiber_array(
         ports += [grating.ports[gc_port_name] for grating in io_gratings]
 
     if optical_routing_type == 0:
-        """Basic optical routing, typically fine for small components No
+        """Basic optical routing, typically fine for small pcells No
         heuristic to avoid collisions between connectors.
 
         If specified ports to connect in a specific order (i.e if
@@ -506,19 +501,19 @@ def route_fiber_array(
 
 
 def demo() -> None:
-    gcte = gf.components.grating_coupler_te
-    gctm = gf.components.grating_coupler_tm
+    gcte = gf.pcells.grating_coupler_te
+    gctm = gf.pcells.grating_coupler_tm
 
-    c = gf.components.straight(length=500)
-    c = gf.components.mmi2x2()
+    c = gf.pcells.straight(length=500)
+    c = gf.pcells.mmi2x2()
 
     elements, gc, _ = route_fiber_array(
         component=c,
         grating_coupler=[gcte, gctm, gcte, gctm],
         with_loopback=True,
         optical_routing_type=2,
-        # bend=gf.components.bend_euler,
-        bend=gf.components.bend_circular,
+        # bend=gf.pcells.bend_euler,
+        bend=gf.pcells.bend_circular,
         radius=20,
         # force_manhattan=True
     )
@@ -536,8 +531,8 @@ if __name__ == "__main__":
     from gdsfactory.routing.get_input_labels import get_input_labels_dash
 
     # layer = (2, 0)
-    # c = gf.components.straight(layer=layer)
-    # gc = gf.components.grating_coupler_elliptical_te(layer=layer, taper_length=30)
+    # c = gf.pcells.straight(layer=layer)
+    # gc = gf.pcells.grating_coupler_elliptical_te(layer=layer, taper_length=30)
     # gc.xmin = -20
     # elements, gc, _ = route_fiber_array(
     #     component=c,
@@ -559,10 +554,10 @@ if __name__ == "__main__":
     c = gf.Component()
 
     layer = (1, 0)
-    ci = gf.components.straight(layer=layer)
-    ci = gf.components.mmi2x2()
-    ci = gf.components.straight_heater_metal()
-    gc = gf.components.grating_coupler_elliptical_te(layer=layer, taper_length=30)
+    ci = gf.pcells.straight(layer=layer)
+    ci = gf.pcells.mmi2x2()
+    ci = gf.pcells.straight_heater_metal()
+    gc = gf.pcells.grating_coupler_elliptical_te(layer=layer, taper_length=30)
     elements, gc, ports, ports_loopback, ports_component = route_fiber_array(
         component=ci,
         grating_coupler=gc,

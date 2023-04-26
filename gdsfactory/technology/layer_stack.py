@@ -378,8 +378,8 @@ if __name__ == "__main__":
     import gdsfactory as gf
     from gdsfactory.generic_tech import LAYER_STACK
 
-    component = c = gf.components.grating_coupler_elliptical_trenches()
-    # component = c = gf.components.taper_strip_to_ridge_trenches()
+    component = c = gf.pcells.grating_coupler_elliptical_trenches()
+    # component = c = gf.pcells.taper_strip_to_ridge_trenches()
 
     # script = LAYER_STACK.get_klayout_3d_script()
     # print(script)

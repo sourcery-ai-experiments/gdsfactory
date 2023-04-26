@@ -8,8 +8,8 @@ from gdsfactory.get_netlist import get_netlist_recursive
 
 
 def test_get_netlist_cell_array() -> gf.Component:
-    c = gf.components.array(
-        gf.components.straight(length=10), spacing=(0, 100), columns=1, rows=5
+    c = gf.pcells.array(
+        gf.pcells.straight(length=10), spacing=(0, 100), columns=1, rows=5
     )
     n = c.get_netlist()
     assert len(c.ports) == 10
@@ -20,8 +20,8 @@ def test_get_netlist_cell_array() -> gf.Component:
 
 
 def test_get_netlist_cell_array_connecting() -> gf.Component:
-    c = gf.components.array(
-        gf.components.straight(length=100), spacing=(100, 0), columns=5, rows=1
+    c = gf.pcells.array(
+        gf.pcells.straight(length=100), spacing=(100, 0), columns=5, rows=1
     )
     with pytest.raises(ValueError):
         # because the component-array has automatic external ports, we assume no internal self-connections
@@ -34,9 +34,9 @@ def test_get_netlist_cell_array_connecting() -> gf.Component:
 @gf.cell
 def test_get_netlist_simple() -> gf.Component:
     c = gf.Component()
-    i1 = c.add_ref(gf.components.straight(), "i1")
-    i2 = c.add_ref(gf.components.straight(), "i2")
-    i3 = c.add_ref(gf.components.straight(), "i3")
+    i1 = c.add_ref(gf.pcells.straight(), "i1")
+    i2 = c.add_ref(gf.pcells.straight(), "i2")
+    i3 = c.add_ref(gf.pcells.straight(), "i3")
     i2.connect("o2", i1.ports["o1"])
     i3.movey(-100)
     netlist = c.get_netlist()
@@ -57,9 +57,9 @@ def test_get_netlist_simple() -> gf.Component:
 @gf.cell
 def test_get_netlist_promoted() -> gf.Component:
     c = gf.Component()
-    i1 = c.add_ref(gf.components.straight(), "i1")
-    i2 = c.add_ref(gf.components.straight(), "i2")
-    i3 = c.add_ref(gf.components.straight(), "i3")
+    i1 = c.add_ref(gf.pcells.straight(), "i1")
+    i2 = c.add_ref(gf.pcells.straight(), "i2")
+    i3 = c.add_ref(gf.pcells.straight(), "i3")
     i2.connect("o2", i1.ports["o1"])
     i3.movey(-100)
     c.add_port("t1", port=i1.ports["o2"])
@@ -85,8 +85,8 @@ def test_get_netlist_promoted() -> gf.Component:
 def test_get_netlist_close_enough() -> gf.Component:
     """Move connection 1nm inwards."""
     c = gf.Component()
-    i1 = c.add_ref(gf.components.straight(), "i1")
-    i2 = c.add_ref(gf.components.straight(), "i2")
+    i1 = c.add_ref(gf.pcells.straight(), "i1")
+    i2 = c.add_ref(gf.pcells.straight(), "i2")
     i2.move("o2", destination=i1.ports["o1"])
     i2.movex(0.001)
     netlist = c.get_netlist(tolerance=2)
@@ -103,8 +103,8 @@ def test_get_netlist_close_enough() -> gf.Component:
 def test_get_netlist_close_enough_fails() -> gf.Component:
     """Move connection 1nm outwards."""
     c = gf.Component()
-    i1 = c.add_ref(gf.components.straight(), "i1")
-    i2 = c.add_ref(gf.components.straight(), "i2")
+    i1 = c.add_ref(gf.pcells.straight(), "i1")
+    i2 = c.add_ref(gf.pcells.straight(), "i2")
     i2.move("o2", destination=i1.ports["o1"])
     i2.movex(-0.001)
     netlist = c.get_netlist(tolerance=1)
@@ -116,8 +116,8 @@ def test_get_netlist_close_enough_fails() -> gf.Component:
 @gf.cell
 def test_get_netlist_close_enough_orthogonal() -> gf.Component:
     c = gf.Component()
-    i1 = c.add_ref(gf.components.straight(), "i1")
-    i2 = c.add_ref(gf.components.straight(), "i2")
+    i1 = c.add_ref(gf.pcells.straight(), "i1")
+    i2 = c.add_ref(gf.pcells.straight(), "i2")
     i2.move("o2", destination=i1.ports["o1"])
     i2.movey(0.001)
     netlist = c.get_netlist(tolerance=2)
@@ -133,8 +133,8 @@ def test_get_netlist_close_enough_orthogonal() -> gf.Component:
 @gf.cell
 def test_get_netlist_close_enough_orthogonal_fails() -> gf.Component:
     c = gf.Component()
-    i1 = c.add_ref(gf.components.straight(), "i1")
-    i2 = c.add_ref(gf.components.straight(), "i2")
+    i1 = c.add_ref(gf.pcells.straight(), "i1")
+    i2 = c.add_ref(gf.pcells.straight(), "i2")
     i2.move("o2", destination=i1.ports["o1"])
     i2.movey(0.001)
     netlist = c.get_netlist(tolerance=1)
@@ -146,8 +146,8 @@ def test_get_netlist_close_enough_orthogonal_fails() -> gf.Component:
 @gf.cell
 def test_get_netlist_close_enough_both() -> gf.Component:
     c = gf.Component()
-    i1 = c.add_ref(gf.components.straight(), "i1")
-    i2 = c.add_ref(gf.components.straight(), "i2")
+    i1 = c.add_ref(gf.pcells.straight(), "i1")
+    i2 = c.add_ref(gf.pcells.straight(), "i2")
     i2.move("o2", destination=i1.ports["o1"])
     i2.move((0.001, 0.001))
     netlist = c.get_netlist(tolerance=2)
@@ -163,8 +163,8 @@ def test_get_netlist_close_enough_both() -> gf.Component:
 @gf.cell
 def test_get_netlist_close_enough_rotated() -> gf.Component:
     c = gf.Component()
-    i1 = c.add_ref(gf.components.straight(), "i1")
-    i2 = c.add_ref(gf.components.straight(), "i2")
+    i1 = c.add_ref(gf.pcells.straight(), "i1")
+    i2 = c.add_ref(gf.pcells.straight(), "i2")
     i2.move("o2", destination=i1.ports["o1"])
     i2.rotate(angle=0.01, center="o2")
     netlist = c.get_netlist(tolerance=2)
@@ -180,8 +180,8 @@ def test_get_netlist_close_enough_rotated() -> gf.Component:
 @gf.cell
 def test_get_netlist_throws_error_bad_rotation() -> gf.Component:
     c = gf.Component()
-    i1 = c.add_ref(gf.components.straight(), "i1")
-    i2 = c.add_ref(gf.components.straight(), "i2")
+    i1 = c.add_ref(gf.pcells.straight(), "i1")
+    i2 = c.add_ref(gf.pcells.straight(), "i2")
     i2.move("o2", destination=i1.ports["o1"])
     i2.rotate(angle=90, center="o2")
     with pytest.raises(ValueError):
@@ -193,7 +193,7 @@ def test_get_netlist_throws_error_bad_rotation() -> gf.Component:
 @gf.cell
 def test_get_netlist_tiny() -> gf.Component:
     c = gf.Component()
-    cc = gf.components.straight(length=0.002)
+    cc = gf.pcells.straight(length=0.002)
     i1 = c.add_ref(cc, "i1")
     i2 = c.add_ref(cc, "i2")
     i3 = c.add_ref(cc, "i3")
@@ -216,8 +216,8 @@ def test_get_netlist_tiny() -> gf.Component:
 @gf.cell
 def test_get_netlist_rotated() -> gf.Component:
     c = gf.Component()
-    i1 = c.add_ref(gf.components.straight(), "i1")
-    i2 = c.add_ref(gf.components.straight(), "i2")
+    i1 = c.add_ref(gf.pcells.straight(), "i1")
+    i2 = c.add_ref(gf.pcells.straight(), "i2")
     i1.rotate(35)
     i2.connect("o2", i1.ports["o1"])
 
@@ -234,9 +234,9 @@ def test_get_netlist_rotated() -> gf.Component:
 @gf.cell
 def test_get_netlist_electrical_simple() -> gf.Component:
     c = gf.Component()
-    i1 = c.add_ref(gf.components.wire_straight(), "i1")
-    i2 = c.add_ref(gf.components.wire_straight(), "i2")
-    i3 = c.add_ref(gf.components.wire_straight(), "i3")
+    i1 = c.add_ref(gf.pcells.wire_straight(), "i1")
+    i2 = c.add_ref(gf.pcells.wire_straight(), "i2")
+    i3 = c.add_ref(gf.pcells.wire_straight(), "i3")
     i2.connect("e2", i1.ports["e1"])
     i3.movey(-100)
     netlist = c.get_netlist()
@@ -252,8 +252,8 @@ def test_get_netlist_electrical_simple() -> gf.Component:
 @gf.cell
 def test_get_netlist_electrical_rotated_joint() -> gf.Component:
     c = gf.Component()
-    i1 = c.add_ref(gf.components.wire_straight(), "i1")
-    i2 = c.add_ref(gf.components.wire_straight(), "i2")
+    i1 = c.add_ref(gf.pcells.wire_straight(), "i1")
+    i2 = c.add_ref(gf.pcells.wire_straight(), "i2")
     i2.connect("e2", i1.ports["e1"])
     i2.rotate(45, "e2")
     netlist = c.get_netlist()
@@ -269,8 +269,8 @@ def test_get_netlist_electrical_rotated_joint() -> gf.Component:
 @gf.cell
 def test_get_netlist_electrical_allowable_offset() -> gf.Component:
     c = gf.Component()
-    i1 = c.add_ref(gf.components.wire_straight(), "i1")
-    i2 = c.add_ref(gf.components.wire_straight(), "i2")
+    i1 = c.add_ref(gf.pcells.wire_straight(), "i1")
+    i2 = c.add_ref(gf.pcells.wire_straight(), "i2")
     i2.connect("e2", i1.ports["e1"])
     i2.move((0.001, 0.001))
     netlist = c.get_netlist()
@@ -287,8 +287,8 @@ def test_get_netlist_electrical_allowable_offset() -> gf.Component:
 def test_get_netlist_electrical_different_widths() -> gf.Component:
     """Move connection 1nm inwards."""
     c = gf.Component()
-    i1 = c.add_ref(gf.components.straight(width=1, cross_section="metal1"), "i1")
-    i2 = c.add_ref(gf.components.straight(width=10, cross_section="metal1"), "i2")
+    i1 = c.add_ref(gf.pcells.straight(width=1, cross_section="metal1"), "i1")
+    i2 = c.add_ref(gf.pcells.straight(width=10, cross_section="metal1"), "i2")
     i2.move("e2", destination=i1.ports["e1"])
     i2.movex(0.001)
     netlist = c.get_netlist(tolerance=2)
@@ -305,8 +305,8 @@ def test_get_netlist_transformed():
     rotation_value = 35
     cname = "test_get_netlist_transformed"
     c = gf.Component(cname)
-    i1 = c.add_ref(gf.components.straight(), "i1")
-    i2 = c.add_ref(gf.components.straight(), "i2")
+    i1 = c.add_ref(gf.pcells.straight(), "i1")
+    i2 = c.add_ref(gf.pcells.straight(), "i2")
     i1.rotate(rotation_value)
     i2.connect("o2", i1.ports["o1"])
 

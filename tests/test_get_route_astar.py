@@ -8,12 +8,12 @@ from gdsfactory.component import Component
 @cell
 def test_astar_pass() -> Component:
     c = gf.Component("get_route_astar")
-    w = gf.components.straight()
+    w = gf.pcells.straight()
     left = c << w
     right = c << w
     right.move((100, 80))
 
-    obstacle = gf.components.rectangle(size=(100, 10))
+    obstacle = gf.pcells.rectangle(size=(100, 10))
     obstacle1 = c << obstacle
     obstacle2 = c << obstacle
     obstacle1.ymin = 40
@@ -39,9 +39,9 @@ def test_astar_pass() -> Component:
 # @cell
 # def test_astar_fail() -> Component:
 #     c = gf.Component()
-#     rect1 = c << gf.components.rectangle()
-#     rect2 = c << gf.components.rectangle()
-#     rect3 = c << gf.components.rectangle((2, 2))
+#     rect1 = c << gf.pcells.rectangle()
+#     rect2 = c << gf.pcells.rectangle()
+#     rect3 = c << gf.pcells.rectangle((2, 2))
 #     rect2.move(destination=(8, 4))
 #     rect3.move(destination=(5.5, 1.5))
 

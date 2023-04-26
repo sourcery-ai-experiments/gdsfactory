@@ -48,7 +48,7 @@ As input, you write python or YAML code.
 As output you write a GDSII or OASIS file that you can send to your foundry for fabrication.
 It also exports component settings (for measurement and data analysis) and netlists (for circuit simulations) in YAML.
 
-![layout_to_components](https://i.imgur.com/S96RSil.png)
+![layout_to_pcells](https://i.imgur.com/S96RSil.png)
 
 ![flow](https://i.imgur.com/XbhWJDz.png)
 
@@ -223,7 +223,7 @@ For example, VS Code supports development inside a container, see [Developing in
 
 ---
 
-"I use gdsfactory for all of my photonic tape-outs. The Python interface makes it easy to version control individual photonic components as well as entire layouts, while integrating seamlessly with KLayout and most standard photonic simulation tools, both open-source and commercial.
+"I use gdsfactory for all of my photonic tape-outs. The Python interface makes it easy to version control individual photonic pcells as well as entire layouts, while integrating seamlessly with KLayout and most standard photonic simulation tools, both open-source and commercial.
 
 <div style="text-align: right; margin-right: 10%;">Thomas Dorch - <strong>Freedom Photonics</strong></div>
 

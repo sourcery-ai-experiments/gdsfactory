@@ -7,8 +7,8 @@ r2 = (11, 4)
 
 angle_resolution = 2.5
 
-c1 = gf.components.ellipse(radii=r1, layer=(1, 0), angle_resolution=angle_resolution)
-c2 = gf.components.ellipse(radii=r2, layer=(1, 0), angle_resolution=angle_resolution)
+c1 = gf.pcells.ellipse(radii=r1, layer=(1, 0), angle_resolution=angle_resolution)
+c2 = gf.pcells.ellipse(radii=r2, layer=(1, 0), angle_resolution=angle_resolution)
 
 
 def test_boolean_not() -> None:
@@ -52,7 +52,7 @@ def test_boolean_and_klayout() -> None:
 
 
 def test_trim() -> None:
-    c = gf.components.straight_pin(length=10, taper=None)
+    c = gf.pcells.straight_pin(length=10, taper=None)
     rectangle = [[0, -5], [0, 5], [5, 5], [5, -5]]
     trimmed_c = gf.geometry.trim(component=c, domain=rectangle)
     assert trimmed_c.area() < c.area() and len(trimmed_c.get_layers()) > 1

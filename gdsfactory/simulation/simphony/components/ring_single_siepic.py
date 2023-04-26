@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 from simphony.libraries import siepic
 
-from gdsfactory.simulation.simphony.components.coupler_ring import coupler_ring
+from gdsfactory.simulation.simphony.pcells.coupler_ring import coupler_ring
 
 
 def ring_single(

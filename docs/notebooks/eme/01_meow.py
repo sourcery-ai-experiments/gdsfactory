@@ -14,7 +14,7 @@
 
 # # EME with MEOW
 #
-# Some components are more efficiently modeled with Eigenmode Expansion.
+# Some pcells are more efficiently modeled with Eigenmode Expansion.
 #
 # Gdsfactory provides a plugin for MEOW to efficiently extract component S-parameters through EME.
 #
@@ -31,7 +31,7 @@ gf.config.rich_output()
 PDK = get_generic_pdk()
 PDK.activate()
 
-c = gf.components.taper_cross_section_sine()
+c = gf.pcells.taper_cross_section_sine()
 c
 # -
 
@@ -105,7 +105,7 @@ filtered_layerstack = gf.technology.LayerStack(
     }
 )
 
-c = gf.components.taper(width2=2)
+c = gf.pcells.taper(width2=2)
 c
 # -
 
@@ -166,11 +166,11 @@ lengths = np.array([1, 5, 10])
 T = np.zeros_like(lengths, dtype=float)
 
 for length in lengths:
-    c = gf.components.taper(width2=2, length=length)
+    c = gf.pcells.taper(width2=2, length=length)
     c.plot()
 
 for i, length in enumerate(lengths):
-    c = gf.components.taper(width2=10, length=length)
+    c = gf.pcells.taper(width2=10, length=length)
     eme = MEOW(component=c, layerstack=filtered_layerstack, wavelength=1.55)
     sp = eme.compute_sparameters()
     T[i] = np.abs(sp["o1@0,o2@0"]) ** 2

@@ -1,20 +1,20 @@
 import warnings
 from typing import Optional, List
 
-from gdsfactory.component import Port, ComponentReference, Component
+from gdsfactory.component import Port, Instance, Component
 from gdsfactory.typings import CrossSectionSpec
 
 
 def taper_to_cross_section(
     port: Port, cross_section: CrossSectionSpec
-) -> Optional[ComponentReference]:
-    """Returns taper ComponentReference from a port to a given cross-section \
+) -> Optional[Instance]:
+    """Returns taper Instance from a port to a given cross-section \
             placed so that it connects to the input port.
 
     Assumes that the taper component has `width1` and `width2` which map to the input and output port widths.
 
     Args:
-        port: a port to connect to, usually from a ComponentReference
+        port: a port to connect to, usually from a Instance
         cross_section: a cross-section to transition to
 
     .. plot::
@@ -27,7 +27,7 @@ def taper_to_cross_section(
         c = gf.Component()
 
         # create a component reference to connect to
-        wg = c << gf.components.straight()
+        wg = c << gf.pcells.straight()
 
         # create a taper reference transitioning to strip from the rib waveguide
         taper = taper_to_cross_section(wg.ports['o1'], strip(width=2.0))
@@ -69,7 +69,7 @@ def taper_to_cross_section(
         return None
     taper = get_component(taper_name, width1=port_width, width2=cs_width)
     input_port_name = _get_taper_io_port_names(component=taper)[0]
-    return ComponentReference(taper).connect(input_port_name, port)
+    return Instance(taper).connect(input_port_name, port)
 
 
 def _get_taper_io_port_names(component: Component) -> List[str]:

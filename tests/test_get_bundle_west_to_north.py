@@ -4,7 +4,7 @@ from pytest_regressions.data_regression import DataRegressionFixture
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.port import port_array
+from gdsfactory.component import port_array
 
 
 def test_get_bundle_west_to_north(
@@ -13,10 +13,10 @@ def test_get_bundle_west_to_north(
     lengths = {}
 
     c = gf.Component("test_get_bundle_west_to_north")
-    pad = gf.partial(gf.components.pad, size=(10, 10))
+    pad = gf.partial(gf.pcells.pad, size=(10, 10))
     c = gf.Component()
-    pad_south = gf.components.pad_array(angle=270, spacing=(15.0, 0.0), pad=pad)
-    pad_north = gf.components.pad_array(angle=90, spacing=(15.0, 0.0), pad=pad)
+    pad_south = gf.pcells.pad_array(angle=270, spacing=(15.0, 0.0), pad=pad)
+    pad_north = gf.pcells.pad_array(angle=90, spacing=(15.0, 0.0), pad=pad)
     pl = c << pad_south
     pb = c << pad_north
     pl.rotate(90)
@@ -31,7 +31,7 @@ def test_get_bundle_west_to_north(
     routes = gf.routing.get_bundle(
         pbports,
         ptports,
-        bend=gf.components.wire_corner,
+        bend=gf.pcells.wire_corner,
     )
     for i, route in enumerate(routes):
         c.add(route.references)
@@ -59,7 +59,7 @@ def test_get_bundle_west_to_north2(
     routes = gf.routing.get_bundle(
         pbottom_facing_north,
         ptop_facing_west,
-        bend=gf.components.wire_corner,
+        bend=gf.pcells.wire_corner,
     )
 
     for i, route in enumerate(routes):

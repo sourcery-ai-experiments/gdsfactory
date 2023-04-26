@@ -102,7 +102,7 @@ yaml_list = [mirror_port, mirror_x, rotation, dxdy]
 
 
 @pytest.mark.parametrize("yaml_index", range(len(yaml_list)))
-def test_components(
+def test_pcells(
     yaml_index: int, data_regression: DataRegressionFixture, check: bool = True
 ) -> None:
     yaml = yaml_list[yaml_index]

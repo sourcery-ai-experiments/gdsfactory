@@ -4,8 +4,8 @@ from functools import partial
 from typing import Dict, Union
 
 import tidy3d as td
-from tidy3d.components.medium import PoleResidue
-from tidy3d.components.types import ComplexNumber
+from tidy3d.pcells.medium import PoleResidue
+from tidy3d.pcells.types import ComplexNumber
 
 MATERIAL_NAME_TO_MEDIUM = {
     "si": td.material_library["cSi"]["Li1993_293K"],

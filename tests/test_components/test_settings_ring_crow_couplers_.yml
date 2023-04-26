@@ -90,5 +90,5 @@ settings:
   function_name: ring_crow_couplers
   info: {}
   info_version: 2
-  module: gdsfactory.components.ring_crow_couplers
+  module: gdsfactory.pcells.ring_crow_couplers
   name: ring_crow_couplers

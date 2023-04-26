@@ -35,7 +35,7 @@ PDK.activate()
 gf.generic_tech.LAYER_STACK.layers["heater"].thickness = 0.13
 gf.generic_tech.LAYER_STACK.layers["heater"].zmin = 2.2
 
-heater = gf.components.straight_heater_metal(length=50, heater_width=2)
+heater = gf.pcells.straight_heater_metal(length=50, heater_width=2)
 heater
 
 # + tags=[]

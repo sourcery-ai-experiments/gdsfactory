@@ -12,8 +12,8 @@ def test_get_bundle_electrical_multilayer(
     lengths = {}
     c = gf.Component("multi-layer")
     columns = 2
-    ptop = c << gf.components.pad_array(columns=columns)
-    pbot = c << gf.components.pad_array(angle=90, columns=columns)
+    ptop = c << gf.pcells.pad_array(columns=columns)
+    pbot = c << gf.pcells.pad_array(angle=90, columns=columns)
 
     ptop.movex(300)
     ptop.movey(300)

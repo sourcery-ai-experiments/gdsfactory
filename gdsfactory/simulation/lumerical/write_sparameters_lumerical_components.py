@@ -1,4 +1,4 @@
-"""Write Sparameters with for different components."""
+"""Write Sparameters with for different pcells."""
 from __future__ import annotations
 
 from typing import Optional
@@ -12,13 +12,13 @@ from gdsfactory.simulation.lumerical.write_sparameters_lumerical import (
 from gdsfactory.typings import ComponentSpec, List
 
 
-def write_sparameters_lumerical_components(
-    components: List[ComponentSpec],
+def write_sparameters_lumerical_pcells(
+    pcells: List[ComponentSpec],
     run: bool = True,
     session: Optional[object] = None,
     **kwargs,
 ) -> None:
-    """Writes Sparameters for a list of components using Lumerical FDTD.
+    """Writes Sparameters for a list of pcells using Lumerical FDTD.
 
     Args:
         factory: list of component or component functions to simulate.
@@ -34,7 +34,7 @@ def write_sparameters_lumerical_components(
     session = session or lumapi.FDTD()
     need_review = []
 
-    for component in tqdm(components):
+    for component in tqdm(pcells):
         component = gf.get_component(component)
         write_sparameters_lumerical(component, run=run, session=session, **kwargs)
         if not run:
@@ -46,6 +46,6 @@ def write_sparameters_lumerical_components(
 
 
 if __name__ == "__main__":
-    from gdsfactory.components import _factory_passives
+    from gdsfactory.pcells import _factory_passives
 
-    write_sparameters_lumerical_components(factory=_factory_passives.values())
+    write_sparameters_lumerical_pcells(factory=_factory_passives.values())

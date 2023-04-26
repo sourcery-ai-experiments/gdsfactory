@@ -11,7 +11,7 @@ import gdsfactory as gf
 from gdsfactory.add_pins import add_pin_rectangle_inside
 from gdsfactory.component import Component
 from gdsfactory.cross_section import strip
-from gdsfactory.port import select_ports
+from gdsfactory.component import select_ports
 from gdsfactory.technology import LayerLevel, LayerStack
 from gdsfactory.typings import Layer
 
@@ -99,43 +99,41 @@ xs_no = gf.partial(
 
 
 # LEAF COMPONENTS have pins
-bend_euler_nc = gf.partial(
-    gf.components.bend_euler, cross_section=xs_nc, with_bbox=True
-)
-straight_nc = gf.partial(gf.components.straight, cross_section=xs_nc, with_bbox=True)
-bend_euler_o = gf.partial(gf.components.bend_euler, cross_section=xs_no, with_bbox=True)
-straight_o = gf.partial(gf.components.straight, cross_section=xs_no, with_bbox=True)
+bend_euler_nc = gf.partial(gf.pcells.bend_euler, cross_section=xs_nc, with_bbox=True)
+straight_nc = gf.partial(gf.pcells.straight, cross_section=xs_nc, with_bbox=True)
+bend_euler_o = gf.partial(gf.pcells.bend_euler, cross_section=xs_no, with_bbox=True)
+straight_o = gf.partial(gf.pcells.straight, cross_section=xs_no, with_bbox=True)
 
 mmi1x2_nc = gf.partial(
-    gf.components.mmi1x2,
+    gf.pcells.mmi1x2,
     width=WIDTH_NITRIDE_CBAND,
     width_mmi=3,
     cross_section=xs_nc,
 )
 mmi1x2_no = gf.partial(
-    gf.components.mmi1x2,
+    gf.pcells.mmi1x2,
     width=WIDTH_NITRIDE_OBAND,
     cross_section=xs_no,
 )
 
 gc_nc = gf.partial(
-    gf.components.grating_coupler_elliptical,
+    gf.pcells.grating_coupler_elliptical,
     grating_line_width=0.6,
     layer_slab=None,
     cross_section=xs_nc,
 )
 
-# HIERARCHICAL COMPONENTS made of leaf components
+# HIERARCHICAL COMPONENTS made of leaf pcells
 
 mzi_nc = gf.partial(
-    gf.components.mzi,
+    gf.pcells.mzi,
     cross_section=xs_nc,
     splitter=mmi1x2_nc,
     straight=straight_nc,
     bend=bend_euler_nc,
 )
 mzi_no = gf.partial(
-    gf.components.mzi,
+    gf.pcells.mzi,
     cross_section=xs_no,
     splitter=mmi1x2_no,
     straight=straight_o,

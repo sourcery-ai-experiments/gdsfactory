@@ -5,7 +5,7 @@ from gdsfactory.simulation.gmeep.write_sparameters_meep import write_sparameters
 def test_materials_override() -> None:
     """Checks that materials are properly overridden if index is provided."""
 
-    c = gf.components.straight(length=2)
+    c = gf.pcells.straight(length=2)
 
     # Default (materials strings)
     sp1 = write_sparameters_meep(

@@ -6,7 +6,7 @@ Lets build straight crossing out of a vertical and horizontal arm
 
 - Create a component using a function with the cell decorator to define the name automatically and uniquely.
 - Define the polygons in the component
-- Add ports to the component so you can connect it with other components
+- Add ports to the component so you can connect it with other pcells
 
 """
 
@@ -36,7 +36,7 @@ def test_crossing_arm(
 
     """
     c = gf.Component()
-    c << gf.components.ellipse(radii=(r1, r2), layer=LAYER.SLAB150)
+    c << gf.pcells.ellipse(radii=(r1, r2), layer=LAYER.SLAB150)
 
     xmax = taper_length + taper_width / 2
     h = wg_width / 2

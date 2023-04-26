@@ -40,7 +40,7 @@
 # The Mamba/Conda packages are available for Linux, macOS, or Windows [WSL](https://docs.microsoft.com/en-us/windows/wsl/). For more details on installing Meep, see the [user manual](https://meep.readthedocs.io/en/latest/Installation/#conda-packages).
 #
 #
-# The gdsfactory `gmeep` plugin computes the transmission spectrum for planar photonic components.
+# The gdsfactory `gmeep` plugin computes the transmission spectrum for planar photonic pcells.
 #
 # One advantage of using the `gmeep` plugin is that you only need to define your component geometry *once* using gdsfactory. The geometry is automatically imported into Meep. There is no need to define the geometry separately for Meep.
 #
@@ -129,7 +129,7 @@ PDK = get_generic_pdk()
 PDK.activate()
 
 # + id="20rxcQWDA56e"
-c = gf.components.straight(length=2)
+c = gf.pcells.straight(length=2)
 c
 
 # + [markdown] id="dZk6o50WA56e"
@@ -147,14 +147,14 @@ help(gm.write_sparameters_meep)
 # You can also do this directly with another version of the function that adds `ymargin_top` and `ymargin_bot`
 
 # + id="ijROE4dzA56f"
-c = gf.components.straight(length=2)
+c = gf.pcells.straight(length=2)
 sp = gm.write_sparameters_meep(c, run=False, is_3d=False)
 
 # + [markdown] id="Jp1dx60BA56g"
-# Because components with `left-right` ports are very common `write_sparameters_meep` `y_margin = 3um `
+# Because pcells with `left-right` ports are very common `write_sparameters_meep` `y_margin = 3um `
 
 # + id="q9JJ-NUyA56g"
-c = gf.components.taper(length=2.0, width1=0.5, width2=1)
+c = gf.pcells.taper(length=2.0, width1=0.5, width2=1)
 c
 
 # + id="NC-IRmuYA56g"
@@ -198,7 +198,7 @@ gf.simulation.plot.plot_sparameters(sp, keys=("o2@0,o1@0",))
 # If the device looks the same going from in -> out as out -> in, we just need to run one simulation.
 
 # + id="ijLO-R0vA56i"
-c = gf.components.bend_euler(radius=3)
+c = gf.pcells.bend_euler(radius=3)
 c
 
 # + id="H61LD7yFA56i"
@@ -220,7 +220,7 @@ gf.simulation.plot.plot_sparameters(sp, keys=("o2@0,o1@0",), logscale=False)
 gf.simulation.plot.plot_sparameters(sp, keys=("o2@0,o1@0",))
 
 # + id="k6ZJYqsyA56j"
-c = gf.components.crossing()
+c = gf.pcells.crossing()
 c
 
 # + [markdown] id="bPp2WKoiA56j"
@@ -280,10 +280,10 @@ gm.plot.plot_sparameters(sp, keys=("o3@0,o1@0",))
 # As a demonstration, lets try to reproduce the results of the directional coupler results from the [Meep manual](https://meep.readthedocs.io/en/latest/Python_Tutorials/GDSII_Import/) which indicates that to obtain a 3 dB (50%/50%) splitter you need a separation distance of 130 nm over a coupler length of 8 μm.
 
 # + id="E4wuUP4bA56k"
-help(gf.components.coupler)
+help(gf.pcells.coupler)
 
 # + id="j1wXUyPHA56k"
-c = gf.components.coupler(length=8, gap=0.13)
+c = gf.pcells.coupler(length=8, gap=0.13)
 c
 
 # + id="UlufWBzyA56k"
@@ -318,7 +318,7 @@ gf.simulation.plot.plot_sparameters(sp, keys=["o1@0,o3@0", "o1@0,o4@0"])
 help(gm.write_sparameters_meep_batch)
 
 # + id="LcvSHCWMA56m"
-c = gf.components.straight(length=3.1)
+c = gf.pcells.straight(length=3.1)
 
 # + id="X8xshPlOA56m"
 gm.write_sparameters_meep(c, ymargin=3, run=False)
@@ -341,7 +341,7 @@ sp = np.load(filepaths[0])
 gf.simulation.plot.plot_sparameters(sp)
 
 # + id="Y8TDimS0A56m"
-c = gf.components.coupler_ring()
+c = gf.pcells.coupler_ring()
 c
 
 # + id="P2EuTh9xA56m"
@@ -384,7 +384,7 @@ gm.plot.plot_sparameters(sp, keys=["s41"], with_simpler_input_keys=True)
 # ## Visualizing the 3D Geometry
 
 # + id="wr777ke6A56n"
-c = gf.components.mmi1x2()
+c = gf.pcells.mmi1x2()
 c = add_simulation_markers(c)
 c
 
@@ -395,7 +395,7 @@ scene.show()
 # + [markdown] id="86T2i6p_A56o"
 # ## Adjoint Optimization
 #
-# gdsfactory extends Meep's Adjoint Optimization features to optimize and generate primitive photonic components.
+# gdsfactory extends Meep's Adjoint Optimization features to optimize and generate primitive photonic pcells.
 #
 # This example is based on this [Meep Adjoint Optimization tutorial](https://nbviewer.org/github/NanoComp/meep/blob/master/python/examples/adjoint_optimization/04-Splitter.ipynb)
 
@@ -444,11 +444,11 @@ design_region = DesignRegion(
 c = gf.Component("mmi1x2")
 
 arm_separation = 1.0
-straight1 = c << gf.components.taper(6.5, width2=1)
+straight1 = c << gf.pcells.taper(6.5, width2=1)
 straight1.move(straight1.ports["o2"], (-design_region_width / 2.0, 0))
-straight2 = c << gf.components.taper(6.5, width1=1, width2=0.5)
+straight2 = c << gf.pcells.taper(6.5, width1=1, width2=0.5)
 straight2.move(straight2.ports["o1"], (design_region_width / 2.0, 1))
-straight3 = c << gf.components.taper(6.5, width1=1, width2=0.5)
+straight3 = c << gf.pcells.taper(6.5, width1=1, width2=0.5)
 straight3.move(straight3.ports["o1"], (design_region_width / 2.0, -1))
 
 c.add_port("o1", port=straight1.ports["o1"])

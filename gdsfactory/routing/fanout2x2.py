@@ -4,9 +4,9 @@ from typing import Callable, Optional
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.components.bend_s import bend_s
-from gdsfactory.components.straight import straight
-from gdsfactory.port import select_ports_optical
+from gdsfactory.pcells.bend_s import bend_s
+from gdsfactory.pcells.straight import straight
+from gdsfactory.component import select_ports_optical
 from gdsfactory.typings import ComponentSpec, CrossSectionSpec
 
 
@@ -35,7 +35,7 @@ def fanout2x2(
         :include-source:
 
         import gdsfactory as gf
-        c = gf.components.nxn(west=2, east=2)
+        c = gf.pcells.nxn(west=2, east=2)
 
         cc = gf.routing.fanout2x2(component=c, port_spacing=20)
         cc.plot()
@@ -88,8 +88,8 @@ def fanout2x2(
 
 
 if __name__ == "__main__":
-    # c =gf.components.coupler(gap=1.0)
-    c = gf.components.nxn(west=2, east=2)
+    # c =gf.pcells.coupler(gap=1.0)
+    c = gf.pcells.nxn(west=2, east=2)
 
     cc = fanout2x2(component=c, port_spacing=20)
     print(cc.ports["o3"].y - cc.ports["o4"].y)

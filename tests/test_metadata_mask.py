@@ -8,13 +8,13 @@ import gdsfactory as gf
 
 @gf.cell
 def mask(size=(1000, 1000)):
-    ring_te = toolz.compose(gf.routing.add_fiber_array, gf.components.ring_single)
+    ring_te = toolz.compose(gf.routing.add_fiber_array, gf.pcells.ring_single)
     rings = [ring_te(radius=r) for r in [10, 10, 20]]
     rings = gf.grid(
         rings, add_ports_suffix=True, decorator=gf.add_labels.add_labels_to_ports_x_y
     )
     c = gf.Component()
-    c << gf.components.die(size=size)
+    c << gf.pcells.die(size=size)
     c << rings
     c.add_ports(rings.ports)
     return c

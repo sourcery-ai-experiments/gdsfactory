@@ -20,6 +20,6 @@ settings:
   function_name: githash
   info: {}
   info_version: 2
-  module: gdsfactory.components.text
+  module: gdsfactory.pcells.text
   name: githash
 version: 0.0.1

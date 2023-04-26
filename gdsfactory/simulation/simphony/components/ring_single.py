@@ -45,7 +45,7 @@ def ring_single(
 
       import gdsfactory as gf
 
-      c = gf.components.ring_single(width=0.5, gap=0.2, length_x=4, radius=5, length_y=2)
+      c = gf.pcells.ring_single(width=0.5, gap=0.2, length_x=4, radius=5, length_y=2)
       c.plot()
 
 
@@ -53,7 +53,7 @@ def ring_single(
         :include-source:
 
         import gdsfactory.simulation.simphony as gs
-        import gdsfactory.simulation.simphony.components as gc
+        import gdsfactory.simulation.simphony.pcells as gc
 
         c = gc.ring_single()
         gs.plot_circuit(c)

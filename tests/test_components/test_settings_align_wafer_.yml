@@ -20,5 +20,5 @@ settings:
   function_name: align_wafer
   info: {}
   info_version: 2
-  module: gdsfactory.components.align
+  module: gdsfactory.pcells.align
   name: align_wafer

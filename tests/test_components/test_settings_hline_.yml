@@ -42,5 +42,5 @@ settings:
     length: 10.0
     width: 0.5
   info_version: 2
-  module: gdsfactory.components.hline
+  module: gdsfactory.pcells.hline
   name: hline

@@ -548,8 +548,8 @@ if __name__ == "__main__":
     sim_settings = dict(
         wavelength_start=wavelength_start, wavelength_stop=wavelength_stop
     )
-    # c = gf.components.mmi1x2(cross_section=gf.cross_section.strip)
-    c = gf.components.straight(length=2)
+    # c = gf.pcells.mmi1x2(cross_section=gf.cross_section.strip)
+    c = gf.pcells.straight(length=2)
     import matplotlib.pyplot as plt
 
     def func(x):
@@ -579,8 +579,8 @@ if __name__ == "__main__":
     # from gdsfactory.simulation.add_simulation_markers import add_simulation_markers
     # import gdsfactory.simulation as sim
 
-    # c = gf.components.straight(length=2)
-    # c = gf.components.bend_euler(radius=3)
+    # c = gf.pcells.straight(length=2)
+    # c = gf.pcells.bend_euler(radius=3)
     # c = add_simulation_markers(c)
 
     # sp = write_sparameters_meep_1x1(c, run=True, is_3d=False)

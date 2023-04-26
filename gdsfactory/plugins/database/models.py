@@ -280,7 +280,7 @@ class ResultSelfRelation(Base):
 
 class Component(Base):
     __tablename__ = "component"
-    __table_args__ = {"comment": "This table holds the definition of components."}
+    __table_args__ = {"comment": "This table holds the definition of pcells."}
 
     id = Column(Integer, primary_key=True)
     created = Column(
@@ -349,7 +349,7 @@ class ComponentInfo(Base):
 class ResultComponentRelation(Base):
     __tablename__ = "result_component_relation"
     __table_args__ = {
-        "comment": "This table holds the relations in between results and components."
+        "comment": "This table holds the relations in between results and pcells."
     }
 
     id = Column(Integer, primary_key=True)
@@ -420,7 +420,7 @@ if __name__ == "__main__":
     engine = create_engine("sqlite:///database.db", echo=True, future=True)
     metadata.create_all(engine)
 
-    c = gf.components.ring_single(radius=10)
+    c = gf.pcells.ring_single(radius=10)
 
     with Session(engine) as session:
         w1 = Wafer(name="12", serial_number="ABC")

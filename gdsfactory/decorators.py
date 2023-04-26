@@ -2,12 +2,10 @@ from __future__ import annotations
 
 import gdsfactory as gf
 from gdsfactory.snap import is_on_grid
-from gdsfactory.typings import Component, ComponentReference, Optional
+from gdsfactory.typings import Component, Instance, Optional
 
 
-def is_valid_transformation(
-    ref: ComponentReference, grid_size: Optional[float] = None
-) -> bool:
+def is_valid_transformation(ref: Instance, grid_size: Optional[float] = None) -> bool:
     """Returns True if the component has valid transformations.
 
     Args:
@@ -66,8 +64,8 @@ def is_invalid_ref(ref, grid_size: Optional[float] = None) -> bool:
 def _demo_non_manhattan() -> Component:
     """Returns component with Manhattan snapping issues."""
     c = Component()
-    b = c << gf.components.bend_circular(angle=30)
-    s = c << gf.components.straight(length=5)
+    b = c << gf.pcells.bend_circular(angle=30)
+    s = c << gf.pcells.straight(length=5)
     s.connect("o1", b.ports["o2"])
     return c
 

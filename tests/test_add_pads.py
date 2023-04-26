@@ -9,14 +9,14 @@ from gdsfactory.difftest import difftest
 
 
 def test_type0() -> Component:
-    c = gf.components.straight_heater_metal(length=100.0)
+    c = gf.pcells.straight_heater_metal(length=100.0)
     return gf.routing.add_pads_top(component=c, port_names=("e1",))
 
 
-components = [test_type0]
+pcells = [test_type0]
 
 
-@pytest.fixture(params=components, scope="function")
+@pytest.fixture(params=pcells, scope="function")
 def component(request) -> Component:
     return request.param()
 

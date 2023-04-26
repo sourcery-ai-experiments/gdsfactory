@@ -14,12 +14,12 @@ import numpy as np
 from omegaconf import OmegaConf
 from pydantic import validate_arguments
 
-from gdsfactory import ComponentReference
+from gdsfactory import Instance
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
-from gdsfactory.components.straight import straight
-from gdsfactory.components.text_rectangular import text_rectangular_multi_layer
-from gdsfactory.port import auto_rename_ports
+from gdsfactory.pcells.straight import straight
+from gdsfactory.pcells.text_rectangular import text_rectangular_multi_layer
+from gdsfactory.component import auto_rename_ports
 from gdsfactory.typings import (
     Anchor,
     Axis,
@@ -74,7 +74,7 @@ def add_text(
 
 
 def add_texts(
-    components: List[ComponentSpec],
+    pcells: List[ComponentSpec],
     prefix: str = "",
     index0: int = 0,
     **kwargs,
@@ -82,7 +82,7 @@ def add_texts(
     """Return a list of Component with text labels.
 
     Args:
-        components: list of component specs.
+        pcells: list of component specs.
         prefix: Optional prefix for the labels.
         index0: defaults to 0 (0, for first component, 1 for second ...).
 
@@ -94,7 +94,7 @@ def add_texts(
     """
     return [
         add_text(component, text=f"{prefix}{i + index0}", **kwargs)
-        for i, component in enumerate(components)
+        for i, component in enumerate(pcells)
     ]
 
 
@@ -189,7 +189,7 @@ def move(
 
 
 @cell
-def transformed(ref: ComponentReference):
+def transformed(ref: Instance):
     """Returns flattened cell with reference transformations applied.
 
     Args:
@@ -271,7 +271,7 @@ __all__ = (
 if __name__ == "__main__":
     import gdsfactory as gf
 
-    c = gf.components.mmi1x2(
+    c = gf.pcells.mmi1x2(
         length_mmi=10,
         decorator=partial(add_settings_label, settings=["name", "length_mmi"]),
     )

@@ -10,7 +10,7 @@ import gdsfactory.simulation.gtidy3d as gt
 
 # from gdsfactory.simulation.gtidy3d.get_results import get_sim_hash
 # def test_simulation_hash() -> None:
-#     component = gf.components.straight(length=3)
+#     component = gf.pcells.straight(length=3)
 #     sim = gt.get_simulation(component=component)
 #     sim_hash = get_sim_hash(sim)
 #     sim_hash_reference = "4b0cd0b69d0e1c32a1bf30e1f1ea5b27"
@@ -19,7 +19,7 @@ import gdsfactory.simulation.gtidy3d as gt
 
 def test_simulation(overwrite: bool = False) -> None:
     """export sim in JSON, and then load it again."""
-    component = gf.components.straight(length=3)
+    component = gf.pcells.straight(length=3)
     sim = gt.get_simulation(component=component)
 
     if overwrite:
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     test_simulation(overwrite=True)
 
     # test_simulation()
-    # component = gf.components.straight(length=3)
+    # component = gf.pcells.straight(length=3)
     # sim = gt.get_simulation(component=component)
     # sim.to_file("sim_ref.yaml")
     # sim.to_file("sim_run.yaml")

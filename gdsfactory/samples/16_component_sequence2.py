@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.components.component_sequence import component_sequence
-from gdsfactory.components.straight import straight
-from gdsfactory.components.taper import taper_strip_to_ridge
+from gdsfactory.pcells.component_sequence import component_sequence
+from gdsfactory.pcells.straight import straight
+from gdsfactory.pcells.taper import taper_strip_to_ridge
 
 
 @gf.cell
@@ -12,12 +12,12 @@ def test_cutback_phase(
     straight_length: float = 100.0, bend_radius: float = 12.0, n: int = 2
 ) -> Component:
     """Modulator sections connected by bends."""
-    # Define sub components
-    bend180 = gf.components.bend_circular180(radius=bend_radius)
-    pm_wg = gf.components.straight_pin(length=straight_length, taper=None)
+    # Define sub pcells
+    bend180 = gf.pcells.bend_circular180(radius=bend_radius)
+    pm_wg = gf.pcells.straight_pin(length=straight_length, taper=None)
     wg_short = straight(length=1.0)
     wg_short2 = straight(length=2.0)
-    wg_heater = gf.components.straight_pin(length=10.0, taper=None)
+    wg_heater = gf.pcells.straight_pin(length=10.0, taper=None)
     taper = taper_strip_to_ridge()
 
     # Define a map between symbols and (component, input port, output port)

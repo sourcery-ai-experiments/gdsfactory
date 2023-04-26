@@ -170,7 +170,7 @@ removed
 # You can remap (change the polygons from one layer to another layer) using the `remap_layer`, which will return a new `Component`
 
 # %% tags=[]
-c = gf.components.straight(layer=(2, 0))
+c = gf.pcells.straight(layer=(2, 0))
 c
 
 # %% tags=[]
@@ -478,7 +478,7 @@ layer_stack220 = LAYER_STACK
 # %% tags=[]
 import gdsfactory as gf
 
-c = gf.components.straight_heater_doped_rib(length=100)
+c = gf.pcells.straight_heater_doped_rib(length=100)
 c
 
 # %% tags=[]
@@ -488,7 +488,7 @@ scene.show()
 # %% tags=[]
 import gdsfactory as gf
 
-c = gf.components.straight_heater_metal(length=40)
+c = gf.pcells.straight_heater_metal(length=40)
 c
 
 # %% tags=[]
@@ -498,7 +498,7 @@ scene.show()
 # %% tags=[]
 import gdsfactory as gf
 
-c = gf.components.taper_strip_to_ridge_trenches()
+c = gf.pcells.taper_strip_to_ridge_trenches()
 c
 
 # %% tags=[]
@@ -514,7 +514,7 @@ scene.show()
 # %% tags=[]
 import gdsfactory as gf
 
-c = gf.components.grating_coupler_elliptical_trenches()
+c = gf.pcells.grating_coupler_elliptical_trenches()
 c
 
 # %% tags=[]
@@ -524,13 +524,13 @@ scene.show()
 # %% [markdown]
 # ### 3D rendering
 #
-# To render components in 3D you will need to define two things:
+# To render pcells in 3D you will need to define two things:
 #
 # 1. LayerStack: for each layer contains thickness of each material and z position
 # 2. LayerViews: for each layer contains view (color, pattern, opacity). You can load it with `gf.technology.LayerView.load_lyp()`
 
 # %% tags=[]
-heater = gf.components.straight_heater_metal(length=50)
+heater = gf.pcells.straight_heater_metal(length=50)
 heater
 
 # %% tags=[]

@@ -50,5 +50,5 @@ settings:
   function_name: taper_adiabatic
   info: {}
   info_version: 2
-  module: gdsfactory.components.taper_adiabatic
+  module: gdsfactory.pcells.taper_adiabatic
   name: taper_adiabatic

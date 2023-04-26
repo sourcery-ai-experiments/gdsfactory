@@ -10,27 +10,27 @@ from gdsfactory.add_ports import (
 
 def test_add_ports_dict() -> None:
     c = gf.Component()
-    s = c << gf.components.straight()
+    s = c << gf.pcells.straight()
     c.add_ports(s.ports)
     assert len(c.ports) == 2, len(c.ports)
 
 
 def test_add_ports_list() -> None:
     c = gf.Component()
-    s = c << gf.components.straight()
+    s = c << gf.pcells.straight()
     c.add_ports(s.get_ports_list())
     assert len(c.ports) == 2, len(c.ports)
 
 
 def test_add_ports_from_pins(data_regression):
-    c = gf.components.straight(decorator=add_pins)
+    c = gf.pcells.straight(decorator=add_pins)
     gdspath = c.write_gds()
     c2 = gf.import_gds(gdspath, decorator=add_ports_from_markers_inside)
     data_regression.check(c2.to_dict(with_ports=True))
 
 
 def test_add_ports_from_pins_siepic(data_regression):
-    c = gf.components.straight(decorator=add_pins_siepic)
+    c = gf.pcells.straight(decorator=add_pins_siepic)
     gdspath = c.write_gds()
     c2 = gf.import_gds(gdspath, decorator=add_ports_from_siepic_pins)
     data_regression.check(c2.to_dict(with_ports=True))
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     # test_add_ports_list()
     # test_add_ports_dict()
 
-    c = gf.components.straight(decorator=add_pins)
+    c = gf.pcells.straight(decorator=add_pins)
     gdspath = c.write_gds()
     c2 = gf.import_gds(gdspath, decorator=add_ports_from_markers_inside)
 

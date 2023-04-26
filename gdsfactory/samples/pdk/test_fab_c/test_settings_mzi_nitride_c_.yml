@@ -175,6 +175,6 @@ settings:
   function_name: mzi
   info: {}
   info_version: 2
-  module: gdsfactory.components.mzi
+  module: gdsfactory.pcells.mzi
   name: mzi_aa512919
 version: 0.0.1

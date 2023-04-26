@@ -3,9 +3,9 @@ from __future__ import annotations
 from typing import Dict, List, Union
 
 import gdsfactory as gf
-from gdsfactory.components.straight import straight
+from gdsfactory.pcells.straight import straight
 from gdsfactory.difftest import difftest
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 from gdsfactory.typings import ComponentSpec, Routes
 
 
@@ -27,7 +27,7 @@ def get_routes_straight(
         import gdsfactory as gf
 
         c = gf.Component("get_routes_straight")
-        pad_array = gf.components.pad_array()
+        pad_array = gf.pcells.pad_array()
         c1 = c << pad_array
         c2 = c << pad_array
         c2.ymax = -200
@@ -48,7 +48,7 @@ def get_routes_straight(
 
 def test_get_routes_straight(check: bool = True):
     c = gf.Component("get_routes_straight")
-    pad_array = gf.components.pad_array()
+    pad_array = gf.pcells.pad_array()
     c1 = c << pad_array
     c2 = c << pad_array
     c2.ymax = -200

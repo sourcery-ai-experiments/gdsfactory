@@ -81,7 +81,7 @@ class MeepFDTDModel(Model):
         sim_settings["wavelength_stop"] = wavelengths.max_value
         sim_settings["wavelength_points"] = wavelengths.count()
 
-        # We cannot serialize components, so save it as gds and import instead
+        # We cannot serialize pcells, so save it as gds and import instead
         value_str = [str(value) for value in values]
         current_file = self.temp_dir / "_".join(list(value_str))
         input_component_file = current_file.with_suffix(".gds")
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     from gdsfactory.simulation.sax.parameter import NamedParameter, LithoParameter
     from gdsfactory.technology import LayerStack
 
-    c = gf.components.coupler_full(
+    c = gf.pcells.coupler_full(
         coupling_length=0.1, dx=10.0, dy=5.0, gap=0.5, dw=0.0, cross_section="strip"
     )
     c.show(show_ports=True)
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     )
 
     def trainable_coupler(parameters):
-        return gf.components.coupler_full(
+        return gf.pcells.coupler_full(
             coupling_length=parameters["coupling_length"],
             gap=parameters["gap"],
             dw=0.0,

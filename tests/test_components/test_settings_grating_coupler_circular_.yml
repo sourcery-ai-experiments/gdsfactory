@@ -51,6 +51,6 @@ settings:
     polarization: te
     wavelength: 1.55
   info_version: 2
-  module: gdsfactory.components.grating_coupler_circular
+  module: gdsfactory.pcells.grating_coupler_circular
   name: grating_coupler_circular
 version: 0.0.1

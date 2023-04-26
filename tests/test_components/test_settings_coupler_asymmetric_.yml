@@ -54,5 +54,5 @@ settings:
   function_name: coupler_asymmetric
   info: {}
   info_version: 2
-  module: gdsfactory.components.coupler_asymmetric
+  module: gdsfactory.pcells.coupler_asymmetric
   name: coupler_asymmetric

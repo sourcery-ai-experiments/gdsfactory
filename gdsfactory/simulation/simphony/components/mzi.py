@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Callable, Optional
 
-from gdsfactory.simulation.simphony.components.mmi1x2 import mmi1x2
-from gdsfactory.simulation.simphony.components.straight import (
+from gdsfactory.simulation.simphony.pcells.mmi1x2 import mmi1x2
+from gdsfactory.simulation.simphony.pcells.straight import (
     straight as straight_function,
 )
 
@@ -55,7 +55,7 @@ def mzi(
 
       import gdsfactory as gf
 
-      c = gf.components.mzi(delta_length=10)
+      c = gf.pcells.mzi(delta_length=10)
       c.plot()
 
 
@@ -63,7 +63,7 @@ def mzi(
         :include-source:
 
         import gdsfactory.simulation.simphony as gs
-        import gdsfactory.simulation.simphony.components as gc
+        import gdsfactory.simulation.simphony.pcells as gc
 
         c = gc.mzi()
         gs.plot_circuit(c)

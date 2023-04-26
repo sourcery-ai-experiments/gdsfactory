@@ -1,6 +1,6 @@
 # Circuit simulators
 
-Frequency circuit simulators solve the Sparameters of a circuit that connects several components, each of which is described by its Sparameters.
+Frequency circuit simulators solve the Sparameters of a circuit that connects several pcells, each of which is described by its Sparameters.
 
 ![sparameters](https://i.imgur.com/RSOTDIN.png)
 

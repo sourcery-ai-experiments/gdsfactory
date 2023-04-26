@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from simphony.models import Subcircuit
 
-from gdsfactory.simulation.simphony.components.coupler_ring import coupler_ring
-from gdsfactory.simulation.simphony.components.straight import (
+from gdsfactory.simulation.simphony.pcells.coupler_ring import coupler_ring
+from gdsfactory.simulation.simphony.pcells.straight import (
     straight as straight_function,
 )
 from gdsfactory.simulation.simphony.plot_circuit import plot_circuit
@@ -57,7 +57,7 @@ def ring_double(
 
       import gdsfactory as gf
 
-      c = gf.components.ring_double(width=0.5, gap=0.2, length_x=4, radius=5, length_y=2)
+      c = gf.pcells.ring_double(width=0.5, gap=0.2, length_x=4, radius=5, length_y=2)
       c.plot()
 
 
@@ -65,7 +65,7 @@ def ring_double(
         :include-source:
 
         import gdsfactory.simulation.simphony as gs
-        import gdsfactory.simulation.simphony.components as gc
+        import gdsfactory.simulation.simphony.pcells as gc
 
         c = gc.ring_double()
         gs.plot_circuit(c)

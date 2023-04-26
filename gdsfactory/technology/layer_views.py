@@ -954,10 +954,8 @@ class LayerViews(BaseModel):
         )
         for n, layer in enumerate(sorted_layers):
             layer_tuple = layer.layer
-            R = gf.components.rectangle(
-                size=(100 * scale, 100 * scale), layer=layer_tuple
-            )
-            T = gf.components.text(
+            R = gf.pcells.rectangle(size=(100 * scale, 100 * scale), layer=layer_tuple)
+            T = gf.pcells.text(
                 text=f"{layer.name}\n{layer_tuple[0]} / {layer_tuple[1]}",
                 size=20 * scale,
                 position=(50 * scale, -20 * scale),

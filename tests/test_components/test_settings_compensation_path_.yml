@@ -46,5 +46,5 @@ settings:
       min_bend_radius: 18.226
       start_angle: 0
   info_version: 2
-  module: gdsfactory.components.crossing_waveguide
+  module: gdsfactory.pcells.crossing_waveguide
   name: compensation_path

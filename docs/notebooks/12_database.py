@@ -63,7 +63,7 @@ engine = create_engine("sqlite:///database.db", echo=True, future=True)
 gd.metadata.create_all(engine)
 
 # + tags=[]
-c = gf.components.ring_single(radius=10)
+c = gf.pcells.ring_single(radius=10)
 
 # + tags=[]
 with Session(engine) as session:
@@ -182,7 +182,7 @@ import math
 import gdsfactory.simulation.gmeep as gmeep
 
 with Session(engine) as session:
-    component = gf.components.mmi1x2()
+    component = gf.pcells.mmi1x2()
     s_params = gmeep.write_sparameters_meep(
         component=component,
         run=True,

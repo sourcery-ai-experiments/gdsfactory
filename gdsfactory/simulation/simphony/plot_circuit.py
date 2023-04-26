@@ -35,7 +35,7 @@ def plot_circuit(
     .. plot::
         :include-source:
 
-        from gdsfactory.simulation.simphony.components.mzi import mzi
+        from gdsfactory.simulation.simphony.pcells.mzi import mzi
         import gdsfactory.simulation.simphony as gs
 
         c = mzi()
@@ -77,7 +77,7 @@ def plot_circuit(
 
 
 def demo_single_port() -> None:
-    import gdsfactory.simulation.simphony.components as gc
+    import gdsfactory.simulation.simphony.pcells as gc
 
     c = gc.mzi()
     plot_circuit(c, logscale=False)
@@ -85,9 +85,9 @@ def demo_single_port() -> None:
 
 
 if __name__ == "__main__":
-    from gdsfactory.simulation.simphony.components.mzi import mzi
+    from gdsfactory.simulation.simphony.pcells.mzi import mzi
 
-    # import gdsfactory.simulation.simphony.components as gc
+    # import gdsfactory.simulation.simphony.pcells as gc
     # c = gc.ring_double()
     # plot_circuit(c, pins_out=("cdrop", "drop", "output", "input"))
 

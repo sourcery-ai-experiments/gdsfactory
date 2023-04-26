@@ -37,6 +37,6 @@ settings:
   function_name: spiral
   info: {}
   info_version: 2
-  module: gdsfactory.components.spiral
+  module: gdsfactory.pcells.spiral
   name: spiral
 version: 0.0.1

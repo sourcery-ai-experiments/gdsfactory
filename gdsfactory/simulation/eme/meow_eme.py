@@ -54,7 +54,7 @@ class MEOW:
         assumes port 1 is at the left boundary and port 2 at the right boundary.
 
         Note coordinate systems:
-            gdsfactory uses x,y in the plane to represent components, with the layerstack existing in z
+            gdsfactory uses x,y in the plane to represent pcells, with the layerstack existing in z
             meow uses x,y to represent a cross-section, with propagation in the z-direction
             hence we have [x,y,z] <--> [y,z,x] for gdsfactory <--> meow
 
@@ -222,7 +222,7 @@ class MEOW:
         for _layername, layer in layerstack.layers.items():
             if layer.layer == LAYER.WAFER:
                 c.add_ref(
-                    gf.components.bbox(
+                    gf.pcells.bbox(
                         bbox=(
                             (bbox[0, 0], bbox[0, 1] - buffer_y),
                             (bbox[1, 0], bbox[1, 1] + buffer_y),
@@ -377,7 +377,7 @@ class MEOW:
 
 
 if __name__ == "__main__":
-    c = gf.components.taper(length=10, width2=2)
+    c = gf.pcells.taper(length=10, width2=2)
     c.show()
 
     from gdsfactory.pdk import get_layer_stack

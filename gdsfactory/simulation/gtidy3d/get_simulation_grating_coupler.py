@@ -11,7 +11,7 @@ from tidy3d.plugins.mode import ModeSolver
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.components.extension import move_polar_rad_copy
+from gdsfactory.pcells.extension import move_polar_rad_copy
 from gdsfactory.config import logger
 from gdsfactory.pdk import get_layer_stack, get_material_index
 from gdsfactory.simulation.gtidy3d.materials import get_index, get_medium
@@ -208,7 +208,7 @@ def get_simulation_grating_coupler(
         import gdsfactory as gf
         import gdsfactory.simulation.gtidy3d as gt
 
-        c = gf.components.grating_coupler_elliptical_arbitrary(
+        c = gf.pcells.grating_coupler_elliptical_arbitrary(
             widths=[0.343] * 25, gaps=[0.345] * 25
         )
         sim = gt.get_simulation(c)
@@ -267,7 +267,7 @@ def get_simulation_grating_coupler(
         right=xmargin or xmargin_right,
     )
     component_extended = (
-        gf.components.extension.extend_ports(
+        gf.pcells.extension.extend_ports(
             component=component_padding,
             length=port_extension,
             centered=True,
@@ -513,9 +513,9 @@ def get_simulation_grating_coupler(
 if __name__ == "__main__":
     import gdsfactory.simulation.gtidy3d as gt
 
-    c = gf.components.grating_coupler_elliptical_trenches()
+    c = gf.pcells.grating_coupler_elliptical_trenches()
 
-    # c = gf.components.grating_coupler_elliptical_arbitrary(
+    # c = gf.pcells.grating_coupler_elliptical_arbitrary(
     #     widths=[0.343] * 25, gaps=[0.345] * 25
     # )
     sim = get_simulation_grating_coupler(
@@ -526,7 +526,7 @@ if __name__ == "__main__":
     )
     gt.plot_simulation(sim)  # make sure simulations looks good
 
-    # c = gf.components.grating_coupler_elliptical_lumerical()  # inverse design grating
+    # c = gf.pcells.grating_coupler_elliptical_lumerical()  # inverse design grating
     # sim = get_simulation_grating_coupler(c, plot_modes=False, fiber_angle_deg=-5)
     # sim_data = gt.get_results(sim).result()
     # freq0 = td.constants.C_0 / 1.55

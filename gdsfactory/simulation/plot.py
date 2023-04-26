@@ -40,7 +40,7 @@ def plot_sparameters(
         import gdsfactory as gf
         import gdsfactory.simulation as sim
 
-        sp = sim.get_sparameters_data_lumerical(component=gf.components.mmi1x2)
+        sp = sim.get_sparameters_data_lumerical(component=gf.pcells.mmi1x2)
         sim.plot.plot_sparameters(sp, logscale=True)
 
     """
@@ -216,7 +216,7 @@ plot_reflection2x2 = partial(plot_reflection, ports=["o1@0,o1@0", "o2@0,o1@0"])
 if __name__ == "__main__":
     import gdsfactory.simulation as sim
 
-    sp = sim.get_sparameters_data_tidy3d(component=gf.components.mmi1x2)
+    sp = sim.get_sparameters_data_tidy3d(component=gf.pcells.mmi1x2)
     # plot_sparameters(sp, logscale=False, keys=["o1@0,o2@0"])
     # plot_sparameters(sp, logscale=False, keys=["S21"])
     # plt.show()

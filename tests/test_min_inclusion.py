@@ -18,8 +18,8 @@ def component_min_inclusion(
     layer2: Tuple[int, int] = (2, 0),
 ) -> Component:
     c = gf.Component()
-    r1 = c << gf.components.rectangle(size=(width, width), layer=layer1)
-    r2 = c << gf.components.rectangle(
+    r1 = c << gf.pcells.rectangle(size=(width, width), layer=layer1)
+    r2 = c << gf.pcells.rectangle(
         size=(width - 2 * inclusion, width - 2 * inclusion), layer=layer2
     )
     r1.x = 0

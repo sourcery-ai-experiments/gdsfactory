@@ -12,13 +12,9 @@ from omegaconf import DictConfig
 from pydantic import BaseModel, Field, validator
 
 from gdsfactory.config import PATH, logger
-from gdsfactory.containers import containers as containers_default
-from gdsfactory.events import Event
 from gdsfactory.materials import MaterialSpec
 from gdsfactory.materials import materials_index as materials_index_default
-from gdsfactory.read import cell_from_yaml
-from gdsfactory.show import show
-from gdsfactory.symbols import floorplan_with_block_letters
+from gdsfactory.plugins.schematic.symbols import floorplan_with_block_letters
 from gdsfactory.technology import LayerStack, LayerViews
 from gdsfactory.typings import (
     CellSpec,
@@ -137,7 +133,6 @@ class Pdk(BaseModel):
             float, float: refractive index real and imaginary part.
             function: function of wavelength.
         routing_strategies: functions enabled to route.
-        circuit_yaml_parser: can parse different YAML formats.
         gds_write_settings: to write GDSII files.
         oasis_settings: to write OASIS files.
         bend_points_distance: default points distance for bends in um.
@@ -149,7 +144,6 @@ class Pdk(BaseModel):
     cells: Dict[str, ComponentFactory] = Field(default_factory=dict)
     symbols: Dict[str, ComponentFactory] = Field(default_factory=dict)
     default_symbol_factory: Callable = floorplan_with_block_letters
-    containers: Dict[str, ComponentFactory] = containers_default
     base_pdk: Optional[Pdk] = None
     default_decorator: Optional[Callable[[Component], None]] = None
     layers: Dict[str, Layer] = Field(default_factory=dict)
@@ -165,7 +159,6 @@ class Pdk(BaseModel):
     constants: Dict[str, Any] = constants
     materials_index: Dict[str, MaterialSpec] = materials_index_default
     routing_strategies: Optional[Dict[str, Callable]] = None
-    circuit_yaml_parser: Callable = cell_from_yaml
     gds_write_settings: GdsWriteSettings = GdsWriteSettings()
     oasis_settings: OasisWriteSettings = OasisWriteSettings()
     bend_points_distance: float = 20 * nm
@@ -186,11 +179,9 @@ class Pdk(BaseModel):
         fields = {
             "cross_sections": {"exclude": True},
             "cells": {"exclude": True},
-            "containers": {"exclude": True},
             "default_symbol_factory": {"exclude": True},
             "default_decorator": {"exclude": True},
             "materials_index": {"exclude": True},
-            "circuit_yaml_parser": {"exclude": True},
         }
 
     @validator("sparameters_path")
@@ -221,10 +212,6 @@ class Pdk(BaseModel):
             cells.update(self.cells)
             self.cells.update(cells)
 
-            containers = self.base_pdk.containers
-            containers.update(self.containers)
-            self.containers.update(containers)
-
             layers = self.base_pdk.layers
             layers.update(self.layers)
             self.layers.update(layers)
@@ -247,20 +234,6 @@ class Pdk(BaseModel):
 
             self.cells[name] = cell
             on_cell_registered.fire(name=name, cell=cell, pdk=self)
-
-    def register_containers(self, **kwargs) -> None:
-        """Register container factories."""
-        for name, cell in kwargs.items():
-            if not callable(cell):
-                raise ValueError(
-                    f"{cell} is not callable, make sure you register "
-                    "cells functions that return a Component"
-                )
-            if name in self.containers:
-                warnings.warn(f"Overwriting container {name!r}")
-
-            self.containers[name] = cell
-            on_container_registered.fire(name=name, cell=cell, pdk=self)
 
     def register_cross_sections(self, **kwargs) -> None:
         """Register cross_sections factories."""
@@ -532,27 +505,6 @@ class Pdk(BaseModel):
         material = self.materials_index[key]
         return material(*args, **kwargs) if callable(material) else material
 
-    # _on_cell_registered = Event()
-    # _on_container_registered: Event = Event()
-    # _on_yaml_cell_registered: Event = Event()
-    # _on_cross_section_registered: Event = Event()
-    #
-    # @property
-    # def on_cell_registered(self) -> Event:
-    #     return self._on_cell_registered
-    #
-    # @property
-    # def on_container_registered(self) -> Event:
-    #     return self._on_container_registered
-    #
-    # @property
-    # def on_yaml_cell_registered(self) -> Event:
-    #     return self._on_yaml_cell_registered
-    #
-    # @property
-    # def on_cross_section_registered(self) -> Event:
-    #     return self._on_cross_section_registered
-
 
 _ACTIVE_PDK = None
 
@@ -561,9 +513,9 @@ def get_active_pdk() -> Pdk:
     global _ACTIVE_PDK
     if _ACTIVE_PDK is None:
         logger.warning("No active PDK. Activating generic PDK.\n")
-        import gdsfactory as gf
+        from gdsfactory.generic_tech import get_generic_pdk
 
-        PDK = gf.get_generic_pdk()
+        PDK = get_generic_pdk()
         PDK.activate()
         _ACTIVE_PDK = PDK
     return _ACTIVE_PDK
@@ -586,6 +538,8 @@ def get_cross_section(cross_section: CrossSectionSpec, **kwargs) -> CrossSection
 
 
 def get_layer(layer: LayerSpec) -> Layer:
+    if isinstance(layer, (int, list, tuple)):
+        return layer
     return get_active_pdk().get_layer(layer)
 
 
@@ -648,20 +602,8 @@ def get_routing_strategies() -> Dict[str, Callable]:
     return routing_strategies
 
 
-on_pdk_activated: Event = Event()
-on_cell_registered: Event = Event()
-on_container_registered: Event = Event()
-on_yaml_cell_registered: Event = Event()
-on_yaml_cell_modified: Event = Event()
-on_cross_section_registered: Event = Event()
-
-on_container_registered.add_handler(on_cell_registered.fire)
-on_yaml_cell_registered.add_handler(on_cell_registered.fire)
-on_yaml_cell_modified.add_handler(show)
-
-
 if __name__ == "__main__":
-    from gdsfactory.components import cells
+    from gdsfactory.pcells import cells
     from gdsfactory.cross_section import cross_sections
 
     c = Pdk(

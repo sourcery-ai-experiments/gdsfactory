@@ -47,5 +47,5 @@ settings:
   info:
     length: 635.0904965875375
   info_version: 2
-  module: gdsfactory.components.spiral_double
+  module: gdsfactory.pcells.spiral_double
   name: spiral_double

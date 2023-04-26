@@ -55,6 +55,6 @@ settings:
   function_name: mmi1x2
   info: {}
   info_version: 2
-  module: gdsfactory.components.mmi1x2
+  module: gdsfactory.pcells.mmi1x2
   name: mmi1x2_3898ed20
 version: 0.0.1

@@ -18,7 +18,7 @@
 #
 # gdsfactory easily enables you to layout Component with as many levels of hierarchy as you need.
 #
-# A `Component` is a canvas where we can add polygons, references to other components or ports.
+# A `Component` is a canvas where we can add polygons, references to other pcells or ports.
 #
 # Lets add two references in a component.
 
@@ -29,12 +29,12 @@ import toolz
 from omegaconf import OmegaConf
 
 from gdsfactory.component import Component
-from gdsfactory.components.bend_euler import bend_euler
-from gdsfactory.components.coupler90 import coupler90 as coupler90function
-from gdsfactory.components.coupler_straight import (
+from gdsfactory.pcells.bend_euler import bend_euler
+from gdsfactory.pcells.coupler90 import coupler90 as coupler90function
+from gdsfactory.pcells.coupler_straight import (
     coupler_straight as coupler_straight_function,
 )
-from gdsfactory.components.straight import straight
+from gdsfactory.pcells.straight import straight
 from gdsfactory.cross_section import strip
 from gdsfactory.snap import assert_on_2nm_grid
 from gdsfactory.typings import ComponentSpec, CrossSectionSpec
@@ -45,20 +45,20 @@ PDK = gf.get_generic_pdk()
 PDK.activate()
 
 c = gf.Component()
-mzi = c << gf.components.mzi()  # equivalent to mzi = c.add_ref(gf.components.mzi())
+mzi = c << gf.pcells.mzi()  # equivalent to mzi = c.add_ref(gf.pcells.mzi())
 bend = (
-    c << gf.components.bend_circular()
-)  # equivalent to bend = c.add_ref(gf.components.bend_circular())
+    c << gf.pcells.bend_circular()
+)  # equivalent to bend = c.add_ref(gf.pcells.bend_circular())
 c
 # -
 
 # You can connect the bend `o1` port to the mzi `o2` port.
 
 c = gf.Component()
-mzi = c << gf.components.mzi()  # equivalent to mzi = c.add_ref(gf.components.mzi())
+mzi = c << gf.pcells.mzi()  # equivalent to mzi = c.add_ref(gf.pcells.mzi())
 bend = (
-    c << gf.components.bend_circular()
-)  # equivalent to bend = c.add_ref(gf.components.bend_circular())
+    c << gf.pcells.bend_circular()
+)  # equivalent to bend = c.add_ref(gf.pcells.bend_circular())
 bend.connect("o1", mzi.ports["o2"])
 c
 
@@ -70,10 +70,10 @@ c
 @gf.cell
 def mzi_with_bend(radius: float = 10):
     c = gf.Component()
-    mzi = c << gf.components.mzi()  # equivalent to mzi = c.add_ref(gf.components.mzi())
-    bend = c << gf.components.bend_circular(
+    mzi = c << gf.pcells.mzi()  # equivalent to mzi = c.add_ref(gf.pcells.mzi())
+    bend = c << gf.pcells.bend_circular(
         radius=radius
-    )  # equivalent to bend = c.add_ref(gf.components.bend_circular())
+    )  # equivalent to bend = c.add_ref(gf.pcells.bend_circular())
     bend.connect("o1", mzi.ports["o2"])
     return c
 
@@ -82,7 +82,7 @@ c = mzi_with_bend(radius=20)
 c
 # -
 
-# Now to connect your component to other components you need to add ports.
+# Now to connect your component to other pcells you need to add ports.
 
 c.ports
 
@@ -91,10 +91,10 @@ c.ports
 @gf.cell
 def mzi_with_bend(radius: float = 10):
     c = gf.Component()
-    mzi = c << gf.components.mzi()  # equivalent to mzi = c.add_ref(gf.components.mzi())
-    bend = c << gf.components.bend_circular(
+    mzi = c << gf.pcells.mzi()  # equivalent to mzi = c.add_ref(gf.pcells.mzi())
+    bend = c << gf.pcells.bend_circular(
         radius=radius
-    )  # equivalent to bend = c.add_ref(gf.components.bend_circular())
+    )  # equivalent to bend = c.add_ref(gf.pcells.bend_circular())
     bend.connect("o1", mzi.ports["o2"])
     c.add_port("o1", port=mzi.ports["o1"])
     c.add_port("o2", port=bend.ports["o2"])
@@ -219,7 +219,7 @@ coupler
 
 # -
 
-# Lets define a ring function that also accepts other component specs for the subcomponents (straight, coupler, bend)
+# Lets define a ring function that also accepts other component specs for the subpcells (straight, coupler, bend)
 
 
 # +
@@ -301,14 +301,14 @@ ring = ring_single()
 ring
 # -
 
-# How do you customize components?
+# How do you customize pcells?
 #
 # You can use `functools.partial` to customize the default settings from any component
 
 ring_single3 = gf.partial(ring_single, radius=3)
 ring_single3()
 
-ring_array = gf.components.ring_single_array(
+ring_array = gf.pcells.ring_single_array(
     list_of_dicts=[dict(radius=i) for i in [5, 6, 7]]
 )
 ring_array
@@ -318,7 +318,7 @@ ring_with_grating_couplers
 
 # ## Netlist driven flow
 #
-# You can define components as a Place and Route netlist.
+# You can define pcells as a Place and Route netlist.
 #
 # - instances
 # - placements
@@ -375,7 +375,7 @@ mzi
 
 # ## Top reticle assembly
 #
-# Once you have your components and circuits defined, you can add them into a top reticle Component for fabrication.
+# Once you have your pcells and circuits defined, you can add them into a top reticle Component for fabrication.
 #
 # You need to consider:
 #
@@ -385,7 +385,7 @@ mzi
 # - if you plan to package your device, make sure you follow your packaging guidelines from your packaging house (min pad size, min pad pitch, max number of rows for wire bonding ...)
 
 # +
-ring_te = toolz.compose(gf.routing.add_fiber_array, gf.components.ring_single)
+ring_te = toolz.compose(gf.routing.add_fiber_array, gf.pcells.ring_single)
 rings = gf.grid([ring_te(radius=r) for r in [10, 20, 50]])
 
 
@@ -393,14 +393,14 @@ rings = gf.grid([ring_te(radius=r) for r in [10, 20, 50]])
 def reticle(size=(1000, 1000)):
     c = gf.Component()
     r = c << rings
-    m = c << gf.components.pack_doe(
-        gf.components.mzi,
+    m = c << gf.pcells.pack_doe(
+        gf.pcells.mzi,
         settings=dict(delta_length=[100, 200]),
         function=gf.routing.add_fiber_single,
     )
     m.xmin = r.xmax + 10
     m.ymin = r.ymin
-    c << gf.components.seal_ring(c.bbox)
+    c << gf.pcells.seal_ring(c.bbox)
     return c
 
 

@@ -30,7 +30,7 @@ info:
 """
 
 
-def test_components_ports() -> None:
+def test_pcells_ports() -> None:
     """Make sure the same component gets the same UID."""
     c1 = gf.read.from_yaml(mirror_port)
     c2 = gf.read.from_yaml(mirror_port)

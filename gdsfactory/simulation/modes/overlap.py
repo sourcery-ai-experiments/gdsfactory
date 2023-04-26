@@ -35,7 +35,7 @@ def innerprod_trapz(
         trapz_num_z: number of points to resample the mode in z for integration.
 
     """
-    # Form vector components
+    # Form vector pcells
     yint = np.linspace(ymin, ymax, trapz_num_y)
     zint = np.linspace(zmin, zmax, trapz_num_z)
 
@@ -49,7 +49,7 @@ def innerprod_trapz(
     mode2_Hz_interp = mode2.Hz_grid_interp(yint, zint)
 
     # Compute integrand
-    # For cross product in terms of components:
+    # For cross product in terms of pcells:
     integrand = (
         np.conj(mode1_Ey_interp) * mode2_Hz_interp
         - np.conj(mode1_Ez_interp) * mode2_Hy_interp

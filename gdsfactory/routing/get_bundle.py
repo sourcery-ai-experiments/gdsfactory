@@ -19,11 +19,11 @@ from numpy import ndarray
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.components.bend_euler import bend_euler
-from gdsfactory.components.straight import straight as straight_function
-from gdsfactory.components.via_corner import via_corner
-from gdsfactory.components.wire import wire_corner
-from gdsfactory.port import Port
+from gdsfactory.pcells.bend_euler import bend_euler
+from gdsfactory.pcells.straight import straight as straight_function
+from gdsfactory.pcells.via_corner import via_corner
+from gdsfactory.pcells.wire import wire_corner
+from gdsfactory.component import Port
 from gdsfactory.routing.get_bundle_corner import get_bundle_corner
 from gdsfactory.routing.get_bundle_from_steps import get_bundle_from_steps
 from gdsfactory.routing.get_bundle_from_waypoints import get_bundle_from_waypoints
@@ -688,8 +688,8 @@ get_bundle_electrical_multilayer = gf.partial(
 @gf.cell
 def test_get_bundle_small() -> Component:
     c = gf.Component()
-    c1 = c << gf.components.mmi2x2()
-    c2 = c << gf.components.mmi2x2()
+    c1 = c << gf.pcells.mmi2x2()
+    c2 = c << gf.pcells.mmi2x2()
     c2.move((100, 40))
     routes = get_bundle(
         [c1.ports["o3"], c1.ports["o4"]],
@@ -716,8 +716,8 @@ if __name__ == "__main__":
     import gdsfactory as gf
 
     # c = gf.Component("get_bundle_none_angle")
-    # pt = c << gf.components.pad_array(angle=None, columns=3)
-    # pb = c << gf.components.pad_array(angle=None, columns=3)
+    # pt = c << gf.pcells.pad_array(angle=None, columns=3)
+    # pb = c << gf.pcells.pad_array(angle=None, columns=3)
     # pt.move((100, 200))
     # routes = gf.routing.get_bundle_electrical_multilayer(
     #     pb.ports,
@@ -730,15 +730,15 @@ if __name__ == "__main__":
     #     c.add(route.references)
 
     c = gf.Component("demo")
-    c1 = c << gf.components.mmi2x2()
-    c2 = c << gf.components.mmi2x2()
+    c1 = c << gf.pcells.mmi2x2()
+    c2 = c << gf.pcells.mmi2x2()
     c2.move((100, 40))
     routes = get_bundle(
         [c1.ports["o2"], c1.ports["o1"]],
         [c2.ports["o1"], c2.ports["o2"]],
         radius=5,
         # layer=(2, 0),
-        straight=gf.partial(gf.components.straight, layer=(1, 0), width=1),
+        straight=gf.partial(gf.pcells.straight, layer=(1, 0), width=1),
     )
     for route in routes:
         c.add(route.references)

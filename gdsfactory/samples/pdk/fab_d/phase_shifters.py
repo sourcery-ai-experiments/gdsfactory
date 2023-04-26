@@ -40,17 +40,17 @@ xs_rib_pin = gf.partial(
 
 
 ps_heater_metal = gf.partial(
-    gf.components.straight_heater_metal,
+    gf.pcells.straight_heater_metal,
     cross_section_heater=xs_strip_heater_metal,
 )
 ps_heater_doped = gf.partial(
-    gf.components.straight_heater_doped_strip,
+    gf.pcells.straight_heater_doped_strip,
     cross_section=xs_strip,
     cross_section_heater=xs_strip_heater_doped,
     info=dict(docstring="doping density = X", polarization="te", wavelength=1.55),
 )
 ps_pin = gf.partial(
-    gf.components.straight_pin,
+    gf.pcells.straight_pin,
     cross_section=xs_rib_pin,
 )
 

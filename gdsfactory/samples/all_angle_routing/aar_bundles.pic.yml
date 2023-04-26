@@ -65,7 +65,7 @@ placements:
     x: 5000
     y: {{ 0 - 10 * i }}
     rotation: {{ (2 - i) * 3 }}
-  wg_b2{{ i }}: # components are both staggered in x/y and angles are splayed
+  wg_b2{{ i }}: # pcells are both staggered in x/y and angles are splayed
     port: o1
     x: {{ 7000 - i * 10 }}
     y: {{ -1000 - 20 * i }}

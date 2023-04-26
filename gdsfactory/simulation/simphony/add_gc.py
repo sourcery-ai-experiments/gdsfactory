@@ -3,7 +3,7 @@ from __future__ import annotations
 from simphony.libraries import siepic
 
 import gdsfactory as gf
-from gdsfactory.simulation.simphony.components.gc import gc1550te
+from gdsfactory.simulation.simphony.pcells.gc import gc1550te
 
 
 def add_gc(circuit, gc=gc1550te, ci="o1", co="o2", gi="port 1", go="port 2"):
@@ -55,7 +55,7 @@ def add_gc_siepic(circuit, gc=siepic.GratingCoupler):
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
 
-    from gdsfactory.simulation.simphony.components.mzi import mzi
+    from gdsfactory.simulation.simphony.pcells.mzi import mzi
     from gdsfactory.simulation.simphony.plot_circuit import plot_circuit
 
     c1 = mzi()

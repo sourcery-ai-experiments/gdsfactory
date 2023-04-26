@@ -20,7 +20,7 @@
 # 2. **YAML Place and AutoRoute**: you define your circuit (Place and Route) in YAML. From the netlist you can simulate the circuit or generate the layout.
 #
 #
-# YAML is a human readable version of JSON that you can use to define components placements and routes
+# YAML is a human readable version of JSON that you can use to define pcells placements and routes
 #
 # to define a a YAML Component you need to define:
 #
@@ -410,7 +410,7 @@ display(x, out)
 @gf.cell
 def pad_new(size=(100, 100), layer=gf.LAYER.WG):
     c = gf.Component()
-    compass = c << gf.components.compass(size=size, layer=layer)
+    compass = c << gf.pcells.compass(size=size, layer=layer)
     c.ports = compass.ports
     return c
 
@@ -628,11 +628,11 @@ display(x, out)
 
 # ## Custom factories
 #
-# You can leverage netlist defined components to define more complex circuits
+# You can leverage netlist defined pcells to define more complex circuits
 
 # +
-mmi1x2_faba = gf.partial(gf.components.mmi1x2, length_mmi=30)
-mmi2x2_faba = gf.partial(gf.components.mmi2x2, length_mmi=30)
+mmi1x2_faba = gf.partial(gf.pcells.mmi1x2, length_mmi=30)
+mmi2x2_faba = gf.partial(gf.pcells.mmi2x2, length_mmi=30)
 gf.get_active_pdk().register_cells(mmi1x2_faba=mmi1x2_faba, mmi2x2_faba=mmi2x2_faba)
 
 x.value = """
@@ -663,7 +663,7 @@ ports:
 display(x, out)
 # -
 
-c = gf.components.mzi()
+c = gf.pcells.mzi()
 c
 
 c.plot_netlist()

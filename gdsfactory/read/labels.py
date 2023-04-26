@@ -51,7 +51,7 @@ def add_port_markers(
 
     for cell in cells.values():
         for port in cell["ports"].values():
-            r = c << gf.components.rectangle(
+            r = c << gf.pcells.rectangle(
                 size=(marker_size, marker_size), layer=marker_layer
             )
 
@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
     for cell in cells.values():
         for port in cell["ports"].values():
-            r = c << gf.components.rectangle(
+            r = c << gf.pcells.rectangle(
                 size=(marker_size, marker_size), layer=marker_layer
             )
 

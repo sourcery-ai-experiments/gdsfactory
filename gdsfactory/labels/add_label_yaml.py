@@ -125,7 +125,7 @@ if __name__ == "__main__":
     c = gf.routing.add_fiber_array(
         c,
         get_input_labels_function=None,
-        grating_coupler=gf.components.grating_coupler_te,
+        grating_coupler=gf.pcells.grating_coupler_te,
         decorator=add_label_yaml,
     )
     print(c.labels[0].text)

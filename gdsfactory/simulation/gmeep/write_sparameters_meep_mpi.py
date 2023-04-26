@@ -242,7 +242,7 @@ write_sparameters_meep_mpi_1x1_bend90 = gf.partial(
 if __name__ == "__main__":
     import numpy as np
 
-    c1 = gf.components.straight(length=2.1)
+    c1 = gf.pcells.straight(length=2.1)
     filepath = write_sparameters_meep_mpi(
         component=c1,
         # ymargin=3,

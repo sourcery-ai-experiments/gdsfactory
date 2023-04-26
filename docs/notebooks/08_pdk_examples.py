@@ -125,7 +125,7 @@ WIDTH = 2
 strip = gf.partial(gf.cross_section.cross_section, width=WIDTH, layer=LAYER.WG)
 
 mmi1x2 = gf.partial(
-    gf.components.mmi1x2,
+    gf.pcells.mmi1x2,
     width=WIDTH,
     width_taper=WIDTH,
     width_mmi=3 * WIDTH,
@@ -147,10 +147,10 @@ fab_a = gf.Pdk(
 fab_a.activate()
 
 gc = gf.partial(
-    gf.components.grating_coupler_elliptical_te, layer=LAYER.WG, cross_section=strip
+    gf.pcells.grating_coupler_elliptical_te, layer=LAYER.WG, cross_section=strip
 )
 
-c = gf.components.mzi()
+c = gf.pcells.mzi()
 c_gc = gf.routing.add_fiber_array(component=c, grating_coupler=gc, with_loopback=False)
 c_gc.plot()
 
@@ -246,18 +246,18 @@ strip = gf.partial(
     cladding_offsets=BBOX_OFFSETS,
 )
 
-straight = gf.partial(gf.components.straight, cross_section=strip)
-bend_euler = gf.partial(gf.components.bend_euler, cross_section=strip)
+straight = gf.partial(gf.pcells.straight, cross_section=strip)
+bend_euler = gf.partial(gf.pcells.bend_euler, cross_section=strip)
 mmi1x2 = gf.partial(
-    gf.components.mmi1x2,
+    gf.pcells.mmi1x2,
     cross_section=strip,
     width=WIDTH,
     width_taper=WIDTH,
     width_mmi=4 * WIDTH,
 )
-mzi = gf.partial(gf.components.mzi, cross_section=strip, splitter=mmi1x2)
+mzi = gf.partial(gf.pcells.mzi, cross_section=strip, splitter=mmi1x2)
 gc = gf.partial(
-    gf.components.grating_coupler_elliptical_te, layer=LAYER.WG, cross_section=strip
+    gf.pcells.grating_coupler_elliptical_te, layer=LAYER.WG, cross_section=strip
 )
 
 cells = dict(
@@ -266,7 +266,7 @@ cells = dict(
     mmi1x2=mmi1x2,
     bend_euler=bend_euler,
     straight=straight,
-    taper=gf.components.taper,
+    taper=gf.pcells.taper,
 )
 cross_sections = dict(strip=strip)
 
@@ -425,34 +425,34 @@ cross_sections = dict(xs_nc=xs_nc, xs_no=xs_no, strip=xs_nc)
 
 # LEAF cells have pins
 mmi1x2_nc = gf.partial(
-    gf.components.mmi1x2,
+    gf.pcells.mmi1x2,
     width=WIDTH_NITRIDE_CBAND,
     cross_section=xs_nc,
 )
 mmi1x2_no = gf.partial(
-    gf.components.mmi1x2,
+    gf.pcells.mmi1x2,
     width=WIDTH_NITRIDE_OBAND,
     cross_section=xs_no,
 )
 bend_euler_nc = gf.partial(
-    gf.components.bend_euler,
+    gf.pcells.bend_euler,
     cross_section=xs_nc,
 )
 straight_nc = gf.partial(
-    gf.components.straight,
+    gf.pcells.straight,
     cross_section=xs_nc,
 )
 bend_euler_no = gf.partial(
-    gf.components.bend_euler,
+    gf.pcells.bend_euler,
     cross_section=xs_no,
 )
 straight_no = gf.partial(
-    gf.components.straight,
+    gf.pcells.straight,
     cross_section=xs_no,
 )
 
 gc_nc = gf.partial(
-    gf.components.grating_coupler_elliptical_te,
+    gf.pcells.grating_coupler_elliptical_te,
     grating_line_width=0.6,
     layer=LAYER.WGN,
     cross_section=xs_nc,
@@ -460,14 +460,14 @@ gc_nc = gf.partial(
 
 # HIERARCHICAL cells are made of leaf cells
 mzi_nc = gf.partial(
-    gf.components.mzi,
+    gf.pcells.mzi,
     cross_section=xs_nc,
     splitter=mmi1x2_nc,
     straight=straight_nc,
     bend=bend_euler_nc,
 )
 mzi_no = gf.partial(
-    gf.components.mzi,
+    gf.pcells.mzi,
     cross_section=xs_no,
     splitter=mmi1x2_no,
     straight=straight_no,

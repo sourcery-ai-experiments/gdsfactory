@@ -5,7 +5,7 @@ from gdsfactory.component import Component
 
 
 def test_netlist_write() -> Component:
-    c = gf.components.mzi()
+    c = gf.pcells.mzi()
     # netlist = c.get_netlist()
     # netlist.pop('connections')
     c.write_netlist("mzi.yml")

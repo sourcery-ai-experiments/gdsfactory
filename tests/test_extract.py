@@ -5,7 +5,7 @@ from gdsfactory.add_pins import add_pins_siepic
 
 
 def test_extract():
-    c = gf.components.straight(
+    c = gf.pcells.straight(
         length=11.124,
         width=0.5,
         bbox_layers=[gf.LAYER.WGCLAD],
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     c = test_extract()
     c.show()
 
-    c = gf.components.straight(
+    c = gf.pcells.straight(
         length=10,
         width=0.5,
         bbox_layers=[gf.LAYER.WGCLAD],

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import meep as mp
 import numpy as np
 
-from gdsfactory.components import straight
+from gdsfactory.pcells import straight
 from gdsfactory.simulation.gmeep import get_simulation
 from gdsfactory.simulation.modes.types import Mode
 

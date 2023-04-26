@@ -5,11 +5,11 @@ import gdsfactory as gf
 from gdsfactory.build import run_python
 
 
-def test_components():
+def test_pcells():
     """ Test that the whole tutorial can be run without errors """
     all_files = [
         os.path.join(dp, f)
-        for dp, dn, filenames in os.walk(gf.CONFIG["components_path"])
+        for dp, dn, filenames in os.walk(gf.CONFIG["pcells_path"])
         for f in filenames
         if f.endswith(".py")
     ]
@@ -22,4 +22,4 @@ def test_components():
 
 
 if __name__ == "__main__":
-    test_components()
+    test_pcells()

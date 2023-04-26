@@ -36,7 +36,7 @@ settings:
         function_name: mmi1x2
         info: {}
         info_version: 2
-        module: gdsfactory.components.mmi1x2
+        module: gdsfactory.pcells.mmi1x2
         name: mmi1x2_be5e636a
   child: null
   default:
@@ -110,7 +110,7 @@ settings:
         function_name: mmi1x2
         info: {}
         info_version: 2
-        module: gdsfactory.components.mmi1x2
+        module: gdsfactory.pcells.mmi1x2
         name: mmi1x2_be5e636a
     straight:
       function: straight
@@ -121,5 +121,5 @@ settings:
   function_name: mzi
   info: {}
   info_version: 2
-  module: gdsfactory.components.mzi
+  module: gdsfactory.pcells.mzi
   name: mzi_3f2640c0

@@ -12,7 +12,7 @@ def test_get_bundle_all_angle(
 ) -> gf.Component:
     c = gf.Component()
 
-    mmi = gf.components.mmi2x2(width_mmi=10, gap_mmi=3)
+    mmi = gf.pcells.mmi2x2(width_mmi=10, gap_mmi=3)
     mmi1 = c << mmi
     mmi2 = c << mmi
 

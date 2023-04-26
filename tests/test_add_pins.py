@@ -30,11 +30,11 @@ PDK.register_cross_sections(strip_siepic=strip_siepic)
 def test_add_pins_with_routes(optical_routing_type) -> gf.Component:
     """Add pins to a straight ensure that all the routes have pins."""
     cross_section = "strip_siepic"
-    c = gf.components.straight(length=1.0, cross_section=cross_section)
-    gc = gf.components.grating_coupler_elliptical_te(cross_section=cross_section)
+    c = gf.pcells.straight(length=1.0, cross_section=cross_section)
+    gc = gf.pcells.grating_coupler_elliptical_te(cross_section=cross_section)
     cc = gf.routing.add_fiber_single(
         component=c,
-        grating_coupler=[gc, gf.components.grating_coupler_tm],
+        grating_coupler=[gc, gf.pcells.grating_coupler_tm],
         optical_routing_type=optical_routing_type,
         cross_section=cross_section,
     )
@@ -46,7 +46,7 @@ def test_add_pins_with_routes(optical_routing_type) -> gf.Component:
 def test_add_pins() -> gf.Component:
     """Ensure that all the waveguide has 2 pins."""
     cross_section = "strip_siepic"
-    c = gf.components.straight(length=1.0, cross_section=cross_section)
+    c = gf.pcells.straight(length=1.0, cross_section=cross_section)
     pins_component = c.extract(layers=(LAYER.PORT,))
     assert len(pins_component.paths) == 2, len(pins_component.paths)
     return c

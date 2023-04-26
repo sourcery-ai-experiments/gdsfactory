@@ -44,11 +44,11 @@ You can run tests with `pytest`. This will run 3 types of tests:
 - pytest will test any function that starts with `test_`. You can assert the number of polygons, the name, the length of a route or whatever you want.
 - regressions tests: avoids unwanted regressions by storing Components port locations in CSV and metadata in YAML files. You can force to regenerate the reference files running `pytest --force-regen -s` from the repo root directory.
   - `tests/test_containers.py` stores container settings in YAML and port locations in a CSV file
-  - `tests/components/test_components.py` stores all the component settings in YAML
-  - `tests/components/test_ports.py` stores all port locations in a CSV file
+  - `tests/pcells/test_pcells.py` stores all the component settings in YAML
+  - `tests/pcells/test_ports.py` stores all port locations in a CSV file
   - `tests/test_netlists.py` stores all the component netlist in YAML and rebuilds the component from the netlist.
     - converts the routed PIC into YAML and build back into the same PIC from its YAML definition
-  - lytest: writes all components GDS in `run_layouts` and compares them with `ref_layouts`
+  - lytest: writes all pcells GDS in `run_layouts` and compares them with `ref_layouts`
     - when running the test it will do a boolean of the `run_layout` and the `ref_layout` and raise an error for any significant differences.
     - you can check out any changes in your library with `gf gds diff ref_layouts/bbox.gds run_layouts/bbox.gds`
 

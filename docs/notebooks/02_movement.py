@@ -15,7 +15,7 @@
 
 # # Movement
 #
-# You can move, rotate and mirror ComponentReference as well as `Port`, `Polygon`, `ComponentReference`, `Label`, and `Group`
+# You can move, rotate and mirror Instance as well as `Port`, `Polygon`, `Instance`, `Label`, and `Group`
 
 # + attributes={"classes": [], "id": "", "n": "1"} tags=[]
 import gdsfactory as gf
@@ -29,9 +29,9 @@ PDK.activate()
 c = gf.Component("demo_movement")
 
 # Create some more Components with shapes
-T = gf.components.text("hello", size=10, layer=(1, 0))
-E = gf.components.ellipse(radii=(10, 5), layer=(2, 0))
-R = gf.components.rectangle(size=(10, 3), layer=(3, 0))
+T = gf.pcells.text("hello", size=10, layer=(1, 0))
+E = gf.pcells.ellipse(radii=(10, 5), layer=(2, 0))
+R = gf.pcells.rectangle(size=(10, 3), layer=(3, 0))
 
 # Add the shapes to D as references
 text = c << T
@@ -43,15 +43,15 @@ c
 
 # + attributes={"classes": [], "id": "", "n": "13"} tags=[]
 c = gf.Component("move_one_ellipse")
-e1 = c << gf.components.ellipse(radii=(10, 5), layer=(2, 0))
-e2 = c << gf.components.ellipse(radii=(10, 5), layer=(2, 0))
+e1 = c << gf.pcells.ellipse(radii=(10, 5), layer=(2, 0))
+e2 = c << gf.pcells.ellipse(radii=(10, 5), layer=(2, 0))
 e1.movex(10)
 c
 
 # + tags=[]
 c = gf.Component("move_one_ellipse_xmin")
-e1 = c << gf.components.ellipse(radii=(10, 5), layer=(2, 0))
-e2 = c << gf.components.ellipse(radii=(10, 5), layer=(2, 0))
+e1 = c << gf.pcells.ellipse(radii=(10, 5), layer=(2, 0))
+e2 = c << gf.pcells.ellipse(radii=(10, 5), layer=(2, 0))
 e2.xmin = e1.xmax
 c
 # -
@@ -60,14 +60,14 @@ c
 
 # + tags=[]
 c = gf.Component("two_ellipses_on_top_of_each_other")
-E = gf.components.ellipse(radii=(10, 5), layer=(2, 0))
+E = gf.pcells.ellipse(radii=(10, 5), layer=(2, 0))
 e1 = c << E
 e2 = c << E
 c
 
 # + tags=[]
 c = gf.Component("ellipse_moved")
-e = gf.components.ellipse(radii=(10, 5), layer=(2, 0))
+e = gf.pcells.ellipse(radii=(10, 5), layer=(2, 0))
 e1 = c << e
 e2 = c << e
 e2.move(origin=[5, 5], destination=[10, 10])  # Translate by dx = 5, dy = 5
@@ -75,7 +75,7 @@ c
 
 # + tags=[]
 c = gf.Component("ellipse_moved_v2")
-e = gf.components.ellipse(radii=(10, 5), layer=(2, 0))
+e = gf.pcells.ellipse(radii=(10, 5), layer=(2, 0))
 e1 = c << e
 e2 = c << e
 e2.move([5, 5])  # Translate by dx = 5, dy = 5
@@ -83,7 +83,7 @@ c
 
 # + attributes={"classes": [], "id": "", "n": "2"} tags=[]
 c = gf.Component("rectangles")
-r = gf.components.rectangle(size=(10, 5), layer=(2, 0))
+r = gf.pcells.rectangle(size=(10, 5), layer=(2, 0))
 rect1 = c << r
 rect2 = c << r
 
@@ -95,17 +95,17 @@ c
 
 # + tags=[]
 c = gf.Component("mirror_demo")
-text = c << gf.components.text("hello")
+text = c << gf.pcells.text("hello")
 text.mirror(p1=[1, 1], p2=[1, 3])  # Reflects across the line formed by p1 and p2
 c
 
 # + tags=[]
 c = gf.Component("hello")
-text = c << gf.components.text("hello")
+text = c << gf.pcells.text("hello")
 c
 # -
 
-# Each Component and ComponentReference object has several properties which can be
+# Each Component and Instance object has several properties which can be
 # used
 # to learn information about the object (for instance where it's center coordinate
 # is).  Several of these properties can actually be used to move the geometry by
@@ -141,9 +141,9 @@ print(text.xmax)  # Gives you the rightmost (+x) edge of the text bounding box
 
 # + attributes={"classes": [], "id": "", "n": "4"} tags=[]
 c = gf.Component("canvas")
-text = c << gf.components.text("hello")
-E = gf.components.ellipse(radii=(10, 5), layer=(3, 0))
-R = gf.components.rectangle(size=(10, 5), layer=(2, 0))
+text = c << gf.pcells.text("hello")
+E = gf.pcells.ellipse(radii=(10, 5), layer=(3, 0))
+R = gf.pcells.rectangle(size=(10, 5), layer=(2, 0))
 rect1 = c << R
 rect2 = c << R
 ellipse = c << E
@@ -190,15 +190,15 @@ c2
 
 # + tags=[]
 c = gf.Component("hi_bbox")
-text = c << gf.components.text("hi")
+text = c << gf.pcells.text("hi")
 bbox = text.bbox
-c << gf.components.bbox(bbox=bbox, layer=(2, 0))
+c << gf.pcells.bbox(bbox=bbox, layer=(2, 0))
 c
 
 # + attributes={"classes": [], "id": "", "n": "6"} tags=[]
 # gf.get_padding_points can also add a bbox with respect to the bounding box edges
 c = gf.Component("sample_padding")
-text = c << gf.components.text("bye")
+text = c << gf.pcells.text("bye")
 device_bbox = text.bbox
 c.add_polygon(gf.get_padding_points(text, default=1), layer=(2, 0))
 c
@@ -216,7 +216,7 @@ print(c.xmax)
 
 # + tags=[]
 D = gf.Component("rect")
-R = gf.components.rectangle(size=(10, 3), layer=(2, 0))
+R = gf.pcells.rectangle(size=(10, 3), layer=(2, 0))
 rect1 = D << R
 D
 # -
@@ -235,7 +235,7 @@ D
 
 # + attributes={"classes": [], "id": "", "n": "9"} tags=[]
 D = gf.Component("single_expression")
-R = gf.components.rectangle(size=(10, 3), layer=(2, 0))
+R = gf.pcells.rectangle(size=(10, 3), layer=(2, 0))
 rect1 = D << R
 rect1.rotate(angle=37).move([10, 20])
 D

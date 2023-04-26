@@ -90,7 +90,7 @@ settings:
     function_name: mmi1x2
     info: {}
     info_version: 2
-    module: gdsfactory.components.mmi1x2
+    module: gdsfactory.pcells.mmi1x2
     name: mmi1x2
   default:
     bend:
@@ -107,5 +107,5 @@ settings:
   function_name: splitter_chain
   info: {}
   info_version: 2
-  module: gdsfactory.components.splitter_chain
+  module: gdsfactory.pcells.splitter_chain
   name: mmi1x2_splitter_chain

@@ -59,7 +59,7 @@ if __name__ == "__main__":
     PDK = gf.get_generic_pdk()
     PDK.activate()
 
-    c = gf.components.taper_cross_section_linear(
+    c = gf.pcells.taper_cross_section_linear(
         cross_section1=rib(width=2), cross_section2=rib(width=0.5)
     )
     c.show()
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     )
 
     def trainable_strip_strip_taper(parameters):
-        return gf.components.taper_cross_section_linear(
+        return gf.pcells.taper_cross_section_linear(
             length=parameters["length"],
             cross_section1=strip(width=0.5),
             cross_section2=strip(width=parameters["width2"]),

@@ -124,7 +124,7 @@ def trainable_simulations(config):
     """Training step, or `trainable`, function for Ray Tune to run simulations and return results."""
 
     # Component to optimise
-    component = gf.components.mmi1x2(**config)
+    component = gf.pcells.mmi1x2(**config)
 
     # Simulate and get output
     dirpath = tmp / ray.air.session.get_trial_id()

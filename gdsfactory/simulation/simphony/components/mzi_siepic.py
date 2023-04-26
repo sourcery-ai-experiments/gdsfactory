@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from simphony.libraries import siepic
 
-from gdsfactory.simulation.simphony.components.mmi1x2 import mmi1x2
+from gdsfactory.simulation.simphony.pcells.mmi1x2 import mmi1x2
 
 
 def mzi(L0=1, DL=100.0, L2=10.0, y_model_factory=mmi1x2, wg=siepic.Waveguide):
@@ -43,7 +43,7 @@ def mzi(L0=1, DL=100.0, L2=10.0, y_model_factory=mmi1x2, wg=siepic.Waveguide):
         :include-source:
 
         import gdsfactory.simulation.simphony as gs
-        import gdsfactory.simulation.simphony.components as gc
+        import gdsfactory.simulation.simphony.pcells as gc
 
         c = gc.mzi()
         gs.plot_circuit(c)

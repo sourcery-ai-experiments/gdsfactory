@@ -26,7 +26,7 @@ from gdsfactory.component_layout import (
     _rotate_points,
 )
 from gdsfactory.cross_section import CrossSection, Section, Transition
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 from gdsfactory.typings import (
     Coordinates,
     CrossSectionSpec,
@@ -1501,7 +1501,7 @@ if __name__ == "__main__":
 
     # c = p.extrude(layer=(1, 0), width=0.1)
     # c = gf.read.from_phidl(c)
-    c = gf.components.splitter_tree(
+    c = gf.pcells.splitter_tree(
         noutputs=2**2,
         spacing=(120.0, 50.0),
         # bend_length=30,

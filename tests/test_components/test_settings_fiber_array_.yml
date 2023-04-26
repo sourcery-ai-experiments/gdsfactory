@@ -116,5 +116,5 @@ settings:
   function_name: fiber_array
   info: {}
   info_version: 2
-  module: gdsfactory.components.fiber_array
+  module: gdsfactory.pcells.fiber_array
   name: fiber_array

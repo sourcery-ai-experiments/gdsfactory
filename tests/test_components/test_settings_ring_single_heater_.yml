@@ -120,5 +120,5 @@ settings:
   function_name: ring_single_heater
   info: {}
   info_version: 2
-  module: gdsfactory.components.ring_single_heater
+  module: gdsfactory.pcells.ring_single_heater
   name: ring_single_heater

@@ -2,7 +2,7 @@
 
 We'll start by assuming we have a function straight() which already
 exists and makes us a simple straight waveguide. Many functions like
-this exist in the gdsfactory.components library and are ready-for-use.
+this exist in the gdsfactory.pcells library and are ready-for-use.
 We write this one out fully just so it's explicitly clear what's
 happening
 

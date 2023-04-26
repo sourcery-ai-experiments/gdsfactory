@@ -31,8 +31,8 @@
 # %%
 import gdsfactory as gf
 
-E = gf.components.ellipse(radii=(10, 5), layer=(1, 0))
-R = gf.components.rectangle(size=[15, 5], layer=(2, 0))
+E = gf.pcells.ellipse(radii=(10, 5), layer=(1, 0))
+R = gf.pcells.rectangle(size=[15, 5], layer=(2, 0))
 C = gf.geometry.boolean(A=E, B=R, operation="not", precision=1e-6, layer=(3, 0))
 # Other operations include 'and', 'or', 'xor', or equivalently 'A-B', 'B-A', 'A+B'
 
@@ -61,8 +61,8 @@ r2 = (110, 40)
 
 angle_resolution = 0.1
 
-c1 = gf.components.ellipse(radii=r1, layer=(1, 0), angle_resolution=angle_resolution)
-c2 = gf.components.ellipse(radii=r2, layer=(1, 0), angle_resolution=angle_resolution)
+c1 = gf.pcells.ellipse(radii=r1, layer=(1, 0), angle_resolution=angle_resolution)
+c2 = gf.pcells.ellipse(radii=r2, layer=(1, 0), angle_resolution=angle_resolution)
 
 # %%
 # %time
@@ -88,8 +88,8 @@ import gdsfactory as gf
 
 # Create `T`, an ellipse and rectangle which will be offset (expanded / contracted)
 T = gf.Component("ellipse_and_rectangle")
-e = T << gf.components.ellipse(radii=(10, 5), layer=(1, 0))
-r = T << gf.components.rectangle(size=[15, 5], layer=(2, 0))
+e = T << gf.pcells.ellipse(radii=(10, 5), layer=(1, 0))
+r = T << gf.pcells.rectangle(size=[15, 5], layer=(2, 0))
 r.move([3, -2.5])
 
 Texpanded = gf.geometry.offset(T, distance=2, precision=1e-6, layer=(2, 0))
@@ -112,7 +112,7 @@ offsets
 
 # %%
 c = gf.Component("demo_dataprep")
-c1 = gf.components.coupler_ring(cladding_layers=[(2, 0)], cladding_offsets=[0.5])
+c1 = gf.pcells.coupler_ring(cladding_layers=[(2, 0)], cladding_offsets=[0.5])
 d = 0.8
 c2 = gf.geometry.offset(c1, distance=+d, layer=(2, 0))
 c3 = gf.geometry.offset(c2, distance=-d, layer=(2, 0))
@@ -131,8 +131,8 @@ import gdsfactory as gf
 
 # Create a blank device and add two shapes
 X = gf.Component("outline_demo")
-X.add_ref(gf.components.cross(length=25, width=1, layer=(1, 0)))
-X.add_ref(gf.components.ellipse(radii=[10, 5], layer=(2, 0)))
+X.add_ref(gf.pcells.cross(length=25, width=1, layer=(1, 0)))
+X.add_ref(gf.pcells.ellipse(radii=[10, 5], layer=(2, 0)))
 
 O = gf.geometry.outline(X, distance=1.5, precision=1e-6, layer=(3, 0))
 
@@ -151,7 +151,7 @@ c
 # - If a float equal to the outline ``distance``, the outline will be flush with the port (useful positive-tone processes).
 
 # %%
-gf.components.L(width=7, size=(10, 20), layer=(1, 0))
+gf.pcells.L(width=7, size=(10, 20), layer=(1, 0))
 
 # %%
 # Outline the geometry and open a hole at each port
@@ -180,7 +180,7 @@ gf.geometry.outline(
 # %%
 import gdsfactory as gf
 
-E = gf.components.ellipse(radii=(10, 5))
+E = gf.pcells.ellipse(radii=(10, 5))
 D = gf.geometry.invert(E, border=0.5, precision=1e-6, layer=(2, 0))
 D
 
@@ -193,12 +193,12 @@ D
 import gdsfactory as gf
 
 D = gf.Component("union")
-e0 = D << gf.components.ellipse(layer=(1, 0))
-e1 = D << gf.components.ellipse(layer=(2, 0))
-e2 = D << gf.components.ellipse(layer=(3, 0))
-e3 = D << gf.components.ellipse(layer=(4, 0))
-e4 = D << gf.components.ellipse(layer=(5, 0))
-e5 = D << gf.components.ellipse(layer=(6, 0))
+e0 = D << gf.pcells.ellipse(layer=(1, 0))
+e1 = D << gf.pcells.ellipse(layer=(2, 0))
+e2 = D << gf.pcells.ellipse(layer=(3, 0))
+e3 = D << gf.pcells.ellipse(layer=(4, 0))
+e4 = D << gf.pcells.ellipse(layer=(5, 0))
+e5 = D << gf.pcells.ellipse(layer=(6, 0))
 
 e1.rotate(15 * 1)
 e2.rotate(15 * 2)
@@ -228,12 +228,12 @@ D_joined_by_layer
 import gdsfactory as gf
 
 A = gf.Component("A")
-A.add_ref(gf.components.ellipse(radii=[10, 5], layer=(1, 0)))
-A.add_ref(gf.components.text("A")).move([3, 0])
+A.add_ref(gf.pcells.ellipse(radii=[10, 5], layer=(1, 0)))
+A.add_ref(gf.pcells.text("A")).move([3, 0])
 
 B = gf.Component("B")
-B.add_ref(gf.components.ellipse(radii=[11, 4], layer=(1, 0))).movex(4)
-B.add_ref(gf.components.text("B")).move([3.2, 0])
+B.add_ref(gf.pcells.ellipse(radii=[11, 4], layer=(1, 0))).movex(4)
+B.add_ref(gf.pcells.text("B")).move([3.2, 0])
 X = gf.geometry.xor_diff(A=A, B=B, precision=1e-6)
 
 # Plot the original geometry and the result
@@ -257,7 +257,7 @@ D
 # Useful when resizing an existing component for simulations
 
 # %%
-c = gf.components.straight_pin(length=10, taper=None)
+c = gf.pcells.straight_pin(length=10, taper=None)
 c
 
 # %%
@@ -271,7 +271,7 @@ trimmed_c
 # `gf.import_gds()` allows you to easily import external GDSII files.  It imports a single cell from the external GDS file and converts it into a gdsfactory component.
 
 # %%
-D = gf.components.ellipse()
+D = gf.pcells.ellipse()
 D.write_gds("myoutput.gds")
 D2 = gf.import_gds(gdspath="myoutput.gds", cellname=None, flatten=False)
 D2
@@ -281,19 +281,19 @@ D2
 
 # %%
 E = gf.Component()
-E.add_ref(gf.components.ellipse(layer=(1, 0)))
+E.add_ref(gf.pcells.ellipse(layer=(1, 0)))
 D = E.extract(layers=[(1, 0)])
 D
 
 # %%
 import gdsfactory as gf
 
-X = gf.components.ellipse(layer=(2, 0))
+X = gf.pcells.ellipse(layer=(2, 0))
 c = X.copy()
 c
 
 # %%
-gf.components.copy_layers(gf.components.straight, layers=((1, 0), (2, 0)))
+gf.pcells.copy_layers(gf.pcells.straight, layers=((1, 0), (2, 0)))
 
 # %% [markdown]
 # ## Dummy Fill / Tiling
@@ -305,7 +305,7 @@ coupler_lengths = [10, 20, 30, 40, 50, 60, 70, 80]
 coupler_gaps = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
 delta_lengths = [10, 100, 200, 300, 400, 500, 500]
 
-mzi = gf.components.mzi_lattice(
+mzi = gf.pcells.mzi_lattice(
     coupler_lengths=coupler_lengths,
     coupler_gaps=coupler_gaps,
     delta_lengths=delta_lengths,
@@ -343,8 +343,8 @@ import gdsfactory as gf
 @gf.cell
 def cell_with_pad():
     c = gf.Component()
-    c << gf.components.mzi(decorator=gf.add_padding)
-    pad = c << gf.components.pad(size=(2, 2))
+    c << gf.pcells.mzi(decorator=gf.add_padding)
+    pad = c << gf.pcells.pad(size=(2, 2))
     pad.movey(10)
     return c
 

@@ -13,8 +13,8 @@ def test_get_bundle_optical(
 
     c = gf.Component("test_get_bundle_optical")
 
-    w = c << gf.components.straight_array(n=4, spacing=200)
-    d = c << gf.components.nxn(west=4, east=0)
+    w = c << gf.pcells.straight_array(n=4, spacing=200)
+    d = c << gf.pcells.nxn(west=4, east=0)
     d.y = w.y
     d.xmin = w.xmax + 200
 
@@ -43,8 +43,8 @@ def test_get_bundle_optical2(
     lengths = {}
 
     c = gf.Component("test_get_bundle_optical2")
-    w = c << gf.components.straight_array(n=4, spacing=200)
-    d = c << gf.components.nxn(west=4, east=1)
+    w = c << gf.pcells.straight_array(n=4, spacing=200)
+    d = c << gf.pcells.nxn(west=4, east=1)
     d.y = w.y
     d.xmin = w.xmax + 200
 

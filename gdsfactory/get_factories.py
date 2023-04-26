@@ -35,5 +35,5 @@ def get_cells(modules, verbose: bool = False) -> Dict[str, ComponentFactory]:
 if __name__ == "__main__":
     import ubcpdk
 
-    f = get_cells(ubcpdk.components)
+    f = get_cells(ubcpdk.pcells)
     print(f.keys())

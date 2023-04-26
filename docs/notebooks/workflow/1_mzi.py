@@ -178,7 +178,7 @@ import gdsfactory.simulation as sim
 import gdsfactory as gf
 import gdsfactory.simulation.gtidy3d as gt
 
-import gdsfactory.components as pdk
+import gdsfactory.pcells as pdk
 
 # -
 
@@ -193,7 +193,7 @@ sim.plot.plot_loss1x2(sp)
 
 # ## Circuit simulation
 #
-# For the simulations you need to build Sparameters models for your components using FDTD or other methods.
+# For the simulations you need to build Sparameters models for your pcells using FDTD or other methods.
 #
 # ![demo](https://i.imgur.com/RSOTDIN.png)
 #
@@ -212,7 +212,7 @@ sim.plot.plot_loss1x2(sp)
 # pip install "gdsfactory[tidy3d,sax]"
 # ```
 
-mzi10 = gf.components.mzi(splitter=c, delta_length=10)
+mzi10 = gf.pcells.mzi(splitter=c, delta_length=10)
 mzi10
 
 # +
@@ -259,7 +259,7 @@ plt.ylabel("T")
 plt.grid(True)
 plt.show()
 
-mzi20 = gf.components.mzi(splitter=c, delta_length=20)
+mzi20 = gf.pcells.mzi(splitter=c, delta_length=20)
 mzi20
 
 netlist = mzi20.get_netlist()

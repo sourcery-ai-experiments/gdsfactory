@@ -43,7 +43,7 @@ def mmi2x2(**kwargs):
       :include-source:
 
       import gdsfactory as gf
-      c = gf.components.mmi2x2(length_mmi=15.45, width_mmi=2.1)
+      c = gf.pcells.mmi2x2(length_mmi=15.45, width_mmi=2.1)
       c.plot()
 
 
@@ -51,12 +51,12 @@ def mmi2x2(**kwargs):
         :include-source:
 
         import gdsfactory.simulation.simphony as gs
-        import gdsfactory.simulation.simphony.components as gc
+        import gdsfactory.simulation.simphony.pcells as gc
 
         c = gc.mmi2x2()
         gs.plot_model(c)
     """
-    return GDSFactorySimphonyWrapper(component=gf.components.mmi2x2)
+    return GDSFactorySimphonyWrapper(component=gf.pcells.mmi2x2)
 
 
 if __name__ == "__main__":

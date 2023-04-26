@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import gdsfactory as gf
-from gdsfactory import components
+from gdsfactory import pcells
 from gdsfactory.simulation.lumerical.read import read_sparameters_lumerical
 
 factory = {
-    i: getattr(components, i)
-    for i in dir(components)
-    if not i.startswith("_") and callable(getattr(components, i))
+    i: getattr(pcells, i)
+    for i in dir(pcells)
+    if not i.startswith("_") and callable(getattr(pcells, i))
 }
 
 
@@ -72,7 +72,7 @@ def test_read_sparameters_4port_mmi2x2() -> None:
 
 
 if __name__ == "__main__":
-    # c = gf.components.straight(layer=(2, 0))
+    # c = gf.pcells.straight(layer=(2, 0))
     # print(c.get_sparameters_path())
     # test_read_sparameters("straight", None, False)
     test_read_sparameters_2port_straight()

@@ -9,7 +9,7 @@ import gdsfactory as gf
 from gdsfactory.component import Component
 from gdsfactory.cross_section import CrossSection
 from gdsfactory.path import Path, transition
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 from gdsfactory.routing.route_quad import _get_rotated_basis
 from gdsfactory.typings import CrossSectionSpec, LayerSpec
 
@@ -298,8 +298,8 @@ def route_sharp(
         import gdsfactory as gf
 
         c = gf.Component("pads")
-        c1 = c << gf.components.pad(port_angle=None)
-        c2 = c << gf.components.pad(port_angle=None)
+        c1 = c << gf.pcells.pad(port_angle=None)
+        c2 = c << gf.pcells.pad(port_angle=None)
 
         c2.movex(400)
         c2.movey(-200)
@@ -364,8 +364,8 @@ def route_sharp(
 
 if __name__ == "__main__":
     c = gf.Component("pads")
-    c1 = c << gf.components.pad(port_angle=None)
-    c2 = c << gf.components.pad(port_angle=None)
+    c1 = c << gf.pcells.pad(port_angle=None)
+    c2 = c << gf.pcells.pad(port_angle=None)
 
     c2.movex(400)
     c2.movey(-200)

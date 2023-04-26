@@ -37,15 +37,15 @@ PDK = get_generic_pdk()
 PDK.activate()
 
 c = gf.Component("pads")
-pt = c << gf.components.pad_array(angle=270, columns=3)
-pb = c << gf.components.pad_array(angle=90, columns=3)
+pt = c << gf.pcells.pad_array(angle=270, columns=3)
+pb = c << gf.pcells.pad_array(angle=90, columns=3)
 pt.move((70, 200))
 c
 # -
 
 c = gf.Component("pads_with_routes_with_bends")
-pt = c << gf.components.pad_array(angle=270, columns=3)
-pb = c << gf.components.pad_array(angle=90, columns=3)
+pt = c << gf.pcells.pad_array(angle=270, columns=3)
+pb = c << gf.pcells.pad_array(angle=90, columns=3)
 pt.move((70, 200))
 route = gf.routing.get_route_electrical(
     pt.ports["e11"], pb.ports["e11"], bend="bend_euler", radius=30
@@ -54,8 +54,8 @@ c.add(route.references)
 c
 
 c = gf.Component("pads_with_routes_with_wire_corners")
-pt = c << gf.components.pad_array(angle=270, columns=3)
-pb = c << gf.components.pad_array(angle=90, columns=3)
+pt = c << gf.pcells.pad_array(angle=270, columns=3)
+pb = c << gf.pcells.pad_array(angle=90, columns=3)
 pt.move((70, 200))
 route = gf.routing.get_route_electrical(
     pt.ports["e11"], pb.ports["e11"], bend="wire_corner"
@@ -64,8 +64,8 @@ c.add(route.references)
 c
 
 c = gf.Component("pads_with_routes_with_wire_corners_no_angle")
-pt = c << gf.components.pad_array(angle=None, columns=3)
-pb = c << gf.components.pad_array(angle=None, columns=3)
+pt = c << gf.pcells.pad_array(angle=None, columns=3)
+pb = c << gf.pcells.pad_array(angle=None, columns=3)
 pt.move((70, 200))
 route = gf.routing.get_route_electrical(
     pt.ports["e11"], pb.ports["e11"], bend="wire_corner"
@@ -76,8 +76,8 @@ c
 # +
 c = gf.Component("multi-layer")
 columns = 2
-ptop = c << gf.components.pad_array(columns=columns)
-pbot = c << gf.components.pad_array(angle=90, columns=columns)
+ptop = c << gf.pcells.pad_array(columns=columns)
+pbot = c << gf.pcells.pad_array(angle=90, columns=columns)
 
 ptop.movex(300)
 ptop.movey(300)
@@ -93,8 +93,8 @@ c
 # There is also `bend = wire_corner45` for 45deg bend corner with parametrizable "radius":
 
 c = gf.Component("pads_with_routes_with_wire_corner45")
-pt = c << gf.components.pad_array(angle=270, columns=1)
-pb = c << gf.components.pad_array(angle=90, columns=1)
+pt = c << gf.pcells.pad_array(angle=270, columns=1)
+pb = c << gf.pcells.pad_array(angle=90, columns=1)
 pt.move((300, 300))
 route = gf.routing.get_route_electrical(
     pt.ports["e11"], pb.ports["e11"], bend="wire_corner45", radius=30
@@ -103,8 +103,8 @@ c.add(route.references)
 c
 
 c = gf.Component("pads_with_routes_with_wire_corner45")
-pt = c << gf.components.pad_array(angle=270, columns=1)
-pb = c << gf.components.pad_array(angle=90, columns=1)
+pt = c << gf.pcells.pad_array(angle=270, columns=1)
+pb = c << gf.pcells.pad_array(angle=90, columns=1)
 pt.move((300, 300))
 route = gf.routing.get_route_electrical(
     pt.ports["e11"], pb.ports["e11"], bend="wire_corner45", radius=100
@@ -115,8 +115,8 @@ c
 # ### route_quad
 
 c = gf.Component("pads_route_quad")
-pt = c << gf.components.pad_array(angle=270, columns=3)
-pb = c << gf.components.pad_array(angle=90, columns=3)
+pt = c << gf.pcells.pad_array(angle=270, columns=3)
+pb = c << gf.pcells.pad_array(angle=90, columns=3)
 pt.move((100, 200))
 route = c << gf.routing.route_quad(pt.ports["e11"], pb.ports["e11"], layer=(49, 0))
 c
@@ -124,8 +124,8 @@ c
 # ### get_route_from_steps
 
 c = gf.Component("pads_route_from_steps")
-pt = c << gf.components.pad_array(angle=270, columns=3)
-pb = c << gf.components.pad_array(angle=90, columns=3)
+pt = c << gf.pcells.pad_array(angle=270, columns=3)
+pb = c << gf.pcells.pad_array(angle=90, columns=3)
 pt.move((100, 200))
 route = gf.routing.get_route_from_steps(
     pb.ports["e11"],
@@ -134,14 +134,14 @@ route = gf.routing.get_route_from_steps(
         {"y": 200},
     ],
     cross_section="metal_routing",
-    bend=gf.components.wire_corner,
+    bend=gf.pcells.wire_corner,
 )
 c.add(route.references)
 c
 
 c = gf.Component("pads_route_from_steps_None_angle")
-pt = c << gf.components.pad_array(angle=None, columns=3)
-pb = c << gf.components.pad_array(angle=None, columns=3)
+pt = c << gf.pcells.pad_array(angle=None, columns=3)
+pb = c << gf.pcells.pad_array(angle=None, columns=3)
 pt.move((100, 200))
 route = gf.routing.get_route_from_steps(
     pb.ports["e11"],
@@ -150,7 +150,7 @@ route = gf.routing.get_route_from_steps(
         {"y": 200},
     ],
     cross_section="metal_routing",
-    bend=gf.components.wire_corner,
+    bend=gf.pcells.wire_corner,
 )
 c.add(route.references)
 c
@@ -163,8 +163,8 @@ c
 
 # +
 c = gf.Component("pads_bundle")
-pt = c << gf.components.pad_array(angle=270, columns=3)
-pb = c << gf.components.pad_array(angle=90, columns=3)
+pt = c << gf.pcells.pad_array(angle=270, columns=3)
+pb = c << gf.pcells.pad_array(angle=90, columns=3)
 pt.move((100, 200))
 
 routes = gf.routing.get_bundle_electrical(
@@ -180,13 +180,13 @@ c
 
 # +
 c = gf.Component("pads_bundle_steps")
-pt = c << gf.components.pad_array(
-    gf.partial(gf.components.pad, size=(30, 30)),
+pt = c << gf.pcells.pad_array(
+    gf.partial(gf.pcells.pad, size=(30, 30)),
     angle=270,
     columns=3,
     spacing=(50, 0),
 )
-pb = c << gf.components.pad_array(angle=90, columns=3)
+pb = c << gf.pcells.pad_array(angle=90, columns=3)
 pt.move((300, 500))
 
 routes = gf.routing.get_bundle_from_steps_electrical(
@@ -206,8 +206,8 @@ c
 # +
 c = gf.Component("get_bundle_multi_layer")
 columns = 2
-ptop = c << gf.components.pad_array(columns=columns)
-pbot = c << gf.components.pad_array(angle=90, columns=columns)
+ptop = c << gf.pcells.pad_array(columns=columns)
+pbot = c << gf.pcells.pad_array(angle=90, columns=columns)
 
 ptop.movex(300)
 ptop.movey(300)
@@ -223,22 +223,22 @@ c
 #
 # You can also route to electrical pads.
 
-c = gf.components.pad()
+c = gf.pcells.pad()
 cc = gf.routing.add_pads_bot(component=c, port_names=("e1", "e4"), fanout_length=50)
 cc
 
-c = gf.components.straight_heater_metal(length=100.0)
+c = gf.pcells.straight_heater_metal(length=100.0)
 cc = gf.routing.add_pads_top(component=c)
 cc
 
 
-c = gf.components.straight_heater_metal(length=100.0)
+c = gf.pcells.straight_heater_metal(length=100.0)
 cc = gf.routing.add_pads_top(component=c, port_names=("e1",))
 cc
 
 n = west = north = south = east = 10
 spacing = 20
-c = gf.components.nxn(
+c = gf.pcells.nxn(
     xsize=n * spacing,
     ysize=n * spacing,
     west=west,

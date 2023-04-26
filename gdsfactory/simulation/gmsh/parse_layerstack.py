@@ -108,7 +108,7 @@ def order_layerstack(layerstack: LayerStack):
 if __name__ == "__main__":
     import gdsfactory as gf
 
-    waveguide = gf.components.straight_pin(length=1, taper=None)
+    waveguide = gf.pcells.straight_pin(length=1, taper=None)
     waveguide.show()
 
     from gdsfactory.pdk import get_layer_stack

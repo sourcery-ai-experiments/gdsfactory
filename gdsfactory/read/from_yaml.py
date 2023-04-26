@@ -61,7 +61,7 @@ from typing_extensions import Literal
 
 from gdsfactory.add_pins import add_instance_label
 from gdsfactory.cell import cell
-from gdsfactory.component import Component, ComponentReference
+from gdsfactory.component import Component, Instance
 from gdsfactory.typings import Route
 
 valid_placement_keys = [
@@ -126,7 +126,7 @@ valid_route_keys = [
 
 
 def _get_anchor_point_from_name(
-    ref: ComponentReference, anchor_name: str
+    ref: Instance, anchor_name: str
 ) -> Optional[np.ndarray]:
     if anchor_name in valid_anchor_point_keywords:
         return getattr(ref.size_info, anchor_name)
@@ -137,7 +137,7 @@ def _get_anchor_point_from_name(
 
 
 def _get_anchor_value_from_name(
-    ref: ComponentReference, anchor_name: str, return_value: str
+    ref: Instance, anchor_name: str, return_value: str
 ) -> Optional[float]:
     if anchor_name in valid_anchor_value_keywords:
         return getattr(ref.size_info, anchor_name)
@@ -199,7 +199,7 @@ def _move_ref(
 def place(
     placements_conf: Dict[str, Dict[str, Union[int, float, str]]],
     connections_by_transformed_inst: Dict[str, Dict[str, str]],
-    instances: Dict[str, ComponentReference],
+    instances: Dict[str, Instance],
     encountered_insts: List[str],
     instance_name: Optional[str] = None,
     all_remaining_insts: Optional[List[str]] = None,
@@ -416,7 +416,7 @@ def make_connection(
     port_src_name: str,
     instance_dst_name: str,
     port_dst_name: str,
-    instances: Dict[str, ComponentReference],
+    instances: Dict[str, Instance],
 ) -> None:
     """Connect instance_src_name,port to instance_dst_name,port.
 
@@ -782,15 +782,15 @@ def _from_yaml(
     placements_conf = dict() if placements_conf is None else placements_conf
 
     connections_by_transformed_inst = transform_connections_dict(connections_conf)
-    components_to_place = set(placements_conf.keys())
-    components_with_placement_conflicts = components_to_place.intersection(
+    pcells_to_place = set(placements_conf.keys())
+    pcells_with_placement_conflicts = pcells_to_place.intersection(
         connections_by_transformed_inst.keys()
     )
-    for instance_name in components_with_placement_conflicts:
+    for instance_name in pcells_with_placement_conflicts:
         placement_settings = placements_conf[instance_name]
         if "x" in placement_settings or "y" in placement_settings:
             warnings.warn(
-                f"YAML defined: ({', '.join(components_with_placement_conflicts)}) "
+                f"YAML defined: ({', '.join(pcells_with_placement_conflicts)}) "
                 "with both connection and placement. Please use one or the other.",
             )
 

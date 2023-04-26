@@ -3,7 +3,7 @@ from typing import List, Optional, Callable
 
 import numpy as np
 import shapely.geometry as sg
-from gdsfactory.component import Port, ComponentReference, Component
+from gdsfactory.component import Port, Instance, Component
 from gdsfactory.path import Path
 from gdsfactory.generic_tech.layer_map import LAYER
 from gdsfactory.get_netlist import difference_between_angles
@@ -20,7 +20,7 @@ BEND_PATH_FUNCS = {
     # 'euler_bend': euler_path,
 }
 
-Connector = Callable[..., List[ComponentReference]]
+Connector = Callable[..., List[Instance]]
 
 
 def get_connector(name: str) -> Connector:
@@ -118,7 +118,7 @@ def low_loss_connector(
     port2: Port,
     prioritized_cross_sections: Optional[List[CrossSectionSpec]] = None,
     **kwargs,
-) -> List[ComponentReference]:
+) -> List[Instance]:
     """
     Routes between two ports, using the lowest-loss cross-section which will fit.
 
@@ -197,13 +197,13 @@ def _make_error_trace(port1: Port, port2: Port, message: str):
     warnings.warn(message, RouteWarning)
     path = Path([port1.center, port2.center])
     error_component = extrude(path, layer=LAYER.ERROR_PATH, width=1)
-    error_ref = ComponentReference(error_component)
+    error_ref = Instance(error_component)
     return [error_ref]
 
 
 def straight_connector(
     port1: Port, port2: Port, cross_section: CrossSectionSpec = "strip"
-) -> List[ComponentReference]:
+) -> List[Instance]:
     """
     Connects between the two ports with a straight of the given cross-section.
 
@@ -227,7 +227,7 @@ def straight_connector(
 
     straight_component = extrude(path, cross_section=cross_section)
     # straight_component = get_component(straight, length=distance, cross_section=cross_section)
-    straight_ref = ComponentReference(straight_component)
+    straight_ref = Instance(straight_component)
     # straight_ref.connect('in0', port1)
     return [straight_ref]
 
@@ -237,7 +237,7 @@ def auto_taper_connector(
     port2: Port,
     cross_section: CrossSectionSpec = "strip",
     inner_connector: Connector = straight_connector,
-) -> List[ComponentReference]:
+) -> List[Instance]:
     """
     Connects the two ports with a straight in the specified cross_section, adding tapers at either end if necessary.
 
@@ -274,7 +274,7 @@ CONNECTORS = {
 """A dictionary of named connectors which can be used for all-angle routing"""
 
 
-def _place_bend(bend_component: Component, position, rotation) -> ComponentReference:
+def _place_bend(bend_component: Component, position, rotation) -> Instance:
     """
     Places a bend by its control point at a given position and rotation. The control point of a bend is the intersection of the inverted port vectors.
 
@@ -283,7 +283,7 @@ def _place_bend(bend_component: Component, position, rotation) -> ComponentRefer
         position: the (x,y) position to place the bend
         rotation: the rotation of the bend
     Returns:
-        The resulting bend ComponentReference
+        The resulting bend Instance
     """
     bend_ports = _get_bend_ports(bend_component)
     bend_control_point = vector_intersection(
@@ -292,7 +292,7 @@ def _place_bend(bend_component: Component, position, rotation) -> ComponentRefer
         bend_ports[1].center,
         bend_ports[1].angle + 180,
     )
-    bend_ref = ComponentReference(bend_component)
+    bend_ref = Instance(bend_component)
     bend_ref.rotate(rotation + 180 - bend_ports[0].angle, center=bend_control_point)
     bend_ref.move(origin=bend_control_point, destination=position)
     return bend_ref
@@ -321,9 +321,7 @@ def _all_angle_connector(
     cross_section1: Optional[CrossSectionSpec] = None,
     connector2: Connector = straight_connector,
     cross_section2: Optional[CrossSectionSpec] = None,
-    report_segment_separation: Optional[
-        Callable[[List[ComponentReference]], None]
-    ] = None,
+    report_segment_separation: Optional[Callable[[List[Instance]], None]] = None,
 ):
     if cross_section1 is None:
         cross_section1 = cross_section
@@ -362,7 +360,7 @@ def _all_angle_connector(
             _get_bend(bend, angle=bend_angle, cross_section=cross_section)
             for bend_angle in bend_angles
         ]
-        bend_refs = [ComponentReference(b) for b in bends]
+        bend_refs = [Instance(b) for b in bends]
         bend_refs_ports = [_get_bend_ports(br) for br in bend_refs]
         bend_refs[0].connect(bend_refs_ports[0][0], port1)
         bend_refs[1].connect(bend_refs_ports[1][0], port2)
@@ -451,7 +449,7 @@ def _get_bend_angles(p0, p1, a0, a1, bend):
     return bend_angle_0, bend_angle_1
 
 
-def _get_minimum_separation(refs: List[ComponentReference], *ports) -> float:
+def _get_minimum_separation(refs: List[Instance], *ports) -> float:
     all_ports = [p for ref in refs for p in ref.ports.values()]
     all_ports.extend(ports)
     max_specified_separation = 0
@@ -527,7 +525,7 @@ def get_bundle_all_angle(
         import gdsfactory as gf
         c = gf.Component("demo")
 
-        mmi = gf.components.mmi2x2(width_mmi=10, gap_mmi=3)
+        mmi = gf.pcells.mmi2x2(width_mmi=10, gap_mmi=3)
         mmi1 = c << mmi
         mmi2 = c << mmi
 
@@ -596,7 +594,7 @@ def get_bundle_all_angle(
             bend_component = _get_bend(
                 bend, angle=bend_angle, cross_section=cross_section
             )
-            bend_ref = ComponentReference(bend_component)
+            bend_ref = Instance(bend_component)
             bend_ref_ports = _get_bend_ports(bend_ref)
             initial_taper = taper_to_cross_section(
                 port1, bend_ref_ports[0].cross_section
@@ -617,7 +615,7 @@ def get_bundle_all_angle(
             bend_component = _get_bend(
                 bend, angle=bend_angle, cross_section=cross_section
             )
-            bend_ref = ComponentReference(bend_component)
+            bend_ref = Instance(bend_component)
             bend_ref_ports = _get_bend_ports(bend_ref)
             end_taper = taper_to_cross_section(port2, bend_ref_ports[0].cross_section)
             if end_taper:
@@ -918,7 +916,7 @@ if __name__ == "__main__":
 
     c = gf.Component("demo")
 
-    mmi = gf.components.mmi2x2(width_mmi=10, gap_mmi=3)
+    mmi = gf.pcells.mmi2x2(width_mmi=10, gap_mmi=3)
     mmi1 = c << mmi
     mmi2 = c << mmi
 

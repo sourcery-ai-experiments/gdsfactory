@@ -262,5 +262,5 @@ settings:
   function_name: straight_heater_doped_rib
   info: {}
   info_version: 2
-  module: gdsfactory.components.straight_heater_doped_rib
+  module: gdsfactory.pcells.straight_heater_doped_rib
   name: straight_heater_doped_rib

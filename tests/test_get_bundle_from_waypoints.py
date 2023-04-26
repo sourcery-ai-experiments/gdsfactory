@@ -5,7 +5,7 @@ from pytest_regressions.data_regression import DataRegressionFixture
 
 import gdsfactory as gf
 from gdsfactory.component import Component
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 from gdsfactory.routing.get_bundle_from_waypoints import get_bundle_from_waypoints
 
 
@@ -108,14 +108,14 @@ def test_get_bundle_from_waypoints_staggered(
     check: bool = True,
 ):
     c = gf.Component()
-    r = c << gf.components.array(
-        component=gf.components.straight, rows=2, columns=1, spacing=(0, 20)
+    r = c << gf.pcells.array(
+        component=gf.pcells.straight, rows=2, columns=1, spacing=(0, 20)
     )
     r.movex(60)
     r.movey(40)
 
-    lt = c << gf.components.straight(length=15)
-    lb = c << gf.components.straight(length=5)
+    lt = c << gf.pcells.straight(length=15)
+    lb = c << gf.pcells.straight(length=5)
     lt.movey(5)
 
     ports1 = lt.get_ports_list(angle=0) + lb.get_ports_list(angle=0)

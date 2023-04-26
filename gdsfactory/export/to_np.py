@@ -58,8 +58,8 @@ if __name__ == "__main__":
 
     import gdsfactory as gf
 
-    c = gf.components.straight()
-    c = gf.components.bend_circular()
+    c = gf.pcells.straight()
+    c = gf.pcells.bend_circular()
     # i = to_np(c, nm_per_pixel=250)
     i = to_np(c, nm_per_pixel=20)
     c.show(show_ports=True)

@@ -10,7 +10,7 @@ def test_route_south(
     data_regression: DataRegressionFixture, check: bool = True
 ) -> Component:
     c = gf.Component("test_route_south")
-    cr = c << gf.components.mmi2x2()
+    cr = c << gf.pcells.mmi2x2()
     route = gf.routing.route_south(component=cr)
     references = route.references
 

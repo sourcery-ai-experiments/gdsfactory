@@ -3,7 +3,7 @@ instances:
   mmi1x2_sweep:
     component: pack_doe
     info:
-      components:
+      pcells:
         mmi1x2_length_mmi100_width_mmi10:
           changed:
             length_mmi: 100
@@ -34,7 +34,7 @@ instances:
           function_name: mmi1x2
           info: {}
           info_version: 2
-          module: gdsfactory.components.mmi1x2
+          module: gdsfactory.pcells.mmi1x2
           name: mmi1x2_length_mmi100_width_mmi10
         mmi1x2_length_mmi100_width_mmi4:
           changed:
@@ -66,7 +66,7 @@ instances:
           function_name: mmi1x2
           info: {}
           info_version: 2
-          module: gdsfactory.components.mmi1x2
+          module: gdsfactory.pcells.mmi1x2
           name: mmi1x2_length_mmi100_width_mmi4
         mmi1x2_length_mmi2_width_mmi10:
           changed:
@@ -98,7 +98,7 @@ instances:
           function_name: mmi1x2
           info: {}
           info_version: 2
-          module: gdsfactory.components.mmi1x2
+          module: gdsfactory.pcells.mmi1x2
           name: mmi1x2_length_mmi2_width_mmi10
         mmi1x2_length_mmi2_width_mmi4:
           changed:
@@ -130,7 +130,7 @@ instances:
           function_name: mmi1x2
           info: {}
           info_version: 2
-          module: gdsfactory.components.mmi1x2
+          module: gdsfactory.pcells.mmi1x2
           name: mmi1x2_length_mmi2_width_mmi4
     settings:
       do_permutations: true

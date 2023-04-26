@@ -78,5 +78,5 @@ settings:
   function_name: compass
   info: {}
   info_version: 2
-  module: gdsfactory.components.compass
+  module: gdsfactory.pcells.compass
   name: compass

@@ -5,7 +5,7 @@ from typing import Callable, List
 import numpy as np
 
 from gdsfactory.component_layout import _rotate_points
-from gdsfactory.port import Port
+from gdsfactory.component import Port
 from gdsfactory.routing.get_route import get_route_from_waypoints
 from gdsfactory.routing.manhattan import generate_manhattan_waypoints
 from gdsfactory.routing.path_length_matching import path_length_matched_points
@@ -262,7 +262,7 @@ if __name__ == "__main__":
     from gdsfactory.routing import get_routes_bend180
 
     c = gf.Component("get_routes_bend180")
-    pad_array = gf.components.pad_array(angle=270)
+    pad_array = gf.pcells.pad_array(angle=270)
     c1 = c << pad_array
     c2 = c << pad_array
     c2.rotate(90)

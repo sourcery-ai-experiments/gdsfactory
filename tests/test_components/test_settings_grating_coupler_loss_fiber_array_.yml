@@ -34,5 +34,5 @@ settings:
   function_name: grating_coupler_loss_fiber_array
   info: {}
   info_version: 2
-  module: gdsfactory.components.grating_coupler_loss
+  module: gdsfactory.pcells.grating_coupler_loss
   name: grating_coupler_loss_fiber_array
