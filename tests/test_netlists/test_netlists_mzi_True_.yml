@@ -34,7 +34,7 @@ instances:
       port_name2: o2
       ports_map: null
       sequence: bLB-BRb
-      start_orientation: 0
+      start_angle: 0
       straight_x: null
       straight_y: null
       symbol_to_component:
@@ -68,7 +68,7 @@ instances:
       port_name2: o2
       ports_map: null
       sequence: bLB-BRb
-      start_orientation: 0
+      start_angle: 0
       straight_x: null
       straight_y: null
       symbol_to_component:

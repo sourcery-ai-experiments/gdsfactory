@@ -20,8 +20,8 @@ def straight_heater_metal_undercut(
     cross_section_heater_undercut: CrossSectionSpec = "strip_heater_metal_undercut",
     with_undercut: bool = True,
     via_stack: Optional[ComponentSpec] = "via_stack_heater_mtop",
-    port_orientation1: int = 180,
-    port_orientation2: int = 0,
+    port_angle1: int = 180,
+    port_angle2: int = 0,
     heater_taper_length: Optional[float] = 5.0,
     ohms_per_square: Optional[float] = None,
     **kwargs,
@@ -41,8 +41,8 @@ def straight_heater_metal_undercut(
         cross_section_heater_undercut: for heated sections with undercut.
         with_undercut: isolation trenches for higher efficiency.
         via_stack: via stack.
-        port_orientation1: left via stack port orientation.
-        port_orientation2: right via stack port orientation.
+        port_angle1: left via stack port angle.
+        port_angle2: right via stack port angle.
         heater_taper_length: minimizes current concentrations from heater to via_stack.
         ohms_per_square: to calculate resistance.
         cross_section: for waveguide ports.
@@ -104,12 +104,8 @@ def straight_heater_metal_undercut(
         via_stack_east = c << via_stacke
         via_stack_west.move(via_stack_west_center - (dx, 0))
         via_stack_east.move(via_stack_east_center + (dx, 0))
-        c.add_port(
-            "e1", port=via_stack_west.get_ports_list(orientation=port_orientation1)[0]
-        )
-        c.add_port(
-            "e2", port=via_stack_east.get_ports_list(orientation=port_orientation2)[0]
-        )
+        c.add_port("e1", port=via_stack_west.get_ports_list(angle=port_angle1)[0])
+        c.add_port("e2", port=via_stack_east.get_ports_list(angle=port_angle2)[0])
         if heater_taper_length:
             x = gf.get_cross_section(cross_section_heater, width=heater_width)
             taper = gf.components.taper(
@@ -136,14 +132,14 @@ straight_heater_metal = gf.partial(
 straight_heater_metal_90_90 = gf.partial(
     straight_heater_metal_undercut,
     with_undercut=False,
-    port_orientation1=90,
-    port_orientation2=90,
+    port_angle1=90,
+    port_angle2=90,
 )
 straight_heater_metal_undercut_90_90 = gf.partial(
     straight_heater_metal_undercut,
     with_undercut=False,
-    port_orientation1=90,
-    port_orientation2=90,
+    port_angle1=90,
+    port_angle2=90,
 )
 
 

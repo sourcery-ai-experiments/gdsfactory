@@ -68,13 +68,13 @@ def get_pin_triangle_polygon_tip(
     p = port
     port_face = p.info.get("face", None)
 
-    orientation = p.orientation
+    angle = p.angle
 
-    if orientation is None:
-        raise ValueError("Port {port.name!r} needs to have an orientation.")
+    if angle is None:
+        raise ValueError("Port {port.name!r} needs to have an angle.")
 
-    ca = np.cos(orientation * np.pi / 180)
-    sa = np.sin(orientation * np.pi / 180)
+    ca = np.cos(angle * np.pi / 180)
+    sa = np.sin(angle * np.pi / 180)
     rot_mat = np.array([[ca, -sa], [sa, ca]])
     d = p.width / 2
 
@@ -112,7 +112,7 @@ def add_pin_triangle(
         layer: for the pin marker.
         layer_label: for the label.
     """
-    if port.orientation is not None:
+    if port.angle is not None:
         polygon, ptip = get_pin_triangle_polygon_tip(port=port)
         component.add_polygon(polygon, layer=layer)
 
@@ -153,7 +153,7 @@ def add_pin_rectangle_inside(
           |_______________|
     """
     p = port
-    a = p.orientation
+    a = p.angle
     ca = np.cos(a * np.pi / 180)
     sa = np.sin(a * np.pi / 180)
     rot_mat = np.array([[ca, -sa], [sa, ca]])
@@ -209,7 +209,7 @@ def add_pin_rectangle_double(
                  __
     """
     p = port
-    a = p.orientation
+    a = p.angle
     ca = np.cos(a * np.pi / 180)
     sa = np.sin(a * np.pi / 180)
     rot_mat = np.array([[ca, -sa], [sa, ca]])
@@ -282,7 +282,7 @@ def add_pin_rectangle(
                  __
     """
     p = port
-    a = p.orientation
+    a = p.angle
     ca = np.cos(a * np.pi / 180)
     sa = np.sin(a * np.pi / 180)
     rot_mat = np.array([[ca, -sa], [sa, ca]])
@@ -344,7 +344,7 @@ def add_pin_path(
 
     layer_label = layer_label or layer
     p = port
-    a = p.orientation
+    a = p.angle
     ca = np.cos(a * np.pi / 180)
     sa = np.sin(a * np.pi / 180)
     rot_mat = np.array([[ca, -sa], [sa, ca]])

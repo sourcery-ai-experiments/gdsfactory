@@ -56,7 +56,7 @@ def parse_component_name(name: str) -> Tuple[str, bool]:
 
 
 def _flip_ref(c_ref, port_name):
-    a = c_ref.ports[port_name].orientation
+    a = c_ref.ports[port_name].angle
     if a in [0, 180]:
         c_ref.mirror_y(port_name)
     else:
@@ -71,7 +71,7 @@ def component_sequence(
     ports_map: Optional[Dict[str, Tuple[str, str]]] = None,
     port_name1: str = "o1",
     port_name2: str = "o2",
-    start_orientation: float = 0.0,
+    start_angle: float = 0.0,
 ) -> Component:
     """Returns component from ASCII sequence.
 
@@ -84,7 +84,7 @@ def component_sequence(
             {port_name: (alias_name, port_name)}
         port_name1: input port_name.
         port_name2: output port_name.
-        start_orientation: in degrees.
+        start_angle: in degrees.
 
     Returns:
         component: containing the sequence of sub-components
@@ -130,7 +130,7 @@ def component_sequence(
     if do_flip:
         prev_device = _flip_ref(prev_device, input_port)
 
-    prev_device.rotate(angle=start_orientation)
+    prev_device.rotate(angle=start_angle)
 
     try:
         component.add_port(name=port_name1, port=prev_device.ports[input_port])

@@ -161,14 +161,14 @@ def optimal_step(
             name="e1",
             center=[min(xpts), start_width / 2],
             width=start_width,
-            orientation=180,
+            angle=180,
             layer=layer,
         )
         D.add_port(
             name="e2",
             center=[max(xpts), end_width / 2],
             width=end_width,
-            orientation=0,
+            angle=0,
             layer=layer,
         )
     if symmetric:
@@ -176,14 +176,14 @@ def optimal_step(
             name="e1",
             center=[min(xpts), 0],
             width=start_width,
-            orientation=180,
+            angle=180,
             layer=layer,
         )
         D.add_port(
             name="e2",
             center=[max(xpts), 0],
             width=end_width,
-            orientation=0,
+            angle=0,
             layer=layer,
         )
 

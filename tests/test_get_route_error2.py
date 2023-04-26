@@ -6,8 +6,8 @@ import gdsfactory as gf
 def test_route_error2():
     """Impossible route."""
     c = gf.Component("pads_route_from_steps")
-    pt = c << gf.components.pad_array(orientation=270, columns=3)
-    pb = c << gf.components.pad_array(orientation=90, columns=3)
+    pt = c << gf.components.pad_array(angle=270, columns=3)
+    pb = c << gf.components.pad_array(angle=90, columns=3)
     pt.move((100, 200))
     route = gf.routing.get_route_from_steps(
         pt.ports["e11"],

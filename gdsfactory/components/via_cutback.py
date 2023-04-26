@@ -47,7 +47,7 @@ def _via_iterable(
         name="e4",
         center=((1 * wire_width) + wire_width / 2, -wire_width / 2),
         width=wire_width,
-        orientation=-90,
+        angle=-90,
         port_type="electrical",
         layer=layer2,
     )
@@ -55,7 +55,7 @@ def _via_iterable(
         name="e2",
         center=((1 * wire_width) + wire_width / 2, wire_width / 2),
         width=wire_width,
-        orientation=90,
+        angle=90,
         port_type="electrical",
         layer=layer2,
     )

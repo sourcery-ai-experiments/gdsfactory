@@ -34,7 +34,7 @@ def get_routes_bend180(
         import gdsfactory as gf
 
         c = gf.Component("get_routes_bend180")
-        pad_array = gf.components.pad_array(orientation=270)
+        pad_array = gf.components.pad_array(angle=270)
         c1 = c << pad_array
         c2 = c << pad_array
         c2.rotate(90)
@@ -71,7 +71,7 @@ def get_routes_bend180(
 
 def test_get_routes_bend180():
     c = gf.Component("get_routes_bend180")
-    pad_array = gf.components.pad_array(orientation=270)
+    pad_array = gf.components.pad_array(angle=270)
     c1 = c << pad_array
     c2 = c << pad_array
     c2.rotate(90)
@@ -96,7 +96,7 @@ def test_get_routes_bend180():
 
 if __name__ == "__main__":
     c = gf.Component("get_routes_bend180")
-    pad_array = gf.components.pad_array(orientation=270)
+    pad_array = gf.components.pad_array(angle=270)
     c1 = c << pad_array
     c2 = c << pad_array
     c2.rotate(90)

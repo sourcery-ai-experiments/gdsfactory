@@ -118,7 +118,7 @@ def route_fiber_single(
     component_west_ports = Component()
     ref = component_west_ports << component
     ref.rotate(90)
-    south_ports = ref.get_ports_dict(orientation=270)
+    south_ports = ref.get_ports_dict(angle=270)
     component_west_ports.ports = south_ports
 
     if len(south_ports):

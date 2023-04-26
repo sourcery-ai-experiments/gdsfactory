@@ -84,7 +84,7 @@ with Session(engine) as session:
             component_id=c1.id,
             port_type=port.port_type,
             name=port.name,
-            orientation=port.orientation,
+            angle=port.angle,
             position=port.center,
         )
         component_settings.append(s)

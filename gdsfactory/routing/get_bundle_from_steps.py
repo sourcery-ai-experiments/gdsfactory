@@ -74,8 +74,8 @@ def get_bundle_from_steps(
         left = c << w
         right = c << w
         right.move((200, 100))
-        p1 = left.get_ports_list(orientation=0)
-        p2 = right.get_ports_list(orientation=180)
+        p1 = left.get_ports_list(angle=0)
+        p2 = right.get_ports_list(angle=180)
 
         routes = gf.routing.get_bundle_from_steps(
             p1,
@@ -124,17 +124,17 @@ def get_bundle_from_steps(
 
     port2 = ports2[0]
     x2, y2 = port2.center
-    orientation = port2.orientation
-    if orientation is None:
+    angle = port2.angle
+    if angle is None:
         p1 = waypoints[-2]
         p0 = waypoints[-1]
         if _is_vertical(p0, p1):
             waypoints += [(y2, y)]
         elif _is_horizontal(p0, p1):
             waypoints += [(x, x2)]
-    elif int(orientation) in {0, 180}:
+    elif int(angle) in {0, 180}:
         waypoints += [(x, y2)]
-    elif int(orientation) in {90, 270}:
+    elif int(angle) in {90, 270}:
         waypoints += [(x2, y)]
     waypoints = np.array(waypoints)
 
@@ -199,8 +199,8 @@ def _demo() -> None:
     left = c << w
     right = c << w
     right.move((200, 100))
-    p1 = left.get_ports_list(orientation=0)
-    p2 = right.get_ports_list(orientation=180)
+    p1 = left.get_ports_list(angle=0)
+    p2 = right.get_ports_list(angle=180)
 
     routes = get_bundle_from_steps_electrical(
         p1,
@@ -220,11 +220,11 @@ if __name__ == "__main__":
     c = gf.Component("pads_bundle_steps")
     pt = c << gf.components.pad_array(
         gf.partial(gf.components.pad, size=(30, 30)),
-        orientation=270,
+        angle=270,
         columns=3,
         spacing=(50, 0),
     )
-    pb = c << gf.components.pad_array(orientation=90, columns=3)
+    pb = c << gf.components.pad_array(angle=90, columns=3)
     pt.move((300, 500))
 
     routes = get_bundle_from_steps_electrical(

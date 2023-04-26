@@ -49,7 +49,7 @@ def test_astar_pass() -> Component:
 #         "o1", 0, rect1.center + (0, 3), cross_section=gf.get_cross_section("strip")
 #     )
 #     port2 = port1.copy("o2")
-#     port2.orientation = 180
+#     port2.angle = 180
 #     port2.center = rect2.center + (0, -3)
 #     c.add_ports([port1, port2])
 

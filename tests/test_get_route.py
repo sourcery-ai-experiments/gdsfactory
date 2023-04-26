@@ -30,7 +30,7 @@ def test_get_route_electrical_multilayer(
 ) -> None:
     c = gf.Component("multi-layer")
     ptop = c << gf.components.pad_array()
-    pbot = c << gf.components.pad_array(orientation=90)
+    pbot = c << gf.components.pad_array(angle=90)
 
     ptop.movex(300)
     ptop.movey(300)
@@ -63,7 +63,7 @@ if __name__ == "__main__":
 
     c = gf.Component("multi-layer")
     ptop = c << gf.components.pad_array()
-    pbot = c << gf.components.pad_array(orientation=90)
+    pbot = c << gf.components.pad_array(angle=90)
 
     ptop.movex(300)
     ptop.movey(300)

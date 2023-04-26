@@ -61,6 +61,6 @@ if __name__ == "__main__":
         npoints=1000,
         cross_section="rib_with_trenches",
     )
-    print(c.ports["o1"].orientation)
-    print(c.ports["o2"].orientation)
+    print(c.ports["o1"].angle)
+    print(c.ports["o2"].angle)
     c.show(show_ports=True)

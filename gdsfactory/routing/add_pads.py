@@ -104,10 +104,10 @@ def add_pads_bot(
             f"pad_port_name = {pad_port_name!r} not in {pad_component.name!r} ports {pad_ports}"
         )
 
-    pad_orientation = int(pad_component[pad_port_name].orientation)
-    if pad_orientation != 180:
+    pad_angle = int(pad_component[pad_port_name].angle)
+    if pad_angle != 180:
         raise ValueError(
-            f"port.orientation={pad_orientation} for port {pad_port_name!r} needs to be 180 degrees."
+            f"port.angle={pad_angle} for port {pad_port_name!r} needs to be 180 degrees."
         )
 
     if not ports:

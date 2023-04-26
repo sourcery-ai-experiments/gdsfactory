@@ -17,8 +17,8 @@ def test_get_ports() -> None:
     p_optical = c.get_ports_dict(width=0.5)
     assert len(p_optical) == 2, f"{len(p_optical)}"
 
-    p_optical_west = c.get_ports_dict(orientation=180, width=0.5)
-    p_optical_east = c.get_ports_dict(orientation=0, width=0.5)
+    p_optical_west = c.get_ports_dict(angle=180, width=0.5)
+    p_optical_east = c.get_ports_dict(angle=0, width=0.5)
     assert len(p_optical_east) == 1, f"{len(p_optical_east)}"
     assert len(p_optical_west) == 1, f"{len(p_optical_west)}"
 
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     # p_optical = c.get_ports_dict(width=0.5)
     # assert len(p_optical) == 2, f"{len(p_optical)}"
 
-    # p_optical_west = c.get_ports_dict(orientation=180, width=0.5)
-    # p_optical_east = c.get_ports_dict(orientation=0, width=0.5)
+    # p_optical_west = c.get_ports_dict(angle=180, width=0.5)
+    # p_optical_east = c.get_ports_dict(angle=0, width=0.5)
     # assert len(p_optical_east) == 1, f"{len(p_optical_east)}"
     # assert len(p_optical_west) == 1, f"{len(p_optical_west)}"

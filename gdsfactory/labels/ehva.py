@@ -102,7 +102,7 @@ CIRCUIT NAME:{component.name}
             info += [
                 f"{port_type_ehva} NAME: {port.name} TYPE: {port_type_ehva}, "
                 f"POSITION RELATIVE:({snap(port.x)}, {snap(port.y)}),"
-                f" ORIENTATION: {port.orientation}"
+                f" angle: {port.angle}"
                 for port in component.get_ports_list(prefix=prefix)
             ]
     text += "\n".join(info)

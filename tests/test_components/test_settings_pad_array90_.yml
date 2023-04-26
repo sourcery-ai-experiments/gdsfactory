@@ -1,4 +1,4 @@
-name: pad_array_orientation90
+name: pad_array_angle90
 ports:
   e11:
     center:
@@ -8,7 +8,7 @@ ports:
     - 49
     - 0
     name: e11
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 100.0
@@ -20,7 +20,7 @@ ports:
     - 49
     - 0
     name: e12
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 100.0
@@ -32,7 +32,7 @@ ports:
     - 49
     - 0
     name: e13
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 100.0
@@ -44,7 +44,7 @@ ports:
     - 49
     - 0
     name: e14
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 100.0
@@ -56,7 +56,7 @@ ports:
     - 49
     - 0
     name: e15
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 100.0
@@ -68,17 +68,17 @@ ports:
     - 49
     - 0
     name: e16
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 100.0
 settings:
   changed:
-    orientation: 90
+    angle: 90
   child: null
   default:
     columns: 6
-    orientation: 270
+    angle: 270
     pad: pad
     rows: 1
     spacing:
@@ -86,7 +86,7 @@ settings:
     - 150.0
   full:
     columns: 6
-    orientation: 90
+    angle: 90
     pad: pad
     rows: 1
     spacing:
@@ -99,4 +99,4 @@ settings:
     - 100.0
   info_version: 2
   module: gdsfactory.components.pad
-  name: pad_array_orientation90
+  name: pad_array_angle90

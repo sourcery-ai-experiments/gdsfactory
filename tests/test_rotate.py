@@ -20,26 +20,24 @@ def test_rotate_port() -> None:
     port_center_original = (10, 0)
     port_center_expected = (0, 10)
     rotation = 90
-    port_orientation_expected = rotation
+    port_angle_expected = rotation
     c1 = gf.Component()
-    p1 = c1.add_port(
-        "o1", center=port_center_original, width=5, layer="WG", orientation=0
-    )
+    p1 = c1.add_port("o1", center=port_center_original, width=5, layer="WG", angle=0)
     p2 = p1.copy()
-    # p2.orientation = None
+    # p2.angle = None
     c1.add_port("e1", port=p2)
     c = gf.Component()
     c1_ref = c << c1
-    c1_ref.rotate(port_orientation_expected)
+    c1_ref.rotate(port_angle_expected)
     port_center_actual = c1_ref["o1"].center
-    port_orientation_actual = c1_ref["o1"].orientation
+    port_angle_actual = c1_ref["o1"].angle
     npt.assert_almost_equal(port_center_actual, port_center_expected)
-    assert port_orientation_actual == port_orientation_expected
+    assert port_angle_actual == port_angle_expected
 
-    # port_center_actual_no_orientation = c1_ref["e1"].center
-    # port_orientation_actual_no_orientation = c1_ref["e1"].orientation
-    # npt.assert_almost_equal(port_center_actual_no_orientation, port_center_expected)
-    # assert port_orientation_actual_no_orientation is None, port_orientation_actual_no_orientation
+    # port_center_actual_no_angle = c1_ref["e1"].center
+    # port_angle_actual_no_angle = c1_ref["e1"].angle
+    # npt.assert_almost_equal(port_center_actual_no_angle, port_center_expected)
+    # assert port_angle_actual_no_angle is None, port_angle_actual_no_angle
 
 
 if __name__ == "__main__":

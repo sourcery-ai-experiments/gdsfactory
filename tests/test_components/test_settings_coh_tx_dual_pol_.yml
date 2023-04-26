@@ -8,7 +8,7 @@ ports:
     - 1
     - 0
     name: o1
-    orientation: 180
+    angle: 180
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -20,7 +20,7 @@ ports:
     - 1
     - 0
     name: o2
-    orientation: 0.0
+    angle: 0.0
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -32,7 +32,7 @@ ports:
     - 1
     - 0
     name: o3
-    orientation: 0.0
+    angle: 0.0
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -44,7 +44,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_i_top_bot_e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -56,7 +56,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_i_top_bot_e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -68,7 +68,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_i_top_bot_e3
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -80,7 +80,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_i_top_bot_e4
-    orientation: 270
+    angle: 270
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -92,7 +92,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_i_top_top_e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -104,7 +104,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_i_top_top_e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -116,7 +116,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_i_top_top_e3
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -128,7 +128,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_i_top_top_e4
-    orientation: 270
+    angle: 270
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -140,7 +140,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_q_top_bot_e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -152,7 +152,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_q_top_bot_e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -164,7 +164,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_q_top_bot_e3
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -176,7 +176,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_q_top_bot_e4
-    orientation: 270
+    angle: 270
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -188,7 +188,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_q_top_top_e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -200,7 +200,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_q_top_top_e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -212,7 +212,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_q_top_top_e3
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -224,7 +224,7 @@ ports:
     - 49
     - 0
     name: pol1_mzm_q_top_top_e4
-    orientation: 270
+    angle: 270
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -236,7 +236,7 @@ ports:
     - 49
     - 0
     name: pol1_ps_q_bot_e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -248,7 +248,7 @@ ports:
     - 49
     - 0
     name: pol1_ps_q_bot_e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 80.0
@@ -260,7 +260,7 @@ ports:
     - 49
     - 0
     name: pol1_ps_q_bot_e3
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -272,7 +272,7 @@ ports:
     - 49
     - 0
     name: pol1_ps_q_bot_e4
-    orientation: 270
+    angle: 270
     port_type: electrical
     shear_angle: null
     width: 80.0
@@ -284,7 +284,7 @@ ports:
     - 49
     - 0
     name: pol1_ps_q_top_e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -296,7 +296,7 @@ ports:
     - 49
     - 0
     name: pol1_ps_q_top_e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 80.0
@@ -308,7 +308,7 @@ ports:
     - 49
     - 0
     name: pol1_ps_q_top_e3
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -320,7 +320,7 @@ ports:
     - 49
     - 0
     name: pol1_ps_q_top_e4
-    orientation: 270
+    angle: 270
     port_type: electrical
     shear_angle: null
     width: 80.0
@@ -332,7 +332,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_i_top_bot_e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -344,7 +344,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_i_top_bot_e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -356,7 +356,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_i_top_bot_e3
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -368,7 +368,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_i_top_bot_e4
-    orientation: 270
+    angle: 270
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -380,7 +380,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_i_top_top_e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -392,7 +392,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_i_top_top_e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -404,7 +404,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_i_top_top_e3
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -416,7 +416,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_i_top_top_e4
-    orientation: 270
+    angle: 270
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -428,7 +428,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_q_top_bot_e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -440,7 +440,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_q_top_bot_e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -452,7 +452,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_q_top_bot_e3
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -464,7 +464,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_q_top_bot_e4
-    orientation: 270
+    angle: 270
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -476,7 +476,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_q_top_top_e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -488,7 +488,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_q_top_top_e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -500,7 +500,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_q_top_top_e3
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -512,7 +512,7 @@ ports:
     - 49
     - 0
     name: pol2_mzm_q_top_top_e4
-    orientation: 270
+    angle: 270
     port_type: electrical
     shear_angle: null
     width: 180.0
@@ -524,7 +524,7 @@ ports:
     - 49
     - 0
     name: pol2_ps_q_bot_e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -536,7 +536,7 @@ ports:
     - 49
     - 0
     name: pol2_ps_q_bot_e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 80.0
@@ -548,7 +548,7 @@ ports:
     - 49
     - 0
     name: pol2_ps_q_bot_e3
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -560,7 +560,7 @@ ports:
     - 49
     - 0
     name: pol2_ps_q_bot_e4
-    orientation: 270
+    angle: 270
     port_type: electrical
     shear_angle: null
     width: 80.0
@@ -572,7 +572,7 @@ ports:
     - 49
     - 0
     name: pol2_ps_q_top_e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -584,7 +584,7 @@ ports:
     - 49
     - 0
     name: pol2_ps_q_top_e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 80.0
@@ -596,7 +596,7 @@ ports:
     - 49
     - 0
     name: pol2_ps_q_top_e3
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 10.0
@@ -608,7 +608,7 @@ ports:
     - 49
     - 0
     name: pol2_ps_q_top_e4
-    orientation: 270
+    angle: 270
     port_type: electrical
     shear_angle: null
     width: 80.0

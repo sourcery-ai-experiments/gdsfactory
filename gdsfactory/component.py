@@ -37,11 +37,11 @@ from gdsfactory.port import (
     port_to_kport,
     auto_rename_ports,
     auto_rename_ports_counter_clockwise,
-    auto_rename_ports_layer_orientation,
-    auto_rename_ports_orientation,
-    map_ports_layer_to_orientation,
-    map_ports_to_orientation_ccw,
-    map_ports_to_orientation_cw,
+    auto_rename_ports_layer_angle,
+    auto_rename_ports_angle,
+    map_ports_layer_to_angle,
+    map_ports_to_angle_ccw,
+    map_ports_to_angle_cw,
     select_ports,
 )
 from gdsfactory.serialization import clean_dict
@@ -654,19 +654,19 @@ class Component(kf.KCell):
     @property
     def ports_layer(self) -> Dict[str, str]:
         """Returns a mapping from layer0_layer1_E0: portName."""
-        return map_ports_layer_to_orientation(self.ports)
+        return map_ports_layer_to_angle(self.ports)
 
-    def port_by_orientation_cw(self, key: str, **kwargs):
+    def port_by_angle_cw(self, key: str, **kwargs):
         """Returns port by indexing them clockwise."""
-        m = map_ports_to_orientation_cw(self.ports, **kwargs)
+        m = map_ports_to_angle_cw(self.ports, **kwargs)
         if key not in m:
             raise KeyError(f"{key} not in {list(m.keys())}")
         key2 = m[key]
         return self.ports[key2]
 
-    def port_by_orientation_ccw(self, key: str, **kwargs):
+    def port_by_angle_ccw(self, key: str, **kwargs):
         """Returns port by indexing them clockwise."""
-        m = map_ports_to_orientation_ccw(self.ports, **kwargs)
+        m = map_ports_to_angle_ccw(self.ports, **kwargs)
         if key not in m:
             raise KeyError(f"{key} not in {list(m.keys())}")
         key2 = m[key]
@@ -678,7 +678,7 @@ class Component(kf.KCell):
         Keyword Args:
             layer: port GDS layer.
             prefix: with in port name.
-            orientation: in degrees.
+            angle: in degrees.
             width: port width.
             layers_excluded: List of layers to exclude.
             port_type: optical, electrical, ...
@@ -693,7 +693,7 @@ class Component(kf.KCell):
         Keyword Args:
             layer: port GDS layer.
             prefix: with in port name.
-            orientation: in degrees.
+            angle: in degrees.
             width: port width (um).
             layers_excluded: List of layers to exclude.
             port_type: optical, electrical, ...
@@ -892,15 +892,15 @@ class Component(kf.KCell):
                 ref_ports_transformed = []
                 for rp in ref_ports:
                     new_port = rp._copy()
-                    new_center, new_orientation = r._transform_port(
+                    new_center, new_angle = r._transform_port(
                         rp.center,
-                        rp.orientation,
+                        rp.angle,
                         r.origin,
                         r.rotation,
                         r.x_reflection,
                     )
                     new_port.center = new_center
-                    new_port.new_orientation = new_orientation
+                    new_port.new_angle = new_angle
                     ref_ports_transformed.append(new_port)
                 port_list += ref_ports_transformed
 
@@ -921,7 +921,7 @@ class Component(kf.KCell):
         Keyword Args:
             layer: select ports with GDS layer.
             prefix: select ports with port name.
-            orientation: select ports with orientation in degrees.
+            angle: select ports with angle in degrees.
             width: select ports with port width.
             layers_excluded: List of layers to exclude.
             port_type: select ports with port_type (optical, electrical, vertical_te).
@@ -1028,7 +1028,7 @@ class Component(kf.KCell):
         name: Optional[Union[str, object]] = None,
         center: Optional[Tuple[float, float]] = None,
         width: Optional[float] = None,
-        orientation: Optional[float] = None,
+        angle: Optional[float] = None,
         port: Optional[Port] = None,
         layer: LayerSpec = None,
         port_type: str = "optical",
@@ -1037,7 +1037,7 @@ class Component(kf.KCell):
         """Add port to component.
 
         You can copy an existing port like add_port(port = existing_port) or
-        create a new port add_port(myname, mycenter, mywidth, myorientation).
+        create a new port add_port(myname, mycenter, mywidth, myangle).
         You can also copy an existing port
         with a new name add_port(port = existing_port, name = new_name)
 
@@ -1045,7 +1045,7 @@ class Component(kf.KCell):
             name: port name.
             center: x, y.
             width: in um.
-            orientation: in deg.
+            angle: in deg.
             port: optional port.
             layer: port layer.
             port_type: optical, electrical, vertical_dc, vertical_te, vertical_tm.
@@ -1061,12 +1061,12 @@ class Component(kf.KCell):
                 return port
 
             elif isinstance(port, Port):
-                port.orientation = float(port.orientation)
+                port.angle = float(port.angle)
                 p = kf.Port(
                     name=name,
                     position=port.center,
                     width=port.width,
-                    angle=port.orientation,
+                    angle=port.angle,
                     layer=self.layer(*get_layer(port.layer)),
                     port_type=port.port_type,
                 )
@@ -1093,7 +1093,7 @@ class Component(kf.KCell):
             name=name,
             position=center,
             width=width,
-            angle=orientation,
+            angle=angle,
             layer=self.layer(*layer),
             port_type=port_type,
         )
@@ -1897,7 +1897,7 @@ class Component(kf.KCell):
         return d
 
     def auto_rename_ports(self, **kwargs) -> None:
-        """Rename ports by orientation NSEW (north, south, east, west).
+        """Rename ports by angle NSEW (north, south, east, west).
 
         Keyword Args:
             function: to rename ports.
@@ -1923,12 +1923,12 @@ class Component(kf.KCell):
         self.is_unlocked()
         auto_rename_ports_counter_clockwise(self, **kwargs)
 
-    def auto_rename_ports_layer_orientation(self, **kwargs) -> None:
+    def auto_rename_ports_layer_angle(self, **kwargs) -> None:
         self.is_unlocked()
-        auto_rename_ports_layer_orientation(self, **kwargs)
+        auto_rename_ports_layer_angle(self, **kwargs)
 
-    def auto_rename_ports_orientation(self, **kwargs) -> None:
-        """Rename ports by orientation NSEW (north, south, east, west).
+    def auto_rename_ports_angle(self, **kwargs) -> None:
+        """Rename ports by angle NSEW (north, south, east, west).
 
         Keyword Args:
             function: to rename ports.
@@ -1948,7 +1948,7 @@ class Component(kf.KCell):
                 S0   S1
         """
         self.is_unlocked()
-        auto_rename_ports_orientation(self, **kwargs)
+        auto_rename_ports_angle(self, **kwargs)
 
     def move(
         self,
@@ -2670,8 +2670,8 @@ if __name__ == "__main__":
     width = 0.5
     layer = (1, 0)
     c2.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
-    c.add_port(name="o1", center=(0, 0), width=0.5, orientation=180, layer=(1, 0))
-    c.add_port(name="o2", center=(length, 0), width=0.5, orientation=180, layer=(1, 0))
+    c.add_port(name="o1", center=(0, 0), width=0.5, angle=180, layer=(1, 0))
+    c.add_port(name="o2", center=(length, 0), width=0.5, angle=180, layer=(1, 0))
 
     c << c2
 

@@ -40,7 +40,7 @@ def regular_polygon(
                 width=side_length,
                 layer=layer,
                 port_type=port_type,
-                orientation=angle,
+                angle=angle,
             )
 
     c.auto_rename_ports()

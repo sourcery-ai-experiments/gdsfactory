@@ -22,9 +22,9 @@ def grating_coupler(gc: Component) -> None:
         warnings.warn(
             f"grating_coupler {gc.name} should have a o1 port. It has {gc.ports}"
         )
-    if "o1" in gc.ports and gc.ports["o1"].orientation != 180:
+    if "o1" in gc.ports and gc.ports["o1"].angle != 180:
         warnings.warn(
-            f"grating_coupler {gc.name} orientation = {gc.ports['o1'].orientation}"
+            f"grating_coupler {gc.name} angle = {gc.ports['o1'].angle}"
             " should be 180 degrees"
         )
 

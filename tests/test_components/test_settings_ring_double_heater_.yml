@@ -8,7 +8,7 @@ ports:
     - 49
     - 0
     name: e1
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 4
@@ -20,7 +20,7 @@ ports:
     - 49
     - 0
     name: e2
-    orientation: 90
+    angle: 90
     port_type: electrical
     shear_angle: null
     width: 4
@@ -32,7 +32,7 @@ ports:
     - 1
     - 0
     name: o1
-    orientation: 180
+    angle: 180
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -44,7 +44,7 @@ ports:
     - 1
     - 0
     name: o2
-    orientation: 180
+    angle: 180
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -56,7 +56,7 @@ ports:
     - 1
     - 0
     name: o3
-    orientation: 0.0
+    angle: 0.0
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -68,7 +68,7 @@ ports:
     - 1
     - 0
     name: o4
-    orientation: 0.0
+    angle: 0.0
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -86,7 +86,7 @@ settings:
     gap: 0.2
     length_x: 0.01
     length_y: 0.01
-    port_orientation: 90
+    port_angle: 90
     radius: 10.0
     straight:
       function: straight
@@ -122,7 +122,7 @@ settings:
     gap: 0.2
     length_x: 0.01
     length_y: 0.01
-    port_orientation: 90
+    port_angle: 90
     radius: 10.0
     straight:
       function: straight

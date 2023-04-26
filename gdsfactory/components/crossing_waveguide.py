@@ -71,7 +71,7 @@ def crossing_arm(
     c.add_port(
         name="o1",
         center=(-a, 0),
-        orientation=180,
+        angle=180,
         width=width,
         layer=layer_wg,
         cross_section=xs,
@@ -80,7 +80,7 @@ def crossing_arm(
     c.add_port(
         name="o2",
         center=(a, 0),
-        orientation=0,
+        angle=0,
         width=width,
         layer=layer_wg,
         cross_section=xs,
@@ -220,7 +220,7 @@ def crossing_etched(
         c.add_port(
             name=str(i),
             center=p,
-            orientation=angle,
+            angle=angle,
             width=width,
             layer=layer_wg,
         )

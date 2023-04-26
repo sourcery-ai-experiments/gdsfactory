@@ -48,7 +48,7 @@ def taper_from_csv(
         name="o1",
         center=(xs[0], 0),
         width=2 * ys[0],
-        orientation=180,
+        angle=180,
         layer=layer,
         cross_section=x,
     )
@@ -56,7 +56,7 @@ def taper_from_csv(
         name="o2",
         center=(xs[-1], 0),
         width=2 * ys[-1],
-        orientation=0,
+        angle=0,
         layer=layer,
         cross_section=x,
     )

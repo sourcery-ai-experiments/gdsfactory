@@ -399,9 +399,9 @@ def write_sparameters_lumerical(
         s.setnamed(p, "frequency dependent profile", ss.frequency_dependent_profile)
         s.setnamed(p, "number of field profile samples", ss.field_profile_samples)
 
-        deg = int(port.orientation)
-        # if port.orientation not in [0, 90, 180, 270]:
-        #     raise ValueError(f"{port.orientation} needs to be [0, 90, 180, 270]")
+        deg = int(port.angle)
+        # if port.angle not in [0, 90, 180, 270]:
+        #     raise ValueError(f"{port.angle} needs to be [0, 90, 180, 270]")
 
         if -45 <= deg <= 45:
             direction = "Backward"
@@ -425,9 +425,7 @@ def write_sparameters_lumerical(
             dyp = 0
 
         else:
-            raise ValueError(
-                f"port {port.name!r} orientation {port.orientation} is not valid"
-            )
+            raise ValueError(f"port {port.name!r} angle {port.angle} is not valid")
 
         s.setnamed(p, "direction", direction)
         s.setnamed(p, "injection axis", injection_axis)

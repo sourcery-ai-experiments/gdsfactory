@@ -14,7 +14,7 @@ ports:
         - -0.5
         - 0.225
     width: 0.45
-    orientation: 180
+    angle: 180
     port_type: optical
     layer: WG
   o2:
@@ -23,7 +23,7 @@ ports:
         - 13
         - 3.675
     width: 0.45
-    orientation: 0
+    angle: 0
     port_type: optical
     layer: [1, 0]
   o3:
@@ -32,7 +32,7 @@ ports:
         - 13
         - -3.225
     width: 0.45
-    orientation: 0
+    angle: 0
     port_type: optical
     layer: [1, 0]
 

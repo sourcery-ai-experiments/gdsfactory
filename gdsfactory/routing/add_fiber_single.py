@@ -47,9 +47,9 @@ def add_fiber_single(
 ) -> Component:
     r"""Returns component with grating couplers and labels on each port.
 
-    It returns grating couplers in north-south orientation.
+    It returns grating couplers in north-south angle.
     First routes input port gc_port_name south, and other ports north.
-    You can always rotate it for East-West orientation.
+    You can always rotate it for East-West angle.
 
     Args:
         component: component or component function to connect to grating couplers.
@@ -150,12 +150,10 @@ def add_fiber_single(
     if gc_port_name not in gc.ports:
         raise ValueError(f"{gc_port_name!r} not in {list(gc.ports.keys())}")
 
-    gc_port_orientation = int(gc.ports[gc_port_name].orientation)
+    gc_port_angle = int(gc.ports[gc_port_name].angle)
 
-    if gc_port_orientation != 180:
-        raise ValueError(
-            f"{gc_port_name!r} orientation {gc_port_orientation} needs to be 180 deg."
-        )
+    if gc_port_angle != 180:
+        raise ValueError(f"{gc_port_name!r} angle {gc_port_angle} needs to be 180 deg.")
 
     gc_port_to_edge = abs(gc.xmax - gc.ports[gc_port_name].center[0])
 

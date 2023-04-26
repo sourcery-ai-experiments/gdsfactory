@@ -33,7 +33,7 @@ def L(
         name="e1",
         center=(0, s2),
         width=width,
-        orientation=90,
+        angle=90,
         port_type=port_type,
         layer=layer,
     )
@@ -41,7 +41,7 @@ def L(
         name="e2",
         center=(s1, 0),
         width=width,
-        orientation=0,
+        angle=0,
         port_type=port_type,
         layer=layer,
     )

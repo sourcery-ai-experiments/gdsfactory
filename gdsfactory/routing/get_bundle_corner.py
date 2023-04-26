@@ -23,34 +23,32 @@ def _groups(ports, cut, axis="X"):
     return group1, group2
 
 
-def _transform_port(
-    point, orientation, origin=(0, 0), rotation=None, x_reflection=False
-):
+def _transform_port(point, angle, origin=(0, 0), rotation=None, x_reflection=False):
     new_point = np.array(point)
-    new_orientation = orientation
+    new_angle = angle
 
     if x_reflection:
         new_point[1] = -new_point[1]
-        new_orientation = -orientation
+        new_angle = -angle
     if rotation is not None:
         new_point = _rotate_points(new_point, angle=rotation, center=[0, 0])
-        new_orientation += rotation
+        new_angle += rotation
     if origin is not None:
         new_point = new_point + np.array(origin)
-    new_orientation = new_orientation % 360
+    new_angle = new_angle % 360
 
-    return new_point, new_orientation
+    return new_point, new_angle
 
 
 def _transform_ports(ports, rotation, origin=(0, 0), x_reflection=False):
     ports_transformed = []
     for p in ports:
         new_port = p.copy()
-        new_center, new_orientation = _transform_port(
-            p.center, p.orientation, origin, rotation, x_reflection
+        new_center, new_angle = _transform_port(
+            p.center, p.angle, origin, rotation, x_reflection
         )
         new_port.center = new_center
-        new_port.new_orientation = new_orientation
+        new_port.new_angle = new_angle
         ports_transformed.append(new_port)
 
     return ports_transformed
@@ -151,13 +149,13 @@ def _get_bundle_corner_waypoints(
     connections = []
 
     for p in ports1:
-        p.orientation = p.orientation % 360
+        p.angle = p.angle % 360
 
     for p in ports2:
-        p.orientation = p.orientation % 360
+        p.angle = p.angle % 360
 
-    port_angles1 = {p.orientation for p in ports1}
-    port_angles2 = {p.orientation for p in ports2}
+    port_angles1 = {p.angle for p in ports1}
+    port_angles2 = {p.angle for p in ports2}
 
     assert len(ports2) == nb_ports, f"ports1 = {len(ports1)} must match {len(ports2)}"
     assert (
@@ -167,8 +165,8 @@ def _get_bundle_corner_waypoints(
         len(port_angles2) <= 1
     ), f"ports2 should have the same angle. Got {port_angles2}"
 
-    a_start = ports1[0].orientation
-    a_end = ports2[0].orientation
+    a_start = ports1[0].angle
+    a_end = ports2[0].angle
 
     da = a_end - a_start
     assert (da) % 180 == 90, (
@@ -182,7 +180,7 @@ def _get_bundle_corner_waypoints(
     ports1_transformed = _transform_ports(ports1, rotation=-a_start, origin=origin)
     ports2_transformed = _transform_ports(ports2, rotation=-a_start, origin=origin)
 
-    # a_end_tr = ports2_transformed[0].orientation % 360
+    # a_end_tr = ports2_transformed[0].angle % 360
 
     ys = [p.y for p in ports1_transformed]
     ye = [p.y for p in ports2_transformed]
@@ -264,7 +262,7 @@ if __name__ == "__main__":
     from gdsfactory.routing import get_routes_bend180
 
     c = gf.Component("get_routes_bend180")
-    pad_array = gf.components.pad_array(orientation=270)
+    pad_array = gf.components.pad_array(angle=270)
     c1 = c << pad_array
     c2 = c << pad_array
     c2.rotate(90)

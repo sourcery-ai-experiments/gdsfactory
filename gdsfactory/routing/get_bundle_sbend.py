@@ -57,15 +57,11 @@ if __name__ == "__main__":
 
     layer = (1, 0)
     right_ports = [
-        gf.Port(
-            f"R_{i}", center=(0, ys_right[i]), width=0.5, orientation=180, layer=layer
-        )
+        gf.Port(f"R_{i}", center=(0, ys_right[i]), width=0.5, angle=180, layer=layer)
         for i in range(N)
     ]
     left_ports = [
-        gf.Port(
-            f"L_{i}", center=(-50, ys_left[i]), width=0.5, orientation=0, layer=layer
-        )
+        gf.Port(f"L_{i}", center=(-50, ys_left[i]), width=0.5, angle=0, layer=layer)
         for i in range(N)
     ]
     left_ports.reverse()

@@ -23,7 +23,7 @@ def ellipse(
         angle_resolution: number of degrees per point.
         layer: Specific layer(s) to put polygon geometry on.
 
-    The orientation of the ellipse is determined by the order of the radii variables;
+    The angle of the ellipse is determined by the order of the radii variables;
     if the first element is larger, the ellipse will be horizontal and if the second
     element is larger, the ellipse will be vertical.
     """

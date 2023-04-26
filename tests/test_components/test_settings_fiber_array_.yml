@@ -8,7 +8,7 @@ ports:
     - 1
     - 0
     name: F0
-    orientation: 0
+    angle: 0
     port_type: optical
     shear_angle: null
     width: 10
@@ -20,7 +20,7 @@ ports:
     - 1
     - 0
     name: F1
-    orientation: 0
+    angle: 0
     port_type: optical
     shear_angle: null
     width: 10
@@ -32,7 +32,7 @@ ports:
     - 1
     - 0
     name: F2
-    orientation: 0
+    angle: 0
     port_type: optical
     shear_angle: null
     width: 10
@@ -44,7 +44,7 @@ ports:
     - 1
     - 0
     name: F3
-    orientation: 0
+    angle: 0
     port_type: optical
     shear_angle: null
     width: 10
@@ -56,7 +56,7 @@ ports:
     - 1
     - 0
     name: F4
-    orientation: 0
+    angle: 0
     port_type: optical
     shear_angle: null
     width: 10
@@ -68,7 +68,7 @@ ports:
     - 1
     - 0
     name: F5
-    orientation: 0
+    angle: 0
     port_type: optical
     shear_angle: null
     width: 10
@@ -80,7 +80,7 @@ ports:
     - 1
     - 0
     name: F6
-    orientation: 0
+    angle: 0
     port_type: optical
     shear_angle: null
     width: 10
@@ -92,7 +92,7 @@ ports:
     - 1
     - 0
     name: F7
-    orientation: 0
+    angle: 0
     port_type: optical
     shear_angle: null
     width: 10

@@ -177,10 +177,10 @@ class LithoParameter(Parameter):
                 port.width += 2 * dilation_value
                 old_center_x, old_center_y = port.center
                 new_center_x = (
-                    old_center_x - np.cos(np.radians(port.orientation)) * dilation_value
+                    old_center_x - np.cos(np.radians(port.angle)) * dilation_value
                 )
                 new_center_y = (
-                    old_center_y - np.sin(np.radians(port.orientation)) * dilation_value
+                    old_center_y - np.sin(np.radians(port.angle)) * dilation_value
                 )
                 port.center = [new_center_x, new_center_y]
             ports.append(port)
@@ -270,12 +270,10 @@ class LithoParameter(Parameter):
                 # Patch port
                 patch_polygon_x1, patch_polygon_y1 = port.center
                 patch_polygon_x2 = (
-                    patch_polygon_x1
-                    + np.cos(np.radians(port.orientation)) * round_value
+                    patch_polygon_x1 + np.cos(np.radians(port.angle)) * round_value
                 )
                 patch_polygon_y2 = (
-                    patch_polygon_y1
-                    + np.sin(np.radians(port.orientation)) * round_value
+                    patch_polygon_y1 + np.sin(np.radians(port.angle)) * round_value
                 )
                 P = gf.Path(
                     [
@@ -331,8 +329,8 @@ if __name__ == "__main__":
         ],
         layer=1,
     )
-    c.add_port(name="o1", center=(0, 1), width=1, orientation=0, layer=1)
-    c.add_port(name="o2", center=(3, -2), width=1, orientation=90, layer=1)
+    c.add_port(name="o1", center=(0, 1), width=1, angle=0, layer=1)
+    c.add_port(name="o2", center=(3, -2), width=1, angle=90, layer=1)
     c.show(show_ports=True)
 
     param = LithoParameter(layername="core")

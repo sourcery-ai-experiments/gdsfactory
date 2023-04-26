@@ -24,7 +24,7 @@ def ring_double_heater(
     cross_section_waveguide_heater: CrossSectionSpec = "strip_heater_metal",
     cross_section: CrossSectionSpec = "strip",
     via_stack: gf.typings.ComponentSpec = via_stack_heater_m3_mini,
-    port_orientation: float = 90,
+    port_angle: float = 90,
     via_stack_offset: Float2 = (0, 0),
     **kwargs,
 ) -> Component:
@@ -45,7 +45,7 @@ def ring_double_heater(
         cross_section_waveguide_heater: for waveguide with heater.
         cross_section: for regular waveguide.
         via_stack: for heater to routing metal.
-        port_orientation: for electrical ports to promote from via_stack.
+        port_angle: for electrical ports to promote from via_stack.
         via_stack_offset: x,y offset for via_stack.
         kwargs: cross_section settings.
 
@@ -99,8 +99,8 @@ def ring_double_heater(
     c2.xmin = +length_x / 2 + cb.x + via_stack_offset[0]
     c1.movey(via_stack_offset[1])
     c2.movey(via_stack_offset[1])
-    c.add_ports(c1.get_ports_list(orientation=port_orientation), prefix="e1")
-    c.add_ports(c2.get_ports_list(orientation=port_orientation), prefix="e2")
+    c.add_ports(c1.get_ports_list(angle=port_angle), prefix="e1")
+    c.add_ports(c2.get_ports_list(angle=port_angle), prefix="e2")
 
     heater_top = c << gf.get_component(
         straight,

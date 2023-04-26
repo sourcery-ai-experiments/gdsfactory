@@ -27,9 +27,7 @@ def fiber(
     c.add_ref(circle(radius=cladding_diameter / 2, layer=layer_cladding))
 
     layer_core = gf.get_layer(layer_core)
-    c.add_port(
-        name="F0", width=core_diameter, orientation=0, center=(0, 0), layer=layer_core
-    )
+    c.add_port(name="F0", width=core_diameter, angle=0, center=(0, 0), layer=layer_core)
     return c
 
 

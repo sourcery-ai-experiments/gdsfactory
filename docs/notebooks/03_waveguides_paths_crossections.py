@@ -911,7 +911,7 @@ c = gf.path.extrude(P, X1, shear_angle_start=None, shear_angle_end=10)
 c
 
 # %% [markdown] pycharm={"name": "#%% md\n"}
-# Shearing should work on paths of arbitrary orientation, as long as their end segments are sufficiently long.
+# Shearing should work on paths of arbitrary angle, as long as their end segments are sufficiently long.
 
 # %% pycharm={"name": "#%%\n"} tags=[]
 angle = 45
@@ -929,7 +929,7 @@ c = gf.path.extrude(P, X1, shear_angle_start=angle, shear_angle_end=angle)
 c
 
 # %% [markdown] pycharm={"name": "#%% md\n"}
-# The port location, width and orientation remains the same for a sheared component. However, an additional property, `shear_angle` is set to the value of the shear angle. In general, shear ports can be safely connected together.
+# The port location, width and angle remains the same for a sheared component. However, an additional property, `shear_angle` is set to the value of the shear angle. In general, shear ports can be safely connected together.
 
 # %% pycharm={"name": "#%%\n"} tags=[]
 P = gf.path.straight(length=10)

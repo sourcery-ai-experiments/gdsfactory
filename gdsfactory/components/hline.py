@@ -22,7 +22,7 @@ def hline(
         name="o1",
         center=(0.0, 0.0),
         width=width,
-        orientation=180,
+        angle=180,
         layer=layer,
         port_type=port_type,
     )
@@ -30,7 +30,7 @@ def hline(
         name="o2",
         center=(length, 0.0),
         width=width,
-        orientation=0,
+        angle=0,
         layer=layer,
         port_type=port_type,
     )

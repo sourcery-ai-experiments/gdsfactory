@@ -42,7 +42,7 @@ def big_device(
         port = Port(
             name=f"W{i}",
             center=p0 + (-dx, (i - N / 2) * spacing),
-            orientation=180,
+            angle=180,
             layer=layer,
             width=wg_width,
         )
@@ -52,7 +52,7 @@ def big_device(
         port = Port(
             name=f"E{i}",
             center=p0 + (dx, (i - N / 2) * spacing),
-            orientation=0,
+            angle=0,
             layer=layer,
             width=wg_width,
         )
@@ -62,7 +62,7 @@ def big_device(
         port = Port(
             name=f"N{i}",
             center=p0 + ((i - N / 2) * spacing, dy),
-            orientation=90,
+            angle=90,
             layer=layer,
             width=wg_width,
         )
@@ -72,7 +72,7 @@ def big_device(
         port = Port(
             name=f"S{i}",
             center=p0 + ((i - N / 2) * spacing, -dy),
-            orientation=-90,
+            angle=-90,
             layer=layer,
             width=wg_width,
         )

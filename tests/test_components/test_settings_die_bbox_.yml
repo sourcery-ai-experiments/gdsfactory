@@ -11,7 +11,7 @@ settings:
     default:
       centered: false
       layer: WG
-      port_orientations:
+      port_angles:
       - 180
       - 90
       - 0
@@ -23,7 +23,7 @@ settings:
     full:
       centered: false
       layer: WG
-      port_orientations:
+      port_angles:
       - 180
       - 90
       - 0

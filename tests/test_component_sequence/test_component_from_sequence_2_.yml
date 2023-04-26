@@ -8,7 +8,7 @@ ports:
     - 1
     - 0
     name: o1
-    orientation: 180
+    angle: 180
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -20,7 +20,7 @@ ports:
     - 1
     - 0
     name: o2
-    orientation: 0.0
+    angle: 0.0
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -56,13 +56,13 @@ settings:
     port_name1: o1
     port_name2: o2
     ports_map: null
-    start_orientation: 0.0
+    start_angle: 0.0
   full:
     port_name1: o1
     port_name2: o2
     ports_map: null
     sequence: AB
-    start_orientation: 0.0
+    start_angle: 0.0
     symbol_to_component:
       '-':
       - component: straight

@@ -14,7 +14,7 @@ def compass(
     layer: LayerSpec = "WG",
     port_type: Optional[str] = "placement",
     port_inclusion: float = 0.0,
-    port_orientations: Optional[Ints] = (180, 90, 0, -90),
+    port_angles: Optional[Ints] = (180, 90, 0, -90),
 ) -> Component:
     """Rectangle with ports on each edge (north, south, east, and west).
 
@@ -23,7 +23,7 @@ def compass(
         layer: tuple (int, int).
         port_type: optical, electrical.
         port_inclusion: from edge.
-        port_orientations: list of port_orientations to add. None add one port only.
+        port_angles: list of port_angles to add. None add one port only.
     """
     c = gf.Component()
     dx, dy = size
@@ -38,48 +38,48 @@ def compass(
     c.add_polygon(points, layer=layer)
 
     if port_type:
-        if 180 in port_orientations:
+        if 180 in port_angles:
             c.add_port(
                 name="e1",
                 center=(-dx / 2 + port_inclusion, 0),
                 width=dy,
-                orientation=180,
+                angle=180,
                 layer=layer,
                 port_type=port_type,
             )
-        if 90 in port_orientations:
+        if 90 in port_angles:
             c.add_port(
                 name="e2",
                 center=(0, dy / 2 - port_inclusion),
                 width=dx,
-                orientation=90,
+                angle=90,
                 layer=layer,
                 port_type=port_type,
             )
-        if 0 in port_orientations:
+        if 0 in port_angles:
             c.add_port(
                 name="e3",
                 center=(dx / 2 - port_inclusion, 0),
                 width=dy,
-                orientation=0,
+                angle=0,
                 layer=layer,
                 port_type=port_type,
             )
-        if -90 in port_orientations:
+        if -90 in port_angles:
             c.add_port(
                 name="e4",
                 center=(0, -dy / 2 + port_inclusion),
                 width=dx,
-                orientation=-90,
+                angle=-90,
                 layer=layer,
                 port_type=port_type,
             )
-        if port_orientations is None:
+        if port_angles is None:
             c.add_port(
                 name="pad",
                 center=(0, 0),
                 width=dy,
-                orientation=None,
+                angle=None,
                 layer=layer,
                 port_type=port_type,
             )

@@ -123,7 +123,7 @@ def get_netlist(
             to find imperfect connections, by grouping ports on a coarse grid.
 
     warnings collected during netlisting are reported back into the netlist.
-    These include warnings about mismatched port widths, orientations, shear angles, excessive offsets, etc.
+    These include warnings about mismatched port widths, angles, shear angles, excessive offsets, etc.
     You can also configure warning types which should throw an error when encountered
         by modifying DEFAULT_CRITICAL_CONNECTION_ERROR_TYPES.
     Validators, which will produce warnings for each port type,
@@ -474,28 +474,25 @@ def validate_optical_connection(
             )
 
     if any(is_top_level):
-        if (
-            abs(difference_between_angles(port1.orientation, port2.orientation))
-            > angle_tolerance
-        ):
+        if abs(difference_between_angles(port1.angle, port2.angle)) > angle_tolerance:
             top_port, lower_port = port_names if is_top_level[0] else port_names[::-1]
-            warnings["orientation_mismatch"].append(
+            warnings["angle_mismatch"].append(
                 _make_warning(
                     port_names,
-                    values=[port1.orientation, port2.orientation],
-                    message=f"{lower_port} was promoted to {top_port} but orientations"
-                    f"do not match! Difference of {(abs(port1.orientation - port2.orientation))} deg",
+                    values=[port1.angle, port2.angle],
+                    message=f"{lower_port} was promoted to {top_port} but angles"
+                    f"do not match! Difference of {(abs(port1.angle - port2.angle))} deg",
                 )
             )
     else:
         angle_misalignment = abs(
-            abs(difference_between_angles(port1.orientation, port2.orientation)) - 180
+            abs(difference_between_angles(port1.angle, port2.angle)) - 180
         )
         if angle_misalignment > angle_tolerance:
-            warnings["orientation_mismatch"].append(
+            warnings["angle_mismatch"].append(
                 _make_warning(
                     port_names,
-                    values=[port1.orientation, port2.orientation],
+                    values=[port1.angle, port2.angle],
                     message=f"{port_names[0]} and {port_names[1]} are misaligned by {angle_misalignment} deg",
                 )
             )
@@ -624,7 +621,7 @@ def _demo_mzi_lattice() -> None:
 DEFAULT_CONNECTION_VALIDATORS = get_default_connection_validators()
 
 DEFAULT_CRITICAL_CONNECTION_ERROR_TYPES = {
-    "optical": ["width_mismatch", "shear_angle_mismatch", "orientation_mismatch"]
+    "optical": ["width_mismatch", "shear_angle_mismatch", "angle_mismatch"]
 }
 
 

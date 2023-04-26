@@ -142,14 +142,14 @@ def ring_double_pn(
         )
 
         top_left_heater_via = c << heater_vias()
-        top_left_heater_via.rotate(top_heater_ref.ports["o2"].orientation)
+        top_left_heater_via.rotate(top_heater_ref.ports["o2"].angle)
 
         deltax = -abs(top_heater_ref.ports["o2"].x - top_left_heater_via.ports["e3"].x)
         deltay = abs(top_heater_ref.ports["o2"].y - top_left_heater_via.ports["e3"].y)
         top_left_heater_via.move((deltax, deltay))
 
         top_right_heater_via = c << heater_vias()
-        top_right_heater_via.rotate(top_heater_ref.ports["o1"].orientation)
+        top_right_heater_via.rotate(top_heater_ref.ports["o1"].angle)
 
         deltax = abs(top_heater_ref.ports["o1"].x - top_right_heater_via.ports["e3"].x)
         deltay = abs(top_heater_ref.ports["o1"].y - top_right_heater_via.ports["e3"].y)
@@ -165,7 +165,7 @@ def ring_double_pn(
         )
 
         bottom_left_heater_via = c << heater_vias()
-        bottom_left_heater_via.rotate(bottom_heater_ref.ports["o1"].orientation)
+        bottom_left_heater_via.rotate(bottom_heater_ref.ports["o1"].angle)
 
         deltax = -abs(
             bottom_heater_ref.ports["o1"].x - bottom_left_heater_via.ports["e3"].x
@@ -176,7 +176,7 @@ def ring_double_pn(
         bottom_left_heater_via.move((deltax, deltay))
 
         bottom_right_heater_via = c << heater_vias()
-        bottom_right_heater_via.rotate(bottom_heater_ref.ports["o2"].orientation)
+        bottom_right_heater_via.rotate(bottom_heater_ref.ports["o2"].angle)
 
         deltax = abs(
             bottom_heater_ref.ports["o2"].x - bottom_right_heater_via.ports["e3"].x

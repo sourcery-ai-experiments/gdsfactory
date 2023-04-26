@@ -114,10 +114,10 @@ def mzi_lattice(
         # stage.connect('o2', sprevious.ports['o1'])
         sprevious = stage
 
-    for port in cp1.get_ports_list(orientation=180, port_type="optical"):
+    for port in cp1.get_ports_list(angle=180, port_type="optical"):
         c.add_port(port.name, port=port)
 
-    for port in sprevious.get_ports_list(orientation=0, port_type="optical"):
+    for port in sprevious.get_ports_list(angle=0, port_type="optical"):
         c.add_port(f"o_{port.name}", port=port)
 
     c.auto_rename_ports()
@@ -326,10 +326,10 @@ def mzi_lattice_mmi(
         # stage.connect('o2', sprevious.ports['o1'])
         sprevious = stage
 
-    for port in cp1.get_ports_list(orientation=180, port_type="optical"):
+    for port in cp1.get_ports_list(angle=180, port_type="optical"):
         c.add_port(port.name, port=port)
 
-    for port in sprevious.get_ports_list(orientation=0, port_type="optical"):
+    for port in sprevious.get_ports_list(angle=0, port_type="optical"):
         c.add_port(f"o_{port.name}", port=port)
 
     c.auto_rename_ports()

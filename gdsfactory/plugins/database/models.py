@@ -311,7 +311,7 @@ class Port(Base):
     name = Column(String(200), server_default=text("''"))
     port_type = Column(String(200))
     position = Column(String(50), nullable=False)
-    orientation = Column(Float(asdecimal=True), nullable=False)
+    angle = Column(Float(asdecimal=True), nullable=False)
     description = Column(String(200))
 
     component = relationship("Component")
@@ -440,7 +440,7 @@ if __name__ == "__main__":
                 component_id=c1.id,
                 port_type=port.port_type,
                 name=port.name,
-                orientation=port.orientation,
+                angle=port.angle,
                 position=port.center,
             )
             component_settings.append(s)

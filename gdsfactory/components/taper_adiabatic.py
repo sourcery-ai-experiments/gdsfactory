@@ -95,7 +95,7 @@ def taper_adiabatic(
         name="o1",
         center=(0, 0),
         width=width1,
-        orientation=180,
+        angle=180,
         cross_section=xs1,
         layer=layer,
     )
@@ -103,7 +103,7 @@ def taper_adiabatic(
         name="o2",
         center=(length, 0),
         width=width2,
-        orientation=0,
+        angle=0,
         cross_section=xs2,
         layer=layer,
     )

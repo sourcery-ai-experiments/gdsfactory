@@ -19,8 +19,8 @@ def resistance_sheet(
     pad: ComponentSpec = pad_via_stack_slab_npp,
     pad_pitch: float = 100.0,
     ohms_per_square: Optional[float] = None,
-    port_orientation1: int = 180,
-    port_orientation2: int = 0,
+    port_angle1: int = 180,
+    port_angle2: int = 0,
 ) -> Component:
     """Returns Sheet resistance.
 
@@ -33,8 +33,8 @@ def resistance_sheet(
         pad: function to create a pad.
         pad_pitch: in um.
         ohms_per_square: optional sheet resistance to compute info.resistance.
-        port_orientation1: in degrees.
-        port_orientation2: in degrees.
+        port_angle1: in degrees.
+        port_angle2: in degrees.
     """
     c = Component()
 
@@ -63,7 +63,7 @@ def resistance_sheet(
         center=pad1.center,
         layer=list(layers)[-1],
         width=width,
-        orientation=port_orientation1,
+        angle=port_angle1,
     )
     c.add_port(
         "pad2",
@@ -71,7 +71,7 @@ def resistance_sheet(
         center=pad2.center,
         layer=list(layers)[-1],
         width=width,
-        orientation=port_orientation2,
+        angle=port_angle2,
     )
     c.absorb(pad1)
     c.absorb(pad2)

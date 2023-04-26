@@ -77,7 +77,7 @@ def greek_cross(
         cross_offset = offset
 
     port_at_length = [
-        port.move_polar_copy(d=cross_offset, angle=180 + port.orientation)
+        port.move_polar_copy(d=cross_offset, angle=180 + port.angle)
         for port in cross_ref.get_ports_list()
     ]
 

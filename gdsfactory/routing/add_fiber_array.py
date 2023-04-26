@@ -96,7 +96,7 @@ def add_fiber_array(
         gc_ports = list(gc.ports.keys())
         raise ValueError(f"gc_port_name = {gc_port_name!r} not in {gc_ports}")
 
-    orientation = gc.ports[gc_port_name].orientation
+    angle = gc.ports[gc_port_name].angle
 
     grating_coupler = (
         [gf.get_component(i) for i in grating_coupler]
@@ -104,11 +104,11 @@ def add_fiber_array(
         else gf.get_component(grating_coupler)
     )
 
-    if int(orientation) != 180:
+    if int(angle) != 180:
         raise ValueError(
             "add_fiber_array requires a grating coupler port facing west "
-            f"(orientation = 180). "
-            f"Got orientation = {orientation} degrees for port {gc_port_name!r}"
+            f"(angle = 180). "
+            f"Got angle = {angle} degrees for port {gc_port_name!r}"
         )
 
     if gc_port_name not in gc.ports:

@@ -15,7 +15,7 @@ def add_electrical_pads_shortest(
     pad_port_spacing: float = 50.0,
     select_ports: Callable = select_ports_electrical,
     port_names: Optional[Strs] = None,
-    port_orientation: float = 90,
+    port_angle: float = 90,
     layer: gf.typings.LayerSpec = "M3",
 ) -> Component:
     """Returns new Component with a pad by each electrical port.
@@ -25,7 +25,7 @@ def add_electrical_pads_shortest(
         pad: pad element or function.
         pad_port_spacing: spacing between pad and port.
         select_ports: function to select ports.
-        port_orientation: in degrees.
+        port_angle: in degrees.
         port_names: optional port names. Overrides select_ports.
         layer: for the routing.
 
@@ -34,7 +34,7 @@ def add_electrical_pads_shortest(
 
         import gdsfactory as gf
         c = gf.components.straight_heater_metal(length=100)
-        c = gf.routing.add_electrical_pads_shortest(c, port_orientation=270)
+        c = gf.routing.add_electrical_pads_shortest(c, port_angle=270)
         c.plot()
 
     """
@@ -56,19 +56,19 @@ def add_electrical_pads_shortest(
     for i, port in enumerate(ports):
         p = c << pad
 
-        if port_orientation == 0:
+        if port_angle == 0:
             p.x = port.x + pad_port_spacing
             p.y = port.y
             c.add_ref(route_quad(port, p.ports["e1"], layer=layer))
-        elif port_orientation == 180:
+        elif port_angle == 180:
             p.x = port.x - pad_port_spacing
             p.y = port.y
             c.add_ref(route_quad(port, p.ports["e3"], layer=layer))
-        elif port_orientation == 90:
+        elif port_angle == 90:
             p.y = port.y + pad_port_spacing
             p.x = port.x
             c.add_ref(route_quad(port, p.ports["e4"], layer=layer))
-        elif port_orientation == 270:
+        elif port_angle == 270:
             p.y = port.y - pad_port_spacing
             p.x = port.x
             c.add_ref(route_quad(port, p.ports["e2"], layer=layer))
@@ -87,5 +87,5 @@ if __name__ == "__main__":
     # c = gf.components.cross(length=100, layer=gf.LAYER.M3)
     # c = gf.components.mzi_phase_shifter()
     c = gf.components.straight_heater_metal(length=100)
-    c = add_electrical_pads_shortest(component=c, port_orientation=270)
+    c = add_electrical_pads_shortest(component=c, port_angle=270)
     c.show(show_ports=True)

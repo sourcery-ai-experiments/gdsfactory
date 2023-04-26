@@ -237,11 +237,11 @@ instances:
     t:
       component: pad_array
       settings:
-          orientation: 270
+          angle: 270
     b:
       component: pad_array
       settings:
-          orientation: 90
+          angle: 90
 
 placements:
     t:

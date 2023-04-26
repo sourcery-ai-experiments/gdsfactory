@@ -8,7 +8,7 @@ ports:
     - 1
     - 0
     name: o1
-    orientation: 270
+    angle: 270
     port_type: placement
     shear_angle: null
     width: 10
@@ -20,7 +20,7 @@ ports:
     - 1
     - 0
     name: o2
-    orientation: 330
+    angle: 330
     port_type: placement
     shear_angle: null
     width: 10
@@ -32,7 +32,7 @@ ports:
     - 1
     - 0
     name: o3
-    orientation: 30
+    angle: 30
     port_type: placement
     shear_angle: null
     width: 10
@@ -44,7 +44,7 @@ ports:
     - 1
     - 0
     name: o4
-    orientation: 90
+    angle: 90
     port_type: placement
     shear_angle: null
     width: 10
@@ -56,7 +56,7 @@ ports:
     - 1
     - 0
     name: o5
-    orientation: 150
+    angle: 150
     port_type: placement
     shear_angle: null
     width: 10
@@ -68,7 +68,7 @@ ports:
     - 1
     - 0
     name: o6
-    orientation: 210
+    angle: 210
     port_type: placement
     shear_angle: null
     width: 10

@@ -49,7 +49,7 @@ def free_propagation_region(
             "o1",
             center=(0, 0),
             width=wg_width,
-            orientation=180,
+            angle=180,
             layer=layer,
         )
     else:
@@ -60,7 +60,7 @@ def free_propagation_region(
                 f"W{i}",
                 center=(0, yi),
                 width=wg_width,
-                orientation=0,
+                angle=0,
                 layer=layer,
             )
 
@@ -71,7 +71,7 @@ def free_propagation_region(
             f"E{i}",
             center=(length, yi),
             width=wg_width,
-            orientation=0,
+            angle=0,
             layer=layer,
         )
 

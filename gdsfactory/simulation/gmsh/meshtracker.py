@@ -12,7 +12,7 @@ class MeshTracker:
     def __init__(self, model, atol=1e-4):
         """Map between shapely and gmsh.
 
-        Shapely is useful for built-in geometry equivalencies and extracting orientation, instead of doing it manually
+        Shapely is useful for built-in geometry equivalencies and extracting angle, instead of doing it manually
         We can also track information about the entities using labels (useful for selective mesh refinement later)
 
         TODO: Break into subclasses
@@ -41,8 +41,8 @@ class MeshTracker:
             None,
         )
 
-    def get_xy_segment_index_and_orientation(self, xy_point1, xy_point2, z1=0, z2=0):
-        """Note: orientation of z1 <--> z2 not accounted (occ kernel does not need)."""
+    def get_xy_segment_index_and_angle(self, xy_point1, xy_point2, z1=0, z2=0):
+        """Note: angle of z1 <--> z2 not accounted (occ kernel does not need)."""
         xy_line = shapely.geometry.LineString([xy_point1, xy_point2])
         for index, (shapely_line, _stored_z1, _stored_z2) in enumerate(
             self.shapely_xy_segments
@@ -82,8 +82,8 @@ class MeshTracker:
         for vertex1, vertex2 in [
             (vertices[i], vertices[i + 1]) for i in range(len(vertices) - 1)
         ]:
-            gmsh_line, orientation = self.add_get_xy_segment(vertex1, vertex2, label)
-            if orientation:
+            gmsh_line, angle = self.add_get_xy_segment(vertex1, vertex2, label)
+            if angle:
                 edges.append(gmsh_line)
             else:
                 edges.append(-gmsh_line)
@@ -121,7 +121,7 @@ class MeshTracker:
             shapely_xy_point2 (shapely.geometry.Point): second x, y coordinates
             z2: float, second z-coordinate
         """
-        index, orientation = self.get_xy_segment_index_and_orientation(
+        index, angle = self.get_xy_segment_index_and_angle(
             shapely_xy_point1, shapely_xy_point2, z1, z2
         )
         if index is not None:
@@ -142,7 +142,7 @@ class MeshTracker:
             self.gmsh_xy_segments.append(gmsh_segment)
             self.xy_segments_main_labels.append(label)
             self.xy_segments_secondary_labels.append(None)
-        return gmsh_segment, orientation
+        return gmsh_segment, angle
 
     def add_get_xy_line(self, shapely_xy_curve, label, zs=None):
         """Add a shapely line (multi-point line) to the gmsh model in the xy plane, or retrieve the existing gmsh segment with equivalent coordinates (within tol.).
@@ -155,10 +155,10 @@ class MeshTracker:
         for shapely_xy_point1, shapely_xy_point2, z1, z2 in zip(
             shapely_xy_curve.coords[:-1], shapely_xy_curve.coords[1:], zs[:-1], zs[1:]
         ):
-            gmsh_segment, orientation = self.add_get_xy_segment(
+            gmsh_segment, angle = self.add_get_xy_segment(
                 Point(shapely_xy_point1), Point(shapely_xy_point2), label, z1, z2
             )
-            if orientation:
+            if angle:
                 segments.append(gmsh_segment)
             else:
                 segments.append(-gmsh_segment)

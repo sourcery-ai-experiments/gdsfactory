@@ -141,12 +141,12 @@ def mzi_arms(
     bot_arm.connect("o1", port_e0_cp1)
     cout.connect(port_e1_cp2.name, bot_arm.ports["o2"])
     if with_splitter:
-        c.add_ports(cin.get_ports_list(orientation=180), prefix="in")
+        c.add_ports(cin.get_ports_list(angle=180), prefix="in")
     else:
         c.add_port("o1", port=bot_arm.ports["o1"])
         c.add_port("o2", port=top_arm.ports["o1"])
 
-    c.add_ports(cout.get_ports_list(orientation=0), prefix="out")
+    c.add_ports(cout.get_ports_list(angle=0), prefix="out")
     c.add_ports(top_arm.get_ports_list(port_type="electrical"), prefix="top")
     c.add_ports(bot_arm.get_ports_list(port_type="electrical"), prefix="bot")
     c.auto_rename_ports()

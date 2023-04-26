@@ -48,8 +48,8 @@ def test_get_bundle_optical2(
     d.y = w.y
     d.xmin = w.xmax + 200
 
-    ports1 = w.get_ports_list(orientation=0)
-    ports2 = d.get_ports_list(orientation=180)
+    ports1 = w.get_ports_list(angle=0)
+    ports2 = d.get_ports_list(angle=180)
 
     routes = gf.routing.get_bundle(ports1, ports2, sort_ports=True)
 

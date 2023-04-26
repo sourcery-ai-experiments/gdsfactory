@@ -118,7 +118,7 @@ def grating_coupler_dual_pol(
         name=port_type,
         port_type=port_type,
         center=(0, 0),
-        orientation=0,
+        angle=0,
         width=x_span,
         layer=layer,
     )

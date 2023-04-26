@@ -161,13 +161,13 @@ cells:
       port_name1: o1
       port_name2: o2
       ports_map: null
-      start_orientation: 0
+      start_angle: 0
     full:
       port_name1: o1
       port_name2: o2
       ports_map: null
       sequence: -UHUHUHUHUHUHUHUH-
-      start_orientation: 0
+      start_angle: 0
       symbol_to_component:
         '-':
         - straight_b0b74a72
@@ -834,8 +834,8 @@ cells:
       length_undercut: 30
       length_undercut_spacing: 6
       ohms_per_square: null
-      port_orientation1: 180
-      port_orientation2: 0
+      port_angle1: 180
+      port_angle2: 0
       with_undercut: true
     full:
       contact:
@@ -868,8 +868,8 @@ cells:
       length_undercut: 30
       length_undercut_spacing: 6
       ohms_per_square: null
-      port_orientation1: 180
-      port_orientation2: 0
+      port_angle1: 180
+      port_angle2: 0
       with_undercut: false
     function_name: straight_heater_metal_undercut
     info_version: 1

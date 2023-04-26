@@ -24,10 +24,8 @@ def path_straight(port1: Port, port2: Port) -> Path:
         port2: end port.
 
     """
-    delta_orientation = np.round(
-        np.abs(np.mod(port1.orientation - port2.orientation, 360)), 3
-    )
-    e1, e2 = _get_rotated_basis(port1.orientation)
+    delta_angle = np.round(np.abs(np.mod(port1.angle - port2.angle, 360)), 3)
+    e1, e2 = _get_rotated_basis(port1.angle)
     displacement = port2.center - port1.center
     xrel = np.round(
         np.dot(displacement, e1), 3
@@ -35,7 +33,7 @@ def path_straight(port1: Port, port2: Port) -> Path:
     yrel = np.round(
         np.dot(displacement, e2), 3
     )  # relative position of port 2, left/right
-    if (delta_orientation not in (0, 180, 360)) or (yrel != 0) or (xrel <= 0):
+    if (delta_angle not in (0, 180, 360)) or (yrel != 0) or (xrel <= 0):
         raise ValueError("path_straight(): ports must point directly at each other.")
     return Path(np.array([port1.center, port2.center]))
 
@@ -50,12 +48,10 @@ def path_L(port1: Port, port2: Port) -> Path:
         port2: end port.
 
     """
-    delta_orientation = np.round(
-        np.abs(np.mod(port1.orientation - port2.orientation, 360)), 3
-    )
-    if delta_orientation not in (90, 270):
+    delta_angle = np.round(np.abs(np.mod(port1.angle - port2.angle, 360)), 3)
+    if delta_angle not in (90, 270):
         raise ValueError("path_L(): ports must be orthogonal.")
-    e1, e2 = _get_rotated_basis(port1.orientation)
+    e1, e2 = _get_rotated_basis(port1.angle)
     # assemble waypoints
     pt1 = port1.center
     pt3 = port2.center
@@ -74,12 +70,10 @@ def path_U(port1: Port, port2: Port, length1=200) -> Path:
             Should be larger than bend radius.
 
     """
-    delta_orientation = np.round(
-        np.abs(np.mod(port1.orientation - port2.orientation, 360)), 3
-    )
-    if delta_orientation not in (0, 180, 360):
+    delta_angle = np.round(np.abs(np.mod(port1.angle - port2.angle, 360)), 3)
+    if delta_angle not in (0, 180, 360):
         raise ValueError("path_U(): ports must be parallel.")
-    theta = np.radians(port1.orientation)
+    theta = np.radians(port1.angle)
     e1 = np.array([np.cos(theta), np.sin(theta)])
     e2 = np.array([-1 * np.sin(theta), np.cos(theta)])
     # assemble waypoints
@@ -104,13 +98,11 @@ def path_J(port1: Port, port2: Port, length1=200, length2=200) -> Path:
             Should be larger than bend radius.
 
     """
-    delta_orientation = np.round(
-        np.abs(np.mod(port1.orientation - port2.orientation, 360)), 3
-    )
-    if delta_orientation not in (90, 270):
+    delta_angle = np.round(np.abs(np.mod(port1.angle - port2.angle, 360)), 3)
+    if delta_angle not in (90, 270):
         raise ValueError("path_J(): ports must be orthogonal.")
-    e1, _ = _get_rotated_basis(port1.orientation)
-    e2, _ = _get_rotated_basis(port2.orientation)
+    e1, _ = _get_rotated_basis(port1.angle)
+    e2, _ = _get_rotated_basis(port2.angle)
     # assemble waypoints
     pt1 = port1.center
     pt2 = pt1 + length1 * e1  # outward from port1 by length1
@@ -135,13 +127,11 @@ def path_C(port1: Port, port2: Port, length1=100, left1=100, length2=100) -> Pat
             than bend radius.
 
     """
-    delta_orientation = np.round(
-        np.abs(np.mod(port1.orientation - port2.orientation, 360)), 3
-    )
-    if delta_orientation not in (0, 180, 360):
+    delta_angle = np.round(np.abs(np.mod(port1.angle - port2.angle, 360)), 3)
+    if delta_angle not in (0, 180, 360):
         raise ValueError("path_C(): ports must be parallel.")
-    e1, e_left = _get_rotated_basis(port1.orientation)
-    e2, _ = _get_rotated_basis(port2.orientation)
+    e1, e_left = _get_rotated_basis(port1.angle)
+    e2, _ = _get_rotated_basis(port2.angle)
     # assemble route points
     pt1 = port1.center
     pt2 = pt1 + length1 * e1  # outward from port1 by length1
@@ -163,7 +153,7 @@ def path_manhattan(port1: Port, port2: Port, radius) -> Path:
 
     """
     radius = radius + 0.1  # ensure space for bend radius
-    e1, e2 = _get_rotated_basis(port1.orientation)
+    e1, e2 = _get_rotated_basis(port1.angle)
     displacement = port2.center - port1.center
     xrel = np.round(
         np.dot(displacement, e1), 3
@@ -171,9 +161,7 @@ def path_manhattan(port1: Port, port2: Port, radius) -> Path:
     yrel = np.round(
         np.dot(displacement, e2), 3
     )  # port2 position, left(+)/right(-) from port1
-    orel = np.round(
-        np.abs(np.mod(port2.orientation - port1.orientation, 360)), 3
-    )  # relative orientation
+    orel = np.round(np.abs(np.mod(port2.angle - port1.angle, 360)), 3)  # relative angle
     if orel not in (0, 90, 180, 270, 360):
         raise ValueError(
             "path_manhattan(): ports must face parallel or orthogonal directions."
@@ -222,7 +210,7 @@ def path_manhattan(port1: Port, port2: Port, radius) -> Path:
 
 def path_Z(port1: Port, port2: Port, length1=100, length2=100) -> Path:
     """Return waypoint path between port1 and port2 in a Z shape. Ports can \
-    have any relative orientation.
+    have any relative angle.
 
     Args:
         port1: start port.
@@ -232,8 +220,8 @@ def path_Z(port1: Port, port2: Port, length1=100, length2=100) -> Path:
 
     """
     # get basis vectors in port directions
-    e1, _ = _get_rotated_basis(port1.orientation)
-    e2, _ = _get_rotated_basis(port2.orientation)
+    e1, _ = _get_rotated_basis(port1.angle)
+    e2, _ = _get_rotated_basis(port2.angle)
     # assemble route  points
     pt1 = port1.center
     pt2 = pt1 + length1 * e1  # outward from port1 by length1
@@ -252,8 +240,8 @@ def path_V(port1: Port, port2: Port) -> Path:
 
     """
     # get basis vectors in port directions
-    e1, _ = _get_rotated_basis(port1.orientation)
-    e2, _ = _get_rotated_basis(port2.orientation)
+    e1, _ = _get_rotated_basis(port1.angle)
+    e2, _ = _get_rotated_basis(port2.angle)
 
     # assemble route  points
     pt1 = port1.center
@@ -310,8 +298,8 @@ def route_sharp(
         import gdsfactory as gf
 
         c = gf.Component("pads")
-        c1 = c << gf.components.pad(port_orientation=None)
-        c2 = c << gf.components.pad(port_orientation=None)
+        c1 = c << gf.components.pad(port_angle=None)
+        c2 = c << gf.components.pad(port_angle=None)
 
         c2.movex(400)
         c2.movey(-200)
@@ -376,8 +364,8 @@ def route_sharp(
 
 if __name__ == "__main__":
     c = gf.Component("pads")
-    c1 = c << gf.components.pad(port_orientation=None)
-    c2 = c << gf.components.pad(port_orientation=None)
+    c1 = c << gf.components.pad(port_angle=None)
+    c2 = c << gf.components.pad(port_angle=None)
 
     c2.movex(400)
     c2.movey(-200)

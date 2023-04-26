@@ -54,29 +54,29 @@ def get_route_astar(
 
     grid, x, y = _generate_grid(component, resolution, avoid_layers, distance)
 
-    # Tell the algorithm which start and end directions to follow based on port orientation
-    input_orientation = {
+    # Tell the algorithm which start and end directions to follow based on port angle
+    input_angle = {
         0.0: (resolution, 0),
         90.0: (0, resolution),
         180.0: (-resolution, 0),
         270.0: (0, -resolution),
         None: (0, 0),
-    }[port1.orientation]
+    }[port1.angle]
 
-    output_orientation = {
+    output_angle = {
         0.0: (resolution, 0),
         90.0: (0, resolution),
         180.0: (-resolution, 0),
         270.0: (0, -resolution),
         None: (0, 0),
-    }[port2.orientation]
+    }[port2.angle]
 
     # Instantiate nodes
     start_node = Node(
         None,
         (
-            round(port1.x + input_orientation[0]),
-            round(port1.y + input_orientation[1]),
+            round(port1.x + input_angle[0]),
+            round(port1.y + input_angle[1]),
         ),
     )
     start_node.g = start_node.h = start_node.f = 0
@@ -84,8 +84,8 @@ def get_route_astar(
     end_node = Node(
         None,
         (
-            round(port2.x + output_orientation[0]),
-            round(port2.y + output_orientation[1]),
+            round(port2.x + output_angle[0]),
+            round(port2.y + output_angle[1]),
         ),
     )
     end_node.g = end_node.h = end_node.f = 0

@@ -21,11 +21,11 @@ def test_path_length_matching() -> Component:
 
     layer = (1, 0)
     ports1 = [
-        gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, orientation=a1, layer=layer)
+        gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, angle=a1, layer=layer)
         for i in range(N)
     ]
     ports2 = [
-        gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, orientation=a2, layer=layer)
+        gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, angle=a2, layer=layer)
         for i in range(N)
     ]
 
@@ -52,11 +52,11 @@ def test_path_length_matching_extra_length() -> Component:
     layer = (1, 0)
 
     ports1 = [
-        gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, orientation=a1, layer=layer)
+        gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, angle=a1, layer=layer)
         for i in range(N)
     ]
     ports2 = [
-        gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, orientation=a2, layer=layer)
+        gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, angle=a2, layer=layer)
         for i in range(N)
     ]
 
@@ -83,11 +83,11 @@ def test_path_length_matching_nb_loops() -> Component:
 
     layer = (1, 0)
     ports1 = [
-        gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, orientation=a1, layer=layer)
+        gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, angle=a1, layer=layer)
         for i in range(N)
     ]
     ports2 = [
-        gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, orientation=a2, layer=layer)
+        gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, angle=a2, layer=layer)
         for i in range(N)
     ]
 

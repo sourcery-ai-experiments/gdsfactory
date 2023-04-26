@@ -19,11 +19,11 @@ def _generate_fins(c, x, fin_size, bend):
             layer=x.layer,
             centered=True,
             port_type=None,
-            port_orientations=None,
+            port_angles=None,
         )
         rectangle.movex(
             destination=bend.ports["o1"].x
-            - (1 - bend.ports["o1"].orientation / 90.0) * fin_size[0] / 2.0
+            - (1 - bend.ports["o1"].angle / 90.0) * fin_size[0] / 2.0
         )
 
         rectangle.movey(
@@ -79,7 +79,7 @@ def _generate_gratings(c, length, period, dc, gap, x, bottom_straight, x_bot):
             layer=x.layer,
             centered=True,
             port_type=None,
-            port_orientations=None,
+            port_angles=None,
         )
         rectangle.movex(destination=x_start)
         rectangle.movey(

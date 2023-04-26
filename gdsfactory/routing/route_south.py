@@ -111,7 +111,7 @@ def route_south(
 
     sep = straight_separation
 
-    # Get lists of optical ports by orientation
+    # Get lists of optical ports by angle
     direction_ports = direction_ports_from_list_ports(optical_ports)
 
     north_ports = direction_ports["N"]
@@ -133,7 +133,7 @@ def route_south(
         return Port(
             name=p.name,
             center=(x, y),
-            orientation=90.0,
+            angle=90.0,
             width=p.width,
             cross_section=cross_section,
         )

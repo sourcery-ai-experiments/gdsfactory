@@ -43,11 +43,11 @@ def get_route_sbend(port1: Port, port2: Port, **kwargs) -> Route:
     bend_ref = bend.ref()
     bend_ref.connect(list(bend_ref.ports.keys())[0], port1)
 
-    orthogonality_error = abs(abs(port1.orientation - port2.orientation) - 180)
+    orthogonality_error = abs(abs(port1.angle - port2.angle) - 180)
     if orthogonality_error > 0.1:
         raise ValueError(
-            f"Ports need to have orthogonal orientation {orthogonality_error}\n"
-            f"port1 = {port1.orientation} deg and port2 = {port2.orientation}"
+            f"Ports need to have orthogonal angle {orthogonality_error}\n"
+            f"port1 = {port1.angle} deg and port2 = {port2.angle}"
         )
 
     return Route(
@@ -68,11 +68,11 @@ if __name__ == "__main__":
     # ys_right = [(i - N / 2) * pitch for i in range(N)]
 
     # right_ports = [
-    #     gf.Port(f"R_{i}", (0, ys_right[i]), width=0.5, orientation=180, layer=(1, 0))
+    #     gf.Port(f"R_{i}", (0, ys_right[i]), width=0.5, angle=180, layer=(1, 0))
     #     for i in range(N)
     # ]
     # left_ports = [
-    #     gf.Port(f"L_{i}", (-50, ys_left[i]), width=0.5, orientation=0, layer=(1, 0))
+    #     gf.Port(f"L_{i}", (-50, ys_left[i]), width=0.5, angle=0, layer=(1, 0))
     #     for i in range(N)
     # ]
     # left_ports.reverse()

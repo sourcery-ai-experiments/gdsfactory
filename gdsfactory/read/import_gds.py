@@ -122,7 +122,7 @@ def import_gds(
                         name=port_name,
                         center=port.center,
                         width=port.width,
-                        orientation=port.orientation,
+                        angle=port.angle,
                         layer=tuple(port.layer),
                         port_type=port.port_type,
                     )

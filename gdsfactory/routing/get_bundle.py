@@ -1,7 +1,7 @@
 """Routes bundles of ports (river routing).
 
 get bundle is the generic river routing function
-get_bundle calls different function depending on the port orientation.
+get_bundle calls different function depending on the port angle.
 
  - get_bundle_same_axis: ports facing each other with arbitrary pitch on each side
  - get_bundle_corner: 90Deg / 270Deg between ports with arbitrary pitch
@@ -116,8 +116,8 @@ def get_bundle(
             a1 = 90
             a2 = a1 + 180
 
-            ports1 = [gf.Port(f"top_{i}", center=(xs1[i], +0), width=0.5, orientation=a1, layer=(1,0)) for i in range(N)]
-            ports2 = [gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, orientation=a2, layer=(1,0)) for i in range(N)]
+            ports1 = [gf.Port(f"top_{i}", center=(xs1[i], +0), width=0.5, angle=a1, layer=(1,0)) for i in range(N)]
+            ports2 = [gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, angle=a2, layer=(1,0)) for i in range(N)]
 
             c = gf.Component()
             routes = gf.routing.get_bundle(ports1, ports2)
@@ -155,14 +155,10 @@ def get_bundle(
         ports2 = list(ports2.values())
 
     for p in ports1:
-        p.orientation = (
-            int(p.orientation) % 360 if p.orientation is not None else p.orientation
-        )
+        p.angle = int(p.angle) % 360 if p.angle is not None else p.angle
 
     for p in ports2:
-        p.orientation = (
-            int(p.orientation) % 360 if p.orientation is not None else p.orientation
-        )
+        p.angle = int(p.angle) % 360 if p.angle is not None else p.angle
 
     if len(ports1) != len(ports2):
         raise ValueError(f"ports1={len(ports1)} and ports2={len(ports2)} must be equal")
@@ -170,7 +166,7 @@ def get_bundle(
     if sort_ports:
         ports1, ports2 = sort_ports_function(ports1, ports2)
 
-    start_port_angles = {p.orientation for p in ports1}
+    start_port_angles = {p.angle for p in ports1}
     if len(start_port_angles) > 1:
         raise ValueError(f"All start port angles {start_port_angles} must be equal")
 
@@ -184,8 +180,8 @@ def get_bundle(
     }
     params.update(**kwargs)
 
-    start_angle = ports1[0].orientation
-    end_angle = ports2[0].orientation
+    start_angle = ports1[0].angle
+    end_angle = ports2[0].angle
 
     start_axis = "X" if start_angle in [0, 180] else "Y"
     end_axis = "X" if end_angle in [0, 180] else "Y"
@@ -396,7 +392,7 @@ def _get_bundle_waypoints(
         print(f"WARNING! ports1={ports1} or ports2={ports2} are empty")
         return []
 
-    axis = "X" if ports1[0].orientation in [0, 180] else "Y"
+    axis = "X" if ports1[0].angle in [0, 180] else "Y"
     if len(ports1) == 1 and len(ports2) == 1:
         return [
             generate_manhattan_waypoints(
@@ -487,7 +483,7 @@ def _get_bundle_waypoints(
 
 
 def compute_ports_max_displacement(ports1: List[Port], ports2: List[Port]) -> float:
-    if ports1[0].orientation in [0, 180]:
+    if ports1[0].angle in [0, 180]:
         a1 = [p.y for p in ports1]
         a2 = [p.y for p in ports2]
     else:
@@ -510,7 +506,7 @@ def get_min_spacing(
 ) -> float:
     """Returns the minimum amount of spacing in um required to create a \
     fanout."""
-    axis = "X" if ports1[0].orientation in [0, 180] else "Y"
+    axis = "X" if ports1[0].angle in [0, 180] else "Y"
     j = 0
     min_j = 0
     max_j = 0
@@ -602,7 +598,7 @@ def get_bundle_same_axis_no_grouping(
         a list of routes the connecting straights.
 
     """
-    axis = "X" if ports1[0].orientation in [0, 180] else "Y"
+    axis = "X" if ports1[0].angle in [0, 180] else "Y"
     elems = []
     j = 0
 
@@ -719,9 +715,9 @@ if __name__ == "__main__":
 
     import gdsfactory as gf
 
-    # c = gf.Component("get_bundle_none_orientation")
-    # pt = c << gf.components.pad_array(orientation=None, columns=3)
-    # pb = c << gf.components.pad_array(orientation=None, columns=3)
+    # c = gf.Component("get_bundle_none_angle")
+    # pt = c << gf.components.pad_array(angle=None, columns=3)
+    # pb = c << gf.components.pad_array(angle=None, columns=3)
     # pt.move((100, 200))
     # routes = gf.routing.get_bundle_electrical_multilayer(
     #     pb.ports,

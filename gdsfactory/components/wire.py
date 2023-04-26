@@ -35,7 +35,7 @@ def wire_corner(
         name="e1",
         center=(-a, 0),
         width=width,
-        orientation=180,
+        angle=180,
         layer=layer,
         port_type="electrical",
     )
@@ -43,7 +43,7 @@ def wire_corner(
         name="e2",
         center=(0, a),
         width=width,
-        orientation=90,
+        angle=90,
         layer=layer,
         port_type="electrical",
     )
@@ -83,7 +83,7 @@ def wire_corner45(
         name="e1",
         center=(0, 0),
         width=width,
-        orientation=180,
+        angle=180,
         layer=layer,
         port_type="electrical",
     )
@@ -91,7 +91,7 @@ def wire_corner45(
         name="e2",
         center=(radius, radius),
         width=width,
-        orientation=90,
+        angle=90,
         layer=layer,
         port_type="electrical",
     )

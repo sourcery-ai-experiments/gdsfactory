@@ -114,14 +114,14 @@ def ring_single_pn(
         heater_ref.ymin = doped_heater_waveguide_offset + doped_heater_width / 2 + gap
 
         left_heater_via = c << heater_vias()
-        left_heater_via.rotate(heater_ref.ports["o1"].orientation)
+        left_heater_via.rotate(heater_ref.ports["o1"].angle)
 
         deltax = -abs(heater_ref.ports["o1"].x - left_heater_via.ports["e3"].x)
         deltay = abs(heater_ref.ports["o1"].y - left_heater_via.ports["e3"].y)
         left_heater_via.move((deltax, deltay))
 
         right_heater_via = c << heater_vias()
-        right_heater_via.rotate(heater_ref.ports["o2"].orientation)
+        right_heater_via.rotate(heater_ref.ports["o2"].angle)
 
         deltax = abs(heater_ref.ports["o2"].x - right_heater_via.ports["e3"].x)
         deltay = abs(heater_ref.ports["o2"].y - right_heater_via.ports["e3"].y)

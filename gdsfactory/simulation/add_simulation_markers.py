@@ -109,7 +109,7 @@ def add_simulation_markers(
 
     # Add source
     port = ref.ports[port_source_name]
-    angle_rad = np.radians(port.orientation)
+    angle_rad = np.radians(port.angle)
 
     port = port.move_polar_copy(angle=angle_rad, d=port_source_offset)
     add_pin_rectangle(c, port=port, port_margin=port_margin, layer=layer_source)

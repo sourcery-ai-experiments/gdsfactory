@@ -287,11 +287,11 @@ def ring_section_based(
         s_drop.ymin = ring_guide_drop.ymax + gap[1] - s.ysize / 2 + input_xs_width / 2
 
     # Add ports
-    c.add_port("o1", port=s_add.ports["o1"], orientation=180)
-    c.add_port("o2", port=s_add.ports["o2"], orientation=0)
+    c.add_port("o1", port=s_add.ports["o1"], angle=180)
+    c.add_port("o2", port=s_add.ports["o2"], angle=0)
     if add_drop:
-        c.add_port("o3", port=s_drop.ports["o1"], orientation=180)
-        c.add_port("o4", port=s_drop.ports["o2"], orientation=0)
+        c.add_port("o3", port=s_drop.ports["o1"], angle=180)
+        c.add_port("o4", port=s_drop.ports["o2"], angle=0)
 
     return c
 

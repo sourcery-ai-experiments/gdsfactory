@@ -14,7 +14,7 @@
 
 # # Non manhattan routing
 #
-# gdsfactory provides functions to connect and route components ports that are off-grid or have non manhattan orientations (0, 90, 180, 270 degrees)
+# gdsfactory provides functions to connect and route components ports that are off-grid or have non manhattan angles (0, 90, 180, 270 degrees)
 #
 # ## Fix Non manhattan connections
 
@@ -172,7 +172,7 @@ def wonky_connector(port1, port2, cross_section):
     ).ref()
     label.move(
         label.center, destination=center_port.center + (0, center_port.width)
-    ).rotate(center_port.orientation, center=center_port.center)
+    ).rotate(center_port.angle, center=center_port.center)
     label.info["length"] = 0
     return [t1, t2, label]
 
@@ -265,7 +265,7 @@ show_yaml_pic(sample_dir / "aar_bundles02.pic.yml")
 # | :-- | :-- |
 # | x | Route to the given x coordinate (absolute) |
 # | y | Route to the given y coordinate (absolute) |
-# | ds | Proceed in the current orientation by this distance |
+# | ds | Proceed in the current angle by this distance |
 # | dx | The x-component of distance traveled should be this value |
 # | dy | The y-component of distance traveled should be this value |
 # | exit_angle | After this segment, place a bend to exit with this angle (degrees) |
@@ -295,7 +295,7 @@ mmi2.move((100, 10))
 mmi2.rotate(30)
 
 routes = gf.routing.get_bundle_all_angle(
-    mmi1.get_ports_list(orientation=0),
+    mmi1.get_ports_list(angle=0),
     [mmi2.ports["o2"], mmi2.ports["o1"]],
     connector=None,
 )
@@ -314,7 +314,7 @@ mmi2.move((100, 10))
 mmi2.rotate(30)
 
 routes = gf.routing.get_bundle_all_angle(
-    mmi1.get_ports_list(orientation=0),
+    mmi1.get_ports_list(angle=0),
     [mmi2.ports["o2"], mmi2.ports["o1"]],
     connector="low_loss",
 )

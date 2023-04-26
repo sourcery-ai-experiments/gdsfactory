@@ -64,7 +64,7 @@ def parse_port_eigenmode_coeff(port_name: str, ports: Dict[str, Port], sim_dict:
     if port_name not in ports:
         raise ValueError(f"port = {port_name!r} not in {list(ports.keys())}.")
 
-    orientation = ports[port_name].orientation
+    angle = ports[port_name].angle
 
     # Inputs
     sim = sim_dict["sim"]
@@ -73,27 +73,25 @@ def parse_port_eigenmode_coeff(port_name: str, ports: Dict[str, Port], sim_dict:
     # get_eigenmode_coeff.alpha[:,:,idx]
     # with ind being the forward or backward wave according to cell coordinates.
     # Figure out if that is exiting the simulation or not
-    # depending on the port orientation (assuming it's near PMLs)
-    if orientation == 0:  # east
+    # depending on the port angle (assuming it's near PMLs)
+    if angle == 0:  # east
         kpoint = mp.Vector3(x=1)
         idx_in = 1
         idx_out = 0
-    elif orientation == 90:  # north
+    elif angle == 90:  # north
         kpoint = mp.Vector3(y=1)
         idx_in = 1
         idx_out = 0
-    elif orientation == 180:  # west
+    elif angle == 180:  # west
         kpoint = mp.Vector3(x=1)
         idx_in = 0
         idx_out = 1
-    elif orientation == 270:  # south
+    elif angle == 270:  # south
         kpoint = mp.Vector3(y=1)
         idx_in = 0
         idx_out = 1
     else:
-        raise ValueError(
-            f"Port orientation {orientation!r} not in 0, 90, 180, or 270 degrees!"
-        )
+        raise ValueError(f"Port angle {angle!r} not in 0, 90, 180, or 270 degrees!")
 
     # Get port coeffs
     monitor_coeff = sim.get_eigenmode_coefficients(

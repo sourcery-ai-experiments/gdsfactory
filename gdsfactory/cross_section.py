@@ -684,7 +684,7 @@ def l_with_trenches(
         width_trench: in um.
         layer: ridge layer. None adds only ridge.
         layer_trench: layer to etch trenches.
-        mirror: this cross section is not symmetric and you can switch orientation.
+        mirror: this cross section is not symmetric and you can switch angle.
         kwargs: cross_section settings.
 
 

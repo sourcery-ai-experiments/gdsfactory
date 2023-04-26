@@ -646,7 +646,7 @@
 - add default 0 rotation to schematic and separation=5um for routes [PR](https://github.com/gdsfactory/gdsfactory/pull/945)
 - Generic mesh refinement, refactoring [PR](https://github.com/gdsfactory/gdsfactory/pull/941)
 - move python macros to python, (macros is for ruby), add klive path to print [PR](https://github.com/gdsfactory/gdsfactory/pull/943)
-- fix position of rotated "no orientation" ports [PR](https://github.com/gdsfactory/gdsfactory/pull/951)
+- fix position of rotated "no angle" ports [PR](https://github.com/gdsfactory/gdsfactory/pull/951)
 - Fix grating_coupler_elliptical_arbitrary component with how the ellipses are drawn. In the previous implementation, a constant neff is assumed for each grating unit cell, which is then used to determine the ellipticity of the teeth. However, for an apodized grating coupler, neff changes depending on the unit cell geometry (e.g. on duty cycle), so an apodized grating coupler would be drawn incorrectly. In addition, neff is not needed as an input, because it can be calculated from the period, wavelength, cladding index, and coupling angle, which are already inputs to the component. [PR](https://github.com/gdsfactory/gdsfactory/pull/953)
 
 ## [6.3.4](https://github.com/gdsfactory/gdsfactory/pull/939)
@@ -713,7 +713,7 @@
 
 - fix Docker container by installing gdspy with mamba
 - fix outline [issue](https://github.com/gdsfactory/gdsfactory/issues/888)
-- fix None orientation connect [PR](https://github.com/gdsfactory/gdsfactory/pull/890)
+- fix None angle connect [PR](https://github.com/gdsfactory/gdsfactory/pull/890)
 - clean_value_json can handle Polygons [issue](https://github.com/gdsfactory/gdsfactory/issues/889)
 
 ## [6.1.0](https://github.com/gdsfactory/gdsfactory/pull/884)
@@ -966,7 +966,7 @@
 - Absorption from DEVSIM [PR](https://github.com/gdsfactory/gdsfactory/pull/701)
     - DEVSIM PIN waveguides now return imaginary neff
     - Changes to tidy3D mode solver to allow running in a different interpreter for compatibility
-- Added support for None orientation ports for get_bundle_from_steps. [PR](https://github.com/gdsfactory/gdsfactory/pull/702)
+- Added support for None angle ports for get_bundle_from_steps. [PR](https://github.com/gdsfactory/gdsfactory/pull/702)
 - bend_euler returns wire_corner if radius = None
 - upgrade to tidy3d-beta 1.6.3
 
@@ -1193,7 +1193,7 @@
 - Port does not inherit from phidl.Port. In python there should be only one obvious way to do things.
     * Deprecate Port.midpoint. Use Port.center instead.
     * Deprecate Port.position. Use Port.center instead.
-    * Deprecate Port.angle. Use Port.orientation instead.
+    * Deprecate Port.angle. Use Port.angle instead.
 - [fix docs issues](https://github.com/gdsfactory/gdsfactory/issues/553)
 
 ## [5.13.0](https://github.com/gdsfactory/gdsfactory/pull/552)
@@ -1237,7 +1237,7 @@
 ## [5.12.19](https://github.com/gdsfactory/gdsfactory/pull/539)
 
 - lazy load matplotlib. Related to [issue](https://github.com/amccaugh/phidl/pull/159)
-- make port.orientation None marker to be a cross.
+- make port.angle None marker to be a cross.
 - add settings label can ignore settings
 - better message for symlinks in `gf tool install`
 - fix write_cells code. Add a test.
@@ -1369,7 +1369,7 @@
 - fix interconnect plugin notebook [PR](https://github.com/gdsfactory/gdsfactory/pull/473/files)
 - add `Pdk.grid_size = 0.001` (1nm by default)
 - raise warning when extruding paths with off-grid points
-- raise warning when connecting components with non-manhattan (0, 90, 180, 270) orientation
+- raise warning when connecting components with non-manhattan (0, 90, 180, 270) angle
 
 ## [5.10.15](https://github.com/gdsfactory/gdsfactory/pull/470)
 
@@ -1433,7 +1433,7 @@
 
 ## [5.10.2](https://github.com/gdsfactory/gdsfactory/pull/453)
 
-- fix tidy3d port orientation '+' or '-'
+- fix tidy3d port angle '+' or '-'
 
 ## [5.10.1](https://github.com/gdsfactory/gdsfactory/pull/452)
 
@@ -1491,7 +1491,7 @@
 
 ## [5.8.8](https://github.com/gdsfactory/gdsfactory/pull/436)
 
-- assert ports on grid works with None orientation ports.
+- assert ports on grid works with None angle ports.
 
 ## [5.8.7](https://github.com/gdsfactory/gdsfactory/pull/435)
 
@@ -1600,7 +1600,7 @@
 - copy paths when copying components [PR](https://github.com/gdsfactory/gdsfactory/pull/377)
 - shear face fixes [PR](https://github.com/gdsfactory/gdsfactory/pull/379)
 - fix some pydocstyle
-- add port_orientations to gf.components.compass, if None it adds a port with None orientation
+- add port_angles to gf.components.compass, if None it adds a port with None angle
 
 ## [5.6.4](https://github.com/gdsfactory/gdsfactory/pull/376)
 
@@ -1631,7 +1631,7 @@
 
 ## [5.5.8](https://github.com/gdsfactory/gdsfactory/pull/364)
 
-- support ports with None orientation
+- support ports with None angle
 
 ## [5.5.7](https://github.com/gdsfactory/gdsfactory/pull/362)
 
@@ -1732,7 +1732,7 @@
 
 - fix some fstrings [issues](https://github.com/gdsfactory/gdsfactory/issues/311)
 - fix lumerical notebook [typo](https://github.com/gdsfactory/gdsfactory/issues/309)
-- enable Component.plot() with ports with orientation = None
+- enable Component.plot() with ports with angle = None
 - add gf.routing.get_route_from_steps_electrical
 - rename ComponentFactory to ComponentSpec and ComponentOrFactory to ComponentSpec [PR](https://github.com/gdsfactory/gdsfactory/pull/313)
   - replace callable(component) with gf.get_component(component)
@@ -1740,7 +1740,7 @@
 
 ## [5.2.9](https://github.com/gdsfactory/gdsfactory/pull/308)
 
-- route ports with orientation = None
+- route ports with angle = None
 
 ## [5.2.8](https://github.com/gdsfactory/gdsfactory/pull/307)
 
@@ -1762,7 +1762,7 @@
 
 ## [5.2.4](https://github.com/gdsfactory/gdsfactory/pull/299)
 
-- allow ports to have None orientation. The idea is that DC ports don't care about orientation. This still requires some work.
+- allow ports to have None angle. The idea is that DC ports don't care about angle. This still requires some work.
 - adapt route_sharp from phidl to gf.routing.route_sharp for electrical routes
 - cross_section function width and offset parameters are consistent with CrossSection class
 
@@ -3094,7 +3094,7 @@
 - add straight_rib, straight_heater_metal and straight_heater_doped
 - `xs2 = gf.partial(cross_section)` does not require defining `xs2.__name__`
 - replace gf.extend[.] with gf.components.extension.
-- Component.show() uses `add_pins_triangle` as default to show port orientation
+- Component.show() uses `add_pins_triangle` as default to show port angle
 - add gf.comtainers.bend_port
 - get_netlist considers x,y,width to extract port connectivity
 
@@ -3205,7 +3205,7 @@
 
 - add pp.extend to pp
 - fix pp.extend.extend_port, propagates all settings
-- pp.gds.read_ports_from_markers accepts a center (xc and yc) for guessing port orientation
+- pp.gds.read_ports_from_markers accepts a center (xc and yc) for guessing port angle
 - import_gds only accessible from pp.gds.import_gds
 - merge assert_grating_coupler_properties and version in pp.asserts.
 - created pp.component_from module
@@ -3313,7 +3313,7 @@
 - add pp.routing.get_route_sbend_bundle for a bundle of Sbend routes
 - rename start_ports, end_ports with ports1 and ports2
 - straight_with_heater fixed connector
-- straight_with_heater accepts port_orientation_input and port_orientation_output
+- straight_with_heater accepts port_angle_input and port_angle_output
 - TECH defined in config.yml
 - refactor pp.path.component to pp.path.extrude
 - write to GDS again even if component already has a component.path
@@ -3604,7 +3604,7 @@ else:
 - fixing sorting of ports in bundle routing: Thanks to Troy Tamas
 - added `factory: optical` and `settings:` in component_from_yaml routes
 - write more container metadata for component inside the container (function_name, module ....)
-- more checks for the grating coupler decorator (W0 port with 180 degrees orientation)
+- more checks for the grating coupler decorator (W0 port with 180 degrees angle)
 - CI/CD tests run also on pull requests
 - added pp.clear_cache() and call it when we run `c.show()`
 - use pp.clear_cache() when testing component port positions

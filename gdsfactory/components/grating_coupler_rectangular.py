@@ -108,7 +108,7 @@ def grating_coupler_rectangular(
         name=name,
         port_type=name,
         center=(xport, 0),
-        orientation=0,
+        angle=0,
         width=width_grating,
         layer=layer,
     )

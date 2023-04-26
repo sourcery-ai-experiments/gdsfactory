@@ -306,7 +306,7 @@ def get_simulation(
 
     # Add source
     port = component_ref.ports[port_source_name]
-    angle = port.orientation
+    angle = port.angle
     width = port.width + 2 * port_margin
     size_x = width * abs(np.sin(angle * np.pi / 180))
     size_y = width * abs(np.cos(angle * np.pi / 180))
@@ -339,7 +339,7 @@ def get_simulation(
     ports = sort_ports_x(sort_ports_y(component_ref.get_ports_list()))
     for port in ports:
         port_name = port.name
-        angle = port.orientation
+        angle = port.angle
         width = port.width + 2 * port_margin
         size_x = width * abs(np.sin(angle * np.pi / 180))
         size_y = width * abs(np.cos(angle * np.pi / 180))

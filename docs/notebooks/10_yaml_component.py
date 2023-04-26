@@ -445,12 +445,12 @@ instances:
     t:
       component: pad_array
       settings:
-          orientation: 270
+          angle: 270
           columns: 3
     b:
       component: pad_array
       settings:
-          orientation: 90
+          angle: 90
           columns: 3
 
 placements:
@@ -525,12 +525,12 @@ instances:
     t:
       component: pad_array
       settings:
-          orientation: 270
+          angle: 270
           columns: 3
     b:
       component: pad_array
       settings:
-          orientation: 90
+          angle: 90
           columns: 3
 
 placements:
@@ -560,12 +560,12 @@ instances:
     t:
       component: pad_array
       settings:
-          orientation: 270
+          angle: 270
           columns: 3
     b:
       component: pad_array
       settings:
-          orientation: 90
+          angle: 90
           columns: 3
 
 placements:
@@ -593,12 +593,12 @@ instances:
     t:
       component: pad_array
       settings:
-          orientation: 270
+          angle: 270
           columns: 3
     b:
       component: pad_array
       settings:
-          orientation: 90
+          angle: 90
           columns: 3
 
 placements:

@@ -44,8 +44,8 @@ def test_litho_parameters():
         ],
         layer=1,
     )
-    c.add_port(name="o1", center=(0, 1), width=1, orientation=0, layer=1)
-    c.add_port(name="o2", center=(3, -2), width=1, orientation=90, layer=1)
+    c.add_port(name="o1", center=(0, 1), width=1, angle=0, layer=1)
+    c.add_port(name="o2", center=(3, -2), width=1, angle=90, layer=1)
 
     param = LithoParameter(layername="core")
     param.layer_dilation_erosion(c, 0.2)

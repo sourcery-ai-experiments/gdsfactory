@@ -17,7 +17,7 @@ def add_ports_from_markers_square(
     component: Component,
     pin_layer: LayerSpec = "DEVREC",
     port_layer: Optional[LayerSpec] = None,
-    orientation: Optional[int] = 90,
+    angle: Optional[int] = 90,
     min_pin_area_um2: float = 0,
     max_pin_area_um2: float = 150 * 150,
     pin_extra_width: float = 0.0,
@@ -31,7 +31,7 @@ def add_ports_from_markers_square(
         component: to read polygons from and to write ports to.
         pin_layer: for port markers.
         port_layer: for the new created port.
-        orientation: in degrees 90 north, 0 east, 180 west, 270 south.
+        angle: in degrees 90 north, 0 east, 180 west, 270 south.
         min_pin_area_um2: ignores pins with area smaller than min_pin_area_um2.
         max_pin_area_um2: ignore pins for area above certain size.
         pin_extra_width: 2*offset from pin to straight.
@@ -60,7 +60,7 @@ def add_ports_from_markers_square(
                 port_name,
                 center=(x, y),
                 width=dx - pin_extra_width,
-                orientation=orientation,
+                angle=angle,
                 layer=layer,
             )
     return component
@@ -88,7 +88,7 @@ def add_ports_from_markers_center(
 
     markers at port center, so half of the marker goes inside and half outside the port.
 
-    guess port orientation from the component center (xcenter)
+    guess port angle from the component center (xcenter)
 
     Args:
         component: to read polygons from and to write ports to.
@@ -99,9 +99,9 @@ def add_ports_from_markers_center(
         pin_extra_width: 2*offset from pin to straight.
         min_pin_area_um2: ignores pins with area smaller than min_pin_area_um2.
         max_pin_area_um2: ignore pins for area above certain size.
-        skip_square_ports: skips square ports (hard to guess orientation).
-        xcenter: for guessing orientation of rectangular ports.
-        ycenter: for guessing orientation of rectangular ports.
+        skip_square_ports: skips square ports (hard to guess angle).
+        xcenter: for guessing angle of rectangular ports.
+        ycenter: for guessing angle of rectangular ports.
         port_name_prefix: defaults to 'o' for optical and 'e' for electrical ports.
         port_type: type of port (optical, electrical ...).
         short_ports: if the port is on the short side rather than the long side
@@ -189,51 +189,51 @@ def add_ports_from_markers_center(
         pymax = ymax
         pymin = ymin
 
-        orientation = 0
+        angle = 0
 
         if dy < dx if short_ports else dx < dy:
             if x > xc:  # east
-                orientation = 0
+                angle = 0
                 width = dy
                 x = xmax if inside else x
             elif x < xc:  # west
-                orientation = 180
+                angle = 180
                 width = dy
                 x = xmin if inside else x
         elif dy > dx if short_ports else dx > dy:
             if y > yc:  # north
-                orientation = 90
+                angle = 90
                 width = dx
                 y = ymax if inside else y
             elif y < yc:  # south
-                orientation = 270
+                angle = 270
                 width = dx
                 y = ymin if inside else y
 
         elif pxmax > xmax - tol:  # east
-            orientation = 0
+            angle = 0
             width = dy
             x = xmax if inside else x
         elif pxmin < xmin + tol:  # west
-            orientation = 180
+            angle = 180
             width = dy
             x = xmin if inside else x
         elif pymax > ymax - tol:  # north
-            orientation = 90
+            angle = 90
             width = dx
             y = ymax if inside else y
         elif pymin < ymin + tol:  # south
-            orientation = 270
+            angle = 270
             width = dx
             y = ymin if inside else y
 
         elif pxmax > xc:
-            orientation = 0
+            angle = 0
             width = dy
             x = xmax if inside else x
 
         elif pxmax < xc:
-            orientation = 180
+            angle = 180
             width = dy
             x = xmin if inside else x
 
@@ -247,7 +247,7 @@ def add_ports_from_markers_center(
                 name=port_name,
                 center=(x, y),
                 width=width,
-                orientation=orientation,
+                angle=angle,
                 layer=layer,
                 port_type=port_type,
             )
@@ -282,8 +282,8 @@ def add_ports_from_labels(
     get_name_from_label: bool = False,
     layer_label: Optional[LayerSpec] = None,
     fail_on_duplicates: bool = False,
-    port_orientation: Optional[float] = None,
-    guess_port_orientation: bool = True,
+    port_angle: Optional[float] = None,
+    guess_port_angle: bool = True,
 ) -> Component:
     """Add ports from labels.
 
@@ -294,14 +294,14 @@ def add_ports_from_labels(
         component: to read polygons from and to write ports to.
         port_width: for ports.
         port_layer: for the new created port.
-        xcenter: center of the component, for guessing port orientation.
+        xcenter: center of the component, for guessing port angle.
         port_name_prefix: defaults to 'o' for optical and 'e' for electrical.
         port_type: optical, electrical.
         layer_label:
         fail_on_duplicates: raises ValueError for duplicated port names.
             if False adds incremental suffix (1, 2 ...) to port name.
-        port_orientation: None for electrical ports.
-        guess_port_orientation: assumes right: 0, left: 180, top: 90, bot: 270.
+        port_angle: None for electrical ports.
+        guess_port_angle: assumes right: 0, left: 180, top: 90, bot: 270.
     """
     port_name_prefix_default = "o" if port_type == "optical" else "e"
     port_name_prefix = port_name_prefix or port_name_prefix_default
@@ -323,17 +323,17 @@ def add_ports_from_labels(
         else:
             port_name = f"{port_name_prefix}{i+1}" if port_name_prefix else i
 
-        orientation = port_orientation
+        angle = port_angle
 
-        if guess_port_orientation:
+        if guess_port_angle:
             if x > xc:  # east
-                orientation = 0
+                angle = 0
             elif x < xc:  # west
-                orientation = 180
+                angle = 180
             elif y > yc:  # north
-                orientation = 90
+                angle = 90
             elif y < yc:  # south
-                orientation = 270
+                angle = 270
 
         if fail_on_duplicates and port_name in component.ports:
             component_ports = list(component.ports.keys())
@@ -353,7 +353,7 @@ def add_ports_from_labels(
             name=port_name,
             center=(x, y),
             width=port_width,
-            orientation=orientation,
+            angle=angle,
             port_type=port_type,
             layer=port_layer,
         )
@@ -435,7 +435,7 @@ def add_ports_from_siepic_pins(
             name=port_name,
             center=center,
             width=path.widths()[0][0],
-            orientation=angle,
+            angle=angle,
             layer=port_layer or pin_layers[port_type],
             port_type=port_type,
         )

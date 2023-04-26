@@ -103,12 +103,8 @@ def optimal_hairpin(
 
     xports = min(xpts)
     yports = -a + width / 2
-    D.add_port(
-        name="e1", center=[xports, -yports], width=width, orientation=180, layer=layer
-    )
-    D.add_port(
-        name="e2", center=[xports, yports], width=width, orientation=180, layer=layer
-    )
+    D.add_port(name="e1", center=[xports, -yports], width=width, angle=180, layer=layer)
+    D.add_port(name="e2", center=[xports, yports], width=width, angle=180, layer=layer)
     return D
 
 

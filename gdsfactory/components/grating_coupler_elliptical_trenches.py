@@ -115,7 +115,7 @@ def grating_coupler_elliptical_trenches(
         name=name,
         center=(x, 0),
         width=10,
-        orientation=0,
+        angle=0,
         layer=layer,
         port_type=name,
     )
@@ -124,7 +124,7 @@ def grating_coupler_elliptical_trenches(
         name="o1",
         center=(x_output, 0),
         width=wg_width,
-        orientation=180,
+        angle=180,
         layer=layer,
         cross_section=xs,
     )

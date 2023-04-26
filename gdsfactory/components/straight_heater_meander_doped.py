@@ -42,8 +42,8 @@ def straight_heater_meander_doped(
     layers_doping: List[LayerSpec] = ("P", "PP", "PPP"),
     radius: float = 5.0,
     via_stack: Optional[ComponentSpec] = via_stack,
-    port_orientation1: int = 180,
-    port_orientation2: int = 0,
+    port_angle1: int = 180,
+    port_angle2: int = 0,
     straight_widths: Floats = (0.8, 0.9, 0.8),
     taper_length: float = 10,
 ) -> Component:
@@ -63,8 +63,8 @@ def straight_heater_meander_doped(
         layers_doping: doping layers to be used for heater.
         radius: for the meander bends.
         via_stack: for the heater to via_stack metal.
-        port_orientation1: in degrees.
-        port_orientation2: in degrees.
+        port_angle1: in degrees.
+        port_angle2: in degrees.
         straight_width: width of the straight section.
         taper_length: from the cross_section.
     """
@@ -74,7 +74,7 @@ def straight_heater_meander_doped(
     p1 = gf.Port(
         name="p1",
         center=(0, 0),
-        orientation=0,
+        angle=0,
         cross_section=x,
         layer=x.layer,
         width=x.width,
@@ -82,7 +82,7 @@ def straight_heater_meander_doped(
     p2 = gf.Port(
         name="p2",
         center=(0, spacing),
-        orientation=0,
+        angle=0,
         cross_section=x,
         layer=x.layer,
         width=x.width,
@@ -199,12 +199,8 @@ def straight_heater_meander_doped(
         via_stack_east = c << via_stacke
         via_stack_west.move(via_stack_west_center)
         via_stack_east.move(via_stack_east_center)
-        c.add_port(
-            "e1", port=via_stack_west.get_ports_list(orientation=port_orientation1)[0]
-        )
-        c.add_port(
-            "e2", port=via_stack_east.get_ports_list(orientation=port_orientation2)[0]
-        )
+        c.add_port("e1", port=via_stack_west.get_ports_list(angle=port_angle1)[0])
+        c.add_port("e2", port=via_stack_east.get_ports_list(angle=port_angle2)[0])
     return c
 
 
@@ -214,8 +210,8 @@ if __name__ == "__main__":
     # spacing = 3
 
     # c = gf.Component()
-    # p1 = gf.Port(center=(0, 0), orientation=0)
-    # p2 = gf.Port(center=(0, spacing), orientation=0)
+    # p1 = gf.Port(center=(0, 0), angle=0)
+    # p2 = gf.Port(center=(0, spacing), angle=0)
     # route = gf.routing.get_route(p1, p2)
     # straight_length = gf.snap.snap_to_grid((length - (rows - 1) * route.length) / rows)
     # straight_array = c << gf.components.array(spacing=(0, spacing), columns=1, rows=rows)

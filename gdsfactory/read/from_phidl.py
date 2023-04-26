@@ -68,7 +68,7 @@ def from_phidl(component, port_layer: Layer = (1, 0), **kwargs) -> Component:
                     name=p.name,
                     center=p.midpoint,
                     width=p.width,
-                    orientation=p.orientation,
+                    angle=p.angle,
                     parent=p.parent,
                     layer=port_layer,
                 )

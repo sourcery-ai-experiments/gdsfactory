@@ -211,8 +211,8 @@ r3 = vdiv << gf.get_component(gf.components.resistance_sheet).rotate()
 r4 = vdiv << gf.get_component(gf.components.resistance_sheet).rotate()
 
 r1.connect("pad2", r2.ports["pad1"])
-r3.connect("pad1", r2.ports["pad1"], preserve_orientation=True)
-r4.connect("pad2", r2.ports["pad1"], preserve_orientation=True)
+r3.connect("pad1", r2.ports["pad1"], preserve_angle=True)
+r4.connect("pad2", r2.ports["pad1"], preserve_angle=True)
 
 vdiv
 # -

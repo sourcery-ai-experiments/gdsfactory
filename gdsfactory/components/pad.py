@@ -17,7 +17,7 @@ def pad(
     bbox_layers: Optional[Tuple[LayerSpec, ...]] = None,
     bbox_offsets: Optional[Tuple[float, ...]] = None,
     port_inclusion: float = 0,
-    port_orientation: Optional[float] = None,
+    port_angle: Optional[float] = 0,
 ) -> Component:
     """Returns rectangular pad with ports.
 
@@ -28,7 +28,7 @@ def pad(
         bbox_offsets: Optional offsets for each layer with respect to size.
             positive grows, negative shrinks the size.
         port_inclusion: from edge.
-        port_orientation: in degrees.
+        port_angle: in degrees.
     """
     c = Component()
     layer = gf.get_layer(layer)
@@ -57,14 +57,14 @@ def pad(
                 )
             )
 
-    width = size[1] if port_orientation in [0, 180] else size[0]
+    width = size[1] if port_angle in [0, 180] else size[0]
 
     c.add_port(
         name="pad",
         port_type="vertical_dc",
         layer=layer,
         center=(0, 0),
-        orientation=port_orientation,
+        angle=port_angle,
         width=width,
     )
     return c
@@ -80,7 +80,7 @@ def pad_array(
     spacing: Tuple[float, float] = (150.0, 150.0),
     columns: int = 6,
     rows: int = 1,
-    orientation: Optional[float] = 270,
+    angle: Optional[float] = 270,
 ) -> Component:
     """Returns 2D array of pads.
 
@@ -89,7 +89,7 @@ def pad_array(
         spacing: x, y pitch.
         columns: number of columns.
         rows: number of rows.
-        orientation: port orientation in deg. None for low speed DC ports.
+        angle: port angle in deg. None for low speed DC ports.
     """
     c = Component()
     pad = gf.get_component(pad)
@@ -97,7 +97,7 @@ def pad_array(
     c.info["size"] = size
 
     c.add_array(pad, columns=columns, rows=rows, spacing=spacing)
-    width = size[0] if orientation in [90, 270] else size[1]
+    width = size[0] if angle in [90, 270] else size[1]
 
     for col in range(columns):
         for row in range(rows):
@@ -105,18 +105,18 @@ def pad_array(
                 name=f"e{row+1}{col+1}",
                 center=(col * spacing[0], row * spacing[1]),
                 width=width,
-                orientation=orientation,
+                angle=angle,
                 port_type="electrical",
                 layer=pad.info["layer"],
             )
     return c
 
 
-pad_array90 = partial(pad_array, orientation=90)
-pad_array270 = partial(pad_array, orientation=270)
+pad_array90 = partial(pad_array, angle=90)
+pad_array270 = partial(pad_array, angle=270)
 
-pad_array0 = partial(pad_array, orientation=0, columns=1, rows=3)
-pad_array180 = partial(pad_array, orientation=180, columns=1, rows=3)
+pad_array0 = partial(pad_array, angle=0, columns=1, rows=3)
+pad_array180 = partial(pad_array, angle=180, columns=1, rows=3)
 
 
 if __name__ == "__main__":
@@ -131,6 +131,6 @@ if __name__ == "__main__":
     # c = pad_array270()
     # c.pprint_ports()
     # c = pad_array_2d(cols=2, rows=3, port_names=("e2",))
-    # c = pad_array(columns=2, rows=2, orientation=270)
+    # c = pad_array(columns=2, rows=2, angle=270)
     # c.auto_rename_ports()
     c.show(show_ports=True)

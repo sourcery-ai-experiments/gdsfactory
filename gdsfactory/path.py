@@ -923,10 +923,10 @@ def extrude(
         # Add port_names if they were specified
         if port_names[0] is not None:
             port_width = width if np.isscalar(width) else width[0]
-            port_orientation = (p_sec.start_angle + 180) % 360
+            port_angle = (p_sec.start_angle + 180) % 360
             center = points[0]
             face = [points1[0], points2[0]]
-            face = [_rotated_delta(point, center, port_orientation) for point in face]
+            face = [_rotated_delta(point, center, port_angle) for point in face]
 
             if warn_off_grid_ports:
                 center_snap = snap.snap_to_grid(center, snap_to_grid_nm)
@@ -939,7 +939,7 @@ def extrude(
                     layer=get_layer(layers[0]),
                     port_type=port_types[0],
                     width=port_width,
-                    orientation=port_orientation,
+                    angle=port_angle,
                     center=center,
                     cross_section=x.cross_section1
                     if hasattr(x, "cross_section1")
@@ -950,10 +950,10 @@ def extrude(
             port1.info["face"] = face
         if port_names[1] is not None:
             port_width = width if np.isscalar(width) else width[-1]
-            port_orientation = (p_sec.end_angle) % 360
+            port_angle = (p_sec.end_angle) % 360
             center = points[-1]
             face = [points1[-1], points2[-1]]
-            face = [_rotated_delta(point, center, port_orientation) for point in face]
+            face = [_rotated_delta(point, center, port_angle) for point in face]
 
             if warn_off_grid_ports:
                 center_snap = snap.snap_to_grid(center, snap_to_grid_nm)
@@ -967,7 +967,7 @@ def extrude(
                     port_type=port_types[1],
                     width=port_width,
                     center=center,
-                    orientation=port_orientation,
+                    angle=port_angle,
                     cross_section=x.cross_section2
                     if hasattr(x, "cross_section2")
                     else x,
@@ -988,20 +988,18 @@ def extrude(
     return c
 
 
-def _rotated_delta(
-    point: np.ndarray, center: np.ndarray, orientation: float
-) -> np.ndarray:
+def _rotated_delta(point: np.ndarray, center: np.ndarray, angle: float) -> np.ndarray:
     """Gets the rotated distance of a point from a center.
 
     Args:
         point: the initial point.
         center: a center point to use as a reference.
-        orientation: the rotation, in degrees.
+        angle: the rotation, in degrees.
 
     Returns: the normalized delta between the point and center, accounting for rotation
     """
-    ca = np.cos(orientation * np.pi / 180)
-    sa = np.sin(orientation * np.pi / 180)
+    ca = np.cos(angle * np.pi / 180)
+    sa = np.sin(angle * np.pi / 180)
     rot_mat = np.array([[ca, -sa], [sa, ca]])
     delta = point - center
     return np.dot(delta, rot_mat)

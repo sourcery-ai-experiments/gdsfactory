@@ -20,7 +20,7 @@ def test_get_bundle_all_angle(
     mmi2.rotate(30)
 
     routes = gf.routing.get_bundle_all_angle(
-        mmi1.get_ports_list(orientation=0),
+        mmi1.get_ports_list(angle=0),
         [mmi2.ports["o2"], mmi2.ports["o1"]],
         connector=None,
     )

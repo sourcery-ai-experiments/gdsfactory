@@ -53,13 +53,9 @@ def test_crossing_arm(
 
     c.add_polygon(taper_points, layer=LAYER.WG)
 
-    c.add_port(
-        name="o1", center=(-xmax, 0), orientation=180, width=wg_width, layer=LAYER.WG
-    )
+    c.add_port(name="o1", center=(-xmax, 0), angle=180, width=wg_width, layer=LAYER.WG)
 
-    c.add_port(
-        name="o2", center=(xmax, 0), orientation=0, width=wg_width, layer=LAYER.WG
-    )
+    c.add_port(name="o2", center=(xmax, 0), angle=0, width=wg_width, layer=LAYER.WG)
     return c
 
 

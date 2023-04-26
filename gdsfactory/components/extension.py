@@ -68,7 +68,7 @@ def extend_port(port: Port, length: float, layer: Optional[Layer] = None) -> Com
 
     # Generate a port extension
     p_start = port.center
-    angle = port.orientation
+    angle = port.angle
     p_end = move_polar_rad_copy(p_start, angle * DEG2RAD, length)
     w = port.width
 
@@ -119,7 +119,7 @@ def extend_ports(
     Keyword Args:
         layer: port GDS layer.
         prefix: port name prefix.
-        orientation: in degrees.
+        angle: in degrees.
         width: port width.
         layers_excluded: List of layers to exclude.
         port_type: optical, electrical, ....
@@ -232,12 +232,12 @@ if __name__ == "__main__":
     # c0 = gf.components.taper(width2=10)
     extension = gf.components.straight_heater_meander()
     c0 = gf.components.straight()
-    # c1 = extend_ports(c0, orientation=0, extension=extension)
+    # c1 = extend_ports(c0, angle=0, extension=extension)
 
     c1 = extend_ports(
         c0,
         extension=extension,
-        orientation=0,
+        angle=0,
         extension_port_names=["e1", "e2"],
         port1="o1",
         port2="o2",

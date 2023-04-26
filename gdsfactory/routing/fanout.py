@@ -40,7 +40,7 @@ def fanout_component(
         c = gf.components.mmi2x2()
 
         cc = gf.routing.fanout_component(
-            component=c, port_names=tuple(c.get_ports_dict(orientation=0).keys())
+            component=c, port_names=tuple(c.get_ports_dict(angle=0).keys())
         )
         cc.plot()
 
@@ -61,7 +61,7 @@ def fanout_component(
 
     port_settings.pop("name")
     port_settings.update(center=(port_extended_x, 0))
-    port_settings.update(orientation=(port.orientation + 180) % 360)
+    port_settings.update(angle=(port.angle + 180) % 360)
 
     ports2 = port_array(n=len(ports1), pitch=pitch, **port_settings)
 
@@ -105,7 +105,7 @@ def fanout_ports(
 
     port_settings.pop("name")
     port_settings.update(center=(port_extended_x, 0))
-    port_settings.update(orientation=(port.orientation + 180) % 360)
+    port_settings.update(angle=(port.angle + 180) % 360)
     ports2 = port_array(n=len(ports1), pitch=pitch, **port_settings)
 
     for p1, p2 in zip(ports1, ports2):
@@ -116,7 +116,7 @@ def fanout_ports(
 
 def test_fanout_ports() -> Component:
     c = gf.components.mmi2x2()
-    ports = c.get_ports_dict(orientation=0)
+    ports = c.get_ports_dict(angle=0)
     port_names = list(ports.keys())
     c2 = fanout_component(component=c, port_names=port_names)
     d = direction_ports_from_list_ports(c2.get_ports_list())
@@ -135,13 +135,13 @@ if __name__ == "__main__":
     c = gf.components.mmi2x2()
 
     # cc = fanout_component(
-    #     component=c, port_names=tuple(c.get_ports_dict(orientation=0).keys())
+    #     component=c, port_names=tuple(c.get_ports_dict(angle=0).keys())
     # )
     # print(len(cc.ports))
     # cc.show(show_ports=True)
 
     # c = gf.components.nxn(west=4, layer=gf.LAYER.SLAB90)
-    # routes = fanout_ports(ports=c.get_ports_list(orientation=180))
+    # routes = fanout_ports(ports=c.get_ports_list(angle=180))
 
     # for route in routes:
     #     c.add(route.references)

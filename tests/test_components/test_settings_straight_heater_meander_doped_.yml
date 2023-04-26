@@ -8,7 +8,7 @@ ports:
     - 45
     - 0
     name: e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 1.5
@@ -20,7 +20,7 @@ ports:
     - 45
     - 0
     name: e2
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 1.5
@@ -32,7 +32,7 @@ ports:
     - 1
     - 0
     name: o1
-    orientation: 180
+    angle: 180
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -44,7 +44,7 @@ ports:
     - 1
     - 0
     name: o2
-    orientation: 0.0
+    angle: 0.0
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -60,8 +60,8 @@ settings:
     - PP
     - PPP
     length: 300.0
-    port_orientation1: 180
-    port_orientation2: 0
+    port_angle1: 180
+    port_angle2: 0
     radius: 5.0
     spacing: 2.0
     straight_widths:
@@ -108,8 +108,8 @@ settings:
     - PP
     - PPP
     length: 300.0
-    port_orientation1: 180
-    port_orientation2: 0
+    port_angle1: 180
+    port_angle2: 0
     radius: 5.0
     spacing: 2.0
     straight_widths:

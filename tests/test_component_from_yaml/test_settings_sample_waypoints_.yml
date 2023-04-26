@@ -7,11 +7,11 @@ settings:
         b:
           component: pad_array
           settings:
-            orientation: 90
+            angle: 90
         t:
           component: pad_array
           settings:
-            orientation: 270
+            angle: 270
       name: sample_waypoints
       placements:
         t:
@@ -58,11 +58,11 @@ settings:
         b:
           component: pad_array
           settings:
-            orientation: 90
+            angle: 90
         t:
           component: pad_array
           settings:
-            orientation: 270
+            angle: 270
       name: sample_waypoints
       placements:
         t:

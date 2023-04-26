@@ -25,7 +25,7 @@ def lidar(noutputs=2**2, antenna_pitch=2.0, splitter_tree_spacing=(50.0, 70.0)):
     phase_shifter_optical_ports = []
 
     for i, port in enumerate(
-        splitter_tree.get_ports_list(orientation=0, port_type="optical")
+        splitter_tree.get_ports_list(angle=0, port_type="optical")
     ):
         ref = c.add_ref(phase_shifter, alias=f"ps{i}")
         ref.connect("o1", port)
@@ -40,7 +40,7 @@ def lidar(noutputs=2**2, antenna_pitch=2.0, splitter_tree_spacing=(50.0, 70.0)):
     antennas.y = 0
 
     routes = gf.routing.get_bundle(
-        ports1=antennas.get_ports_list(orientation=180),
+        ports1=antennas.get_ports_list(angle=180),
         ports2=phase_shifter_optical_ports,
         radius=5,
     )

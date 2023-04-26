@@ -176,11 +176,11 @@ def mzi(
     cp2.name = "cp2"
 
     if with_splitter:
-        c.add_ports(cp1.get_ports_list(orientation=180), prefix="in_")
+        c.add_ports(cp1.get_ports_list(angle=180), prefix="in_")
     else:
         c.add_port("o1", port=b1.ports["o1"])
         c.add_port("o2", port=b5.ports["o1"])
-    c.add_ports(cp2.get_ports_list(orientation=0), prefix="ou_")
+    c.add_ports(cp2.get_ports_list(angle=0), prefix="ou_")
 
     c.add_ports(sxt.get_ports_list(port_type="electrical"), prefix="top_")
     c.add_ports(sxb.get_ports_list(port_type="electrical"), prefix="bot_")

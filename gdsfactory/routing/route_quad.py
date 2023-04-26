@@ -60,7 +60,7 @@ def route_quad(
     """
 
     def get_port_edges(port, width):
-        _, e1 = _get_rotated_basis(port.orientation)
+        _, e1 = _get_rotated_basis(port.angle)
         pt1 = port.center + e1 * width / 2
         pt2 = port.center - e1 * width / 2
         return pt1, pt2
@@ -88,14 +88,14 @@ def route_quad(
     component.add_port(
         name="e1",
         center=port1.center,
-        orientation=port1.orientation + 180,
+        angle=port1.angle + 180,
         width=width1,
         layer=layer,
     )
     component.add_port(
         name="e2",
         center=port2.center,
-        orientation=port2.orientation + 180,
+        angle=port2.angle + 180,
         width=width2,
         layer=layer,
     )

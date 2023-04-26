@@ -207,7 +207,7 @@ def get_simulation(
 
     # Add source
     port = component_ref.ports[port_source_name]
-    angle_rad = np.radians(port.orientation)
+    angle_rad = np.radians(port.angle)
     width = port.width + 2 * port_margin
     size_x = width * abs(np.sin(angle_rad))
     size_y = width * abs(np.cos(angle_rad))
@@ -220,17 +220,17 @@ def get_simulation(
     )
     center = xy_shifted.tolist() + [0]  # (x, y, z=0)
 
-    if np.isclose(port.orientation, 0):
+    if np.isclose(port.angle, 0):
         direction = mp.X
-    elif np.isclose(port.orientation, 90):
+    elif np.isclose(port.angle, 90):
         direction = mp.Y
-    elif np.isclose(port.orientation, 180):
+    elif np.isclose(port.angle, 180):
         direction = mp.X
-    elif np.isclose(port.orientation, 270):
+    elif np.isclose(port.angle, 270):
         direction = mp.Y
     else:
         raise ValueError(
-            f"Port source {port_source_name!r} orientation {port.orientation} "
+            f"Port source {port_source_name!r} angle {port.angle} "
             "not 0, 90, 180, 270 degrees"
         )
 
@@ -265,7 +265,7 @@ def get_simulation(
     monitors = {}
     for port_name in component_ref.ports.keys():
         port = component_ref.ports[port_name]
-        angle_rad = np.radians(port.orientation)
+        angle_rad = np.radians(port.angle)
         width = port.width + 2 * port_margin
         size_x = width * abs(np.sin(angle_rad))
         size_y = width * abs(np.cos(angle_rad))

@@ -55,7 +55,7 @@ def nxn(
                 wg_margin + wg_width / 2, ysize - wg_margin - wg_width / 2, west
             )
         )
-        orientation = 180
+        angle = 180
         y = gf.snap.snap_to_grid(y)
 
         for i, yi in enumerate(y):
@@ -63,7 +63,7 @@ def nxn(
                 f"W{i}",
                 center=(x, yi),
                 width=wg_width,
-                orientation=orientation,
+                angle=angle,
                 layer=layer,
                 **kwargs,
             )
@@ -77,7 +77,7 @@ def nxn(
                 wg_margin + wg_width / 2, ysize - wg_margin - wg_width / 2, east
             )
         )
-        orientation = 0
+        angle = 0
         y = gf.snap.snap_to_grid(y)
 
         for i, yi in enumerate(y):
@@ -85,7 +85,7 @@ def nxn(
                 f"E{i}",
                 center=(x, yi),
                 width=wg_width,
-                orientation=orientation,
+                angle=angle,
                 layer=layer,
                 **kwargs,
             )
@@ -99,7 +99,7 @@ def nxn(
                 wg_margin + wg_width / 2, xsize - wg_margin - wg_width / 2, north
             )
         )
-        orientation = 90
+        angle = 90
         x = gf.snap.snap_to_grid(x)
 
         for i, xi in enumerate(x):
@@ -107,7 +107,7 @@ def nxn(
                 f"N{i}",
                 center=(xi, y),
                 width=wg_width,
-                orientation=orientation,
+                angle=angle,
                 layer=layer,
                 **kwargs,
             )
@@ -120,7 +120,7 @@ def nxn(
                 wg_margin + wg_width / 2, xsize - wg_margin - wg_width / 2, south
             )
         )
-        orientation = 270
+        angle = 270
         x = gf.snap.snap_to_grid(x)
 
         for i, xi in enumerate(x):
@@ -128,7 +128,7 @@ def nxn(
                 f"S{i}",
                 center=(xi, y),
                 width=wg_width,
-                orientation=orientation,
+                angle=angle,
                 layer=layer,
                 **kwargs,
             )

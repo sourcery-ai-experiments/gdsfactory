@@ -59,13 +59,13 @@ def spiral_racetrack(
         c.add_port(
             "o3",
             center=bend_s.ports["o1"].center,
-            orientation=0,
+            angle=0,
             cross_section=bend_s.ports["o1"].cross_section,
         )
         c.add_port(
             "o4",
             center=bend_s.ports["o2"].center,
-            orientation=180,
+            angle=180,
             cross_section=bend_s.ports["o2"].cross_section,
         )
     else:
@@ -211,7 +211,7 @@ def spiral_racetrack_fixed_length(
     c.add_port(
         "o2_temp",
         center=(spiral.ports["o1"].x + in_out_port_spacing, spiral.ports["o1"].y),
-        orientation=180,
+        angle=180,
         cross_section=gf.get_cross_section(xs_s_bend),
     )
 
@@ -229,7 +229,7 @@ def spiral_racetrack_fixed_length(
     c.add_port(
         "o2",
         center=(spiral.ports["o1"].x + in_out_port_spacing, spiral.ports["o1"].y),
-        orientation=0,
+        angle=0,
         cross_section=gf.get_cross_section(xs_s_bend),
     )
 
@@ -304,7 +304,7 @@ def _req_straight_len(
         c.add_port(
             "o2",
             center=(spiral.ports["o1"].x + in_out_port_spacing, spiral.ports["o1"].y),
-            orientation=180,
+            angle=180,
             cross_section=gf.get_cross_section(cross_section_s_bend),
         )
 

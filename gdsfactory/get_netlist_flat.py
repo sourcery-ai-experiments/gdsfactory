@@ -347,8 +347,8 @@ if __name__ == "__main__":
     # )
 
     # r1.connect("pad2", r2.ports["pad1"])
-    # r3.connect("pad1", r2.ports["pad1"], preserve_orientation=True)
-    # r4.connect("pad1", r3.ports["pad2"], preserve_orientation=True)
+    # r3.connect("pad1", r2.ports["pad1"], preserve_angle=True)
+    # r4.connect("pad1", r3.ports["pad2"], preserve_angle=True)
 
     # vdiv.add_port("gnd1", port=r2.ports["pad2"])
     # vdiv.add_port("gnd2", port=r4.ports["pad2"])

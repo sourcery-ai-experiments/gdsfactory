@@ -50,7 +50,7 @@ def sign(x: float) -> int:
 
 def _get_unique_port_facing(
     ports: Dict[str, Port],
-    orientation: float = 0,
+    angle: float = 0,
     layer: Union[LayerSpec, LayerSpecs] = (1, 0),
 ) -> List[Port]:
     """Ensures there is only one port."""
@@ -58,18 +58,16 @@ def _get_unique_port_facing(
     if isinstance(layer, list):
         for _layer in layer:
             ports_selected = select_ports_list(
-                ports=ports, orientation=orientation, layer=gf.get_layer(_layer)
+                ports=ports, angle=angle, layer=gf.get_layer(_layer)
             )
             if ports_selected:
                 break
     else:
-        ports_selected = select_ports_list(
-            ports=ports, orientation=orientation, layer=layer
-        )
+        ports_selected = select_ports_list(ports=ports, angle=angle, layer=layer)
 
     if len(ports_selected) > 1:
-        orientation %= 360
-        direction = O2D[orientation]
+        angle %= 360
+        direction = O2D[angle]
         for port in ports_selected:
             print(port)
         raise ValueError(
@@ -83,7 +81,7 @@ def _get_unique_port_facing(
 
 def _get_bend_ports(
     bend: Component,
-    orientation: float = 0,
+    angle: float = 0,
     layer: Union[LayerSpec, LayerSpecs] = (1, 0),
 ) -> List[Port]:
     """Returns West and North facing ports for bend.
@@ -94,8 +92,8 @@ def _get_bend_ports(
     """
     ports = bend.ports
 
-    p_w = _get_unique_port_facing(ports=ports, orientation=180, layer=layer)
-    p_n = _get_unique_port_facing(ports=ports, orientation=90, layer=layer)
+    p_w = _get_unique_port_facing(ports=ports, angle=180, layer=layer)
+    p_n = _get_unique_port_facing(ports=ports, angle=90, layer=layer)
 
     return p_w + p_n
 
@@ -112,8 +110,8 @@ def _get_straight_ports(
     """
     ports = straight.ports
 
-    p_w = _get_unique_port_facing(ports=ports, orientation=180, layer=layer)
-    p_e = _get_unique_port_facing(ports=ports, orientation=0, layer=layer)
+    p_w = _get_unique_port_facing(ports=ports, angle=180, layer=layer)
+    p_e = _get_unique_port_facing(ports=ports, angle=0, layer=layer)
 
     return p_w + p_e
 
@@ -263,30 +261,30 @@ def _generate_route_manhattan_points(
     p_input = input_port.center
     p_output = np.array(output_port.center)
     pts_io = np.stack([p_input, p_output], axis=0)
-    angle = output_port.orientation
+    angle = output_port.angle
 
-    if output_port.orientation is None and input_port.orientation is None:
+    if output_port.angle is None and input_port.angle is None:
         x0, y0 = p_input
         x2, y2 = p_output
         p1 = (x0, y2)
         points = np.array([p_input, p1, p_output])
-    elif input_port.orientation is None:
-        raise ValueError("input_port orientation is None")
+    elif input_port.angle is None:
+        raise ValueError("input_port angle is None")
 
-    elif output_port.orientation is None:
-        raise ValueError("output_port orientation is None")
+    elif output_port.angle is None:
+        raise ValueError("output_port angle is None")
 
     else:
-        bend_orientation = -angle + 180
+        bend_angle = -angle + 180
         transform_params = dict(
-            translation=-p_output, angle_deg=bend_orientation, x_reflection=False
+            translation=-p_output, angle_deg=bend_angle, x_reflection=False
         )
 
         _pts_io = transform(pts_io, **transform_params)
         p = _pts_io[0, :]
         _p_output = _pts_io[1, :]
 
-        a = int(input_port.orientation + bend_orientation) % 360
+        a = int(input_port.angle + bend_angle) % 360
         s = start_straight_length
         count = 0
         points = [p]
@@ -562,12 +560,8 @@ def get_route_error(
     c = Component(f"route_{uuid.uuid4()}"[:16])
 
     ref = ComponentReference(c)
-    port1 = gf.Port(
-        name="p1", center=points[0], width=width, layer=layer_path, orientation=0
-    )
-    port2 = gf.Port(
-        name="p2", center=points[1], width=width, layer=layer_path, orientation=0
-    )
+    port1 = gf.Port(name="p1", center=points[0], width=width, layer=layer_path, angle=0)
+    port2 = gf.Port(name="p2", center=points[1], width=width, layer=layer_path, angle=0)
 
     point_marker = gf.components.rectangle(
         size=(width * 2, width * 2), centered=True, layer=layer_marker
@@ -696,20 +690,20 @@ def round_corners(
     bend_length = bend90.info["length"]
 
     dp = p1 - p0_straight
-    bend_orientation = None
+    bend_angle = None
     if _is_vertical(p0_straight, p1):
         if dp[1] > 0:
-            bend_orientation = 90
+            bend_angle = 90
         elif dp[1] < 0:
-            bend_orientation = 270
+            bend_angle = 270
     elif _is_horizontal(p0_straight, p1):
         if dp[0] > 0:
-            bend_orientation = 0
+            bend_angle = 0
         elif dp[0] < 0:
-            bend_orientation = 180
+            bend_angle = 180
 
-    if bend_orientation is None:
-        print(f"bend_orientation is None {p0_straight} {p1}")
+    if bend_angle is None:
+        print(f"bend_angle is None {p0_straight} {p1}")
         return on_route_error(
             points=points,
             cross_section=None if multi_cross_section else x,
@@ -765,7 +759,7 @@ def round_corners(
             straight_sections += [
                 (
                     p0_straight,
-                    bend_orientation,
+                    bend_angle,
                     get_straight_distance(p0_straight, bend_origin),
                 )
             ]
@@ -779,7 +773,7 @@ def round_corners(
             )
 
         p0_straight = bend_ref.ports[pname_north].center
-        bend_orientation = bend_ref.ports[pname_north].orientation
+        bend_angle = bend_ref.ports[pname_north].angle
 
     bend_points.append(points[-1])
 
@@ -787,7 +781,7 @@ def round_corners(
         straight_sections += [
             (
                 p0_straight,
-                bend_orientation,
+                bend_angle,
                 get_straight_distance(p0_straight, points[-1]),
             )
         ]
@@ -1070,8 +1064,8 @@ def route_manhattan(
 
 if __name__ == "__main__":
     c = gf.Component("pads_route_from_steps")
-    pt = c << gf.components.pad_array(orientation=270, columns=3)
-    pb = c << gf.components.pad_array(orientation=90, columns=3)
+    pt = c << gf.components.pad_array(angle=270, columns=3)
+    pb = c << gf.components.pad_array(angle=90, columns=3)
     pt.move((100, 200))
     route = gf.routing.get_route_from_steps(
         pt.ports["e11"],

@@ -99,14 +99,14 @@ def interdigital_capacitor(
         name="o1",
         center=(0, height / 2),
         width=thickness,
-        orientation=180,
+        angle=180,
         layer=layer,
     )
     c.add_port(
         name="o2",
         center=(width, height / 2),
         width=thickness,
-        orientation=0,
+        angle=0,
         layer=layer,
     )
     return c

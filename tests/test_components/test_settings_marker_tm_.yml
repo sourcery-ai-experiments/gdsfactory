@@ -8,7 +8,7 @@ ports:
     - 204
     - 0
     name: e1
-    orientation: 180
+    angle: 180
     port_type: placement
     shear_angle: null
     width: 10.4
@@ -20,7 +20,7 @@ ports:
     - 204
     - 0
     name: e2
-    orientation: 90
+    angle: 90
     port_type: placement
     shear_angle: null
     width: 10.4
@@ -32,7 +32,7 @@ ports:
     - 204
     - 0
     name: e3
-    orientation: 0.0
+    angle: 0.0
     port_type: placement
     shear_angle: null
     width: 10.4
@@ -44,7 +44,7 @@ ports:
     - 204
     - 0
     name: e4
-    orientation: 270
+    angle: 270
     port_type: placement
     shear_angle: null
     width: 10.4
@@ -59,7 +59,7 @@ settings:
   default:
     centered: false
     layer: WG
-    port_orientations:
+    port_angles:
     - 180
     - 90
     - 0
@@ -71,7 +71,7 @@ settings:
   full:
     centered: true
     layer: TM
-    port_orientations:
+    port_angles:
     - 180
     - 90
     - 0

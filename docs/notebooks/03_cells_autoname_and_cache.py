@@ -105,12 +105,8 @@ def wg(length=10, width=1, layer=(1, 0)):
     print("BUILDING waveguide")
     c = gf.Component()
     c.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
-    c.add_port(
-        name="o1", center=[0, width / 2], width=width, orientation=180, layer=layer
-    )
-    c.add_port(
-        name="o2", center=[length, width / 2], width=width, orientation=0, layer=layer
-    )
+    c.add_port(name="o1", center=[0, width / 2], width=width, angle=180, layer=layer)
+    c.add_port(name="o2", center=[length, width / 2], width=width, angle=0, layer=layer)
     return c
 
 
@@ -152,7 +148,7 @@ c = wg(cache=False)
 #     - info: metadata in Component.info dict.
 #     - module: python module where you can find the cell function.
 #     - name: for the component
-# - ports: port name, width, orientation
+# - ports: port name, width, angle
 
 # + tags=[]
 c = wg()

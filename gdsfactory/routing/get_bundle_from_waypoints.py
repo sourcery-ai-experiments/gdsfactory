@@ -125,30 +125,30 @@ def get_bundle_from_waypoints(
 
     waypoints = [ports1[0].center] + list(waypoints) + [ports2[0].center]
     for p in ports1:
-        # if ports1 orientation is None, guess it from the first two waypoints
-        if p.orientation is None:
+        # if ports1 angle is None, guess it from the first two waypoints
+        if p.angle is None:
             if np.subtract(waypoints[1], waypoints[0])[0] > 0:
-                p.orientation = 0
+                p.angle = 0
             elif np.subtract(waypoints[1], waypoints[0])[0] < 0:
-                p.orientation = 180
+                p.angle = 180
             elif np.subtract(waypoints[1], waypoints[0])[1] > 0:
-                p.orientation = 90
+                p.angle = 90
             elif np.subtract(waypoints[1], waypoints[0])[1] < 0:
-                p.orientation = 270
-        p.orientation = int(p.orientation) % 360 if p.orientation else p.orientation
+                p.angle = 270
+        p.angle = int(p.angle) % 360 if p.angle else p.angle
 
     for p in ports2:
-        # if ports2 orientation is None, guess it from the last two waypoints
-        if p.orientation is None:
+        # if ports2 angle is None, guess it from the last two waypoints
+        if p.angle is None:
             if np.subtract(waypoints[-1], waypoints[-2])[0] > 0:
-                p.orientation = 180
+                p.angle = 180
             elif np.subtract(waypoints[-1], waypoints[-2])[0] < 0:
-                p.orientation = 0
+                p.angle = 0
             elif np.subtract(waypoints[-1], waypoints[-2])[1] > 0:
-                p.orientation = 90
+                p.angle = 90
             elif np.subtract(waypoints[-1], waypoints[-2])[1] < 0:
-                p.orientation = 270
-        p.orientation = int(p.orientation) % 360 if p.orientation else p.orientation
+                p.angle = 270
+        p.angle = int(p.angle) % 360 if p.angle else p.angle
 
     if sort_ports:
         # Sort the ports such that the bundle connect the correct corresponding ports.
@@ -177,8 +177,8 @@ def get_bundle_from_waypoints(
             "-X": lambda p: -p.x,
             "-Y": lambda p: -p.y,
         }
-        start_angle = ports1[0].orientation
-        end_angle = ports2[0].orientation
+        start_angle = ports1[0].angle
+        end_angle = ports2[0].angle
 
         key = (start_angle, end_angle)
         sp_st, ep_st = angles_to_sorttypes[key]
@@ -285,10 +285,10 @@ def _generate_manhattan_bundle_waypoints(
     way_segments = list(zip(waypoints, waypoints[1:]))
     offsets_start = get_ports_x_or_y_distances(ports1, waypoints[0])
 
-    start_angle = ports1[0].orientation
+    start_angle = ports1[0].angle
     if start_angle in [90]:
         offsets_start = [-_d for _d in offsets_start]
-    end_angle = ports2[0].orientation
+    end_angle = ports2[0].angle
 
     # if separation is defined, the offsets should increment from the reference port
     # in the same direction as the original offsets

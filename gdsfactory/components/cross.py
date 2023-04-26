@@ -35,7 +35,7 @@ def cross(
             1,
             width=width,
             layer=layer,
-            orientation=0,
+            angle=0,
             center=(+length / 2, 0),
             port_type=port_type,
         )
@@ -43,7 +43,7 @@ def cross(
             2,
             width=width,
             layer=layer,
-            orientation=180,
+            angle=180,
             center=(-length / 2, 0),
             port_type=port_type,
         )
@@ -51,7 +51,7 @@ def cross(
             3,
             width=width,
             layer=layer,
-            orientation=90,
+            angle=90,
             center=(0, length / 2),
             port_type=port_type,
         )
@@ -59,7 +59,7 @@ def cross(
             4,
             width=width,
             layer=layer,
-            orientation=270,
+            angle=270,
             center=(0, -length / 2),
             port_type=port_type,
         )

@@ -86,11 +86,9 @@ c
 def straight(length=10, width=1, layer=(1, 0)):
     WG = gf.Component()
     WG.add_polygon([(0, 0), (length, 0), (length, width), (0, width)], layer=layer)
+    WG.add_port(name="o1", center=[0, width / 2], width=width, angle=180, layer=layer)
     WG.add_port(
-        name="o1", center=[0, width / 2], width=width, orientation=180, layer=layer
-    )
-    WG.add_port(
-        name="o2", center=[length, width / 2], width=width, orientation=0, layer=layer
+        name="o2", center=[length, width / 2], width=width, angle=0, layer=layer
     )
     return WG
 

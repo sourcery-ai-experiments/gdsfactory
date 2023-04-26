@@ -27,13 +27,13 @@ def via_corner(
     Use in place of wire_corner to route between two layers.
 
     Args:
-        cross_section: list of cross_section, orientation pairs.
+        cross_section: list of cross_section, angle pairs.
         vias: vias to use to fill the rectangles.
         layers_labels: Labels to use for each layer.
         kwargs: cross_section settings.
     """
     cross_sections = [gf.get_cross_section(x[0], **kwargs) for x in cross_section]
-    port_orientations = [x[1] for x in cross_section]
+    port_angles = [x[1] for x in cross_section]
     widths = heights = [x.width for x in cross_sections]
     layers = [x.layer for x in cross_sections]
     layers_ports = layers
@@ -54,15 +54,15 @@ def via_corner(
         ref = c << compass(size=(widths[i], heights[i]), layer=layer)
 
         if layer in layers_ports:
-            orientations = port_orientations[i]
-            if (90 in orientations) or (270 in orientations):
-                orientation = 90
-            elif (0 in orientations) or (180 in orientations):
-                orientation = 180
+            angles = port_angles[i]
+            if (90 in angles) or (270 in angles):
+                angle = 90
+            elif (0 in angles) or (180 in angles):
+                angle = 180
             else:
-                raise ValueError(f"Port orientation {orientations} not valid.")
+                raise ValueError(f"Port angle {angles} not valid.")
             ports = ref.ports
-            ports = select_ports(ports, orientation=orientation)
+            ports = select_ports(ports, angle=angle)
             c.add_ports(ports, prefix=f"{layers_labels[i]}_")
 
     for via in vias:

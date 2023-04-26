@@ -47,7 +47,7 @@ def fiber_array(
         c.add_port(
             name=f"F{i}",
             width=core_diameter,
-            orientation=0,
+            angle=0,
             layer=layer_core,
             center=(0, 0),
         )

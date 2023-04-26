@@ -117,6 +117,6 @@ if __name__ == "__main__":
 
     # assert c3.ports["o1"].name == sections["_default"]["ports"][0]
     # assert c3.ports["o1"].layer == sections["_default"]["layer"]
-    # assert c3.ports["o1"].orientation == 180
+    # assert c3.ports["o1"].angle == 180
     # assert c3.ports["o1"].port_type == sections["_default"]["port_types"][0]
     # assert c3.ports["o1"].port_type == X1.port_type

@@ -5,7 +5,7 @@ ports:
     center:
     - -10.0
     - 0.0
-    orientation: 180
+    angle: 180
     layer:
     - 1
     - 0
@@ -17,7 +17,7 @@ ports:
     center:
     - 81.12
     - 0.0
-    orientation: 0.0
+    angle: 0.0
     layer:
     - 1
     - 0

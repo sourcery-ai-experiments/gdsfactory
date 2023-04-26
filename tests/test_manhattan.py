@@ -21,7 +21,7 @@ def test_manhattan() -> Component:
     layer = (1, 0)
 
     inputs = [
-        Port("in1", center=(10, 5), width=0.5, orientation=90, layer=layer),
+        Port("in1", center=(10, 5), width=0.5, angle=90, layer=layer),
         # Port("in2",center= (-10, 20), width=0.5, 0),
         # Port("in3",center= (10, 30), width=0.5, 0),
         # Port("in4",center= (-10, -5), width=0.5, 90),
@@ -30,7 +30,7 @@ def test_manhattan() -> Component:
     ]
 
     outputs = [
-        Port("in1", center=(290, -60), width=0.5, orientation=180, layer=layer),
+        Port("in1", center=(290, -60), width=0.5, angle=180, layer=layer),
         # Port("in2", (-100, 20), 0.5, 0),
         # Port("in3", (100, -25), 0.5, 0),
         # Port("in4", (-150, -65), 0.5, 270),
@@ -119,8 +119,8 @@ if __name__ == "__main__":
     c.show(show_ports=True)
 
     # c = gf.Component("pads_route_from_steps")
-    # pt = c << gf.components.pad_array(orientation=270, columns=3)
-    # pb = c << gf.components.pad_array(orientation=90, columns=3)
+    # pt = c << gf.components.pad_array(angle=270, columns=3)
+    # pb = c << gf.components.pad_array(angle=90, columns=3)
     # pt.move((100, 200))
     # route = gf.routing.get_route_from_steps(
     #     pt.ports["e11"],

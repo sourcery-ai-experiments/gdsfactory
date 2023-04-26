@@ -8,7 +8,7 @@ ports:
     - 49
     - 0
     name: e1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 11.0
@@ -20,7 +20,7 @@ ports:
     - 49
     - 0
     name: e2
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 11.0
@@ -32,7 +32,7 @@ ports:
     - 1
     - 0
     name: o1
-    orientation: 180
+    angle: 180
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -44,7 +44,7 @@ ports:
     - 1
     - 0
     name: o2
-    orientation: 0.0
+    angle: 0.0
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -62,8 +62,8 @@ settings:
     length_undercut: 30.0
     length_undercut_spacing: 6.0
     ohms_per_square: null
-    port_orientation1: 180
-    port_orientation2: 0
+    port_angle1: 180
+    port_angle2: 0
     via_stack: via_stack_heater_mtop
     with_undercut: true
   full:
@@ -77,8 +77,8 @@ settings:
     length_undercut: 30.0
     length_undercut_spacing: 6.0
     ohms_per_square: null
-    port_orientation1: 180
-    port_orientation2: 0
+    port_angle1: 180
+    port_angle2: 0
     via_stack: via_stack_heater_mtop
     with_undercut: true
   function_name: straight_heater_metal_undercut

@@ -57,8 +57,8 @@ def optimal_90deg(
 
     D.add_polygon([xpts, ypts], layer=layer)
 
-    D.add_port(name="e1", center=[a / 4, d], width=a / 2, orientation=90, layer=layer)
-    D.add_port(name="e2", center=[d, a / 4], width=a / 2, orientation=0, layer=layer)
+    D.add_port(name="e1", center=[a / 4, d], width=a / 2, angle=90, layer=layer)
+    D.add_port(name="e2", center=[d, a / 4], width=a / 2, angle=0, layer=layer)
     return D
 
 

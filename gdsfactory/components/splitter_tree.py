@@ -44,8 +44,8 @@ def splitter_tree(
     dx, dy = spacing
 
     coupler = gf.get_component(coupler)
-    coupler_ports_west = coupler.get_ports_list(port_type="optical", orientation=180)
-    coupler_ports_east = coupler.get_ports_list(port_type="optical", orientation=0)
+    coupler_ports_west = coupler.get_ports_list(port_type="optical", angle=180)
+    coupler_ports_east = coupler.get_ports_list(port_type="optical", angle=0)
 
     e1_port_name = coupler_ports_east[0].name
     e0_port_name = coupler_ports_east[1].name

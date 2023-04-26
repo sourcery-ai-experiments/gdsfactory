@@ -229,7 +229,7 @@ array_with_via
 
   import gdsfactory as gf
 
-  c = gf.components.array_with_via(columns=3, spacing=150.0, via_spacing=10.0, straight_length=60.0, via_stack_dy=0, port_orientation=180)
+  c = gf.components.array_with_via(columns=3, spacing=150.0, via_spacing=10.0, straight_length=60.0, via_stack_dy=0, port_angle=180)
   c.plot_matplotlib()
 
 
@@ -574,7 +574,7 @@ compass
 
   import gdsfactory as gf
 
-  c = gf.components.compass(size=[4.0, 2.0], layer='WG', port_type='placement', port_inclusion=0.0, port_orientations=[180, 90, 0, -90])
+  c = gf.components.compass(size=[4.0, 2.0], layer='WG', port_type='placement', port_inclusion=0.0, port_angles=[180, 90, 0, -90])
   c.plot_matplotlib()
 
 
@@ -1218,7 +1218,7 @@ disk_heater
 
   import gdsfactory as gf
 
-  c = gf.components.disk_heater(radius=10.0, gap=0.2, wrap_angle_deg=180.0, parity=1, cross_section='strip', heater_layer='HEATER', via_stack='via_stack_heater_mtop', heater_width=5.0, heater_extent=2.0, via_width=10.0, port_orientation=90)
+  c = gf.components.disk_heater(radius=10.0, gap=0.2, wrap_angle_deg=180.0, parity=1, cross_section='strip', heater_layer='HEATER', via_stack='via_stack_heater_mtop', heater_width=5.0, heater_extent=2.0, via_width=10.0, port_angle=90)
   c.plot_matplotlib()
 
 
@@ -1847,7 +1847,7 @@ marker_te
 
   import gdsfactory as gf
 
-  c = gf.components.marker_te(layer='TE', centered=True, port_type='placement', port_orientations=[180, 90, 0, -90])
+  c = gf.components.marker_te(layer='TE', centered=True, port_type='placement', port_angles=[180, 90, 0, -90])
   c.plot_matplotlib()
 
 
@@ -1862,7 +1862,7 @@ marker_tm
 
   import gdsfactory as gf
 
-  c = gf.components.marker_tm(layer='TM', centered=True, port_type='placement', port_orientations=[180, 90, 0, -90])
+  c = gf.components.marker_tm(layer='TM', centered=True, port_type='placement', port_angles=[180, 90, 0, -90])
   c.plot_matplotlib()
 
 
@@ -2282,7 +2282,7 @@ pad_array
 
   import gdsfactory as gf
 
-  c = gf.components.pad_array(pad='pad', spacing=[150.0, 150.0], columns=6, rows=1, orientation=270)
+  c = gf.components.pad_array(pad='pad', spacing=[150.0, 150.0], columns=6, rows=1, angle=270)
   c.plot_matplotlib()
 
 
@@ -2297,7 +2297,7 @@ pad_array0
 
   import gdsfactory as gf
 
-  c = gf.components.pad_array0(pad='pad', spacing=[150.0, 150.0], columns=1, rows=3, orientation=0)
+  c = gf.components.pad_array0(pad='pad', spacing=[150.0, 150.0], columns=1, rows=3, angle=0)
   c.plot_matplotlib()
 
 
@@ -2312,7 +2312,7 @@ pad_array180
 
   import gdsfactory as gf
 
-  c = gf.components.pad_array180(pad='pad', spacing=[150.0, 150.0], columns=1, rows=3, orientation=180)
+  c = gf.components.pad_array180(pad='pad', spacing=[150.0, 150.0], columns=1, rows=3, angle=180)
   c.plot_matplotlib()
 
 
@@ -2327,7 +2327,7 @@ pad_array270
 
   import gdsfactory as gf
 
-  c = gf.components.pad_array270(pad='pad', spacing=[150.0, 150.0], columns=6, rows=1, orientation=270)
+  c = gf.components.pad_array270(pad='pad', spacing=[150.0, 150.0], columns=6, rows=1, angle=270)
   c.plot_matplotlib()
 
 
@@ -2342,7 +2342,7 @@ pad_array90
 
   import gdsfactory as gf
 
-  c = gf.components.pad_array90(pad='pad', spacing=[150.0, 150.0], columns=6, rows=1, orientation=90)
+  c = gf.components.pad_array90(pad='pad', spacing=[150.0, 150.0], columns=6, rows=1, angle=90)
   c.plot_matplotlib()
 
 
@@ -2477,7 +2477,7 @@ rectangle
 
   import gdsfactory as gf
 
-  c = gf.components.rectangle(size=[4.0, 2.0], layer='WG', centered=False, port_type='placement', port_orientations=[180, 90, 0, -90])
+  c = gf.components.rectangle(size=[4.0, 2.0], layer='WG', centered=False, port_type='placement', port_angles=[180, 90, 0, -90])
   c.plot_matplotlib()
 
 
@@ -2537,7 +2537,7 @@ resistance_sheet
 
   import gdsfactory as gf
 
-  c = gf.components.resistance_sheet(width=10, layers=['SLAB90', 'NPP'], layer_offsets=[0, 0.2], pad_pitch=100.0, port_orientation1=180, port_orientation2=0)
+  c = gf.components.resistance_sheet(width=10, layers=['SLAB90', 'NPP'], layer_offsets=[0, 0.2], pad_pitch=100.0, port_angle1=180, port_angle2=0)
   c.plot_matplotlib()
 
 
@@ -2612,7 +2612,7 @@ ring_double_heater
 
   import gdsfactory as gf
 
-  c = gf.components.ring_double_heater(gap=0.2, radius=10.0, length_x=0.01, length_y=0.01, cross_section_heater='heater_metal', cross_section_waveguide_heater='strip_heater_metal', cross_section='strip', port_orientation=90, via_stack_offset=[0, 0])
+  c = gf.components.ring_double_heater(gap=0.2, radius=10.0, length_x=0.01, length_y=0.01, cross_section_heater='heater_metal', cross_section_waveguide_heater='strip_heater_metal', cross_section='strip', port_angle=90, via_stack_offset=[0, 0])
   c.plot_matplotlib()
 
 
@@ -2732,7 +2732,7 @@ ring_single_heater
 
   import gdsfactory as gf
 
-  c = gf.components.ring_single_heater(gap=0.2, radius=10.0, length_x=4.0, length_y=0.6, cross_section_waveguide_heater='strip_heater_metal', cross_section='strip', port_orientation=90, via_stack_offset=[0, 0])
+  c = gf.components.ring_single_heater(gap=0.2, radius=10.0, length_x=4.0, length_y=0.6, cross_section_waveguide_heater='strip_heater_metal', cross_section='strip', port_angle=90, via_stack_offset=[0, 0])
   c.plot_matplotlib()
 
 
@@ -3032,7 +3032,7 @@ straight_heater_meander
 
   import gdsfactory as gf
 
-  c = gf.components.straight_heater_meander(length=300.0, spacing=2.0, cross_section='strip', heater_width=2.5, extension_length=15.0, layer_heater='HEATER', radius=5.0, via_stack='via_stack_heater_mtop', port_orientation1=180, port_orientation2=0, heater_taper_length=10.0, straight_widths=[0.8, 0.9, 0.8], taper_length=10)
+  c = gf.components.straight_heater_meander(length=300.0, spacing=2.0, cross_section='strip', heater_width=2.5, extension_length=15.0, layer_heater='HEATER', radius=5.0, via_stack='via_stack_heater_mtop', port_angle1=180, port_angle2=0, heater_taper_length=10.0, straight_widths=[0.8, 0.9, 0.8], taper_length=10)
   c.plot_matplotlib()
 
 
@@ -3047,7 +3047,7 @@ straight_heater_meander_doped
 
   import gdsfactory as gf
 
-  c = gf.components.straight_heater_meander_doped(length=300.0, spacing=2.0, cross_section='strip', heater_width=1.5, extension_length=15.0, layers_doping=['P', 'PP', 'PPP'], radius=5.0, port_orientation1=180, port_orientation2=0, straight_widths=[0.8, 0.9, 0.8], taper_length=10)
+  c = gf.components.straight_heater_meander_doped(length=300.0, spacing=2.0, cross_section='strip', heater_width=1.5, extension_length=15.0, layers_doping=['P', 'PP', 'PPP'], radius=5.0, port_angle1=180, port_angle2=0, straight_widths=[0.8, 0.9, 0.8], taper_length=10)
   c.plot_matplotlib()
 
 
@@ -3062,7 +3062,7 @@ straight_heater_metal
 
   import gdsfactory as gf
 
-  c = gf.components.straight_heater_metal(length=320.0, length_undercut_spacing=6.0, length_undercut=30.0, length_straight_input=15.0, heater_width=2.5, cross_section_heater='heater_metal', cross_section_waveguide_heater='strip_heater_metal', cross_section_heater_undercut='strip_heater_metal_undercut', with_undercut=False, via_stack='via_stack_heater_mtop', port_orientation1=180, port_orientation2=0, heater_taper_length=5.0)
+  c = gf.components.straight_heater_metal(length=320.0, length_undercut_spacing=6.0, length_undercut=30.0, length_straight_input=15.0, heater_width=2.5, cross_section_heater='heater_metal', cross_section_waveguide_heater='strip_heater_metal', cross_section_heater_undercut='strip_heater_metal_undercut', with_undercut=False, via_stack='via_stack_heater_mtop', port_angle1=180, port_angle2=0, heater_taper_length=5.0)
   c.plot_matplotlib()
 
 
@@ -3077,7 +3077,7 @@ straight_heater_metal_90_90
 
   import gdsfactory as gf
 
-  c = gf.components.straight_heater_metal_90_90(length=320.0, length_undercut_spacing=6.0, length_undercut=30.0, length_straight_input=15.0, heater_width=2.5, cross_section_heater='heater_metal', cross_section_waveguide_heater='strip_heater_metal', cross_section_heater_undercut='strip_heater_metal_undercut', with_undercut=False, via_stack='via_stack_heater_mtop', port_orientation1=90, port_orientation2=90, heater_taper_length=5.0)
+  c = gf.components.straight_heater_metal_90_90(length=320.0, length_undercut_spacing=6.0, length_undercut=30.0, length_straight_input=15.0, heater_width=2.5, cross_section_heater='heater_metal', cross_section_waveguide_heater='strip_heater_metal', cross_section_heater_undercut='strip_heater_metal_undercut', with_undercut=False, via_stack='via_stack_heater_mtop', port_angle1=90, port_angle2=90, heater_taper_length=5.0)
   c.plot_matplotlib()
 
 
@@ -3092,7 +3092,7 @@ straight_heater_metal_undercut
 
   import gdsfactory as gf
 
-  c = gf.components.straight_heater_metal_undercut(length=320.0, length_undercut_spacing=6.0, length_undercut=30.0, length_straight_input=15.0, heater_width=2.5, cross_section_heater='heater_metal', cross_section_waveguide_heater='strip_heater_metal', cross_section_heater_undercut='strip_heater_metal_undercut', with_undercut=True, via_stack='via_stack_heater_mtop', port_orientation1=180, port_orientation2=0, heater_taper_length=5.0)
+  c = gf.components.straight_heater_metal_undercut(length=320.0, length_undercut_spacing=6.0, length_undercut=30.0, length_straight_input=15.0, heater_width=2.5, cross_section_heater='heater_metal', cross_section_waveguide_heater='strip_heater_metal', cross_section_heater_undercut='strip_heater_metal_undercut', with_undercut=True, via_stack='via_stack_heater_mtop', port_angle1=180, port_angle2=0, heater_taper_length=5.0)
   c.plot_matplotlib()
 
 
@@ -3107,7 +3107,7 @@ straight_heater_metal_undercut_90_90
 
   import gdsfactory as gf
 
-  c = gf.components.straight_heater_metal_undercut_90_90(length=320.0, length_undercut_spacing=6.0, length_undercut=30.0, length_straight_input=15.0, heater_width=2.5, cross_section_heater='heater_metal', cross_section_waveguide_heater='strip_heater_metal', cross_section_heater_undercut='strip_heater_metal_undercut', with_undercut=False, via_stack='via_stack_heater_mtop', port_orientation1=90, port_orientation2=90, heater_taper_length=5.0)
+  c = gf.components.straight_heater_metal_undercut_90_90(length=320.0, length_undercut_spacing=6.0, length_undercut=30.0, length_straight_input=15.0, heater_width=2.5, cross_section_heater='heater_metal', cross_section_waveguide_heater='strip_heater_metal', cross_section_heater_undercut='strip_heater_metal_undercut', with_undercut=False, via_stack='via_stack_heater_mtop', port_angle1=90, port_angle2=90, heater_taper_length=5.0)
   c.plot_matplotlib()
 
 

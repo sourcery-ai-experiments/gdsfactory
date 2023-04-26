@@ -317,9 +317,9 @@ class MEOW:
             raise ValueError(
                 "Component provided to MEOW does not have exactly 2 optical ports."
             )
-        elif component.ports["o1"].orientation != 180:
+        elif component.ports["o1"].angle != 180:
             raise ValueError("Component port o1 does not face westward (180 deg).")
-        elif component.ports["o2"].orientation != 0:
+        elif component.ports["o2"].angle != 0:
             raise ValueError("Component port o2 does not face eastward (0 deg).")
 
     def compute_mode(self, xs_num):

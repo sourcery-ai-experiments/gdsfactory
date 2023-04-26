@@ -156,7 +156,7 @@ def coh_rx_single_pol(
         port_type="placement",
         layer="M3",
         center=(x_max, (pd_i1.ports["bot_e3"].y + pd_i2.ports["top_e3"].y) / 2),
-        orientation=0,
+        angle=0,
         width=2.0,
     )
 
@@ -178,14 +178,14 @@ def coh_rx_single_pol(
             x_max,
             (pd_q1.ports["bot_e3"].y + pd_q2.ports["top_e3"].y) / 2 - 15.0,
         ),  # - 20.0 so that the traces for I and Q do not overlap
-        orientation=0,
+        angle=0,
         width=2.0,
     )
 
     # --- Draw pads if indicated ----
 
     if with_pads:
-        pad_array = c << gf.components.pad_array(columns=1, rows=4, orientation=0)
+        pad_array = c << gf.components.pad_array(columns=1, rows=4, angle=0)
         pad_array.xmin = pd_i1.xmax + pad_det_spacing
         pad_array.y = hybrid.y
 

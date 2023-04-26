@@ -262,11 +262,7 @@ def quickplot(items, **kwargs):  # noqa: C901
             # If item is a Component or ComponentReference, draw ports
             if isinstance(item, (Component, ComponentReference)) and show_ports is True:
                 for port in item.ports.values():
-                    if (
-                        (port.width is None)
-                        or (port.width == 0)
-                        or port.orientation is None
-                    ):
+                    if (port.width is None) or (port.width == 0) or port.angle is None:
                         new_bbox = _draw_port_as_point(ax, port)
                     else:
                         new_bbox = _draw_port(ax, port, is_subport=False, color="r")
@@ -393,7 +389,7 @@ def _draw_line(x, y, ax, **kwargs):
 
 
 def _port_marker(port, is_subport):
-    angle = port.orientation if port.orientation is not None else 0
+    angle = port.angle if port.angle is not None else 0
 
     if is_subport:
         arrow_scale = 0.75
@@ -413,9 +409,7 @@ def _port_marker(port, is_subport):
     arrow_points = _rotate_points(arrow_points, angle=angle, center=port.center)
     text_pos = np.array([np.cos(rad), np.sin(rad)]) * port.width / 3 + port.center
 
-    arrow_points = (
-        np.array([[0, 0], [0, 0]]) if port.orientation is None else arrow_points
-    )
+    arrow_points = np.array([[0, 0], [0, 0]]) if port.angle is None else arrow_points
     return arrow_points, text_pos
 
 
@@ -629,7 +623,7 @@ class Viewer(QGraphicsView):
             arrow_points, text_pos = _port_marker(port, is_subport)
             arrow_qpoly = QPolygonF([QPointF(p[0], p[1]) for p in arrow_points])
             port_scene_poly = self.scene.addPolygon(arrow_qpoly)
-            # port_scene_poly.setRotation(port.orientation)
+            # port_scene_poly.setRotation(port.angle)
             # port_scene_poly.moveBy(port.center[0], port.center[1])
             port_shapes = [qline, port_scene_poly]
         qtext = self.scene.addText(str(port.name), self.portfont)

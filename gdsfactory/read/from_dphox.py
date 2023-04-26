@@ -39,7 +39,7 @@ def from_dphox(device, foundry) -> Component:
         c.add_port(
             name=port_name,
             center=(port.x, port.y),
-            orientation=port.a,
+            angle=port.a,
             width=port.w,
             layer=foundry.layer_to_gds_label.get(port.layer, (1, 0)),
         )

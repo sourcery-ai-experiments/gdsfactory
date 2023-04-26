@@ -23,7 +23,7 @@ instances:
       - 100.0
       - 100.0
     settings:
-      orientation: 90
+      angle: 90
   bend_euler_1:
     component: bend_euler
     info:

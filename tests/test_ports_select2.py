@@ -23,9 +23,9 @@ def test_get_ports_sort_clockwise() -> None:
     p8 = p[-1]
 
     assert p1.name == "o1", p1.name
-    assert p1.orientation == 180, p1.orientation
+    assert p1.angle == 180, p1.angle
     assert p8.name == "o8", p8.name
-    assert p8.orientation == 270, p8.orientation
+    assert p8.angle == 270, p8.angle
 
 
 def test_get_ports_sort_counter_clockwise() -> None:
@@ -47,9 +47,9 @@ def test_get_ports_sort_counter_clockwise() -> None:
     p1 = p[0]
     p8 = p[-1]
     assert p1.name == "o6", p1.name
-    assert p1.orientation == 0, p1.orientation
+    assert p1.angle == 0, p1.angle
     assert p8.name == "o7", p8.name
-    assert p8.orientation == 270, p8.orientation
+    assert p8.angle == 270, p8.angle
 
 
 if __name__ == "__main__":
@@ -64,6 +64,6 @@ if __name__ == "__main__":
     # p8 = p[-1]
 
     # assert p1.name == "o6", p1.name
-    # assert p1.orientation == 0, p1.orientation
+    # assert p1.angle == 0, p1.angle
     # assert p8.name == "o7", p8.name
-    # assert p8.orientation == 270, p8.orientation
+    # assert p8.angle == 270, p8.angle

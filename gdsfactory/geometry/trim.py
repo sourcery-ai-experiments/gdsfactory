@@ -60,7 +60,7 @@ def trim(
                 i += 1
 
         c.add_ports(ports)
-        c.auto_rename_ports_layer_orientation()
+        c.auto_rename_ports_layer_angle()
 
     return c
 

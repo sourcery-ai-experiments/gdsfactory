@@ -14,7 +14,7 @@
 
 # # Routing optical and RF ports
 #
-# Optical and high speed RF ports have an orientation that routes need to follow to avoid sharp turns that produce reflections.
+# Optical and high speed RF ports have an angle that routes need to follow to avoid sharp turns that produce reflections.
 
 # +
 import numpy as np
@@ -323,7 +323,7 @@ port1 = gf.Port(
     "o1", 0, rect1.center + (0, 3), cross_section=gf.get_cross_section("strip")
 )
 port2 = port1.copy("o2")
-port2.orientation = 180
+port2.angle = 180
 port2.center = rect2.center + (0, -3)
 c.add_ports([port1, port2])
 route = gf.routing.get_route_astar(c, port1, port2, radius=0.5, width=0.5, distance=0.5)
@@ -343,7 +343,7 @@ port1 = gf.Port(
     "o1", 0, rect1.center + (0, 3), cross_section=gf.get_cross_section("strip")
 )
 port2 = port1.copy("o2")
-port2.orientation = 180
+port2.angle = 180
 port2.center = rect2.center + (0, -3)
 c.add_ports([port1, port2])
 route = gf.routing.get_route_astar(
@@ -397,7 +397,7 @@ xs_bottom = [(i - N / 2) * pitch for i in range(N)]
 layer = (1, 0)
 
 top_ports = [
-    gf.Port(f"top_{i}", center=(xs_top[i], 0), width=0.5, orientation=270, layer=layer)
+    gf.Port(f"top_{i}", center=(xs_top[i], 0), width=0.5, angle=270, layer=layer)
     for i in range(N)
 ]
 
@@ -406,7 +406,7 @@ bottom_ports = [
         f"bottom_{i}",
         center=(xs_bottom[i], -100),
         width=0.5,
-        orientation=90,
+        angle=90,
         layer=layer,
     )
     for i in range(N)
@@ -441,11 +441,11 @@ ys_left = [(i - N / 2) * pitch for i in range(N)]
 layer = (1, 0)
 
 right_ports = [
-    gf.Port(f"R_{i}", center=(0, ys_right[i]), width=0.5, orientation=180, layer=layer)
+    gf.Port(f"R_{i}", center=(0, ys_right[i]), width=0.5, angle=180, layer=layer)
     for i in range(N)
 ]
 left_ports = [
-    gf.Port(f"L_{i}", center=(-200, ys_left[i]), width=0.5, orientation=0, layer=layer)
+    gf.Port(f"L_{i}", center=(-200, ys_left[i]), width=0.5, angle=0, layer=layer)
     for i in range(N)
 ]
 
@@ -468,7 +468,7 @@ xs_bottom = [(i - N / 2) * pitch for i in range(N)]
 layer = (1, 0)
 
 top_ports = [
-    gf.Port(f"top_{i}", center=(xs_top[i], 0), width=0.5, orientation=270, layer=layer)
+    gf.Port(f"top_{i}", center=(xs_top[i], 0), width=0.5, angle=270, layer=layer)
     for i in range(N)
 ]
 
@@ -477,7 +477,7 @@ bot_ports = [
         f"bot_{i}",
         center=(xs_bottom[i], -300),
         width=0.5,
-        orientation=90,
+        angle=90,
         layer=layer,
     )
     for i in range(N)
@@ -513,7 +513,7 @@ def test_connect_corner(N=6, config="A"):
                 f"A_TR_{i}",
                 center=(d, a / 2 + i * sep),
                 width=0.5,
-                orientation=0,
+                angle=0,
                 layer=layer,
             )
             for i in range(N)
@@ -524,7 +524,7 @@ def test_connect_corner(N=6, config="A"):
                 f"A_TL_{i}",
                 center=(-d, a / 2 + i * sep),
                 width=0.5,
-                orientation=180,
+                angle=180,
                 layer=layer,
             )
             for i in range(N)
@@ -535,7 +535,7 @@ def test_connect_corner(N=6, config="A"):
                 f"A_BR_{i}",
                 center=(d, -a / 2 - i * sep),
                 width=0.5,
-                orientation=0,
+                angle=0,
                 layer=layer,
             )
             for i in range(N)
@@ -546,7 +546,7 @@ def test_connect_corner(N=6, config="A"):
                 f"A_BL_{i}",
                 center=(-d, -a / 2 - i * sep),
                 width=0.5,
-                orientation=180,
+                angle=180,
                 layer=layer,
             )
             for i in range(N)
@@ -559,7 +559,7 @@ def test_connect_corner(N=6, config="A"):
                 f"B_TR_{i}",
                 center=(a / 2 + i * sep, d),
                 width=0.5,
-                orientation=90,
+                angle=90,
                 layer=layer,
             )
             for i in range(N)
@@ -570,7 +570,7 @@ def test_connect_corner(N=6, config="A"):
                 f"B_TL_{i}",
                 center=(-a / 2 - i * sep, d),
                 width=0.5,
-                orientation=90,
+                angle=90,
                 layer=layer,
             )
             for i in range(N)
@@ -581,7 +581,7 @@ def test_connect_corner(N=6, config="A"):
                 f"B_BR_{i}",
                 center=(a / 2 + i * sep, -d),
                 width=0.5,
-                orientation=270,
+                angle=270,
                 layer=layer,
             )
             for i in range(N)
@@ -592,7 +592,7 @@ def test_connect_corner(N=6, config="A"):
                 f"B_BL_{i}",
                 center=(-a / 2 - i * sep, -d),
                 width=0.5,
-                orientation=270,
+                angle=270,
                 layer=layer,
             )
             for i in range(N)
@@ -607,7 +607,7 @@ def test_connect_corner(N=6, config="A"):
                 f"A_TR_{i}",
                 center=(a, d + i * sep),
                 width=0.5,
-                orientation=0,
+                angle=0,
                 layer=layer,
             )
             for i in range(N)
@@ -618,7 +618,7 @@ def test_connect_corner(N=6, config="A"):
                 f"A_TL_{i}",
                 center=(-a, d + i * sep),
                 width=0.5,
-                orientation=180,
+                angle=180,
                 layer=layer,
             )
             for i in range(N)
@@ -629,7 +629,7 @@ def test_connect_corner(N=6, config="A"):
                 f"A_BR_{i}",
                 center=(a, -d - i * sep),
                 width=0.5,
-                orientation=0,
+                angle=0,
                 layer=layer,
             )
             for i in range(N)
@@ -640,7 +640,7 @@ def test_connect_corner(N=6, config="A"):
                 f"A_BL_{i}",
                 center=(-a, -d - i * sep),
                 width=0.5,
-                orientation=180,
+                angle=180,
                 layer=layer,
             )
             for i in range(N)
@@ -653,7 +653,7 @@ def test_connect_corner(N=6, config="A"):
                 f"B_TR_{i}",
                 center=(d + i * sep, a),
                 width=0.5,
-                orientation=90,
+                angle=90,
                 layer=layer,
             )
             for i in range(N)
@@ -664,7 +664,7 @@ def test_connect_corner(N=6, config="A"):
                 f"B_TL_{i}",
                 center=(-d - i * sep, a),
                 width=0.5,
-                orientation=90,
+                angle=90,
                 layer=layer,
             )
             for i in range(N)
@@ -675,7 +675,7 @@ def test_connect_corner(N=6, config="A"):
                 f"B_BR_{i}",
                 center=(d + i * sep, -a),
                 width=0.5,
-                orientation=270,
+                angle=270,
                 layer=layer,
             )
             for i in range(N)
@@ -686,7 +686,7 @@ def test_connect_corner(N=6, config="A"):
                 f"B_BL_{i}",
                 center=(-d - i * sep, -a),
                 width=0.5,
-                orientation=270,
+                angle=270,
                 layer=layer,
             )
             for i in range(N)
@@ -719,9 +719,9 @@ c
 
 # +
 @cell
-def test_connect_bundle_udirect(dy=200, orientation=270, layer=(1, 0)):
+def test_connect_bundle_udirect(dy=200, angle=270, layer=(1, 0)):
     xs1 = [-100, -90, -80, -55, -35, 24, 0] + [200, 210, 240]
-    axis = "X" if orientation in [0, 180] else "Y"
+    axis = "X" if angle in [0, 180] else "Y"
     pitch = 10.0
     N = len(xs1)
     xs2 = [70 + i * pitch for i in range(N)]
@@ -732,7 +732,7 @@ def test_connect_bundle_udirect(dy=200, orientation=270, layer=(1, 0)):
                 f"top_{i}",
                 center=(0, xs1[i]),
                 width=0.5,
-                orientation=orientation,
+                angle=angle,
                 layer=layer,
             )
             for i in range(N)
@@ -743,7 +743,7 @@ def test_connect_bundle_udirect(dy=200, orientation=270, layer=(1, 0)):
                 f"bottom_{i}",
                 center=(dy, xs2[i]),
                 width=0.5,
-                orientation=orientation,
+                angle=angle,
                 layer=layer,
             )
             for i in range(N)
@@ -755,7 +755,7 @@ def test_connect_bundle_udirect(dy=200, orientation=270, layer=(1, 0)):
                 f"top_{i}",
                 center=(xs1[i], 0),
                 width=0.5,
-                orientation=orientation,
+                angle=angle,
                 layer=layer,
             )
             for i in range(N)
@@ -766,7 +766,7 @@ def test_connect_bundle_udirect(dy=200, orientation=270, layer=(1, 0)):
                 f"bottom_{i}",
                 center=(xs2[i], dy),
                 width=0.5,
-                orientation=orientation,
+                angle=angle,
                 layer=layer,
             )
             for i in range(N)
@@ -786,19 +786,19 @@ c
 
 # +
 @cell
-def test_connect_bundle_u_indirect(dy=-200, orientation=180, layer=(1, 0)):
+def test_connect_bundle_u_indirect(dy=-200, angle=180, layer=(1, 0)):
     xs1 = [-100, -90, -80, -55, -35] + [200, 210, 240]
-    axis = "X" if orientation in [0, 180] else "Y"
+    axis = "X" if angle in [0, 180] else "Y"
     pitch = 10.0
     N = len(xs1)
     xs2 = [50 + i * pitch for i in range(N)]
 
-    a1 = orientation
+    a1 = angle
     a2 = a1 + 180
 
     if axis == "X":
         ports1 = [
-            Port(f"top_{i}", center=(0, xs1[i]), width=0.5, orientation=a1, layer=layer)
+            Port(f"top_{i}", center=(0, xs1[i]), width=0.5, angle=a1, layer=layer)
             for i in range(N)
         ]
 
@@ -807,7 +807,7 @@ def test_connect_bundle_u_indirect(dy=-200, orientation=180, layer=(1, 0)):
                 f"bot_{i}",
                 center=(dy, xs2[i]),
                 width=0.5,
-                orientation=a2,
+                angle=a2,
                 layer=layer,
             )
             for i in range(N)
@@ -815,7 +815,7 @@ def test_connect_bundle_u_indirect(dy=-200, orientation=180, layer=(1, 0)):
 
     else:
         ports1 = [
-            Port(f"top_{i}", center=(xs1[i], 0), width=0.5, orientation=a1, layer=layer)
+            Port(f"top_{i}", center=(xs1[i], 0), width=0.5, angle=a1, layer=layer)
             for i in range(N)
         ]
 
@@ -824,7 +824,7 @@ def test_connect_bundle_u_indirect(dy=-200, orientation=180, layer=(1, 0)):
                 f"bot_{i}",
                 center=(xs2[i], dy),
                 width=0.5,
-                orientation=a2,
+                angle=a2,
                 layer=layer,
             )
             for i in range(N)
@@ -843,7 +843,7 @@ def test_connect_bundle_u_indirect(dy=-200, orientation=180, layer=(1, 0)):
     return top_cell
 
 
-c = test_connect_bundle_u_indirect(orientation=0)
+c = test_connect_bundle_u_indirect(angle=0)
 c
 
 
@@ -862,12 +862,12 @@ def test_north_to_south(layer=(1, 0)):
     a2 = a1 + 180
 
     ports1 = [
-        gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, orientation=a1, layer=layer)
+        gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, angle=a1, layer=layer)
         for i in range(N)
     ]
 
     ports2 = [
-        gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, orientation=a2, layer=layer)
+        gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, angle=a2, layer=layer)
         for i in range(N)
     ]
 
@@ -893,12 +893,12 @@ def demo_connect_bundle():
     dy = 200.0
     c = gf.Component()
     for j, s in enumerate([-1, 1]):
-        for i, orientation in enumerate([0, 90, 180, 270]):
-            ci = test_connect_bundle_u_indirect(dy=s * dy, orientation=orientation)
+        for i, angle in enumerate([0, 90, 180, 270]):
+            ci = test_connect_bundle_u_indirect(dy=s * dy, angle=angle)
             ref = ci.ref(position=(i * x, j * y))
             c.add(ref)
 
-            ci = test_connect_bundle_udirect(dy=s * dy, orientation=orientation)
+            ci = test_connect_bundle_udirect(dy=s * dy, angle=angle)
             ref = ci.ref(position=(i * x, j * y + y0))
             c.add(ref)
 
@@ -1006,8 +1006,8 @@ c1 = c << gf.components.nxn(east=3, ysize=20)
 c2 = c << gf.components.nxn(west=3)
 c2.move((80, 0))
 routes = gf.routing.get_bundle(
-    c1.get_ports_list(orientation=0),
-    c2.get_ports_list(orientation=180),
+    c1.get_ports_list(angle=0),
+    c2.get_ports_list(angle=180),
     auto_widen=False,
 )
 for route in routes:
@@ -1023,11 +1023,11 @@ ys_right = [(i - N / 2) * pitch for i in range(N)]
 layer = (1, 0)
 
 right_ports = [
-    gf.Port(f"R_{i}", center=(0, ys_right[i]), width=0.5, orientation=180, layer=layer)
+    gf.Port(f"R_{i}", center=(0, ys_right[i]), width=0.5, angle=180, layer=layer)
     for i in range(N)
 ]
 left_ports = [
-    gf.Port(f"L_{i}", center=(-50, ys_left[i]), width=0.5, orientation=0, layer=layer)
+    gf.Port(f"L_{i}", center=(-50, ys_left[i]), width=0.5, angle=0, layer=layer)
     for i in range(N)
 ]
 left_ports.reverse()
@@ -1047,7 +1047,7 @@ c1 = c << gf.components.nxn(east=3, ysize=20)
 c2 = c << gf.components.nxn(west=3)
 c2.move((80, 0))
 routes = gf.routing.get_bundle_sbend(
-    c1.get_ports_list(orientation=0), c2.get_ports_list(orientation=180)
+    c1.get_ports_list(angle=0), c2.get_ports_list(angle=180)
 )
 for route in routes:
     c.add(route.references)
@@ -1060,8 +1060,8 @@ c1 = c << gf.components.nxn(east=3, ysize=20)
 c2 = c << gf.components.nxn(west=3)
 c2.move((80, 0))
 routes = gf.routing.get_bundle(
-    c1.get_ports_list(orientation=0),
-    c2.get_ports_list(orientation=180),
+    c1.get_ports_list(angle=0),
+    c2.get_ports_list(angle=180),
     with_sbend=True,
 )
 for route in routes:
@@ -1085,9 +1085,7 @@ def test_connect_bundle_waypoints(layer=(1, 0)):
     N = ys1.size
 
     ports1 = [
-        gf.Port(
-            name=f"A_{i}", center=(0, ys1[i]), width=0.5, orientation=0, layer=layer
-        )
+        gf.Port(name=f"A_{i}", center=(0, ys1[i]), width=0.5, angle=0, layer=layer)
         for i in range(N)
     ]
     ports2 = [
@@ -1095,7 +1093,7 @@ def test_connect_bundle_waypoints(layer=(1, 0)):
             name=f"B_{i}",
             center=(500, ys2[i]),
             width=0.5,
-            orientation=180,
+            angle=180,
             layer=layer,
         )
         for i in range(N)
@@ -1138,8 +1136,8 @@ lt = c << gf.components.straight(length=15)
 lb = c << gf.components.straight(length=5)
 lt.movey(5)
 
-ports1 = lt.get_ports_list(orientation=0) + lb.get_ports_list(orientation=0)
-ports2 = r.get_ports_list(orientation=180)
+ports1 = lt.get_ports_list(angle=0) + lb.get_ports_list(angle=0)
+ports2 = r.get_ports_list(angle=180)
 
 
 dx = 20
@@ -1167,8 +1165,8 @@ w = gf.components.array(
 left = c << w
 right = c << w
 right.move((200, 100))
-p1 = left.get_ports_list(orientation=0)
-p2 = right.get_ports_list(orientation=180)
+p1 = left.get_ports_list(angle=0)
+p2 = right.get_ports_list(angle=180)
 
 routes = gf.routing.get_bundle_from_steps(
     p1,
@@ -1200,11 +1198,11 @@ a2 = a1 + 180
 layer = (1, 0)
 
 ports1 = [
-    gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, orientation=a1, layer=layer)
+    gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, angle=a1, layer=layer)
     for i in range(N)
 ]
 ports2 = [
-    gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, orientation=a2, layer=layer)
+    gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, angle=a2, layer=layer)
     for i in range(N)
 ]
 
@@ -1235,11 +1233,11 @@ a2 = a1 + 180
 layer = (1, 0)
 
 ports1 = [
-    gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, orientation=a1, layer=layer)
+    gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, angle=a1, layer=layer)
     for i in range(N)
 ]
 ports2 = [
-    gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, orientation=a2, layer=layer)
+    gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, angle=a2, layer=layer)
     for i in range(N)
 ]
 
@@ -1269,11 +1267,11 @@ a2 = a1 + 180
 layer = (1, 0)
 
 ports1 = [
-    gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, orientation=a1, layer=layer)
+    gf.Port(f"top_{i}", center=(xs1[i], 0), width=0.5, angle=a1, layer=layer)
     for i in range(N)
 ]
 ports2 = [
-    gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, orientation=a2, layer=layer)
+    gf.Port(f"bot_{i}", center=(xs2[i], dy), width=0.5, angle=a2, layer=layer)
     for i in range(N)
 ]
 
@@ -1294,8 +1292,8 @@ c1.y = 0
 c2.y = 0
 
 routes = gf.routing.get_bundle_path_length_match(
-    c1.get_ports_list(orientation=0),
-    c2.get_ports_list(orientation=180),
+    c1.get_ports_list(angle=0),
+    c2.get_ports_list(angle=180),
     end_straight_length=0,
     start_straight_length=0,
     separation=30,
@@ -1315,8 +1313,8 @@ c1.y = 0
 c2.y = 0
 
 routes = gf.routing.get_bundle_path_length_match(
-    c1.get_ports_list(orientation=0),
-    c2.get_ports_list(orientation=180),
+    c1.get_ports_list(angle=0),
+    c2.get_ports_list(angle=180),
     end_straight_length=0,
     start_straight_length=0,
     separation=80,  # increased
@@ -1367,7 +1365,7 @@ c = gf.Component("mzi_with_pads_top")
 c1 = c << gf.components.mzi_phase_shifter(
     straight_x_top=gf.components.straight_heater_metal_90_90, length_x=70  # 150
 )
-c2 = c << gf.components.pad_array(columns=2, orientation=270)
+c2 = c << gf.components.pad_array(columns=2, angle=270)
 
 c2.ymin = c1.ymax + 30
 c2.x = 0
@@ -1412,7 +1410,7 @@ def big_device(w=400.0, h=400.0, N=16, port_pitch=15.0, layer=LAYER.WG, wg_width
         port = Port(
             name=f"W{i}",
             center=p0 + (-dx, (i - N / 2) * port_pitch),
-            orientation=180,
+            angle=180,
             **port_params,
         )
 
@@ -1422,7 +1420,7 @@ def big_device(w=400.0, h=400.0, N=16, port_pitch=15.0, layer=LAYER.WG, wg_width
         port = Port(
             name=f"E{i}",
             center=p0 + (dx, (i - N / 2) * port_pitch),
-            orientation=0,
+            angle=0,
             **port_params,
         )
 
@@ -1432,7 +1430,7 @@ def big_device(w=400.0, h=400.0, N=16, port_pitch=15.0, layer=LAYER.WG, wg_width
         port = Port(
             name=f"N{i}",
             center=p0 + ((i - N / 2) * port_pitch, dy),
-            orientation=90,
+            angle=90,
             **port_params,
         )
 
@@ -1442,7 +1440,7 @@ def big_device(w=400.0, h=400.0, N=16, port_pitch=15.0, layer=LAYER.WG, wg_width
         port = Port(
             name=f"S{i}",
             center=p0 + ((i - N / 2) * port_pitch, -dy),
-            orientation=-90,
+            angle=-90,
             **port_params,
         )
 

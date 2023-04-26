@@ -218,7 +218,7 @@ def straight_connector(
         return []
     path = Path([port1.center, port2.center])
     # in usual cases, these angles should be the same, unless they are on opposite sides, in which they are 180 degrees separated
-    if abs(difference_between_angles(path.start_angle, port1.orientation)) > 1:
+    if abs(difference_between_angles(path.start_angle, port1.angle)) > 1:
         return _make_error_trace(
             port1,
             port2,
@@ -288,14 +288,12 @@ def _place_bend(bend_component: Component, position, rotation) -> ComponentRefer
     bend_ports = _get_bend_ports(bend_component)
     bend_control_point = vector_intersection(
         bend_ports[0].center,
-        bend_ports[0].orientation + 180,
+        bend_ports[0].angle + 180,
         bend_ports[1].center,
-        bend_ports[1].orientation + 180,
+        bend_ports[1].angle + 180,
     )
     bend_ref = ComponentReference(bend_component)
-    bend_ref.rotate(
-        rotation + 180 - bend_ports[0].orientation, center=bend_control_point
-    )
+    bend_ref.rotate(rotation + 180 - bend_ports[0].angle, center=bend_control_point)
     bend_ref.move(origin=bend_control_point, destination=position)
     return bend_ref
 
@@ -336,13 +334,13 @@ def _all_angle_connector(
 
     # in the case that the two ports already directly align
     if bend_angle == 0 and _point_intersects_ray(
-        port1.center, port1.orientation, port2.center
+        port1.center, port1.angle, port2.center
     ):
         straight_connection = connector2(port1, port2, cross_section=cross_section2)
         report_segment_separation(straight_connection)
         return straight_connection
     if intersect is None:
-        # if difference_between_angles(port2.orientation, port1.orientation) == 180:
+        # if difference_between_angles(port2.angle, port1.angle) == 180:
         sample_bend = _get_bend(bend, angle=90, cross_section=cross_section)
         bend_cs = _get_bend_ports(sample_bend)[0].cross_section
         taper1 = taper_to_cross_section(port1, bend_cs)
@@ -358,7 +356,7 @@ def _all_angle_connector(
             port2 = taper2.ports[output_port_name]
         # try:
         bend_angles = _get_bend_angles(
-            port1.center, port2.center, port1.orientation, port2.orientation, bend=bend
+            port1.center, port2.center, port1.angle, port2.angle, bend=bend
         )
         bends = [
             _get_bend(bend, angle=bend_angle, cross_section=cross_section)
@@ -380,9 +378,7 @@ def _all_angle_connector(
         return route_refs
         # return _make_error_trace(port1, port2, f'Port vectors do not intersect: {port1} and {port2}')
     bend_component = _get_bend(bend, angle=bend_angle, cross_section=cross_section)
-    bend_ref = _place_bend(
-        bend_component, position=intersect, rotation=port1.orientation
-    )
+    bend_ref = _place_bend(bend_component, position=intersect, rotation=port1.angle)
     bend_ref_ports = _get_bend_ports(bend_ref)
 
     straight1 = connector1(port1, bend_ref_ports[0], cross_section=cross_section1)
@@ -539,7 +535,7 @@ def get_bundle_all_angle(
         mmi2.rotate(30)
 
         routes = gf.routing.get_bundle_all_angle(
-            mmi1.get_ports_list(orientation=0),
+            mmi1.get_ports_list(angle=0),
             [mmi2.ports["o2"], mmi2.ports["o1"]],
             connector=None,
         )
@@ -588,15 +584,15 @@ def get_bundle_all_angle(
 
     for port1, port2 in zip(ports1, ports2):
         if _points_approx_equal(port1.center, port2.center) and _angles_approx_opposing(
-            port1.orientation, port2.orientation
+            port1.angle, port2.angle
         ):
             continue
         route_refs = []
         if (
             start_angle is not None
-            and difference_between_angles(start_angle, port1.orientation) != 0
+            and difference_between_angles(start_angle, port1.angle) != 0
         ):
-            bend_angle = difference_between_angles(start_angle, port1.orientation)
+            bend_angle = difference_between_angles(start_angle, port1.angle)
             bend_component = _get_bend(
                 bend, angle=bend_angle, cross_section=cross_section
             )
@@ -615,9 +611,9 @@ def get_bundle_all_angle(
             port1 = bend_ref_ports[1]
         if (
             end_angle is not None
-            and difference_between_angles(end_angle, port2.orientation) != 0
+            and difference_between_angles(end_angle, port2.angle) != 0
         ):
-            bend_angle = difference_between_angles(end_angle, port2.orientation)
+            bend_angle = difference_between_angles(end_angle, port2.angle)
             bend_component = _get_bend(
                 bend, angle=bend_angle, cross_section=cross_section
             )
@@ -637,7 +633,7 @@ def get_bundle_all_angle(
             # for non-primary routes in the bundle, reset the steps for each new route,
             # based on the primary route's waypoints and angles
             these_waypoints = [port1.center]
-            these_angles = [port1.orientation]
+            these_angles = [port1.angle]
             i_step = 0
             intercept_sign = (
                 1
@@ -672,16 +668,16 @@ def get_bundle_all_angle(
                 these_waypoints.append(next_waypoint)
                 these_angles.append(angles[i_waypoint])
             # final_intercept = vector_intersection(these_waypoints[-1], these_angles[-1], port2.center,
-            #                                       port2.orientation, raise_error=True)
+            #                                       port2.angle, raise_error=True)
             waypoints = these_waypoints
             angles = these_angles
             has_explicit_end_angle = True
 
         if steps and is_primary_route:
             x0, y0 = port1.center
-            a0 = port1.orientation
+            a0 = port1.angle
             waypoints = [(x0, y0)]
-            angles = [port1.orientation]
+            angles = [port1.angle]
             a_final = None
 
             # for each step, get the next waypoint
@@ -738,7 +734,7 @@ def get_bundle_all_angle(
                                 # otherwise, let x be at the intercept of the specified y with the ray defined by port 2's vector
                                 x1, _ = vector_intersection(
                                     port2.center,
-                                    port2.orientation,
+                                    port2.angle,
                                     (-1e6, y1),
                                     0,
                                     max_distance=2e6,
@@ -759,7 +755,7 @@ def get_bundle_all_angle(
                             else:
                                 _, y1 = vector_intersection(
                                     port2.center,
-                                    port2.orientation,
+                                    port2.angle,
                                     (x1, -1e6),
                                     90,
                                     max_distance=2e6,
@@ -858,9 +854,7 @@ def get_bundle_all_angle(
             if has_explicit_end_angle:
                 port1 = prev_port
             else:
-                if _point_intersects_ray(
-                    port2.center, port2.orientation, prev_port.center
-                ):
+                if _point_intersects_ray(port2.center, port2.angle, prev_port.center):
                     final_connection = final_connector_func(
                         prev_port, port2, cross_section=final_cross_section
                     )
@@ -881,9 +875,9 @@ def get_bundle_all_angle(
         if not steps or has_explicit_end_angle:
             intersect = vector_intersection(
                 port1.center,
-                port1.orientation,
+                port1.angle,
                 port2.center,
-                port2.orientation,
+                port2.angle,
                 raise_error=False,
             )
             report_segment_separation = None
@@ -892,12 +886,10 @@ def get_bundle_all_angle(
                 segment_separations.append(_get_minimum_separation(refs))
 
             if steps:
-                angles.insert(-1, port1.orientation)
+                angles.insert(-1, port1.angle)
                 waypoints.insert(-1, intersect)
                 report_segment_separation = _report_separations_w_steps
-            bend_angle = difference_between_angles(
-                port2.orientation + 180, port1.orientation
-            )
+            bend_angle = difference_between_angles(port2.angle + 180, port1.angle)
             final_connection = _all_angle_connector(
                 port1,
                 port2,
@@ -934,7 +926,7 @@ if __name__ == "__main__":
     mmi2.rotate(30)
 
     routes = gf.routing.get_bundle_all_angle(
-        mmi1.get_ports_list(orientation=0),
+        mmi1.get_ports_list(angle=0),
         [mmi2.ports["o2"], mmi2.ports["o1"]],
         connector=None,
     )

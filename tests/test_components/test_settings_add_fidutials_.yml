@@ -6,7 +6,7 @@ settings:
     child: null
     default:
       columns: 6
-      orientation: 270
+      angle: 270
       pad: pad
       rows: 1
       spacing:
@@ -14,7 +14,7 @@ settings:
       - 150.0
     full:
       columns: 6
-      orientation: 270
+      angle: 270
       pad: pad
       rows: 1
       spacing:

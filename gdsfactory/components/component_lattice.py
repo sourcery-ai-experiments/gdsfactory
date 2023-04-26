@@ -186,7 +186,7 @@ def component_lattice(
     for component in symbol_to_component.values():
         component = gf.get_component(component)
         # component = component.copy()
-        # component.auto_rename_ports_orientation()
+        # component.auto_rename_ports_angle()
 
         for direction in ["W", "E"]:
             ports_dir = get_ports_facing(component.ports, direction)

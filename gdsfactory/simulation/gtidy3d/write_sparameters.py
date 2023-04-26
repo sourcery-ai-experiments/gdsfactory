@@ -43,20 +43,18 @@ def parse_port_eigenmode_coeff(
     """
     # Direction of port (pointing away from the simulation)
     # Figure out if that is exiting the simulation or not
-    # depending on the port orientation (assuming it's near PMLs)
+    # depending on the port angle (assuming it's near PMLs)
 
-    orientation = ports[port_name].orientation
+    angle = ports[port_name].angle
 
-    if orientation in [0, 90]:  # east
+    if angle in [0, 90]:  # east
         direction_inp = "-"
         direction_out = "+"
-    elif orientation in [180, 270]:  # west
+    elif angle in [180, 270]:  # west
         direction_inp = "+"
         direction_out = "-"
     else:
-        raise ValueError(
-            "Port orientation = {orientation} is not 0, 90, 180, or 270 degrees"
-        )
+        raise ValueError("Port angle = {angle} is not 0, 90, 180, or 270 degrees")
 
     coeff_inp = sim_data.monitor_data[port_name].amps.sel(direction=direction_inp)
     coeff_out = sim_data.monitor_data[port_name].amps.sel(direction=direction_out)

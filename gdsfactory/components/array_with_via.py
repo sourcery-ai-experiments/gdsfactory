@@ -25,7 +25,7 @@ def array_with_via(
     cross_section: Optional[CrossSectionSpec] = metal2,
     via_stack: ComponentSpec = via_stack_factory,
     via_stack_dy: float = 0,
-    port_orientation: float = 180,
+    port_angle: float = 180,
     port_offset: Optional[Float2] = None,
     **kwargs,
 ) -> Component:
@@ -41,7 +41,7 @@ def array_with_via(
         cross_section: spec.
         via_stack: spec.
         via_stack_dy: via_stack offset in um.
-        port_orientation: 180: facing west.
+        port_angle: 180: facing west.
         port_offset: Optional port movement in um.
         kwargs: cross_section settings.
     """
@@ -54,19 +54,19 @@ def array_with_via(
         ref.x = col * spacing
         c.add(ref)
 
-        if port_orientation == 180:
+        if port_angle == 180:
             xlength = col * spacing + straight_length
-        elif port_orientation == 0:
+        elif port_angle == 0:
             xlength = columns * spacing - (col * spacing) + straight_length
-        elif port_orientation == 270:
+        elif port_angle == 270:
             xlength = col * via_spacing + straight_length
 
-        elif port_orientation == 90:
+        elif port_angle == 90:
             xlength = columns * via_spacing - (col * via_spacing) + straight_length
 
         else:
             raise ValueError(
-                f"Invalid port_orientation = {port_orientation}",
+                f"Invalid port_angle = {port_angle}",
                 "180: west, 0: east, 90: north, 270: south",
             )
 
@@ -80,7 +80,7 @@ def array_with_via(
                 length=xlength, cross_section=cross_section, **kwargs
             )
             straightx_ref.connect(
-                "e2", via_stack_ref.get_ports_list(orientation=port_orientation)[0]
+                "e2", via_stack_ref.get_ports_list(angle=port_angle)[0]
             )
             c.add_port(port_name, port=straightx_ref.ports["e1"])
             if port_offset:
@@ -120,13 +120,13 @@ if __name__ == "__main__":
     PDK = get_generic_pdk()
     PDK.activate()
     via_stack_big = gf.partial(via_stack_factory, size=(30, 20))
-    # c = array_with_via(columns=3, width=10, via_spacing=20, port_orientation=90)
+    # c = array_with_via(columns=3, width=10, via_spacing=20, port_angle=90)
     c = array_with_via_2d(
         columns=2,
         rows=3,
         via_spacing=27.3,
         spacing=(150, 218),
-        port_orientation=270,
+        port_angle=270,
         straight_length=0,
         via_stack=via_stack_big,
         via_stack_dy=-50 + 10,

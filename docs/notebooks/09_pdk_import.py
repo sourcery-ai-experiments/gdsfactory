@@ -106,7 +106,7 @@ gf.labels.write_labels.write_labels_klayout(gdspath, layer_label=gf.LAYER.LABEL)
 # %% [markdown]
 # ### add ports from pins
 #
-# Sometimes the GDS does not have YAML metadata, therefore you need to figure out the port locations, widths and orientations.
+# Sometimes the GDS does not have YAML metadata, therefore you need to figure out the port locations, widths and angles.
 #
 # gdsfactory provides you with functions that will add ports to the component by looking for pins shapes on a specific layers (port_markers or pins)
 #

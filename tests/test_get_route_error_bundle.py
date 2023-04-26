@@ -20,8 +20,8 @@ def test_route_error_bundle():
     left = c << w
     right = c << w
     right.move((200, 100))
-    p1 = left.get_ports_list(orientation=0)
-    p2 = right.get_ports_list(orientation=180)
+    p1 = left.get_ports_list(angle=0)
+    p2 = right.get_ports_list(angle=180)
 
     with pytest.warns(RouteWarning):
         routes = gf.routing.get_bundle_from_steps(

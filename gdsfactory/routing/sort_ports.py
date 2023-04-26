@@ -46,18 +46,18 @@ def sort_ports(ports1: List[Port], ports2: List[Port]) -> Tuple[List[Port], List
     if isinstance(ports2, dict):
         ports2 = list(ports2.values())
 
-    if ports1[0].orientation in [0, 180] and ports2[0].orientation in [0, 180]:
+    if ports1[0].angle in [0, 180] and ports2[0].angle in [0, 180]:
         f_key1 = get_port_y
         f_key2 = get_port_y
         ports1.sort(key=f_key1)
         ports2.sort(key=f_key2)
-    elif ports1[0].orientation in [90, 270] and ports2[0].orientation in [90, 270]:
+    elif ports1[0].angle in [90, 270] and ports2[0].angle in [90, 270]:
         f_key1 = get_port_x
         f_key2 = get_port_x
         ports1.sort(key=f_key1)
         ports2.sort(key=f_key2)
     else:
-        axis = "X" if ports1[0].orientation in [0, 180] else "Y"
+        axis = "X" if ports1[0].angle in [0, 180] else "Y"
         f_key1 = get_port_y if axis in {"X", "x"} else get_port_x
         ports2_by1 = dict(zip(ports1, ports2))
         ports1.sort(key=f_key1)

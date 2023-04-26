@@ -200,7 +200,7 @@ def disk_heater(
     heater_width: float = 5.0,
     heater_extent: float = 2.0,
     via_width: float = 10.0,
-    port_orientation: Optional[float] = 90,
+    port_angle: Optional[float] = 90,
     **kwargs,
 ) -> Component:
     """Disk Resonator with top metal heater.
@@ -218,7 +218,7 @@ def disk_heater(
        heater_width: width of the heater.
        heater_extent: length of heater beyond disk.
        via_width: size of the square via at the end of the heater.
-       port_orientation: in degrees.
+       port_angle: in degrees.
        kwargs: cross_section settings.
     """
     c = gf.Component()
@@ -254,8 +254,8 @@ def disk_heater(
     c2.xmin = heater.xmax
     c2.y = heater.y
     c.add_ports(disk_instance.get_ports_list())
-    c.add_ports(c1.get_ports_list(orientation=port_orientation), prefix="e1")
-    c.add_ports(c2.get_ports_list(orientation=port_orientation), prefix="e2")
+    c.add_ports(c1.get_ports_list(angle=port_angle), prefix="e1")
+    c.add_ports(c2.get_ports_list(angle=port_angle), prefix="e2")
     c.auto_rename_ports()
     return c
 

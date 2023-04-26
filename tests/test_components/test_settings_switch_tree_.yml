@@ -8,7 +8,7 @@ ports:
     - 1
     - 0
     name: o1_0_0
-    orientation: 180
+    angle: 180
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -20,7 +20,7 @@ ports:
     - 1
     - 0
     name: o2_1_10
-    orientation: 0.0
+    angle: 0.0
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -32,7 +32,7 @@ ports:
     - 1
     - 0
     name: o2_1_5
-    orientation: 0.0
+    angle: 0.0
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -44,7 +44,7 @@ ports:
     - 1
     - 0
     name: o2_1_6
-    orientation: 0.0
+    angle: 0.0
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -56,7 +56,7 @@ ports:
     - 1
     - 0
     name: o2_1_9
-    orientation: 0.0
+    angle: 0.0
     port_type: optical
     shear_angle: null
     width: 0.5
@@ -68,7 +68,7 @@ ports:
     - 49
     - 0
     name: top_e1_0_1
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 11.0
@@ -80,7 +80,7 @@ ports:
     - 49
     - 0
     name: top_e1_1_3
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 11.0
@@ -92,7 +92,7 @@ ports:
     - 49
     - 0
     name: top_e1_1_7
-    orientation: 180
+    angle: 180
     port_type: electrical
     shear_angle: null
     width: 11.0
@@ -104,7 +104,7 @@ ports:
     - 49
     - 0
     name: top_e2_0_2
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 11.0
@@ -116,7 +116,7 @@ ports:
     - 49
     - 0
     name: top_e2_1_4
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 11.0
@@ -128,7 +128,7 @@ ports:
     - 49
     - 0
     name: top_e2_1_8
-    orientation: 0.0
+    angle: 0.0
     port_type: electrical
     shear_angle: null
     width: 11.0

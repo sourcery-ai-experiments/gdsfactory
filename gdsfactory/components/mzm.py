@@ -140,13 +140,13 @@ def mzm(
         sxt.name = "sxt"
         sxb.name = "sxb"
         cp1.name = "cp1"
-        c.add_ports(cp2.get_ports_list(orientation=0), prefix="out_")
+        c.add_ports(cp2.get_ports_list(angle=0), prefix="out_")
     else:
         c.add_port("o3", port=sxt["o2"])
         c.add_port("o4", port=sxb["o2"])
 
     if with_splitter:
-        c.add_ports(cp1.get_ports_list(orientation=180), prefix="in_")
+        c.add_ports(cp1.get_ports_list(angle=180), prefix="in_")
     else:
         c.add_port("o1", port=b1.ports["o1"])
         c.add_port("o2", port=b5.ports["o1"])

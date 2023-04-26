@@ -28,7 +28,7 @@ def _generate_fins(
             layer=xs.layer,
             centered=True,
             port_type=None,
-            port_orientations=None,
+            port_angles=None,
         )
         rectangle_input.move(
             origin=(x0, y0),

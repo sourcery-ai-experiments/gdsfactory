@@ -52,11 +52,11 @@ def add_electrical_pads_top(
 
     if direction == "top":
         pads = c << gf.get_component(
-            pad_array, columns=len(ports_electrical), rows=1, orientation=270
+            pad_array, columns=len(ports_electrical), rows=1, angle=270
         )
     elif direction == "right":
         pads = c << gf.get_component(
-            pad_array, columns=1, rows=len(ports_electrical), orientation=270
+            pad_array, columns=1, rows=len(ports_electrical), angle=270
         )
     pads.x = ref.x + spacing[0]
     pads.ymin = ref.ymax + spacing[1]
