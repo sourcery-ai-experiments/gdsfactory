@@ -14,7 +14,6 @@ from gdsfactory.component import Component, ComponentReference
 from gdsfactory.components.bend_euler import bend_euler
 from gdsfactory.components.straight import straight as straight_function
 from gdsfactory.components.taper import taper as taper_function
-from gdsfactory.cross_section import strip
 from gdsfactory.geometry.functions import angles_deg
 from gdsfactory.port import Port, select_ports_list
 from gdsfactory.routing.get_route_sbend import get_route_sbend
@@ -607,7 +606,7 @@ def round_corners(
     straight_fall_back_no_taper: ComponentSpec | None = None,
     mirror_straight: bool = False,
     straight_ports: list[str] | None = None,
-    cross_section: CrossSectionSpec | MultiCrossSectionAngleSpec = strip,
+    cross_section: CrossSectionSpec | MultiCrossSectionAngleSpec = "xs_sc",
     on_route_error: Callable = get_route_error,
     with_point_markers: bool = False,
     with_sbend: bool = False,
@@ -945,7 +944,7 @@ def generate_manhattan_waypoints(
     end_straight_length: float | None = None,
     min_straight_length: float | None = None,
     bend: ComponentSpec = bend_euler,
-    cross_section: CrossSectionSpec | MultiCrossSectionAngleSpec = strip,
+    cross_section: CrossSectionSpec | MultiCrossSectionAngleSpec = "xs_sc",
     **kwargs,
 ) -> ndarray:
     """Return waypoints for a Manhattan route between two ports.
@@ -1012,7 +1011,7 @@ def route_manhattan(
     min_straight_length: float | None = None,
     bend: ComponentSpec = bend_euler,
     with_sbend: bool = True,
-    cross_section: CrossSectionSpec | MultiCrossSectionAngleSpec = strip,
+    cross_section: CrossSectionSpec | MultiCrossSectionAngleSpec = "xs_sc",
     with_point_markers: bool = False,
     on_route_error: Callable = get_route_error,
     **kwargs,

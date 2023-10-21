@@ -10,6 +10,7 @@ from numpy import float64
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
 from gdsfactory.components.bend_euler import bend_euler
+from gdsfactory.components.straight import straight
 from gdsfactory.routing.manhattan import round_corners
 from gdsfactory.typings import ComponentSpec, CrossSectionSpec
 
@@ -29,12 +30,12 @@ def spiral_external_io(
     xspacing: float = 3.0,
     yspacing: float = 3.0,
     bend: ComponentSpec = bend_euler,
+    straight: ComponentSpec = straight,
     length: float | None = None,
     cross_section: CrossSectionSpec = "xs_sc",
     with_inner_ports: bool = False,
     y_straight_outer_offset: float = 0.0,
     inner_loop_spacing_offset: float = 0.0,
-    **kwargs,
 ) -> Component:
     """Returns spiral with input and output ports outside the spiral.
 
@@ -46,20 +47,20 @@ def spiral_external_io(
         xspacing: center to center x-spacing.
         yspacing: center to center y-spacing.
         bend: function.
+        straight: function.
         length: length in um, it is the approximates total length.
         cross_section: spec.
         with_inner_ports: if True, removes the internal S-bend and exposes new ports
         y_straight_outer_offset: amount to add/remove to the last points at the outer output of the spiral
         inner_loop_spacing_offset: extra difference between the inner ports
-        kwargs: cross_section settings.
     """
     if length:
         x_inner_length_cutback = length / (4 * (N - 1))
 
     y_straight_inner_top += 5
     x_inner_length_cutback += x_inner_offset
-    _bend180 = bend(angle=180, cross_section=cross_section, **kwargs)
-    _bend90 = bend(angle=90, cross_section=cross_section, **kwargs)
+    _bend180 = bend(angle=180, cross_section=cross_section)
+    _bend90 = bend(angle=90, cross_section=cross_section)
 
     bend_radius = _bend90.info["radius"]
     rx, ry = get_bend_port_distances(_bend90)
@@ -126,8 +127,8 @@ def spiral_external_io(
         route = round_corners(
             pts_w[::-1] + pts_e,
             bend=bend,
+            straight=straight,
             cross_section=cross_section,
-            **kwargs,
         )
         component.add(route.references)
         component.add_port("o2", port=route.ports[0])
@@ -142,13 +143,13 @@ def spiral_external_io(
             pts_w[1:],
             bend=bend,
             cross_section=cross_section,
-            **kwargs,
+            straight=straight,
         )
         route_east = round_corners(
             pts_e[1:],
             bend=bend,
             cross_section=cross_section,
-            **kwargs,
+            straight=straight,
         )
         component.add(route_west.references)
         component.add(route_east.references)
@@ -173,5 +174,6 @@ if __name__ == "__main__":
         x_inner_length_cutback=0,
         y_straight_inner_top=0,
         x_inner_offset=0,
+        cross_section="xs_rc",
     )
     c.show(show_ports=True)
