@@ -1,3 +1,5 @@
+info:
+  child_name: ring_single
 name: ring_single_add_trenches_06939900
 ports:
   o1:
@@ -25,65 +27,10 @@ ports:
     shear_angle: null
     width: 0.5
 settings:
-  changed:
-    component:
-      function: ring_single
-  child:
-    changed: {}
-    child: null
-    default:
-      bend:
-        function: bend_euler
-      bend_coupler:
-        function: bend_euler
-      coupler_ring:
-        function: coupler_ring
-      cross_section: xs_sc
-      gap: 0.2
-      length_x: 4.0
-      length_y: 0.6
-      pass_cross_section_to_bend: true
-      radius: 10.0
-      straight:
-        function: straight
-    full:
-      bend:
-        function: bend_euler
-      bend_coupler:
-        function: bend_euler
-      coupler_ring:
-        function: coupler_ring
-      cross_section: xs_sc
-      gap: 0.2
-      length_x: 4.0
-      length_y: 0.6
-      pass_cross_section_to_bend: true
-      radius: 10.0
-      straight:
-        function: straight
-    function_name: ring_single
-    info: {}
-    info_version: 2
-    module: gdsfactory.components.ring_single
-    name: ring_single
-  default:
-    bot: true
-    component:
-      function: coupler
-    cross_section: xs_rc_with_trenches
-    left: false
-    right: false
-    top: true
-  full:
-    bot: true
-    component:
-      function: ring_single
-    cross_section: xs_rc_with_trenches
-    left: false
-    right: false
-    top: true
-  function_name: add_trenches
-  info: {}
-  info_version: 2
-  module: gdsfactory.components.add_trenches
-  name: ring_single_add_trenches_06939900
+  bot: true
+  component:
+    function: ring_single
+  cross_section: xs_rc_with_trenches
+  left: false
+  right: false
+  top: true

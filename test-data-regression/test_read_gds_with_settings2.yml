@@ -1,30 +1,4 @@
-name: mzi_6f76ede3
-ports:
-  o1:
-    center:
-    - -10.0
-    - 0.0
-    layer:
-    - 1
-    - 0
-    name: o1
-    orientation: 180.0
-    port_type: optical
-    shear_angle: null
-    width: 0.5
-  o2:
-    center:
-    - 81.12
-    - 0.0
-    layer:
-    - 1
-    - 0
-    name: o2
-    orientation: 0.0
-    port_type: optical
-    shear_angle: null
-    width: 0.5
-settings:
+info:
   changed:
     cross_section:
       function: cross_section
@@ -92,3 +66,30 @@ settings:
   info_version: 2
   module: gdsfactory.components.mzi
   name: mzi_6f76ede3
+name: mzi_6f76ede3
+ports:
+  o1:
+    center:
+    - -10.0
+    - 0.0
+    layer:
+    - 1
+    - 0
+    name: o1
+    orientation: 180.0
+    port_type: optical
+    shear_angle: null
+    width: 0.5
+  o2:
+    center:
+    - 81.12
+    - 0.0
+    layer:
+    - 1
+    - 0
+    name: o2
+    orientation: 0.0
+    port_type: optical
+    shear_angle: null
+    width: 0.5
+settings: {}

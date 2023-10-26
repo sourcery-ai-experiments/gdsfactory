@@ -211,8 +211,8 @@ def cell(
                 "make sure that functions with @cell decorator return a Component",
             )
 
-        if get_child_name and c.info["child_name"]:
-            child_name = c.info["child_name"]
+        if get_child_name and component.info["child_name"]:
+            child_name = component.info["child_name"]
             component_name = f"{child_name}_{name}"
             component_name = get_name_short(
                 component_name, max_name_length=max_name_length
@@ -225,11 +225,9 @@ def cell(
 
         info = info or {}
         component.info.update(**info)
+        component.function_name = func.__name__
         if add_settings:
-            for k, v in full.items():
-                if k not in component.info and v is not None:
-                    component.info[k] = v
-            component.__doc__ = func.__doc__
+            component.settings.update(**full)
 
         if decorator:
             if not callable(decorator):

@@ -172,6 +172,8 @@ class Component(_GeometryHelper):
         self._cell = gdstk.Cell("Unnamed")
         self.name = name
         self.info: dict[str, Any] = {}
+        self.settings: dict[str, Any] = {}
+        self.function_name = ""
 
         self._locked = False
         self._get_child_name = False
@@ -342,8 +344,8 @@ class Component(_GeometryHelper):
     def get_component_spec(self):
         return (
             {
-                "component": self.settings.function_name,
-                "settings": self.settings.changed,
+                "component": self.function_name,
+                "settings": self.settings,
             }
             if self.settings
             else {"component": self.name, "settings": {}}
@@ -869,16 +871,22 @@ class Component(_GeometryHelper):
         pprint_ports(self.ports)
 
     @property
-    def metadata_child(self) -> None:
-        warnings.warn(
-            "metadata_child is deprecated. Use info instead", DeprecationWarning
-        )
+    def metadata_child(self) -> dict:
+        """Returns metadata from child if any, Otherwise returns component own.
+
+        metadata Great to access the children metadata at the bottom of the
+        hierarchy.
+        """
+        settings = dict(self.settings)
+
+        while settings.get("child"):
+            settings = settings.get("child")
+
+        return dict(settings)
 
     @property
-    def metadata(self) -> None:
-        warnings.warn(
-            "metadata_child is deprecated. Use info instead", DeprecationWarning
-        )
+    def metadata(self) -> dict:
+        return dict(self.settings)
 
     def add_port(
         self,
@@ -1178,8 +1186,11 @@ class Component(_GeometryHelper):
         return SizeInfo(self.bbox)
 
     def get_setting(self, setting: str) -> str | int | float:
-        warnings.warn('get_setting is deprecated. Use info["setting"] instead')
-        return self.info.get(setting)
+        return (
+            self.info.get(setting)
+            or self.settings.full.get(setting)
+            or self.metadata_child.get(setting)
+        )
 
     def is_unlocked(self) -> None:
         """Raises error if Component is locked."""
@@ -1989,6 +2000,7 @@ class Component(_GeometryHelper):
 
         d["name"] = self.name
         d["info"] = clean_dict(self.info)
+        d["settings"] = clean_dict(self.settings)
         return d
 
     def to_yaml(self, **kwargs) -> str:

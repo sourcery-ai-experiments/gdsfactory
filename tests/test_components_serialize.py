@@ -7,12 +7,12 @@ from gdsfactory.components import cells
 
 skip_test = {
     "component_sequence",
-    "extend_port",
-    "extend_ports_list",
-    "add_grating_couplers",
-    "add_grating_couplers_fiber_array",
-    "add_grating_couplers_with_loopback_fiber_array",
-    "add_grating_couplers_with_loopback_fiber_single",
+    # "extend_port",
+    # "extend_ports_list",
+    # "add_grating_couplers",
+    # "add_grating_couplers_fiber_array",
+    # "add_grating_couplers_with_loopback_fiber_array",
+    # "add_grating_couplers_with_loopback_fiber_single",
 }
 cells_to_test = set(cells.keys()) - skip_test
 
@@ -25,8 +25,8 @@ def component_name(request) -> str:
 def test_components_serialize(component_name: str) -> None:
     """Avoid regressions in GDS geometry shapes and layers."""
     c1 = cells[component_name]()
-    settings = c1.settings.full
-    cell_name = c1.settings.function_name
+    settings = c1.settings
+    cell_name = c1.function_name
     c2 = gf.get_component({"component": cell_name, "settings": settings})
     assert c2
 

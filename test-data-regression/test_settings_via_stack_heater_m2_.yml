@@ -1,3 +1,8 @@
+info:
+  layer: M2
+  size:
+  - 11.0
+  - 11.0
 name: via_stack_2f27d917
 ports:
   e1:
@@ -49,59 +54,18 @@ ports:
     shear_angle: null
     width: 11.0
 settings:
-  changed:
-    layers:
-    - HEATER
-    - M2
-    vias:
-    - null
-    - function: via
-      settings:
-        enclosure: 2
-        layer: VIA1
-  child: null
-  default:
-    correct_size: true
-    layer_offsets: null
-    layer_port: null
-    layers:
-    - M1
-    - M2
-    - MTOP
-    size:
-    - 11.0
-    - 11.0
-    vias:
-    - function: via
-      settings:
-        enclosure: 2
-        layer: VIA1
-    - function: via
-      settings:
-        layer: VIA2
-    - null
-  full:
-    correct_size: true
-    layer_offsets: null
-    layer_port: null
-    layers:
-    - HEATER
-    - M2
-    size:
-    - 11.0
-    - 11.0
-    vias:
-    - null
-    - function: via
-      settings:
-        enclosure: 2
-        layer: VIA1
-  function_name: via_stack
-  info:
-    layer: M2
-    size:
-    - 11.0
-    - 11.0
-  info_version: 2
-  module: gdsfactory.components.via_stack
-  name: via_stack_2f27d917
+  correct_size: true
+  layer_offsets: null
+  layer_port: null
+  layers:
+  - HEATER
+  - M2
+  size:
+  - 11.0
+  - 11.0
+  vias:
+  - null
+  - function: via
+    settings:
+      enclosure: 2
+      layer: VIA1
