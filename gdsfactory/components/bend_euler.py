@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from functools import partial
 
 import numpy as np
@@ -25,7 +26,7 @@ def bend_euler(
     direction: str = "ccw",
     cross_section: CrossSectionSpec = "xs_sc",
     add_pins: bool = True,
-    add_bbox: callable | None = None,
+    add_bbox: Callable | None = None,
 ) -> Component:
     """Euler bend with changing bend radius.
 

@@ -6,14 +6,14 @@ import hashlib
 import inspect
 from collections.abc import Callable
 from functools import partial
-from typing import Any, TypeVar
+from typing import TypeVar
 
-from pydantic import BaseModel, validate_call
+from pydantic import validate_call
 
 from gdsfactory.component import Component, name_counters
 from gdsfactory.config import CONF
 from gdsfactory.name import clean_name, get_name_short
-from gdsfactory.serialization import clean_dict, clean_value_name
+from gdsfactory.serialization import clean_value_name
 
 CACHE: dict[str, Component] = {}
 CACHE_IDS = set()
@@ -38,21 +38,6 @@ def clear_cache() -> None:
 def print_cache() -> None:
     for k in CACHE:
         print(k)
-
-
-class Settings(BaseModel):
-    name: str
-    function_name: str | None = None
-    module: str | None = None
-
-    info: dict[str, Any] = {}  # derived properties (length, resistance)
-    info_version: int = INFO_VERSION
-
-    full: dict[str, Any] = {}
-    changed: dict[str, Any] = {}
-    default: dict[str, Any] = {}
-
-    child: dict[str, Any] | None = None
 
 
 def cell(
@@ -220,18 +205,15 @@ def cell(
         if id(component) in CACHE_IDS:
             component = component.copy()
 
-        metadata_child = (
-            dict(component.child.settings) if hasattr(component, "child") else None
-        )
-
         if not isinstance(component, Component):
             raise CellReturnTypeError(
                 f"function {func.__name__!r} return type = {type(component)}",
                 "make sure that functions with @cell decorator return a Component",
             )
 
-        if get_child_name and metadata_child:
-            component_name = f"{metadata_child.get('name')}_{name}"
+        if get_child_name and c.info["child_name"]:
+            child_name = c.info["child_name"]
+            component_name = f"{child_name}_{name}"
             component_name = get_name_short(
                 component_name, max_name_length=max_name_length
             )
@@ -244,16 +226,9 @@ def cell(
         info = info or {}
         component.info.update(**info)
         if add_settings:
-            component.settings = Settings(
-                name=component_name,
-                function_name=func.__name__,
-                module=func.__module__,
-                changed=clean_dict(changed),
-                default=clean_dict(default),
-                full=clean_dict(full),
-                info=component.info,
-                child=metadata_child,
-            )
+            for k, v in full.items():
+                if k not in component.info and v is not None:
+                    component.info[k] = v
             component.__doc__ = func.__doc__
 
         if decorator:
@@ -297,7 +272,7 @@ cell_with_child = partial(cell, get_child_name=True)
 if __name__ == "__main__":
     import gdsfactory as gf
 
-    c = gf.components.straight(info={"simulation": "eme"}, name="hi")
+    c = gf.components.straight()
     print(c.name)
     # print(c.info["simulation"])
     c.show()

@@ -154,12 +154,6 @@ class Component(_GeometryHelper):
             - simulation_settings
             - function_name
             - name: for the component
-
-        settings:
-            full: full settings passed to the function to create component.
-            changed: changed settings.
-            default: default component settings.
-            child: dict info from the children, if any.
     """
 
     def __init__(
@@ -179,7 +173,6 @@ class Component(_GeometryHelper):
         self.name = name
         self.info: dict[str, Any] = {}
 
-        self.settings: dict[str, Any] = {}
         self._locked = False
         self._get_child_name = False
         self._reference_names_counter = Counter()
@@ -876,22 +869,16 @@ class Component(_GeometryHelper):
         pprint_ports(self.ports)
 
     @property
-    def metadata_child(self) -> dict:
-        """Returns metadata from child if any, Otherwise returns component own.
-
-        metadata Great to access the children metadata at the bottom of the
-        hierarchy.
-        """
-        settings = dict(self.settings)
-
-        while settings.get("child"):
-            settings = settings.get("child")
-
-        return dict(settings)
+    def metadata_child(self) -> None:
+        warnings.warn(
+            "metadata_child is deprecated. Use info instead", DeprecationWarning
+        )
 
     @property
-    def metadata(self) -> dict:
-        return dict(self.settings)
+    def metadata(self) -> None:
+        warnings.warn(
+            "metadata_child is deprecated. Use info instead", DeprecationWarning
+        )
 
     def add_port(
         self,
@@ -1173,19 +1160,17 @@ class Component(_GeometryHelper):
         return ref
 
     def copy_child_info(self, component: Component) -> None:
-        """Copy and settings info from child component into parent.
+        """Copy info from child component into parent.
 
-        Parent components can access child cells settings.
+        Parent components can access child cells info.
         """
         if not isinstance(component, Component | ComponentReference):
             raise ValueError(
                 f"{type(component)}" "is not a Component or ComponentReference"
             )
 
-        self._get_child_name = True
-        self.child = component
         self.info.update(component.info)
-        self.settings.update(component.settings)
+        self.info["child_name"] = component.name
 
     @property
     def size_info(self) -> SizeInfo:
@@ -1193,11 +1178,8 @@ class Component(_GeometryHelper):
         return SizeInfo(self.bbox)
 
     def get_setting(self, setting: str) -> str | int | float:
-        return (
-            self.info.get(setting)
-            or self.settings.full.get(setting)
-            or self.metadata_child.get(setting)
-        )
+        warnings.warn('get_setting is deprecated. Use info["setting"] instead')
+        return self.info.get(setting)
 
     def is_unlocked(self) -> None:
         """Raises error if Component is locked."""
@@ -2006,7 +1988,7 @@ class Component(_GeometryHelper):
             d["cells"] = clean_dict(cells)
 
         d["name"] = self.name
-        d["settings"] = clean_dict(dict(self.settings))
+        d["info"] = clean_dict(self.info)
         return d
 
     def to_yaml(self, **kwargs) -> str:
