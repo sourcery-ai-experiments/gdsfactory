@@ -36,6 +36,7 @@ DEG2RAD = np.pi / 180
 RAD2DEG = 1 / DEG2RAD
 
 O2D = {0: "East", 180: "West", 90: "North", 270: "South"}
+straight_length_default = 0.01
 
 
 class RouteWarning(UserWarning):
@@ -640,18 +641,21 @@ def round_corners(
     if multi_cross_section:
         x = [gf.get_cross_section(xsection[0], **kwargs) for xsection in cross_section]
         layer = [_x.layer for _x in x]
-    else:
+    elif cross_section is None:
         x = gf.get_cross_section(cross_section, **kwargs)
         layer = x.layer
 
     layer = get_layer(layer)
     references = []
 
-    bend90 = (
-        bend
-        if isinstance(bend, Component)
-        else gf.get_component(bend, cross_section=cross_section, **kwargs)
-    )
+    if cross_section is None:
+        bend90 = (
+            bend
+            if isinstance(bend, Component)
+            else gf.get_component(bend, cross_section=cross_section, **kwargs)
+        )
+    else:
+        bend90 = bend()
 
     # bsx = bsy = _get_bend_size(bend90)
     auto_widen = [_x.auto_widen for _x in x] if isinstance(x, list) else x.auto_widen
@@ -964,11 +968,14 @@ def generate_manhattan_waypoints(
     if "straight" in kwargs:
         _ = kwargs.pop("straight")
 
-    bend90 = (
-        bend
-        if isinstance(bend, Component)
-        else gf.get_component(bend, cross_section=cross_section, **kwargs)
-    )
+    if cross_section:
+        bend90 = (
+            bend
+            if isinstance(bend, Component)
+            else gf.get_component(bend, cross_section=cross_section, **kwargs)
+        )
+    else:
+        bend90 = bend()
 
     if isinstance(cross_section, tuple | list):
         x = [gf.get_cross_section(xsection[0]) for xsection in cross_section]
@@ -976,12 +983,17 @@ def generate_manhattan_waypoints(
         start_straight_length = start_straight_length or min(_x.min_length for _x in x)
         end_straight_length = end_straight_length or min(_x.min_length for _x in x)
         min_straight_length = min_straight_length or min(_x.min_length for _x in x)
-    else:
+    elif cross_section:
         x = gf.get_cross_section(cross_section)
         x = x.copy(**kwargs)
         start_straight_length = start_straight_length or x.min_length
         end_straight_length = end_straight_length or x.min_length
         min_straight_length = min_straight_length or x.min_length
+
+    else:
+        start_straight_length = straight_length_default
+        end_straight_length = straight_length_default
+        min_straight_length = straight_length_default
 
     bsx = bsy = _get_bend_size(bend90)
     return _generate_route_manhattan_points(
