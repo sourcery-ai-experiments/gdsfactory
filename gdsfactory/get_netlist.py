@@ -21,6 +21,7 @@ from __future__ import annotations
 from collections import defaultdict
 from collections.abc import Callable
 from typing import Any
+from warnings import warn
 
 import numpy as np
 import omegaconf
@@ -90,7 +91,6 @@ def get_instance_name_from_label(
 
 def get_netlist_yaml(
     component: Component,
-    full_settings: bool = False,
     tolerance: int = 5,
     exclude_port_types: list | None = None,
     **kwargs,
@@ -99,7 +99,6 @@ def get_netlist_yaml(
     return omegaconf.OmegaConf.to_yaml(
         get_netlist(
             component=component,
-            full_settings=full_settings,
             tolerance=tolerance,
             exclude_port_types=exclude_port_types,
             **kwargs,
@@ -109,11 +108,11 @@ def get_netlist_yaml(
 
 def get_netlist(
     component: Component,
-    full_settings: bool = False,
     tolerance: int = 5,
     exclude_port_types: list[str] | tuple[str] | None = ("placement",),
     get_instance_name: Callable[..., str] = get_instance_name_from_alias,
     allow_multiple: bool = False,
+    **kwargs,
 ) -> dict[str, Any]:
     """From Component returns instances, connections and placements dict.
 
@@ -140,7 +139,6 @@ def get_netlist(
 
     Args:
         component: to extract netlist.
-        full_settings: True returns all, false changed settings.
         tolerance: tolerance in grid_factor to consider two ports connected.
         exclude_port_types: optional list of port types to exclude from netlisting.
         get_instance_name: function to get instance name.
@@ -156,6 +154,13 @@ def get_netlist(
         warnings: warning messages (disconnected pins).
 
     """
+    full_settings = kwargs.get("full_settings", None)
+    if full_settings is not None:
+        warn(
+            "full_settings is deprecated and set to True by default",
+            DeprecationWarning,
+        )
+
     placements = {}
     instances = {}
     connections = {}
@@ -198,7 +203,7 @@ def get_netlist(
 
         # Prefer name from settings over c.name
         if c.settings:
-            settings = c.settings.full if full_settings else c.settings.changed
+            settings = c.settings
 
             instance.update(
                 component=getattr(c.settings, "function_name", c.name),
@@ -530,7 +535,7 @@ def _get_references_to_netlist(component: Component) -> list[ComponentReference]
     references = component.references
     if not references and "transformed_cell" in component.info:
         # expand transformed, flattened cells
-        ref = component.settings.full["ref"]
+        ref = component.settings["ref"]
         original_cell = CACHE[component.info["transformed_cell"]]
         references = [
             ComponentReference(
@@ -559,7 +564,6 @@ def get_netlist_recursive(
         get_netlist_func: function to extract individual netlists.
 
     Keyword Args:
-        full_settings: True returns all, false changed settings.
         tolerance: tolerance in grid_factor to consider two ports connected.
         exclude_port_types: optional list of port types to exclude from netlisting.
         get_instance_name: function to get instance name.
@@ -593,8 +597,8 @@ def get_netlist_recursive(
             if child_references:
                 inst_name = get_instance_name(component, ref)
                 netlist_dict = {"component": f"{rcell.name}{component_suffix}"}
-                if hasattr(rcell, "settings") and hasattr(rcell.settings, "full"):
-                    netlist_dict.update(settings=rcell.settings.full)
+                if hasattr(rcell, "settings"):
+                    netlist_dict.update(settings=rcell.settings)
                 if hasattr(rcell, "info"):
                     netlist_dict.update(info=rcell.info)
                 netlist["instances"][inst_name] = netlist_dict

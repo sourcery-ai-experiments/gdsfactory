@@ -1,5 +1,16 @@
 info:
+  centered: false
   child_name: rectangle_size1300__2600
+  layer: WG
+  port_orientations:
+  - 180
+  - 90
+  - 0
+  - -90
+  port_type: electrical
+  size:
+  - 1300
+  - 2600
 name: rectangle_size1300__2600_die_bbox
 ports: {}
 settings:

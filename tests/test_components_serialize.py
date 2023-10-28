@@ -7,8 +7,8 @@ from gdsfactory.components import cells
 
 skip_test = {
     "component_sequence",
-    # "extend_port",
-    # "extend_ports_list",
+    "extend_port",
+    "extend_ports_list",
     # "add_grating_couplers",
     # "add_grating_couplers_fiber_array",
     # "add_grating_couplers_with_loopback_fiber_array",
@@ -45,8 +45,8 @@ if __name__ == "__main__":
     import orjson
 
     c1 = gf.components.add_grating_couplers()
-    settings = c1.settings.full
+    settings = c1.settings
     settings_string = json.dumps(settings)
     settings2 = orjson.loads(settings_string)
-    cell_name = c1.settings.function_name
+    cell_name = c1.function_name
     c2 = gf.get_component({"component": cell_name, "settings": settings2})

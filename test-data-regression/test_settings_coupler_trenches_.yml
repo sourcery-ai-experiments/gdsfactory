@@ -1,5 +1,13 @@
 info:
   child_name: coupler
+  coupler_straight:
+    function: coupler_straight
+  coupler_symmetric:
+    function: coupler_symmetric
+  cross_section: xs_sc
+  dx: 10.0
+  dy: 4.0
+  gap: 0.236
   length: 10.186
   min_bend_radius: 11.857
 name: coupler_add_trenches

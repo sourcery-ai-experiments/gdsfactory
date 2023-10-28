@@ -13,7 +13,15 @@ instances:
         type: xs_sc
         weight: 15.708
         xs_sc_length: 15.708
-    settings: {}
+    settings:
+      add_bbox: null
+      add_pins: true
+      angle: 90.0
+      cross_section: xs_sc
+      layer: null
+      npoints: null
+      radius: null
+      width: null
   s:
     component: straight
     info:
@@ -25,7 +33,14 @@ instances:
         weight: 10.0
         xs_sc_length: 10.0
       width: 0.5
-    settings: {}
+    settings:
+      add_bbox: null
+      add_pins: true
+      cross_section: xs_sc
+      layer: null
+      length: 10.0
+      npoints: 2
+      width: null
 name: sample_mirror_simple_0e62769d
 placements:
   b:

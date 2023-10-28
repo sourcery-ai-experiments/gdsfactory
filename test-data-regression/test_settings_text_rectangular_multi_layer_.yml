@@ -1,5 +1,15 @@
 info:
   child_name: text_rectangular_layerMTOP
+  font:
+    function: rectangular_font
+  justify: left
+  layer: MTOP
+  layers: null
+  position:
+  - 0.0
+  - 0.0
+  size: 10.0
+  text: abcd
 name: text_rectangular_layerMTOP_copy_layers_716caf76
 ports: {}
 settings:

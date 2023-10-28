@@ -1,7 +1,15 @@
 info:
+  add_bbox: null
+  add_pins: true
+  angle: 90.0
   child_name: bend_euler
+  cross_section: xs_sc
+  direction: ccw
   dy: 10.0
+  layer: null
   length: 16.637
+  npoints: null
+  p: 0.5
   radius: 10.0
   radius_min: 7.061
   route_info:
@@ -11,6 +19,7 @@ info:
     weight: 16.637
     xs_sc_length: 16.637
   width: 0.5
+  with_arc_floorplan: true
 name: bend_euler_add_trenches_cb24b746
 ports:
   o1:

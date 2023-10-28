@@ -1,19 +1,39 @@
 connections: {}
 instances:
-  mzit_1:
-    component: mzit
+  mzit_69aaef87_1:
+    component: mzit_69aaef87
     settings:
+      bend90:
+        function: bend_euler
+      coupler1:
+        function: coupler
+      coupler2:
+        function: coupler
+      coupler_gap1: 0.2
+      coupler_gap2: 0.3
       coupler_length1: 10.0
       coupler_length2: 20.0
+      cross_section: xs_sc
+      delta_length: 10.0
+      dy: 2.0
+      length: 1.0
+      straight:
+        function: straight
+      taper:
+        function: taper
+      taper_length: 5.0
+      w0: 0.5
+      w1: 0.45
+      w2: 0.55
 name: mzit_lattice
 placements:
-  mzit_1:
+  mzit_69aaef87_1:
     mirror: 0
     rotation: 0
     x: 0.0
     y: 0.0
 ports:
-  o1: mzit_1,o1
-  o2: mzit_1,o2
-  o3: mzit_1,o3
-  o4: mzit_1,o4
+  o1: mzit_69aaef87_1,o1
+  o2: mzit_69aaef87_1,o2
+  o3: mzit_69aaef87_1,o3
+  o4: mzit_69aaef87_1,o4

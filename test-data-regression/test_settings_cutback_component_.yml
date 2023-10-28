@@ -1,6 +1,8 @@
 info:
   child_name: taper_from_csv
   components: 80
+  cross_section: xs_sc
+  filepath: taper_strip_0p5_3_36
 name: taper_from_csv_cutback_component
 ports:
   o1:

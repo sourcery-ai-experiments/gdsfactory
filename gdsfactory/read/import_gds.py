@@ -119,7 +119,11 @@ def import_gds(
         if "settings" in metadata:
             settings = OmegaConf.to_container(metadata.settings)
             if settings:
-                component.info.update(**settings)
+                component.settings.update(**settings)
+        if "info" in metadata:
+            info = OmegaConf.to_container(metadata.info)
+            if info:
+                component.info.update(**info)
 
         if "ports" in metadata:
             for port_name, port in metadata.ports.items():

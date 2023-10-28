@@ -1,5 +1,17 @@
 info:
   child_name: mmi1x2
+  cross_section: xs_sc
+  gap_mmi: 0.25
+  length_mmi: 5.5
+  length_taper: 10.0
+  straight:
+    function: straight
+  taper:
+    function: taper
+  width: null
+  width_mmi: 2.5
+  width_taper: 1.0
+  with_bbox: true
 name: mmi1x2_splitter_chain
 ports:
   o1:

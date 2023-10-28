@@ -2,14 +2,30 @@ connections:
   r1,e3: r2,e4
 instances:
   r1:
-    component: rectangle
+    component: rectangle_size4__2
     settings:
+      centered: false
+      layer: WG
+      port_orientations:
+      - 180
+      - 90
+      - 0
+      - -90
+      port_type: electrical
       size:
       - 4
       - 2
   r2:
-    component: rectangle
+    component: rectangle_size2__4
     settings:
+      centered: false
+      layer: WG
+      port_orientations:
+      - 180
+      - 90
+      - 0
+      - -90
+      port_type: electrical
       size:
       - 2
       - 4

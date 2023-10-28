@@ -1,5 +1,12 @@
 info:
   child_name: cross_layer2__0
+  layer:
+  - 2
+  - 0
+  layers: null
+  length: 10.0
+  port_type: null
+  width: 3.0
 name: cross_layer2__0_copy_layers
 ports: {}
 settings:

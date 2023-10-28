@@ -1,18 +1,43 @@
 connections:
-  ring_single_1,o2: straight_1,o1
-  ring_single_2,o1: straight_1,o2
+  ring_single_length_x10p0_radius5p0_1,o2: straight_length5p0_1,o1
+  ring_single_length_x20p0_1,o1: straight_length5p0_1,o2
 instances:
-  ring_single_1:
-    component: ring_single
+  ring_single_length_x10p0_radius5p0_1:
+    component: ring_single_length_x10p0_radius5p0
     settings:
+      bend:
+        function: bend_euler
+      bend_coupler:
+        function: bend_euler
+      coupler_ring:
+        function: coupler_ring
+      cross_section: xs_sc
+      gap: 0.2
       length_x: 10.0
+      length_y: 0.6
+      pass_cross_section_to_bend: true
       radius: 5.0
-  ring_single_2:
-    component: ring_single
+      straight:
+        function: straight
+  ring_single_length_x20p0_1:
+    component: ring_single_length_x20p0
     settings:
+      bend:
+        function: bend_euler
+      bend_coupler:
+        function: bend_euler
+      coupler_ring:
+        function: coupler_ring
+      cross_section: xs_sc
+      gap: 0.2
       length_x: 20.0
-  straight_1:
-    component: straight
+      length_y: 0.6
+      pass_cross_section_to_bend: true
+      radius: 10.0
+      straight:
+        function: straight
+  straight_length5p0_1:
+    component: straight_length5p0
     info:
       cross_section: xs_sc
       length: 5.0
@@ -23,24 +48,30 @@ instances:
         xs_sc_length: 5.0
       width: 0.5
     settings:
+      add_bbox: null
+      add_pins: true
+      cross_section: xs_sc
+      layer: null
       length: 5.0
+      npoints: 2
+      width: null
 name: ring_single_array
 placements:
-  ring_single_1:
+  ring_single_length_x10p0_radius5p0_1:
     mirror: 0
     rotation: 0
     x: 0.0
     y: 0.0
-  ring_single_2:
+  ring_single_length_x20p0_1:
     mirror: 0
     rotation: 0
     x: 46.0
     y: 0.0
-  straight_1:
+  straight_length5p0_1:
     mirror: 0
     rotation: 0
     x: 8.0
     y: 0.0
 ports:
-  o1: ring_single_1,o1
-  o2: ring_single_2,o2
+  o1: ring_single_length_x10p0_radius5p0_1,o1
+  o2: ring_single_length_x20p0_1,o2

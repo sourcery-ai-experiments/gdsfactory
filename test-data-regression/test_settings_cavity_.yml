@@ -1,5 +1,11 @@
 info:
   child_name: dbr
+  cross_section: xs_sc
+  l1: 0.159
+  l2: 0.159
+  n: 10
+  w1: 0.475
+  w2: 0.525
 name: dbr_cavity
 ports:
   o1:

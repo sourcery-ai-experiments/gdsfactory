@@ -1,4 +1,6 @@
 info:
+  add_bbox: null
+  add_pins: true
   child_name: straight_0dd74e54
   cross_section:
     function: cross_section
@@ -20,7 +22,9 @@ info:
         simplify: 0.05
         width: 6.0
         width_function: null
+  layer: null
   length: 10.0
+  npoints: 2
   route_info:
     length: 10.0
     type: xs_f0722844

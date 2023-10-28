@@ -1,8 +1,12 @@
 info:
   child_name: straight_array
+  cross_section: xs_sc
   grating_coupler:
     polarization: te
     wavelength: 1.554
+  length: 10.0
+  n: 4
+  spacing: 4.0
 name: grating_coupler_tree
 ports:
   opt-grating_coupler_elliptical-straight_array-o1:

@@ -1,9 +1,73 @@
 info:
-  child_name: mzi_7a18d033_add_fiber_array_a7414e29_1
+  add_optical_ports_arms: false
+  bend:
+    function: bend_euler
+  child_name: mzi_7a18d033_add_fiber_array_b2a215d5_1
+  combiner: null
+  component:
+    component: mzi
+    settings:
+      add_optical_ports_arms: false
+      bend:
+        function: bend_euler
+      combiner: null
+      cross_section: xs_sc
+      cross_section_x_bot: null
+      cross_section_x_top: null
+      delta_length: 10.0
+      length_x: 200
+      length_y: 2.0
+      mirror_bot: false
+      nbends: 2
+      port_e0_combiner: o3
+      port_e0_splitter: o3
+      port_e1_combiner: o2
+      port_e1_splitter: o2
+      splitter: mmi1x2
+      straight:
+        function: straight
+      straight_x_bot: null
+      straight_x_top: straight_heater_metal
+      straight_y: null
+      with_splitter: true
+  component_name: null
+  cross_section: xs_sc
+  cross_section_x_bot: null
+  cross_section_x_top: null
+  delta_length: 10.0
+  fiber_spacing: 127.0
+  gc_port_labels: null
+  gc_port_name: o1
+  get_input_labels_function:
+    function: get_input_labels
+    settings:
+      get_input_label_text_function:
+        function: get_input_label_text_dash
   grating_coupler:
     polarization: te
     wavelength: 1.554
-name: mzi_7a18d033_add_fiber_array_a7414e29_1_add_fiber_array_optical_south_electrical_north
+  layer_label: null
+  length_x: 200
+  length_y: 2.0
+  mirror_bot: false
+  nbends: 2
+  port_e0_combiner: o3
+  port_e0_splitter: o3
+  port_e1_combiner: o2
+  port_e1_splitter: o2
+  select_ports:
+    function: select_ports
+    settings:
+      port_type: optical
+  splitter: mmi1x2
+  straight:
+    function: straight
+  straight_x_bot: null
+  straight_x_top: straight_heater_metal
+  straight_y: null
+  with_loopback: true
+  with_splitter: true
+name: mzi_7a18d033_add_fiber_array_b2a215d5_1_add_fiber_array_optical_south_electrical_north
 ports:
   e4_1_1:
     center:

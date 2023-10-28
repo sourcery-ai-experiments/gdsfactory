@@ -2,7 +2,7 @@ connections:
   wgn,o2: wgw,o1
 instances:
   wgn:
-    component: straight
+    component: straight_length0p5
     info:
       cross_section: xs_sc
       length: 0.5
@@ -13,9 +13,15 @@ instances:
         xs_sc_length: 0.5
       width: 0.5
     settings:
+      add_bbox: null
+      add_pins: true
+      cross_section: xs_sc
+      layer: null
       length: 0.5
+      npoints: 2
+      width: null
   wgw:
-    component: straight
+    component: straight_length1
     info:
       cross_section: xs_sc
       length: 1
@@ -26,7 +32,13 @@ instances:
         xs_sc_length: 1
       width: 0.5
     settings:
+      add_bbox: null
+      add_pins: true
+      cross_section: xs_sc
+      layer: null
       length: 1
+      npoints: 2
+      width: null
 name: sample_connections_dd1d97b8
 placements:
   wgn:

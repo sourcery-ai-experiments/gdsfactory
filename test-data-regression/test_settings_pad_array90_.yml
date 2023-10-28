@@ -1,3 +1,7 @@
+info:
+  size:
+  - 100.0
+  - 100.0
 name: pad_array_orientation90
 ports:
   e11:
@@ -73,30 +77,14 @@ ports:
     shear_angle: null
     width: 100.0
 settings:
-  changed:
-    orientation: 90
-  child: null
-  default:
-    columns: 6
-    orientation: 270
-    pad: pad
-    rows: 1
-    spacing:
-    - 150.0
-    - 150.0
-  full:
-    columns: 6
-    orientation: 90
-    pad: pad
-    rows: 1
-    spacing:
-    - 150.0
-    - 150.0
-  function_name: pad_array
-  info:
-    size:
-    - 100.0
-    - 100.0
-  info_version: 2
-  module: gdsfactory.components.pad
-  name: pad_array_orientation90
+  columns: 6
+  orientation: 90
+  pad:
+    function: pad
+  rows: 1
+  size:
+  - 100.0
+  - 100.0
+  spacing:
+  - 150.0
+  - 150.0

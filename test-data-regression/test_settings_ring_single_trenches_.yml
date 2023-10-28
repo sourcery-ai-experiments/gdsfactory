@@ -1,5 +1,19 @@
 info:
+  bend:
+    function: bend_euler
+  bend_coupler:
+    function: bend_euler
   child_name: ring_single
+  coupler_ring:
+    function: coupler_ring
+  cross_section: xs_sc
+  gap: 0.2
+  length_x: 4.0
+  length_y: 0.6
+  pass_cross_section_to_bend: true
+  radius: 10.0
+  straight:
+    function: straight
 name: ring_single_add_trenches_06939900
 ports:
   o1:

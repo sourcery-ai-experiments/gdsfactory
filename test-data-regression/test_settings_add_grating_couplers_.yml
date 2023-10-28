@@ -1,7 +1,11 @@
 info:
+  add_bbox: null
+  add_pins: true
   child_name: straight
   cross_section: xs_sc
+  layer: null
   length: 10.0
+  npoints: 2
   polarization: te
   route_info:
     length: 10.0

@@ -8,6 +8,7 @@ There are two types of functions:
 """
 from __future__ import annotations
 
+import json
 from functools import lru_cache, partial
 
 import numpy as np
@@ -115,11 +116,8 @@ def rotate(
 
     component = get_component(component)
     component_new = Component()
-    component_new.component = component
     ref = component_new.add_ref(component)
-
     origin_offset = ref.origin - np.array((ref.xmin, ref.ymin))
-
     ref.rotate(angle)
 
     if recenter:
@@ -227,9 +225,10 @@ def update_info(component: Component, **kwargs) -> Component:
 @validate_call
 def add_settings_label(
     component: ComponentSpec = straight,
-    layer_label: LayerSpec = (66, 0),
+    layer_label: LayerSpec = "TEXT",
     settings: Strs | None = None,
     ignore: Strs | None = ("decorator",),
+    with_yaml_format: bool = True,
 ) -> Component:
     """Add a settings label to a component. Use it as a decorator.
 
@@ -238,18 +237,18 @@ def add_settings_label(
         layer_label: for label.
         settings: list of settings to include. if None, adds all changed settings.
         ignore: list of settings to ignore.
-
+        with_yaml_format: if True, uses yaml format, otherwise json.
     """
     from gdsfactory.pdk import get_component
 
     component = get_component(component)
 
     ignore = ignore or []
-    settings = settings or component.settings.changed.keys()
+    settings = settings or component.settings.keys()
     settings = set(settings) - set(ignore)
-
     d = {setting: component.get_setting(setting) for setting in settings}
-    component.add_label(text=OmegaConf.to_yaml(d), layer=layer_label)
+    text = OmegaConf.to_yaml(d) if with_yaml_format else json.dumps(d)
+    component.add_label(text=text, layer=layer_label)
     return component
 
 
@@ -271,15 +270,16 @@ if __name__ == "__main__":
 
     c = gf.components.mmi1x2(
         length_mmi=10,
-        decorator=partial(add_settings_label, settings=["name", "length_mmi"]),
+        # decorator=partial(add_settings_label, settings=("name", "length_mmi")),
+        decorator=add_settings_label,
     )
-    # c.show(show_ports=True)
 
-    # cr = rotate(component=c)
+    # c = rotate(component=c)
+    # c.pprint()
+    c.show()
+
+    # cr = transformed(c.ref())
     # cr.show()
-
-    cr = transformed(c.ref())
-    cr.show()
 
     # cr = c.rotate()
     # cr.pprint()

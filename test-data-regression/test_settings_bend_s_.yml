@@ -1,9 +1,24 @@
 info:
+  add_pins: true
+  bend_radius_error_type: null
   child_name: bezier_9d5ee62f
+  control_points:
+  - - 0
+    - 0
+  - - 5.5
+    - 0
+  - - 5.5
+    - 1.8
+  - - 11.0
+    - 1.8
+  cross_section: xs_sc
   end_angle: 0
   length: 11.206
   min_bend_radius: 13.012
+  npoints: 99
   start_angle: 0
+  with_bbox: true
+  with_manhattan_facing_angles: true
 name: bend_s
 ports:
   o1:

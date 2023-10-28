@@ -13,7 +13,7 @@ from pydantic import validate_call
 from gdsfactory.component import Component, name_counters
 from gdsfactory.config import CONF
 from gdsfactory.name import clean_name, get_name_short
-from gdsfactory.serialization import clean_value_name
+from gdsfactory.serialization import clean_dict, clean_value_name
 
 CACHE: dict[str, Component] = {}
 CACHE_IDS = set()
@@ -211,7 +211,7 @@ def cell(
                 "make sure that functions with @cell decorator return a Component",
             )
 
-        if get_child_name and component.info["child_name"]:
+        if get_child_name and component.info.get("child_name"):
             child_name = component.info["child_name"]
             component_name = f"{child_name}_{name}"
             component_name = get_name_short(
@@ -227,6 +227,7 @@ def cell(
         component.info.update(**info)
         component.function_name = func.__name__
         if add_settings:
+            full = clean_dict(full)
             component.settings.update(**full)
 
         if decorator:

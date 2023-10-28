@@ -872,11 +872,8 @@ class Component(_GeometryHelper):
 
     @property
     def metadata_child(self) -> dict:
-        """Returns metadata from child if any, Otherwise returns component own.
-
-        metadata Great to access the children metadata at the bottom of the
-        hierarchy.
-        """
+        """Returns settings from child if any, Otherwise returns component own."""
+        warnings.warn("Use info instead of metadata. metadata_child is deprecated")
         settings = dict(self.settings)
 
         while settings.get("child"):
@@ -886,6 +883,7 @@ class Component(_GeometryHelper):
 
     @property
     def metadata(self) -> dict:
+        warnings.warn("Use settings instead of metadata. metadata is deprecated")
         return dict(self.settings)
 
     def add_port(
@@ -1177,7 +1175,8 @@ class Component(_GeometryHelper):
                 f"{type(component)}" "is not a Component or ComponentReference"
             )
 
-        self.info.update(component.info)
+        self.info.update(**component.settings)
+        self.info.update(**component.info)
         self.info["child_name"] = component.name
 
     @property
@@ -1186,11 +1185,10 @@ class Component(_GeometryHelper):
         return SizeInfo(self.bbox)
 
     def get_setting(self, setting: str) -> str | int | float:
-        return (
-            self.info.get(setting)
-            or self.settings.full.get(setting)
-            or self.metadata_child.get(setting)
+        warnings.warn(
+            "get_settings is deprecated. Use Component.info or Component.settings"
         )
+        return self.info.get(setting) or self.settings.get(setting)
 
     def is_unlocked(self) -> None:
         """Raises error if Component is locked."""

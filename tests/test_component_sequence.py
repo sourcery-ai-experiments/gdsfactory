@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-from pytest_regressions.data_regression import DataRegressionFixture
 
 import gdsfactory as gf
 from gdsfactory.difftest import difftest
@@ -10,9 +9,7 @@ sequences = ["ABHBA", "!HH", "AB", "HH!", "H"]
 
 
 @pytest.mark.parametrize("index", range(len(sequences)))
-def test_component_from_sequence(
-    index: int, data_regression: DataRegressionFixture, check: bool = True
-) -> None:
+def test_component_from_sequence(index: int) -> None:
     bend180 = gf.components.bend_circular180()
     wg_pin = gf.components.straight_pin(length=40)
     wg = gf.components.straight()
@@ -31,9 +28,3 @@ def test_component_from_sequence(
     )
 
     difftest(c)
-    if check:
-        data_regression.check(c.to_dict())
-
-
-if __name__ == "__main__":
-    test_component_from_sequence(1, None, False)

@@ -6,7 +6,7 @@ import gdsfactory as gf
 from gdsfactory.cell import cell
 from gdsfactory.component import Component
 from gdsfactory.components.compass import compass
-from gdsfactory.typings import ComponentSpec, Float2, LayerSpec
+from gdsfactory.typings import ComponentFactory, Float2, LayerSpec
 
 
 @cell
@@ -75,8 +75,9 @@ pad_small = partial(pad, size=(80, 80))
 
 @cell
 def pad_array(
-    pad: ComponentSpec = "pad",
+    pad: ComponentFactory = pad,
     spacing: tuple[float, float] = (150.0, 150.0),
+    size: str | Float2 = (100.0, 100.0),
     columns: int = 6,
     rows: int = 1,
     orientation: float | None = 270,
@@ -86,13 +87,13 @@ def pad_array(
     Args:
         pad: pad element.
         spacing: x, y pitch.
+        size: x, y size.
         columns: number of columns.
         rows: number of rows.
         orientation: port orientation in deg. None for low speed DC ports.
     """
     c = Component()
-    pad = gf.get_component(pad)
-    size = pad.settings.full["size"]
+    pad = pad(size=size)
     c.info["size"] = size
 
     c.add_array(pad, columns=columns, rows=rows, spacing=spacing)

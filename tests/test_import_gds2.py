@@ -71,3 +71,13 @@ if __name__ == "__main__":
     # d = jsondiff.diff(d1, d2)
     # test_build_and_import()
     test_read_gds_equivalent()
+
+    # c1 = gf.components.straight(length=1.234)
+    # gdspath = gf.PATH.gdsdir / "straight.gds"
+
+    # c2 = gf.import_gds(gdspath, read_metadata=True, unique_names=False)
+    # d1 = c1.to_dict()
+    # d2 = c2.to_dict()
+    # d1.pop("name")
+    # d2.pop("name")
+    # d = jsondiff.diff(d1, d2)
