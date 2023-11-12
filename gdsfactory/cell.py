@@ -253,19 +253,21 @@ def cell(
                 "make sure that functions with @cell decorator return a Component",
             )
 
-        metadata_child = None
+        if decorator:
+            if not callable(decorator):
+                raise ValueError(f"decorator = {type(decorator)} needs to be callable")
+            component_new = decorator(component)
+            component = component_new or component
+
         if get_child_name:
             if component.child is None:
                 raise ValueError(
                     f"{name}: get_child_name was defined, but component has no child! Be sure to assign the component a child attribute."
                 )
-            metadata_child = dict(component.child.settings)
-            component_name = f"{metadata_child.get('name')}_{name}"
+            component_name = f"{component.child.name}_{name}"
             component_name = get_name_short(
-                component_name, max_name_length=max_name_length
+                component.child.name, max_name_length=max_name_length
             )
-            # if cache and component_name in CACHE:
-            # return CACHE[component_name]
         else:
             component_name = name
 
@@ -288,11 +290,6 @@ def cell(
             )
             component.__doc__ = func.__doc__
 
-        if decorator:
-            if not callable(decorator):
-                raise ValueError(f"decorator = {type(decorator)} needs to be callable")
-            component_new = decorator(component)
-            component = component_new or component
 
         component.lock()
         CACHE_IDS.add(id(component))
