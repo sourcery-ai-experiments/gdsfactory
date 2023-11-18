@@ -30,6 +30,7 @@ from gdsfactory.component_layout import (
     _distribute,
     _GeometryHelper,
     _parse_layer,
+    _simplify,
     get_polygons,
     pprint_ports,
 )
@@ -1189,6 +1190,19 @@ class Component(_GeometryHelper):
 
     def copy(self) -> Component:
         return copy(self)
+
+    def simplify(self, tolerance: float = 1e-3) -> Component:
+        """Simplifies polygons in the Component.
+
+        Args:
+            tolerance: tolerance in um.
+        """
+        c = self.copy()
+        cells = list(c.get_dependencies(recursive=True)) + [c]
+        for cell in cells:
+            for n, points in enumerate(c.polygons):
+                cell.polygons[n] = _simplify(points, tolerance=tolerance)
+        return c
 
     def add_ref_container(self, component: Component) -> ComponentReference:
         """Add reference, ports and copy_child_info."""
@@ -2727,10 +2741,12 @@ if __name__ == "__main__":
     # from functools import partial
     import gdsfactory as gf
 
-    c = gf.Component()
-    wg1 = c << gf.components.straight(width=0.5, layer=(1, 0))
-    wg2 = c << gf.components.straight(width=0.5, layer=(2, 0))
-    wg2.connect("o1", wg1.ports["o2"])
+    # c = gf.Component()
+    # wg1 = c << gf.components.straight(width=0.5, layer=(1, 0))
+    # wg2 = c << gf.components.straight(width=0.5, layer=(2, 0))
+    # wg2.connect("o1", wg1.ports["o2"])
+    c = gf.c.coupler_ring()
+    c = c.simplify(tolerance=1)
     c.show()
     # custom_padding = partial(gf.add_padding, layers=("WG",))
     # c = gf.c.mzi(decorator=custom_padding)
