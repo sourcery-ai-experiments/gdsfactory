@@ -1,30 +1,23 @@
-# Use Python 3.11 slim image as the base
-FROM python:3.11-slim
+FROM ghcr.io/mamba-org/micromamba:latest
 
-# Expose the necessary ports
+# Expose the necessary ports for klive
 EXPOSE 8082 8083 8888
 
-# Run as root to install packages
 USER root
-COPY  --chmod=777 . ${HOME}
-
 # Update and install dependencies
 RUN apt-get update --yes && \
     apt-get install --yes --no-install-recommends \
         make \
         git \
         python3-gmsh \
-        htop \
-        neovim \
         klayout \
-        software-properties-common \
-        gnupg && \
+        gmsh && \
     # apt-add-repository ppa:elmer-csc-ubuntu/elmer-csc-ppa && \
     # apt-get update --yes && \
     # apt-get install --yes elmerfem-csc && \
     rm -rf /var/lib/apt/lists/*
 
-USER ${USER}
-# Using pip to install Python packages
-# Ensure your base image has all the necessary libraries or install them before switching users
+USER $MAMBA_USER
+COPY  --chmod=777 . ${HOME}
+RUN pip install --no-cache notebook jupyterlab
 RUN pip install .[full]
