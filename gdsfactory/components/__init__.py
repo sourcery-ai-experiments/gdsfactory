@@ -266,8 +266,8 @@ from gdsfactory.components.spiral_inner_io import (
 from gdsfactory.components.splitter_chain import splitter_chain
 from gdsfactory.components.splitter_tree import splitter_tree
 from gdsfactory.components.straight import Straight, straight, straight_array
-from gdsfactory.components.straight_heater_doped_rib import straight_heater_doped_rib
-from gdsfactory.components.straight_heater_doped_strip import (
+from gdsfactory.components.straight_heater_doped import (
+    straight_heater_doped_rib,
     straight_heater_doped_strip,
 )
 from gdsfactory.components.straight_heater_meander import straight_heater_meander

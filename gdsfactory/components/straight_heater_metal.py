@@ -34,7 +34,9 @@ def straight_heater_metal_undercut(
         length: of the waveguide.
         length_undercut_spacing: from undercut regions.
         length_undercut: length of each undercut section.
+        length_straight: from where the waveguide starts to the first trench.
         length_straight_input: from input port to where trenches start.
+        cross_section: for waveguide ports.
         cross_section_heater: for heated sections. heater metal only.
         cross_section_waveguide_heater: for heated sections.
         cross_section_heater_undercut: for heated sections with undercut.
@@ -44,7 +46,6 @@ def straight_heater_metal_undercut(
         port_orientation2: right via stack port orientation.
         heater_taper_length: minimizes current concentrations from heater to via_stack.
         ohms_per_square: to calculate resistance.
-        cross_section: for waveguide ports.
     """
     period = length_undercut + length_undercut_spacing
     n = int((length - 2 * length_straight_input) // period)
