@@ -39,10 +39,11 @@ from collections.abc import Callable
 from functools import partial
 
 import numpy as np
+from numpy import ndarray
 from pydantic import validate_call
 
 import gdsfactory as gf
-from gdsfactory.component import Component
+from gdsfactory.component import Component, ComponentReference
 from gdsfactory.components.bend_euler import bend_euler
 from gdsfactory.components.straight import straight as straight_function
 from gdsfactory.components.taper import taper as taper_function
@@ -60,10 +61,37 @@ from gdsfactory.typings import (
 )
 
 
+def get_restricted_area(
+    obstacle_list: list[ComponentReference], margin: float = 0.0
+) -> list[ndarray[float]]:
+    restricted_area = []
+    obstacles_w_origin = [
+        [np.array(obstacle.origin), obstacle] for obstacle in obstacle_list
+    ]
+
+    while len(obstacles_w_origin) > 0:
+        origin, obstacle = obstacles_w_origin.pop(0)
+        if len(obstacle.parent.polygons) != 0:
+            for polygon in obstacle.parent.polygons:
+                points = polygon.points
+                if margin > 0:
+                    points[points > 0] += margin
+                    points[points < 0] -= margin
+                restricted_area.append(points + origin)
+        if len(obstacle.parent.references) != 0:
+            for reference in obstacle.parent.references:
+                obstacles_w_origin.append(
+                    [np.array(reference.origin) + origin, reference]
+                )
+    return restricted_area
+
+
 @validate_call
 def get_route(
     input_port: Port,
     output_port: Port,
+    component: Component,
+    component_margin: float = 0.0,
     bend: ComponentSpec = bend_euler,
     with_sbend: bool = False,
     straight: ComponentSpec = straight_function,
@@ -86,6 +114,7 @@ def get_route(
     Args:
         input_port: start port.
         output_port: end port.
+        component: the component that contains the input, output ports and all other components
         bend: bend spec.
         with_sbend: add sbend in case there are routing errors.
         straight: straight spec.
@@ -115,6 +144,9 @@ def get_route(
         c.plot()
 
     """
+
+    obstacle_list = list(set(component.references))
+    restricted_area = get_restricted_area(obstacle_list, component_margin)
 
     if isinstance(cross_section, list | tuple):
         xs_list = []
@@ -165,6 +197,7 @@ def get_route(
         bend=bend90,
         with_sbend=with_sbend,
         cross_section=cross_section,
+        restricted_area=restricted_area,
         auto_widen=auto_widen,
         auto_widen_minimum_length=auto_widen_minimum_length,
         width_wide=width_wide,
