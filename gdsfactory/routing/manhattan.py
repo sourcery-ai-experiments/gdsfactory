@@ -18,6 +18,7 @@ from gdsfactory.cross_section import strip
 from gdsfactory.geometry.functions import angles_deg
 from gdsfactory.port import Port, select_ports_list
 from gdsfactory.routing.get_route_sbend import get_route_sbend
+from gdsfactory.routing.get_route_waypoints_astar import generate_route_astar_points
 from gdsfactory.typings import (
     ComponentSpec,
     Coordinate,
@@ -423,6 +424,7 @@ def _generate_route_manhattan_points(
             s = min_straight_length + bs1
         points = np.stack([np.array(_p) for _p in points], axis=0)
         points = reverse_transform(points, **transform_params)
+    print("Manhattan Points", points)
     return points
 
 
@@ -958,6 +960,7 @@ def generate_manhattan_waypoints(
     min_straight_length: float = 10e-3,
     bend: ComponentSpec = bend_euler,
     cross_section: None | CrossSectionSpec | MultiCrossSectionAngleSpec = strip,
+    restricted_area: list[ndarray[float]] = [],
     **kwargs,
 ) -> ndarray:
     """Return waypoints for a Manhattan route between two ports.
@@ -987,6 +990,17 @@ def generate_manhattan_waypoints(
         bend90 = gf.get_component(bend)
 
     bsx = bsy = _get_bend_size(bend90)
+    bs = _get_bend_size(bend90)
+
+    return generate_route_astar_points(
+        input_port,
+        output_port,
+        bs,
+        start_straight_length,
+        end_straight_length,
+        min_straight_length,
+        restricted_area,
+    )
     return _generate_route_manhattan_points(
         input_port,
         output_port,
@@ -1016,6 +1030,7 @@ def route_manhattan(
     bend: ComponentSpec = bend_euler,
     with_sbend: bool = False,
     cross_section: None | CrossSectionSpec | MultiCrossSectionAngleSpec = strip,
+    restricted_area: list[ndarray[float]] = [],
     with_point_markers: bool = False,
     on_route_error: Callable = get_route_error,
     width_wide: float | None = None,
@@ -1055,7 +1070,8 @@ def route_manhattan(
             end_straight_length=end_straight_length,
             min_straight_length=min_straight_length,
             bend=bend,
-            cross_section=cross_section,
+            cross_section=x,
+            restricted_area=restricted_area,
         )
         return round_corners(
             points=points,
